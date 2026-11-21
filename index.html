@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <link rel="icon" href="data:," />
+  <title>潮线封锁 v0.1</title>
+</head>
+<body>
+  <canvas id="gl"></canvas>
+
+  <!-- 触控左半屏摇杆区 -->
+  <div id="stick-zone">
+    <div id="stick-base"><div id="stick-knob"></div></div>
+  </div>
+
+  <!-- 战斗 HUD -->
+  <div id="hud" class="hidden">
+    <div class="hud-top">
+      <div class="status-col">
+        <div class="bar-wrap hp-wrap">
+          <div id="hp-fill" class="bar-fill"></div>
+          <span id="hp-text" class="bar-label">1000 / 1000</span>
+        </div>
+        <div class="bar-wrap xp-wrap">
+          <div id="xp-fill" class="bar-fill"></div>
+          <span id="xp-text" class="bar-label">Lv.1</span>
+        </div>
+      </div>
+
+      <div class="center-col">
+        <div id="timer">00:00</div>
+        <div id="mission-sub">距首领 14:57 · 击杀 <span id="kills">0</span></div>
+        <div id="boss-bar" class="hidden">
+          <div class="boss-name">断潮督军 · 雷克塞 <span id="boss-phase">P1</span></div>
+          <div class="boss-track"><div id="boss-fill"></div><div class="boss-half"></div></div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div id="minimap-box">
+          <img src="./assets/map1/minimap.png" alt="小地图" />
+          <canvas id="minimap-cv" width="128" height="128"></canvas>
+        </div>
+        <button id="btn-pause" class="icon-btn" aria-label="暂停">⏸</button>
+      </div>
+    </div>
+
+    <div id="banner" class="hidden"></div>
+    <div id="overload-badge" class="hidden">⚡ 过载</div>
+
+    <!-- 右下技能区 -->
+    <div id="skills">
+      <button id="btn-swap" class="skill-btn swap-btn">
+        <span class="sk-title" id="swap-name">机枪</span>
+        <span class="sk-sub" id="swap-cd">Q 换枪</span>
+      </button>
+      <button id="btn-mine" class="skill-btn mine-btn">
+        <span class="sk-title">地雷 <b id="mine-chg">1</b></span>
+        <span class="sk-sub" id="mine-cd">E</span>
+      </button>
+      <button id="btn-ult" class="skill-btn ult-btn">
+        <span class="sk-title">贯穿弹</span>
+        <span class="sk-sub" id="ult-pct">0%</span>
+      </button>
+      <button id="btn-dash" class="skill-btn dash-btn">
+        <span class="sk-title">闪避</span>
+        <span class="sk-sub" id="dash-cd">空格</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 开局封面 -->
+  <div id="screen-start" class="modal">
+    <div class="panel start-panel">
+      <h1>潮线封锁 <small>v0.2 · 仓库区</small></h1>
+      <p class="subtitle">第一关：仓库区（180m × 180m）· 守住 15 分钟并击败最终首领</p>
+      <div class="tips">
+        <div><b>操作：</b>手机左半屏拖动移动 / 右侧放技能；电脑 WASD 移动、Q 换枪、E 地雷、R 大招、空格闪避、Esc 暂停</div>
+        <div><b>双形态：</b>铆钉机枪连击提速打单体；震荡炮范围清群</div>
+      </div>
+      <div class="opt-row">
+        <span>画质：</span>
+        <div class="seg" id="start-quality">
+          <button data-q="auto">自动</button>
+          <button data-q="low">低</button>
+          <button data-q="medium">中</button>
+          <button data-q="high">高</button>
+        </div>
+        <span id="q-rec" class="muted"></span>
+      </div>
+      <div class="opt-row checks">
+        <label><input type="checkbox" id="opt-flash" /> 减弱闪光</label>
+        <label><input type="checkbox" id="opt-shake" /> 关闭震屏</label>
+        <label><input type="checkbox" id="opt-mute" /> 静音</label>
+      </div>
+      <button id="btn-start" class="primary-btn">开始任务</button>
+    </div>
+  </div>
+
+  <!-- 升级三选一 -->
+  <div id="screen-levelup" class="modal hidden">
+    <div class="panel lvl-panel">
+      <h2>等级提升 · 选择强化</h2>
+      <div id="cards" class="cards"></div>
+    </div>
+  </div>
+
+  <!-- 暂停菜单 -->
+  <div id="screen-pause" class="modal hidden">
+    <div class="panel pause-panel">
+      <h2 id="pause-title">任务暂停</h2>
+      <div class="opt-row">
+        <span>画质：</span>
+        <div class="seg" id="pause-quality">
+          <button data-q="auto">自动</button>
+          <button data-q="low">低</button>
+          <button data-q="medium">中</button>
+          <button data-q="high">高</button>
+        </div>
+      </div>
+      <div class="opt-row checks">
+        <label><input type="checkbox" id="p-flash" /> 减弱闪光</label>
+        <label><input type="checkbox" id="p-shake" /> 关闭震屏</label>
+        <label><input type="checkbox" id="p-mute" /> 静音</label>
+      </div>
+      <div class="btn-row">
+        <button id="btn-resume" class="primary-btn">继续战斗</button>
+        <button id="btn-pause-restart" class="sec-btn">重新开始</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 胜负结算 -->
+  <div id="screen-end" class="modal hidden">
+    <div class="panel end-panel">
+      <h2 id="end-title">任务完成</h2>
+      <div id="end-stats" class="end-stats"></div>
+      <div id="end-build" class="end-build"></div>
+      <button id="btn-restart" class="primary-btn">立即重开</button>
+    </div>
+  </div>
+
+  <!-- 仅开发环境调试条 -->
+  <div id="dev-bar" class="hidden">
+    <button data-dev="t420">跳 7:00</button>
+    <button data-dev="t870">跳 14:30</button>
+    <button data-dev="boss">刷首领</button>
+    <button data-dev="lvl">升 1 级</button>
+    <button data-dev="ult">满大招</button>
+    <button data-dev="god">无敌:关</button>
+    <button data-dev="closeup">特写:关</button>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

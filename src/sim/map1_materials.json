@@ -1,0 +1,335 @@
+{
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_B3_Mat": {
+    "url": "./assets/map1/textures/ground_b3.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_D5_Mat": {
+    "url": "./assets/map1/textures/ground_d5.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Buidling_A_Wood_Mat": {
+    "url": "./assets/map1/props/struc_building_a_wood.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Foliage_Grass_B_Mat": {
+    "url": "./assets/map1/props/foliage_grass_b.png",
+    "alpha": "cutout"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Foliage_AA_Mat": {
+    "url": "./assets/map1/props/foliage_a.png",
+    "alpha": "cutout"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_prop_ElectricBox_B_mat": {
+    "url": "./assets/map1/props/prop_electricbox_b.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Buidling_A_Mat": {
+    "url": "./assets/map1/props/struc_building_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Prop_B_mat": {
+    "url": "./assets/map1/props/props_b.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Island_B_Mat": {
+    "url": "./assets/map1/props/struc_island_b.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Foliage_Tree_C_Mat": {
+    "url": "./assets/map1/props/foliage_tree_c.png",
+    "alpha": "cutout"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Wall_A_Mat": {
+    "url": "./assets/map1/props/struc_wall_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Panel_B_Mat": {
+    "url": "./assets/map1/props/struc_panel_b.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Foliage_Tree_E_Mat": {
+    "url": "./assets/map1/props/foliage_tree_e.png",
+    "alpha": "cutout"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_C2_Mat": {
+    "url": "./assets/map1/textures/ground_c2.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_B2_Mat": {
+    "url": "./assets/map1/textures/ground_b2.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Island_D_02_mat": {
+    "url": "./assets/map1/props/struc_island_d_02.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_E4_Mat": {
+    "url": "./assets/map1/textures/ground_e4.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Kit_Rubble_A_mat": {
+    "url": "./assets/map1/props/kit_rubble_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Foliage_Grass_A_Mat": {
+    "url": "./assets/map1/props/foliage_grass_a.png",
+    "alpha": "cutout"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Kit_Experiment_A_mat": {
+    "url": "./assets/map1/props/kit_experiment_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Foliage_Bush_A_Mat1": {
+    "url": "./assets/map1/props/foliage_bush_a.png",
+    "alpha": "cutout"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_SquadIcons_StreetSigns_A_mat": {
+    "url": "./assets/map1/props/squadicons_streetsigns_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_A6_Mat": {
+    "url": "./assets/map1/textures/ground_a6.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_F5_Mat": {
+    "url": "./assets/map1/textures/ground_f5.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Foliage_Tree_F_Mat": {
+    "url": "./assets/map1/props/foliage_tree_f.png",
+    "alpha": "cutout"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Prop_A_01_Mat": {
+    "url": "./assets/map1/props/props_a_1.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Props_A_Mat": {
+    "url": "./assets/map1/props/props_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Barricade_A_Mat": {
+    "url": "./assets/map1/props/struc_barricade_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_A5_Mat": {
+    "url": "./assets/map1/textures/ground_a5.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Foliage_Bush_B_Mat": {
+    "url": "./assets/map1/props/foliage_bush_b.png",
+    "alpha": "cutout"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Panel_A_Mat": {
+    "url": "./assets/map1/props/struc_panel_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Foliage_Flowers_Mat": {
+    "url": "./assets/map1/props/foliage_flowers_a.png",
+    "alpha": "cutout"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_A2_Mat": {
+    "url": "./assets/map1/textures/ground_a2.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Panel_B_NonBake_Mat": {
+    "url": "./assets/map1/props/struc_panel_b.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Island_G_MAT": {
+    "url": "./assets/map1/props/struc_island_g.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Prop_Car_A_Mat": {
+    "url": "./assets/map1/props/prop_car_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Prop_Dumpsters_A_mat": {
+    "url": "./assets/map1/props/prop_dumpsters_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Island_C_Mat": {
+    "url": "./assets/map1/props/struc_island_c.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Foliage_Lotus_A_Mat": {
+    "url": "./assets/map1/props/foliage_lotus_a.png",
+    "alpha": "cutout"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_A1_Mat": {
+    "url": "./assets/map1/textures/ground_a1.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_HealingWell_Mat": {
+    "url": "./assets/map1/props/struc_healingwell_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Foliage_Bush_C_Mat": {
+    "url": "./assets/map1/props/foliage_bush_c.png",
+    "alpha": "cutout"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_B6_Mat": {
+    "url": "./assets/map1/textures/ground_b6.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_C5_Mat": {
+    "url": "./assets/map1/textures/ground_c5.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Island_C_01_mat": {
+    "url": "./assets/map1/props/struc_island_c_01.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_E3_Mat": {
+    "url": "./assets/map1/textures/ground_e3.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_C3_Mat": {
+    "url": "./assets/map1/textures/ground_c3.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Prop_Panels_E_C_Mat": {
+    "url": "./assets/map1/props/prop_panels_e_c.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_A3_Mat": {
+    "url": "./assets/map1/textures/ground_a3.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Prop_Panels_E_D_Mat": {
+    "url": "./assets/map1/props/prop_panels_e_d.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Prop_Panels_C_Mat": {
+    "url": "./assets/map1/props/prop_panels_c.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Prop_StreetSign_Hologram_A_MAT": {
+    "url": "./assets/map1/props/prop_streetsigns_hologram_a.png",
+    "alpha": "blend"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Prop_Panels_E_B_Mat": {
+    "url": "./assets/map1/props/prop_panels_e_b.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_C1_Mat": {
+    "url": "./assets/map1/textures/ground_c1.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Foliage_Lilypad_Mat": {
+    "url": "./assets/map1/props/foliage_lilypad_a.png",
+    "alpha": "cutout"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Industrial_A_Mat": {
+    "url": "./assets/map1/props/kit_building_industrial_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_B5_Mat": {
+    "url": "./assets/map1/textures/ground_b5.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_F6_Mat": {
+    "url": "./assets/map1/textures/ground_f6.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_D4_Mat": {
+    "url": "./assets/map1/textures/ground_d4.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_D6_mat": {
+    "url": "./assets/map1/textures/ground_d6.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Island_D_Mat": {
+    "url": "./assets/map1/props/struc_island_d.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_BarricadeHologram_A_Mat": {
+    "url": "./assets/map1/props/struc_barricadehologram_a.png",
+    "alpha": "blend"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Pools_A_Mat": {
+    "url": "./assets/map1/props/struc_pools_a.png",
+    "alpha": "blend"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Building_B_Mat": {
+    "url": "./assets/map1/props/struc_building_b.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Prop_Panels_E_A_Mat": {
+    "url": "./assets/map1/props/prop_panels_e_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Props_Industrial_A_Mat": {
+    "url": "./assets/map1/props/prop_generator_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Building_B_Wood_Mat": {
+    "url": "./assets/map1/props/struc_building_b_wood.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Wall_B_Mat": {
+    "url": "./assets/map1/props/struc_wall_b.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Prop_Panels_D_Mat": {
+    "url": "./assets/map1/props/prop_panels_d.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_F1_Mat": {
+    "url": "./assets/map1/textures/ground_f1.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_C4_Mat": {
+    "url": "./assets/map1/textures/ground_c4.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Prop_StreetSigns_MAT": {
+    "url": "./assets/map1/props/prop_streetsigns_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Foliage_Canopy_A": {
+    "url": "./assets/map1/props/foliage_canopy_a.png",
+    "alpha": "cutout"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_E5_Mat": {
+    "url": "./assets/map1/textures/ground_e5.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Prop_Statue_A_Mat": {
+    "url": "./assets/map1/props/prop_statue_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/MapA_Foliage_B": {
+    "url": "./assets/map1/props/foliage_b.png",
+    "alpha": "cutout"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Island_B_01_mat": {
+    "url": "./assets/map1/props/struc_island_b_01.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_F4_Mat": {
+    "url": "./assets/map1/textures/ground_f4.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Foliage_Bush_G_Mat": {
+    "url": "./assets/map1/props/foliage_bush_g.png",
+    "alpha": "cutout"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Island_B_02_mat": {
+    "url": "./assets/map1/props/struc_island_b_02.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_B4_Mat": {
+    "url": "./assets/map1/textures/ground_b4.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_C6_Mat": {
+    "url": "./assets/map1/textures/ground_c6.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Island_D_01_mat": {
+    "url": "./assets/map1/props/struc_island_d_01.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Foliage_Bush_D_Mat": {
+    "url": "./assets/map1/props/foliage_bush_d.png",
+    "alpha": "cutout"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Doors_A_Mat": {
+    "url": "./assets/map1/props/struc_doors_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Prop_ElectricBox_A_Mat": {
+    "url": "./assets/map1/props/prop_electricbox_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_E2_Mat": {
+    "url": "./assets/map1/textures/ground_e2.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_D3_Mat": {
+    "url": "./assets/map1/textures/ground_d3.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Island_A_Mat": {
+    "url": "./assets/map1/props/struc_island_a.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_B1_Mat": {
+    "url": "./assets/map1/textures/ground_b1.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Industrial_B_Mat": {
+    "url": "./assets/map1/props/kit_building_industrial_b.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Prop_Car_B_Mat": {
+    "url": "./assets/map1/props/prop_car_b.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Struc_Island_C_02_mat": {
+    "url": "./assets/map1/props/struc_island_c_02.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_F3_Mat": {
+    "url": "./assets/map1/textures/ground_f3.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_D2_Mat": {
+    "url": "./assets/map1/textures/ground_d2.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_A4_Mat": {
+    "url": "./assets/map1/textures/ground_a4.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_F2_Mat": {
+    "url": "./assets/map1/textures/ground_f2.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Foliage_Bush_E_Mat": {
+    "url": "./assets/map1/props/foliage_bush_e.png",
+    "alpha": "cutout"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_D1_Mat": {
+    "url": "./assets/map1/textures/ground_d1.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Foliage_Tree_A_Mat": {
+    "url": "./assets/map1/props/foliage_tree_a.png",
+    "alpha": "cutout"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_MapD_RaisedPark_B_Mat": {
+    "url": "./assets/map1/props/mapd_raisedpark_b.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_E6_Mat": {
+    "url": "./assets/map1/textures/ground_e6.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Ground_E1_Mat": {
+    "url": "./assets/map1/textures/ground_e1.png"
+  },
+  "Maps/KitPieces/Strawberry/Base/Materials/Default/Strawberry_Wood_A_mat": {
+    "url": "./assets/map1/props/wood_a.png"
+  }
+}
