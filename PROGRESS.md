@@ -46,8 +46,23 @@
 
 ---
 
-## 4. 本机未上传的大体积资产与工具路径（仅本机参考）
+## 4. Patch 14.14 原版文件来源与本机工具链（跨会话直接复用）
 
+### 方式 A：本机已就绪的 Patch 14.14 官方 Manifest + WAD 解包/转换工具链
+工具根目录：`C:\Users\yuyl\.gemini\antigravity\brain\022a7d42-84dd-4039-a9bd-5be738fc3b71\scratch\map33_tools\`
+- **`14_14.manifest`**（`23.5 MB`）：拳头官方 Patch 14.14 游戏清单，可直接拉取任意 `Map33` / `Strawberry_*` 小怪、精英怪、雷克塞 Boss 与英雄 `.wad.client`。
+- **`ManifestDownloader.exe`**：按过滤条件从拳头官方 CDN 下载 Patch 14.14 对应的 `.wad.client`。
+- **`hashes.game.txt`**（`233.9 MB`）：CommunityDragon 路径哈希映射表，配合 WAD 解包还原真实路径。
+- **`unpack_wad_generic.mjs`**：通用 `.wad.client` 解包脚本，用法：`node unpack_wad_generic.mjs <wadPath> <hashPath> <outDir>`。
+- **`lol2gltf.exe`**：将 `.skn`/`.skl`/`.anm` 或 `.mapgeo` 转为 `.glb`（运行前须将 `C:\Program Files\dotnet` 加入 `$env:Path`）。
+- **`convert_scb_to_json.mjs`**：将 `.scb` v3.2 特效网格转为 `pos`/`uv` JSON。
+- **已解包目录**：`gamedata/`（`Map33.wad.client` 解包产物，含 `.scb` 与地图文件）、`jinx_gamedata/`（`Strawberry_Jinx.wad.client`）。
+
+### 方式 B：CommunityDragon Patch 14.14 公开直链（免解包拉取 `.png` / `.bin.json`）
+- **根地址**：`https://raw.communitydragon.org/14.14/game/`
+- **特效贴图目录**：`https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/`
+- **第一关地图配置**：`https://raw.communitydragon.org/14.14/game/data/maps/shipping/map33/map33.bin.json`
+
+### 本机未上传的大体积资产目录（仅本机参考）
 - **运行时大资源目录（未上传 GitHub）**：`C:\七星\游戏\tideline\tideline\public\assets\`（共 `144.98 MB`，含 `warehouse_map1.glb` `50.42 MB`、`strawberry_jinx.glb` `7.78 MB`、`metalbox.glb`、127 张贴图及 VFX JSON/PNG）。
-- **原始解包暂存目录（未上传 GitHub）**：`C:\七星\游戏\tideline\tideline\资产包\`（`68.89 MB`）。
-- **工具暂存目录**：`C:\Users\yuyl\.gemini\antigravity\brain\022a7d42-84dd-4039-a9bd-5be738fc3b71\scratch\map33_tools\`（内含 `ManifestDownloader.exe`、`lol2gltf.exe`、`hashes.game.txt`、`gamedata\`、`jinx_gamedata\`）。
+- **原始解包参考目录（未上传 GitHub）**：`C:\七星\游戏\tideline\tideline\资产包\第一关仓库区地图材质贴图\`（`68.89 MB`）。
