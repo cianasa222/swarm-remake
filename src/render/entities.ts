@@ -97,7 +97,7 @@ export class EntityRenderer {
 
   // 玩家角色 & 首领
   private heroRig: HeroRig;
-  private reksaiRig: RekSaiRig;
+  readonly reksaiRig: RekSaiRig;
   private elitePool: EliteBruiserPool;
   private eliteBuf: Enemy[] = [];
 
