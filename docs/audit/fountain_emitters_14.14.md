@@ -97,16 +97,16 @@
 
 ## 4. 修复分工
 
-### 4.1 AWS Quick 现在就能改（不需要新资产）
-- [ ] Nova 系统整体 ×1.75
-- [ ] Nova 节奏改为两段式（按第 2 节第 3 条的原版寿命）
-- [ ] 新增 Nova `Shockwave_blend` / `Shockwave_blend1`（复用已有 `fountain_wave.json` + `shockwave` 贴图）
-- [ ] 新增 Nova `Gold` / `Gold1` 粒子（复用 `hex_plus` / `lilstar`）
-- [ ] 新增 Timer `Decal_Start2` 深绿打底（复用 `edge_start_01`）
-- [ ] `healspark` 改为发射式粒子（尺寸 0.4 m、上升 2.5–5 m/s、寿命 1–2 s、4 帧随机、缩放弹出曲线）
-- [ ] `sparklies1` 改为跟随进度头扫圈生成并上浮
-- [ ] `Basic4` α 0.22 → 0.4；`Edge12`/`Edge17` 缩放对调；`Shockwave_blend` 峰值 0.42 → 0.5
-- [ ] 去掉计时圈 75% 后的暖黄色
+### 4.1 AWS Quick 现在就能改（不需要新资产）— ✅ 已提交，待本机验收
+- [x] Nova 系统整体 ×1.75
+- [x] Nova 节奏改为两段式（按第 2 节第 3 条的原版寿命）
+- [x] 新增 Nova `Shockwave_blend` / `Shockwave_blend1`（复用已有 `fountain_wave.json` + `shockwave` 贴图）
+- [x] 新增 Nova `Gold` / `Gold1` 粒子（复用 `hex_plus` / `lilstar`）
+- [x] 新增 Timer `Decal_Start2` 深绿打底（复用 `edge_start_01`）
+- [x] `healspark` 改为发射式粒子（尺寸 0.4 m、上升 2.5–5 m/s、寿命 1–2 s、4 帧随机、缩放弹出曲线）
+- [x] `sparklies1` 改为跟随进度头扫圈生成并上浮
+- [x] `Basic4` α 0.22 → 0.4；`Edge12`/`Edge17` 缩放对调；`Shockwave_blend` 峰值 0.42 → 0.5
+- [x] 去掉计时圈 75% 后的暖黄色
 
 ### 4.2 交给执行 AI（Issue #1）
 - **T2 网格（5 个，需从 `Map33.wad.client` 解包）**：`FlameMesh`、`Brand_Base_Ring`、`HealingStation_Swirl`、`HealingStation_Shape_Music`、`HealingStation_Indicator`

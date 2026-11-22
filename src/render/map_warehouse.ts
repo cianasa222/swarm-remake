@@ -4,6 +4,7 @@ import map1Data from '../sim/map1_data.json';
 import map1Lightmaps from '../sim/map1_lightmaps.json';
 import map1Materials from '../sim/map1_materials.json';
 import { getTexture, loadGLB, loadScbGeo, loadSpriteCell as loadAssetSpriteCell } from './assets';
+import { QUALITY_SPECS, type QualityTier } from './quality';
 import type { WorldView } from './world';
 
 interface MatEntry {
@@ -274,7 +275,7 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
     `,
   });
   const sphereCore = loadScbMesh('./assets/map1/vfx/fountain_sphere.json', sphereCoreMat);
-  sphereCore.scale.setScalar(0.0098);
+  sphereCore.scale.setScalar(0.0100); // Edge14/Edge17 原版 bS = 1.0
   sphereCore.renderOrder = 10;
 
   // Edge12/13/15：极区平滑混入 XZ 平面投影彻底消除北极星芒捏合
@@ -334,7 +335,7 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
     `,
   });
   const sphereHex = loadScbMesh('./assets/map1/vfx/fountain_sphere.json', sphereHexMat);
-  sphereHex.scale.setScalar(0.010);
+  sphereHex.scale.setScalar(0.0098); // Edge12 原版 bS = 0.98（Edge13/15 叠在同层）
   sphereHex.renderOrder = 11;
 
   // Edge16：柔和流动翡翠光带
@@ -377,9 +378,9 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
   // Basic4 面向相机的球核柔光光晕 Billboard（官方 bS=330）
   const sphereHaloMat = new THREE.SpriteMaterial({
     map: vfxTex('glow_ring.png'),
-    color: 0x16d48e,
+    color: new THREE.Color().setRGB(0.1, 0.87, 0.581, THREE.SRGBColorSpace), // 原版 Basic4 birthColor
     transparent: true,
-    opacity: 0.22,
+    opacity: 0.4,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
   });
@@ -487,106 +488,280 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
 
   const outerGraphic = mkDecalPlane(28.0, 0.10, 'glowring_outer.png', 0x00ff60, 0.08, true, 4);
 
-  // 4. 修复后的 3D 脉冲波浪罩（Shockwave_blend: scale=(0.235, 0.055, 0.235) 贴地柔和脉冲）
-  const waveUniforms = {
-    uPhase: { value: 0 },
-    uOpacity: { value: 0.42 },
-    uTex: { value: vfxTex('shockwave.png') },
+  // 4. 3D 脉冲波浪罩（Shockwave_blend）：Glow 常驻层与 Nova 两层共用材质工厂
+  //    v = uv.y * uVScale + uVOffset（texDiv / uvScale / birthUVOffset / UV 滚动折算）
+  const makeWaveMat = (vScale: number, rgb: [number, number, number]) => {
+    const u = {
+      uVScale: { value: vScale },
+      uVOffset: { value: -0.8 },
+      uOpacity: { value: 0 },
+      uColor: { value: new THREE.Vector3(rgb[0], rgb[1], rgb[2]) },
+      uTex: { value: vfxTex('shockwave.png') },
+    };
+    const mat = new THREE.ShaderMaterial({
+      uniforms: u,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+      vertexShader: /* glsl */ `
+        attribute float aAlpha;
+        varying vec2 vUv;
+        varying float vAlpha;
+        void main() {
+          vUv = uv;
+          vAlpha = aAlpha;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: /* glsl */ `
+        uniform float uVScale;
+        uniform float uVOffset;
+        uniform float uOpacity;
+        uniform vec3 uColor;
+        uniform sampler2D uTex;
+        varying vec2 vUv;
+        varying float vAlpha;
+        void main() {
+          float v = vUv.y * uVScale + uVOffset;
+          if (v < 0.0 || v > 1.0) discard;
+          vec4 tex = texture2D(uTex, vec2(vUv.x, v));
+          float m = max(tex.a, max(tex.r, tex.g));
+          float a = m * vAlpha * uOpacity;
+          if (a < 0.004) discard;
+          gl_FragColor = vec4(uColor, a);
+          #include <colorspace_fragment>
+        }
+      `,
+    });
+    return { mat, u };
   };
-  const waveMat = new THREE.ShaderMaterial({
-    uniforms: waveUniforms,
-    transparent: true,
-    blending: THREE.AdditiveBlending,
-    depthWrite: false,
-    side: THREE.DoubleSide,
-    vertexShader: /* glsl */ `
-      attribute float aAlpha;
-      varying vec2 vUv;
-      varying float vAlpha;
-      void main() {
-        vUv = uv;
-        vAlpha = aAlpha;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-      }
-    `,
-    fragmentShader: /* glsl */ `
-      uniform float uPhase;
-      uniform float uOpacity;
-      uniform sampler2D uTex;
-      varying vec2 vUv;
-      varying float vAlpha;
-      void main() {
-        float v = vUv.y * 0.6 - 0.8 + uPhase * 1.1;
-        if (v < 0.0 || v > 1.0) discard;
-        vec4 tex = texture2D(uTex, vec2(vUv.x, v));
-        float m = max(tex.a, max(tex.r, tex.g));
-        float a = m * vAlpha * uOpacity;
-        if (a < 0.004) discard;
-        gl_FragColor = vec4(vec3(0.0, 1.0, 0.45), a);
-        #include <colorspace_fragment>
-      }
-    `,
-  });
-  const waveMesh = loadScbMesh('./assets/map1/vfx/fountain_wave.json', waveMat);
+  // Glow/Shockwave_blend：scale = (0.25, 0.08, 0.25)，2 s 一次，α 0 → 0.5 → 0.5 → 0
+  const glowWave = makeWaveMat(0.6, [0.0, 1.0, 0.45]);
+  const waveUniforms = glowWave.u;
+  const waveMesh = loadScbMesh('./assets/map1/vfx/fountain_wave.json', glowWave.mat);
   waveMesh.scale.set(0.25, 0.08, 0.25);
   waveMesh.position.y = 0.12;
   waveMesh.renderOrder = 9;
   fGroup.add(waveMesh);
 
-  // 5. 飘升的原版六边形 "+" 治疗十字粒子与空心六边形粒子（hex_plus.png 2x2 + 柔光底晕）
-  const hexCount = 24;
-  const hexPos = new Float32Array(hexCount * 3);
-  const hexMeta: { a: number; r: number; y: number; sp: number }[] = [];
-  for (let i = 0; i < hexCount; i++) {
-    const a = (i / hexCount) * Math.PI * 2 + i * 0.85;
-    const r = 0.6 + ((i * 19) % 24) * 0.1;
-    const y = 0.8 + ((i * 13) % 52) * 0.1;
-    hexMeta.push({ a, r, y, sp: 1.45 + (i % 5) * 0.25 });
-    hexPos[i * 3] = Math.cos(a) * r;
-    hexPos[i * 3 + 1] = y;
-    hexPos[i * 3 + 2] = Math.sin(a) * r;
-  }
-  const hexGeo = new THREE.BufferGeometry();
-  hexGeo.setAttribute('position', new THREE.BufferAttribute(hexPos, 3));
-  const hexMat = new THREE.PointsMaterial({
-    size: 0.82,
-    map: loadSpriteCell('./assets/map1/vfx/hex_plus.png', 0, 0, 2, 2, true),
-    color: 0x2eff98,
-    transparent: true,
-    opacity: 0.92,
-    blending: THREE.AdditiveBlending,
-    depthWrite: false,
-  });
-  const hexPts = new THREE.Points(hexGeo, hexMat);
-  hexPts.renderOrder = 12;
-  fGroup.add(hexPts);
+  // ── 原版粒子发射器公共设施（CPU 模拟 + 单 DrawCall Points；图集按帧采样；尺寸按世界米换算） ──
+  // 原版颜色为 sRGB 数值：写入 Shader 前转线性，经 colorspace_fragment 输出后与原版数值一致
+  const toLin = (c: number) => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+  const linRGBA = (rows: number[][]) => rows.map(([r, g, b, a]) => [toLin(r), toLin(g), toLin(b), a]);
+  /** 分段线性曲线采样（等价 VfxAnimated*VariableData；两端外推为端点值） */
+  const curve1 = (times: number[], vals: number[], k: number): number => {
+    const n = times.length - 1;
+    if (k <= times[0]) return vals[0];
+    if (k >= times[n]) return vals[n];
+    let i = 1;
+    while (i < n && k > times[i]) i++;
+    const f = (k - times[i - 1]) / Math.max(1e-6, times[i] - times[i - 1]);
+    return vals[i - 1] + (vals[i] - vals[i - 1]) * f;
+  };
+  const curve4 = (times: number[], vals: number[][], k: number, out: number[]): number[] => {
+    const n = times.length - 1;
+    if (k <= times[0] || k >= times[n]) {
+      const v = vals[k <= times[0] ? 0 : n];
+      out[0] = v[0];
+      out[1] = v[1];
+      out[2] = v[2];
+      out[3] = v[3];
+      return out;
+    }
+    let i = 1;
+    while (i < n && k > times[i]) i++;
+    const a = vals[i - 1];
+    const b = vals[i];
+    const f = (k - times[i - 1]) / Math.max(1e-6, times[i] - times[i - 1]);
+    for (let c = 0; c < 4; c++) out[c] = a[c] + (b[c] - a[c]) * f;
+    return out;
+  };
+  /** 分段线性曲线 0→k 的积分（IntegratedValue：UV 滚动速率 → 累计偏移） */
+  const curveIntegral = (times: number[], vals: number[], k: number): number => {
+    let acc = 0;
+    for (let i = 1; i < times.length; i++) {
+      const t0 = times[i - 1];
+      const t1 = Math.min(times[i], k);
+      if (t1 <= t0) break;
+      acc += (vals[i - 1] + curve1(times, vals, t1)) * 0.5 * (t1 - t0);
+    }
+    return acc;
+  };
+  const rnd = (a: number, b: number) => a + (b - a) * Math.random();
+  /** VfxProbabilityTableData：keyTimes → keyValues 的随机倍率 */
+  const prob = (keys: number[], vals: number[]) => curve1(keys, vals, Math.random());
 
-  const hex2Count = 16;
-  const hex2Pos = new Float32Array(hex2Count * 3);
-  const hex2Meta: { a: number; r: number; y: number; sp: number }[] = [];
-  for (let i = 0; i < hex2Count; i++) {
-    const a = (i / hex2Count) * Math.PI * 2 + i * 1.15;
-    const r = 0.9 + ((i * 23) % 22) * 0.1;
-    const y = 0.7 + ((i * 17) % 48) * 0.1;
-    hex2Meta.push({ a, r, y, sp: 1.15 + (i % 4) * 0.22 });
-    hex2Pos[i * 3] = Math.cos(a) * r;
-    hex2Pos[i * 3 + 1] = y;
-    hex2Pos[i * 3 + 2] = Math.sin(a) * r;
+  interface FxCurves {
+    sT: number[]; // scale0 曲线（统一缩放取 x 分量）
+    sV: number[];
+    cT: number[]; // color 生命周期曲线（线性 RGB + A）
+    cV: number[][];
   }
-  const hex2Geo = new THREE.BufferGeometry();
-  hex2Geo.setAttribute('position', new THREE.BufferAttribute(hex2Pos, 3));
-  const hex2Mat = new THREE.PointsMaterial({
-    size: 0.72,
-    map: loadSpriteCell('./assets/map1/vfx/hex_plus.png', 0, 1, 2, 2, true),
-    color: 0x38ff85,
-    transparent: true,
-    opacity: 0.85,
-    blending: THREE.AdditiveBlending,
-    depthWrite: false,
-  });
-  const hex2Pts = new THREE.Points(hex2Geo, hex2Mat);
-  hex2Pts.renderOrder = 12;
-  fGroup.add(hex2Pts);
+  interface FxParticle {
+    age: number;
+    life: number;
+    x: number;
+    y: number;
+    z: number;
+    vx: number;
+    vy: number;
+    vz: number;
+    dx: number; // birthDrag（指数衰减 /s）
+    dy: number;
+    dz: number;
+    ay: number; // worldAcceleration.y（m/s²）
+    size: number; // 全尺寸（米，父节点局部空间）
+    frame: number;
+    cv: FxCurves;
+  }
+  const particleViewH = { value: 800 };
+  const fxTmp4 = [0, 0, 0, 0];
+  const makeFxPool = (parent: THREE.Object3D, atlas: string, cols: number, rows: number, capacity: number, order: number) => {
+    const pos = new Float32Array(capacity * 3);
+    const size = new Float32Array(capacity);
+    const frame = new Float32Array(capacity);
+    const color = new Float32Array(capacity * 4);
+    const aPos = new THREE.BufferAttribute(pos, 3).setUsage(THREE.DynamicDrawUsage);
+    const aSize = new THREE.BufferAttribute(size, 1).setUsage(THREE.DynamicDrawUsage);
+    const aFrame = new THREE.BufferAttribute(frame, 1).setUsage(THREE.DynamicDrawUsage);
+    const aColor = new THREE.BufferAttribute(color, 4).setUsage(THREE.DynamicDrawUsage);
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', aPos);
+    geo.setAttribute('aSize', aSize);
+    geo.setAttribute('aFrame', aFrame);
+    geo.setAttribute('aColor', aColor);
+    geo.setDrawRange(0, 0);
+    const mat = new THREE.ShaderMaterial({
+      uniforms: {
+        uAtlas: { value: vfxTex(atlas) },
+        uGrid: { value: new THREE.Vector2(cols, rows) },
+        uViewH: particleViewH,
+      },
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      vertexShader: /* glsl */ `
+        attribute float aSize;
+        attribute float aFrame;
+        attribute vec4 aColor;
+        uniform float uViewH;
+        varying float vFrame;
+        varying vec4 vColor;
+        void main() {
+          vFrame = aFrame;
+          vColor = aColor;
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          float modelScale = length(modelMatrix[0].xyz);
+          // 世界尺寸 aSize（米）→ 像素：size * cot(fov/2) * 0.5 * 视口高 / 深度
+          gl_PointSize = aSize * modelScale * projectionMatrix[1][1] * 0.5 * uViewH / max(0.05, -mv.z);
+          gl_Position = projectionMatrix * mv;
+        }
+      `,
+      fragmentShader: /* glsl */ `
+        uniform sampler2D uAtlas;
+        uniform vec2 uGrid;
+        varying float vFrame;
+        varying vec4 vColor;
+        void main() {
+          if (vColor.a < 0.003) discard;
+          float f = floor(vFrame + 0.5);
+          float col = mod(f, uGrid.x);
+          float row = floor(f / uGrid.x);
+          vec2 uv = vec2((col + gl_PointCoord.x) / uGrid.x, 1.0 - (row + gl_PointCoord.y) / uGrid.y);
+          vec4 tex = texture2D(uAtlas, uv);
+          float a = tex.a * vColor.a;
+          if (a < 0.003) discard;
+          gl_FragColor = vec4(tex.rgb * vColor.rgb, a);
+          #include <colorspace_fragment>
+        }
+      `,
+    });
+    const pts = new THREE.Points(geo, mat);
+    pts.frustumCulled = false;
+    pts.renderOrder = order;
+    parent.add(pts);
+    const live: FxParticle[] = [];
+    return {
+      spawn(p: FxParticle) {
+        if (live.length < capacity) live.push(p);
+      },
+      update(dt: number) {
+        let w = 0;
+        for (let i = 0; i < live.length; i++) {
+          const p = live[i];
+          p.age += dt;
+          if (p.age >= p.life) continue;
+          p.vx *= Math.exp(-p.dx * dt);
+          p.vy = p.vy * Math.exp(-p.dy * dt) + p.ay * dt;
+          p.vz *= Math.exp(-p.dz * dt);
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+          p.z += p.vz * dt;
+          const k = p.age / p.life;
+          const s = curve1(p.cv.sT, p.cv.sV, k);
+          curve4(p.cv.cT, p.cv.cV, k, fxTmp4);
+          live[w] = p;
+          pos[w * 3] = p.x;
+          pos[w * 3 + 1] = p.y;
+          pos[w * 3 + 2] = p.z;
+          size[w] = p.size * s;
+          frame[w] = p.frame;
+          color[w * 4] = fxTmp4[0];
+          color[w * 4 + 1] = fxTmp4[1];
+          color[w * 4 + 2] = fxTmp4[2];
+          color[w * 4 + 3] = fxTmp4[3];
+          w++;
+        }
+        live.length = w;
+        geo.setDrawRange(0, w);
+        if (w > 0) {
+          aPos.needsUpdate = true;
+          aSize.needsUpdate = true;
+          aFrame.needsUpdate = true;
+          aColor.needsUpdate = true;
+        }
+      },
+    };
+  };
+  type FxPool = ReturnType<typeof makeFxPool>;
+
+  // 5. Glow/healspark：原版 hex_plus 2×2 随机 4 帧治疗粒子
+  //    15 个/s；寿命 2 s × U(0.5, 1)；半径 3 m 圆盘、y = 0.9 m 生成；上升 5 m/s × U(0.5, 1)，阻尼 1；
+  //    尺寸 0.4 m × U(0.2, 1)，按 scale0 曲线弹出再收回
+  const HEALSPARK_CV: FxCurves = {
+    sT: [0, 0.067, 0.3, 0.665, 1.0],
+    sV: [0, 0.794, 1.0, 0.617, 0],
+    cT: [0, 0.1, 0.8, 1.0],
+    cV: linRGBA([
+      [0.04, 1.0, 0.473, 1],
+      [0.04, 1.0, 0.366, 1],
+      [0.04, 1.0, 0.241, 1],
+      [0.04, 1.0, 0.191, 1],
+    ]),
+  };
+  const healPool = makeFxPool(fGroup, 'hex_plus.png', 2, 2, 48, 12);
+  const spawnHealspark = () => {
+    const r = 3.0 * Math.sqrt(Math.random());
+    const a = Math.random() * Math.PI * 2;
+    healPool.spawn({
+      age: 0,
+      life: 2.0 * rnd(0.5, 1.0),
+      x: Math.cos(a) * r,
+      y: 0.9,
+      z: Math.sin(a) * r,
+      vx: 0,
+      vy: 5.0 * rnd(0.5, 1.0),
+      vz: 0,
+      dx: 0,
+      dy: 1.0,
+      dz: 0,
+      ay: 0,
+      size: 0.4 * rnd(0.2, 1.0),
+      frame: Math.floor(Math.random() * 4),
+      cv: HEALSPARK_CV,
+    });
+  };
 
   // 6. 站圈外沿精致窄环（r=11.05..11.40m）+ 原生 3D 进度弧（scale=1.06 对齐 8.8..10.6m 走道，零切穿高塔与基座）
   const zoneGeo = new THREE.RingGeometry(FOUNTAIN.zoneRadius - 0.35, FOUNTAIN.zoneRadius, 72);
@@ -646,7 +821,48 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
       }
     `,
   });
-  const timerBgMesh = loadScbMesh('./assets/map1/vfx/fountain_timer.json', timerBgMat);
+  // 充能进度头角度：由 fountain_timer.json 顶点 uv.x（= 进度）拟合，供 sparklies1 跟随生成
+  let timerA0 = -Math.PI / 2;
+  let timerDir = 1;
+  const fitTimerHead = (mesh: THREE.Mesh) => {
+    const p = mesh.geometry.getAttribute('position');
+    const uv = mesh.geometry.getAttribute('uv');
+    if (!p || !uv) return;
+    mesh.updateMatrix();
+    const v = new THREE.Vector3();
+    let x0 = 0;
+    let z0 = 0;
+    let n0 = 0;
+    let x1 = 0;
+    let z1 = 0;
+    let n1 = 0;
+    for (let i = 0; i < p.count; i++) {
+      const u = uv.getX(i);
+      const near0 = u <= 0.02;
+      const nearQ = u >= 0.24 && u <= 0.26;
+      if (!near0 && !nearQ) continue;
+      v.fromBufferAttribute(p, i).applyMatrix4(mesh.matrix);
+      const l = Math.hypot(v.x, v.z) || 1;
+      if (near0) {
+        x0 += v.x / l;
+        z0 += v.z / l;
+        n0++;
+      } else {
+        x1 += v.x / l;
+        z1 += v.z / l;
+        n1++;
+      }
+    }
+    if (!n0 || !n1) return;
+    const a0 = Math.atan2(z0, x0);
+    let d = Math.atan2(z1, x1) - a0;
+    while (d > Math.PI) d -= Math.PI * 2;
+    while (d < -Math.PI) d += Math.PI * 2;
+    timerA0 = a0;
+    timerDir = d >= 0 ? 1 : -1;
+  };
+  const timerHeadAngle = (k: number) => timerA0 + timerDir * k * Math.PI * 2;
+  const timerBgMesh = loadScbMesh('./assets/map1/vfx/fountain_timer.json', timerBgMat, fitTimerHead);
   timerBgMesh.scale.set(0.92, 1, 0.92);
   timerBgMesh.rotation.y = Math.PI;
   timerBgMesh.position.y = 0.15;
@@ -682,9 +898,7 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
         float e6 = texture2D(uEdge06, vUv * vec2(16.0, 1.0) + vec2(0.5, 0.0)).r;
         float nz = texture2D(uNoise, vUv * vec2(8.0, 1.0) + vec2(-uTime * 0.15, 0.0)).r;
         float head = smoothstep(0.022, 0.0, uProgress - vUv.x);
-        vec3 cyanCol = vec3(0.28, 0.92, 0.96);
-        vec3 warmCol = vec3(1.0, 0.85, 0.35);
-        vec3 baseTint = mix(cyanCol, warmCol, smoothstep(0.75, 1.0, uProgress));
+        vec3 baseTint = vec3(0.28, 0.92, 0.96); // 原版 Timer_Charge 11 层均为青绿色系，无暖色过渡
         float energy = e8 * 0.34 + e9 * 0.44 + e6 * 0.34 + nz * 0.18 + head * 0.65;
         vec3 col = baseTint * energy + vec3(0.20, 0.95, 0.65) * head * 0.55;
         float alpha = clamp(energy * 0.62, 0.0, 0.82);
@@ -718,32 +932,71 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
   timerStartMesh.renderOrder = 8;
   fGroup.add(timerStartMesh);
 
-  // 7. 站圈充能旋转星芒（lilstar.png 4x2 独立裁剪单格 + 环绕）
-  const starTex = loadSpriteCell('./assets/map1/vfx/lilstar.png', 0, 0, 4, 2);
-  const chargeCount = 36;
-  const chargePos = new Float32Array(chargeCount * 3);
-  for (let i = 0; i < chargeCount; i++) {
-    const a = (i / chargeCount) * Math.PI * 2;
-    chargePos[i * 3] = Math.cos(a) * 8.5;
-    chargePos[i * 3 + 1] = 0.4 + (i % 4) * 0.35;
-    chargePos[i * 3 + 2] = Math.sin(a) * 8.5;
-  }
-  const chargeGeo = new THREE.BufferGeometry();
-  chargeGeo.setAttribute('position', new THREE.BufferAttribute(chargePos, 3));
-  const chargeMat = new THREE.PointsMaterial({
-    size: 0.85,
-    map: starTex,
-    color: 0x40ff87,
+  // Timer_Charge/Decal_Start2：同一起点网格，普通混合深绿打底（原版 birthColor = (0, 0.42, 0.21, 1)）
+  const timerStartBaseMat = new THREE.MeshBasicMaterial({
+    map: vfxTex('edge_start_01.png'),
+    color: new THREE.Color().setRGB(0.0, 0.42, 0.21, THREE.SRGBColorSpace),
     transparent: true,
-    opacity: 0.9,
-    blending: THREE.AdditiveBlending,
+    opacity: 1.0,
+    blending: THREE.NormalBlending,
     depthWrite: false,
+    side: THREE.DoubleSide,
   });
-  const chargePts = new THREE.Points(chargeGeo, chargeMat);
-  chargePts.renderOrder = 11;
-  fGroup.add(chargePts);
+  const timerStartBaseMesh = loadScbMesh('./assets/map1/vfx/fountain_timer_start.json', timerStartBaseMat);
+  timerStartBaseMesh.scale.set(0.92, 1, 0.92);
+  timerStartBaseMesh.rotation.y = Math.PI * (178.8 / 180);
+  timerStartBaseMesh.position.y = 0.162;
+  timerStartBaseMesh.visible = false;
+  timerStartBaseMesh.renderOrder = 7.5;
+  fGroup.add(timerStartBaseMesh);
 
-  // 8. 满充 Nova 爆发（上下软渐隐紧凑光柱 + 地面冲击光 + 金星闪光，绝不切穿外围建筑）
+  // 7. Timer_Charge/sparklies1：原版 lilStar 4×2 随机帧星芒
+  //    40 个/s；沿 8.5 m × U(0.85, 1.1) 圆周、跟随充能进度头（emitRotation 0 → -360°/10 s）生成；
+  //    y = 0.6 m，上浮 1 m/s × U(0.2, 1)；寿命 2 s × 概率表(0.5, 1, 1.5)；尺寸 1 m × U(0.7, 1) × 0.7
+  const SPARKLE_CV: FxCurves = {
+    sT: [0, 1],
+    sV: [0.7, 0.7],
+    cT: [0, 0.5, 1.0],
+    cV: linRGBA([
+      [0.24, 0.961, 0.532, 0],
+      [0.255, 1.0, 0.532, 1],
+      [0.255, 1.0, 0.532, 0],
+    ]),
+  };
+  const sparklePool = makeFxPool(fGroup, 'lilstar.png', 4, 2, 140, 11);
+  const spawnSparkle = (charge: number) => {
+    const a = timerHeadAngle(charge);
+    const r = 8.5 * rnd(0.85, 1.1);
+    const ca = Math.cos(a);
+    const sa = Math.sin(a);
+    const vt = -0.05 * Math.random(); // 原版 birthVelocity.x = -5（切向微漂）
+    sparklePool.spawn({
+      age: 0,
+      life: 2.0 * prob([0, 0.9, 1.0], [0.5, 1.0, 1.5]),
+      x: ca * r,
+      y: 0.6,
+      z: sa * r,
+      vx: -sa * vt,
+      vy: 1.0 * rnd(0.2, 1.0),
+      vz: ca * vt,
+      dx: 0,
+      dy: 0,
+      dz: 0,
+      ay: 0,
+      size: 1.0 * rnd(0.7, 1.0),
+      frame: Math.floor(Math.random() * 8),
+      cv: SPARKLE_CV,
+    });
+  };
+
+  // 8. 满充 Nova 爆发（原版 Strawberry_MapA_Fountain_Nova：系统 transform 整体 ×1.75）
+  //    先 0.15–0.4 s 的瞬间闪光（STAR / brighShockwave / Ground_Light_mesh），再 0.7–3 s 冲击波与粒子收尾
+  const NOVA_SCALE = 1.75;
+  const novaGroup = new THREE.Group();
+  novaGroup.scale.setScalar(NOVA_SCALE);
+  fGroup.add(novaGroup);
+
+  // Ground_Light_mesh：LightCylinder ×(1.2, 1, 1.2)，朝向 109°，0.4 s 内自下而上升起
   const beamUniforms = {
     uTex: { value: vfxTex('decal_light_01.png') },
     uOpacity: { value: 0 },
@@ -776,14 +1029,21 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
     `,
   });
   const beamMesh = loadScbMesh('./assets/map1/vfx/fountain_beam.json', beamMat);
-  beamMesh.scale.set(0.012, 0.010, 0.012);
+  beamMesh.rotation.y = (109 * Math.PI) / 180;
   beamMesh.visible = false;
   beamMesh.renderOrder = 13;
-  fGroup.add(beamMesh);
+  novaGroup.add(beamMesh);
 
+  // brighShockwave：Base_Glow 16 m（×1.75 = 28 m），y = 1.0 m，0.3 s 内由 2 倍收缩到 0
+  const NOVA_GLOW_C = [
+    [1.0, 0.8, 0.294, 1.0],
+    [1.0, 0.8, 0.294, 1.0],
+    [1.0, 0.8, 0.294, 0.631],
+    [0.953, 0.6, 0.188, 0.0],
+  ];
   const novaGlowMat = new THREE.MeshBasicMaterial({
     map: vfxTex('base_glow.png'),
-    color: 0x2effa1,
+    color: 0xffffff,
     transparent: true,
     opacity: 0,
     blending: THREE.AdditiveBlending,
@@ -795,23 +1055,101 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
   novaGlow.position.y = 1.0;
   novaGlow.visible = false;
   novaGlow.renderOrder = 13;
-  fGroup.add(novaGlow);
+  novaGroup.add(novaGlow);
 
-  const novaStarMat = new THREE.MeshBasicMaterial({
+  // STAR：Star_1 面向相机 8 m（×1.75 = 14 m），y = 2.0 m，普通混合金色 α 0.8，0.16 s
+  const novaStarMat = new THREE.SpriteMaterial({
     map: vfxTex('star1.png'),
-    color: 0xffd159,
+    color: new THREE.Color().setRGB(1.0, 0.82, 0.35, THREE.SRGBColorSpace),
     transparent: true,
     opacity: 0,
-    blending: THREE.AdditiveBlending,
+    blending: THREE.NormalBlending,
     depthWrite: false,
-    side: THREE.DoubleSide,
   });
-  const novaStar = new THREE.Mesh(new THREE.PlaneGeometry(8.0, 8.0), novaStarMat);
-  novaStar.rotation.x = -Math.PI / 2;
+  const novaStar = new THREE.Sprite(novaStarMat);
   novaStar.position.y = 2.0;
   novaStar.visible = false;
   novaStar.renderOrder = 14;
-  fGroup.add(novaStar);
+  novaGroup.add(novaStar);
+
+  // Shockwave_blend（0.7 s，bS 80/10/80）+ Shockwave_blend1（2 s，bS 40/10/40）：复用 Wave01 网格贴地扩散
+  const NOVA_WAVE_ALPHA_T = [0.1, 0.165, 0.352, 0.693, 0.9];
+  const NOVA_WAVE_ALPHA_V = [0, 1.0, 0.839, 0.412, 0];
+  const NOVA_WAVE_SCROLL_T = [0, 0.066, 0.092, 0.277, 0.441, 0.69, 1.0];
+  const NOVA_WAVE_SCROLL_V = [1.0, 1.0, 1.0, 0.521, 0.213, 0.061, 0]; // × rate（blend 3.0 / blend1 1.0）
+  const novaWaves = [
+    { life: 0.7, sxz: 0.8, s0: 0.0, rate: 3.0 },
+    { life: 2.0, sxz: 0.4, s0: 0.15, rate: 1.0 },
+  ].map((cfg) => {
+    const w = makeWaveMat(0.6 * 0.7, [0.033, 0.997, 0.386]);
+    const mesh = loadScbMesh('./assets/map1/vfx/fountain_wave.json', w.mat);
+    mesh.position.y = 0.07; // ×1.75 ≈ 0.12 m，与常驻波浪罩同层
+    mesh.visible = false;
+    mesh.renderOrder = 9;
+    novaGroup.add(mesh);
+    return { ...cfg, mesh, u: w.u };
+  });
+
+  // Gold（hex_plus 2×2，绿）/ Gold1（lilStar 4×2，金）：单次爆发（isSingleParticle，rate = 数量）
+  //    y = 1.0 m、半径 1 m × U(0.5, 1) 环上生成；(30, 10, 30) m/s 随机外抛，阻尼 (5, 3, 5)；寿命 2 s × 概率表(0.2, 0.5, 1.5)
+  const GOLD_SCALE_T = [0, 0.1, 0.2, 0.3, 1.0];
+  const GOLD_SCALE_V = [0, 0, 2.0, 2.0, 0];
+  const GOLD_CV: FxCurves = {
+    sT: GOLD_SCALE_T,
+    sV: GOLD_SCALE_V,
+    cT: [0, 0.1, 0.3, 0.5, 1.0],
+    cV: linRGBA([
+      [0.041, 0.204, 0.106, 1],
+      [0.2, 1.0, 0.522, 1],
+      [0.2, 1.0, 0.522, 1],
+      [0.2, 1.0, 0.522, 1],
+      [0.0, 0.02, 0.078, 1],
+    ]),
+  };
+  const GOLD1_CV: FxCurves = {
+    sT: GOLD_SCALE_T,
+    sV: GOLD_SCALE_V,
+    cT: [0, 0.5, 1.0],
+    cV: linRGBA([
+      [0.941, 0.686, 0.255, 0],
+      [1.0, 0.714, 0.255, 1],
+      [1.0, 0.714, 0.255, 0],
+    ]),
+  };
+  const goldPool = makeFxPool(novaGroup, 'hex_plus.png', 2, 2, 110, 14);
+  const gold1Pool = makeFxPool(novaGroup, 'lilstar.png', 4, 2, 60, 14);
+  const burstGold = (pool: FxPool, count: number, sizeFn: () => number, frames: number, cv: FxCurves) => {
+    for (let i = 0; i < count; i++) {
+      const th = Math.random() * Math.PI * 2;
+      const c = Math.cos(th);
+      const s = Math.sin(th);
+      const off = 1.0 * rnd(0.5, 1.0);
+      const vx0 = 30 * rnd(0.2, 1.0);
+      const vy0 = 10 * rnd(0.1, 1.0);
+      const vz0 = 30 * rnd(0.2, 1.0);
+      pool.spawn({
+        age: 0,
+        life: 2.0 * prob([0, 0.5, 1.0], [0.2, 0.5, 1.5]),
+        x: c * off,
+        y: 1.0,
+        z: -s * off,
+        vx: vx0 * c + vz0 * s,
+        vy: vy0,
+        vz: -vx0 * s + vz0 * c,
+        dx: 5,
+        dy: 3,
+        dz: 5,
+        ay: 0.1,
+        size: sizeFn(),
+        frame: Math.floor(Math.random() * frames),
+        cv,
+      });
+    }
+  };
+  const triggerNovaBursts = (fx: number) => {
+    burstGold(goldPool, Math.round(100 * rnd(0.5, 1.0) * fx), () => 0.2 * rnd(0.4, 1.0), 4, GOLD_CV);
+    burstGold(gold1Pool, Math.round(50 * fx), () => 0.4, 8, GOLD1_CV);
+  };
 
   // 地面低矮地标光环（首领竞技场 & 首领出生点）
   const mkBeaconRing = (x: number, z: number, rIn: number, rOut: number, hex: number, opacity: number) => {
@@ -831,7 +1169,10 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
 
   let prevT = 0;
   let lastFState = 'ready';
-  let novaT = 0;
+  let novaElapsed = -1;
+  let healAcc = 0;
+  let sparkAcc = 0;
+  const viewSize = new THREE.Vector2();
   let cdShrinkT = 0;
   const cTmp = new THREE.Color();
 
@@ -854,8 +1195,12 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
       const onCd = fState === 'cooldown';
       const charging = fState === 'charging';
 
+      // 画质档位只缩放粒子发射数量（渲染负载），不影响逻辑层
+      const fxScale = QUALITY_SPECS[_tier as QualityTier]?.fxScale ?? 1;
+
       if (lastFState !== 'cooldown' && fState === 'cooldown') {
-        novaT = 0.85;
+        novaElapsed = 0;
+        triggerNovaBursts(fxScale);
         cdShrinkT = 0.15;
       }
       lastFState = fState;
@@ -873,7 +1218,7 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
       sphereCore.rotation.y = t * rotSpd;
       sphereHex.rotation.y = t * rotSpd;
       sphereSwirl.rotation.y = -t * rotSpd * 1.3;
-      sphereHaloMat.opacity = (charging ? 0.34 : 0.22) * shrinkScale;
+      sphereHaloMat.opacity = 0.4 * shrinkScale; // 原版 Basic4 α = 0.4，常驻不随充能变化
 
       // 水池多层动画环（Basic5 + Crecents1 + Crecents2 + outer_graphic1）
       sharpUniforms.uDim.value = onCd ? 1 : 0;
@@ -933,41 +1278,19 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
       waveMesh.visible = !onCd;
       if (!onCd) {
         const wPhase = (t * 0.5) % 1;
-        waveUniforms.uPhase.value = wPhase;
+        waveUniforms.uVOffset.value = -0.8 + wPhase * 1.1;
         const env = wPhase < 0.3 ? wPhase / 0.3 : wPhase < 0.6 ? 1.0 : (1 - wPhase) / 0.4;
-        waveUniforms.uOpacity.value = env * (charging ? 0.56 : 0.42);
+        waveUniforms.uOpacity.value = env * 0.5; // 原版 α 峰值 0.5，常驻不随充能变化
       }
 
-      // 六边形 "+" 治疗粒子与空心六边形粒子飘升
-      hexPts.visible = !onCd;
-      hex2Pts.visible = !onCd;
+      // Glow/healspark：冷却期间停止发射，已发射的粒子自然走完寿命
+      particleViewH.value = gl.getDrawingBufferSize(viewSize).y;
       if (!onCd) {
-        hexMat.opacity = charging ? 0.98 : 0.88;
-        hex2Mat.opacity = charging ? 0.9 : 0.78;
-        const speedMul = charging ? 1.7 : 1.0;
-        const arr = hexGeo.attributes.position.array as Float32Array;
-        for (let i = 0; i < hexCount; i++) {
-          const hm = hexMeta[i];
-          hm.y += hm.sp * speedMul * dt;
-          if (hm.y > 6.2) hm.y = 0.8;
-          const a = hm.a + t * (charging ? 1.0 : 0.38);
-          arr[i * 3] = Math.cos(a) * hm.r;
-          arr[i * 3 + 1] = hm.y;
-          arr[i * 3 + 2] = Math.sin(a) * hm.r;
+        healAcc += dt * 15 * fxScale;
+        while (healAcc >= 1) {
+          healAcc -= 1;
+          spawnHealspark();
         }
-        hexGeo.attributes.position.needsUpdate = true;
-
-        const arr2 = hex2Geo.attributes.position.array as Float32Array;
-        for (let i = 0; i < hex2Count; i++) {
-          const hm = hex2Meta[i];
-          hm.y += hm.sp * speedMul * dt;
-          if (hm.y > 5.8) hm.y = 0.7;
-          const a = hm.a - t * (charging ? 0.8 : 0.3);
-          arr2[i * 3] = Math.cos(a) * hm.r;
-          arr2[i * 3 + 1] = hm.y;
-          arr2[i * 3 + 2] = Math.sin(a) * hm.r;
-        }
-        hex2Geo.attributes.position.needsUpdate = true;
       }
 
       // 外圈站圈环 & 原生 3D 充能进度弧（fountain_timer.json + fountain_timer_start.json）
@@ -979,36 +1302,77 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
       timerBgMesh.visible = showTimer;
       timerTechMesh.visible = showTimer;
       timerStartMesh.visible = showTimer;
+      timerStartBaseMesh.visible = showTimer;
       timerUniforms.uProgress.value = charge;
       timerUniforms.uTime.value = t;
 
-      chargePts.visible = !onCd && charging;
-      if (chargePts.visible) {
-        chargePts.rotation.y = t * 1.4;
+      // Timer_Charge/sparklies1：仅充能中发射，生成点跟随进度头
+      if (charging && !onCd) {
+        sparkAcc += dt * 40 * fxScale;
+        while (sparkAcc >= 1) {
+          sparkAcc -= 1;
+          spawnSparkle(charge);
+        }
+      } else {
+        sparkAcc = 0;
       }
 
-      // Nova 爆发（0.85s，上下软渐隐光柱 + 低矮冲击光 + 金星闪光）
-      if (novaT > 0) {
-        novaT = Math.max(0, novaT - dt);
-        const k = 1 - novaT / 0.85;
-        beamMesh.visible = true;
-        beamMesh.rotation.y = t * 2.5;
-        beamMesh.scale.set(0.011 + k * 0.003, 0.009 + k * 0.005, 0.011 + k * 0.003);
-        beamUniforms.uOpacity.value = (1 - k) * 0.78;
+      // Nova 爆发：按原版各层寿命分段推进（闪光 0.15–0.4 s，冲击波 0.7 / 2 s，粒子 0.4–3 s）
+      if (novaElapsed >= 0) {
+        novaElapsed += dt;
+        const e = novaElapsed;
 
-        novaGlow.visible = k < 0.7;
-        novaGlow.scale.setScalar(0.65 + k * 0.95);
-        novaGlowMat.opacity = Math.max(0, 1 - k * 1.45) * 0.62;
+        // Ground_Light_mesh（0.4 s）
+        const kb = e / 0.4;
+        beamMesh.visible = kb < 1;
+        if (beamMesh.visible) {
+          const ys = curve1([0.02, 0.646], [0, 1], kb);
+          beamMesh.scale.set(0.012, 0.01 * Math.max(0.001, ys), 0.012);
+          beamUniforms.uOpacity.value = 0.4 * curve1([0.011, 0.052, 0.426, 0.654, 1.0], [0, 0.98, 0.494, 0.369, 0], kb);
+        }
 
-        novaStar.visible = k < 0.6;
-        novaStar.rotation.z = t * 4;
-        novaStar.scale.setScalar(0.5 + k * 1.8);
-        novaStarMat.opacity = Math.max(0, 1 - k * 1.7);
-      } else {
+        // brighShockwave（0.3 s）
+        const kg = e / 0.3;
+        novaGlow.visible = kg < 1;
+        if (novaGlow.visible) {
+          novaGlow.scale.setScalar(Math.max(0.001, curve1([0, 0.6, 1.0], [2.0, 1.0, 0], kg)));
+          curve4([0, 0.3, 0.634, 1.0], NOVA_GLOW_C, kg, fxTmp4);
+          novaGlowMat.color.setRGB(0.18 * fxTmp4[0], 1.0 * fxTmp4[1], 0.63 * fxTmp4[2], THREE.SRGBColorSpace);
+          novaGlowMat.opacity = 0.6 * fxTmp4[3];
+        }
+
+        // STAR（0.16 s）
+        const ks = e / 0.16;
+        novaStar.visible = ks < 1;
+        if (novaStar.visible) {
+          novaStar.scale.setScalar(8.0 * curve1([0, 0.3, 1.0], [1.5, 0.8, 0.2], ks));
+          novaStarMat.opacity = 0.8;
+        }
+
+        // Shockwave_blend / Shockwave_blend1
+        for (const w of novaWaves) {
+          const k = e / w.life;
+          w.mesh.visible = k < 1;
+          if (!w.mesh.visible) continue;
+          const sxz = w.sxz * (w.s0 + (1 - w.s0) * k);
+          w.mesh.scale.set(sxz, 0.1 * (0.5 + 0.5 * k), sxz);
+          w.u.uVOffset.value = -0.8 + w.rate * w.life * curveIntegral(NOVA_WAVE_SCROLL_T, NOVA_WAVE_SCROLL_V, k);
+          w.u.uOpacity.value = curve1(NOVA_WAVE_ALPHA_T, NOVA_WAVE_ALPHA_V, k);
+        }
+
+        if (e > 2.0) novaElapsed = -1;
+      }
+      if (novaElapsed < 0) {
         beamMesh.visible = false;
         novaGlow.visible = false;
         novaStar.visible = false;
+        for (const w of novaWaves) w.mesh.visible = false;
       }
+
+      healPool.update(dt);
+      sparklePool.update(dt);
+      goldPool.update(dt);
+      gold1Pool.update(dt);
 
       if (bossRing) {
         const mat = bossRing.material as THREE.MeshBasicMaterial;

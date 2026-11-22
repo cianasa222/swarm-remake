@@ -1,6 +1,6 @@
 # 项目进度与跨会话交接清单（PROGRESS）
 
-> 最后更新：2026-11-22  
+> 最后更新：2026-11-22（晚，喷泉精修第一批）  
 > 仓库定位：仅托管源码、配置与文档；大体积解包资产与运行时资源留在本机磁盘（见第 4 节）。
 
 ---
@@ -50,6 +50,25 @@
 ## 2. 当前状态：M0–M4 已全部完成，可直接部署 Cloudflare Pages 或交接在线 AI 继续 M5
 
 完整的跨 AI 在线交接文档（含开发方案、架构契约、M0–M4 进度、Patch 14.14 全部资产来源直链与解包/压缩命令、Cloudflare 部署指南）已整理至同目录下的 [`AI_HANDOVER.md`](./AI_HANDOVER.md)。
+
+---
+
+## 2.5 进行中：中央喷泉特效按原版 43 个发射器精修（第一批已提交，待本机验收）
+
+- 依据：[`docs/audit/fountain_emitters_14.14.md`](./docs/audit/fountain_emitters_14.14.md)（对照 CommunityDragon 14.14 `map33.bin.json`；43 个发射器中已有对应 28 个、缺失 15 个）。
+- **第一批（不需要新资产，2026-11-22 AWS Quick 提交，只改 `src/render/map_warehouse.ts`）**：
+  1. Nova 系统整体 ×1.75（新建 `novaGroup`，与原版 `transform` 一致）。
+  2. Nova 改为按各层原版寿命分段：`flashBlend`/`STAR` 0.16 s、`brighShockwave` 0.3 s、`Ground_Light_mesh` 0.4 s、冲击波 0.7 / 2 s、粒子 0.4–3 s。
+  3. 新增 Nova `Shockwave_blend` / `Shockwave_blend1`（复用 `fountain_wave.json`，波浪材质改为工厂 `makeWaveMat`）。
+  4. 新增 Nova `Gold`（hex_plus，绿）/ `Gold1`（lilStar，金）单次爆发粒子。
+  5. 新增 Timer `Decal_Start2` 深绿普通混合打底。
+  6. `healspark` 改为原版发射式粒子（15 个/s、0.4 m、2.5–5 m/s、4 帧随机、scale0 弹出曲线）。
+  7. `sparklies1` 改为跟随充能进度头沿 7.2–9.4 m 圆周生成并上浮（进度头角度由 `fountain_timer.json` 的 uv.x 自动拟合）。
+  8. `Basic4` α 0.22 → 0.4；`Edge12`/`Edge17` 缩放对调（0.0098 / 0.0100）；Glow 波浪罩峰值 0.42 → 0.5。
+  9. 计时圈去掉 75% 后的暖黄色。
+  - 新增通用粒子设施 `makeFxPool`（CPU 模拟 + 单 DrawCall `Points` + 图集按帧采样，粒子尺寸按世界米换算）；画质档位仅按 `QUALITY_SPECS[tier].fxScale` 缩放发射数量，不触碰逻辑层。
+- **待本机验收**：`npm.cmd run build`、`npm.cmd run playtest -- 2 0.85`、`?spot=hub` 1280×800 截图（常驻 / 充能中 / 满充 Nova 瞬间 / 冷却 4 张）。重点看：Nova ×1.75 后光柱是否切穿外围建筑、healspark 尺寸是否过小、sparklies1 是否沿进度头方向生成。
+- **第二批（等 Issue #1 交付 5 个 Nova 网格 + 15 张贴图后接入）**：7 个常驻层的 textureMult 叠加、Timer 进度遮罩换用 `Base_Timer_Mult_05–09`、Nova `Beamdown` ×2 / `flashBlend` / `Ground_Light_mesh1` / `Ring` / `ShapeAround` / `InhaleFire` ×3 / `teamring_circle1`。
 
 ---
 
