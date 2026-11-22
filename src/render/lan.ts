@@ -977,22 +977,23 @@ export class LanRig {
       ? -Math.sin((p.swapT / 0.7) * Math.PI) * 1.15
       : -p.recoil * (p.weapon === 'cn' ? 0.24 : 0.04);
 
-    const stackRatio = g.mgMaxStacks > 0 ? p.mgStacks / g.mgMaxStacks : 0;
+    const meowLv = g.weaponLv('jinx_meow');
+    const stackRatio = Math.min(1, meowLv / 6);
     this.mgSpin.rotation.z += dt * (4 + stackRatio * 28);
     this.cnPistonL.position.z = 0.2 - p.recoil * 0.1;
     this.cnPistonR.position.z = 0.2 - p.recoil * 0.1;
 
-    this.mgPierceFin.visible = g.lvl('mgPierce') > 0;
-    this.cnShardsWing.visible = g.lvl('cnShards') > 0;
-    this.cnPulseRing.visible = g.lvl('cnPulse') > 0;
+    this.mgPierceFin.visible = meowLv >= 6;
+    this.cnShardsWing.visible = p.eVolleyLeft > 0;
+    this.cnPulseRing.visible = p.rCd <= 0;
 
     // ── 过载 / 满层 / 推进焰 / 受击状态发光 ──
-    const full = p.weapon === 'mg' && p.mgStacks >= g.mgMaxStacks - 0.1;
+    const full = meowLv >= 6;
     const over = p.overloadT > 0;
 
-    this.mgGlowMat.emissive.setHex(over || (full && g.lvl('mgFocus')) ? 0x4df9ff : full ? 0x22c4e6 : 0x10556e);
+    this.mgGlowMat.emissive.setHex(over || full ? 0x4df9ff : 0x10556e);
     this.mgGlowMat.emissiveIntensity = over ? 2.4 : full ? 1.5 : 0.5;
-    this.mgFocusMat.emissiveIntensity = over || (full && g.lvl('mgFocus')) ? 2.2 : 0.75;
+    this.mgFocusMat.emissiveIntensity = over || full ? 2.2 : 0.75;
 
     this.cnGlowMat.emissive.setHex(over ? 0xffd24a : 0xff6e12);
     this.cnGlowMat.emissiveIntensity = over ? 2.1 : 0.85 + p.recoil * 1.2;

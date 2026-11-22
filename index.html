@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <link rel="icon" href="data:," />
-  <title>潮线封锁 v0.1</title>
+  <title>无尽狂潮 · 仓库区</title>
 </head>
 <body>
   <canvas id="gl"></canvas>
@@ -17,15 +17,24 @@
 
   <!-- 战斗 HUD -->
   <div id="hud" class="hidden">
+    <!-- 顶部：计时器 / 首领血条 / 右上小地图 -->
     <div class="hud-top">
-      <div class="status-col">
-        <div class="bar-wrap hp-wrap">
-          <div id="hp-fill" class="bar-fill"></div>
-          <span id="hp-text" class="bar-label">1000 / 1000</span>
+      <div class="mobile-top-left">
+        <div class="m-portrait">
+          <img src="./assets/ui/jinx_circle.webp" alt="金克丝" />
+          <span id="m-lvl" class="lvl-tag">1</span>
         </div>
-        <div class="bar-wrap xp-wrap">
-          <div id="xp-fill" class="bar-fill"></div>
-          <span id="xp-text" class="bar-label">Lv.1</span>
+        <div class="m-bars">
+          <div class="bar-wrap hp-wrap">
+            <div id="m-hp-fill" class="bar-fill"></div>
+            <div id="m-sh-fill" class="bar-shield"></div>
+            <span id="m-hp-text" class="bar-label">1000 / 1000</span>
+          </div>
+          <div class="bar-wrap xp-wrap">
+            <div id="m-xp-fill" class="bar-fill"></div>
+            <span id="m-xp-text" class="bar-label">Lv.1</span>
+          </div>
+          <div id="m-build-mini" class="m-slots"></div>
         </div>
       </div>
 
@@ -33,14 +42,14 @@
         <div id="timer">00:00</div>
         <div id="mission-sub">距首领 14:57 · 击杀 <span id="kills">0</span></div>
         <div id="boss-bar" class="hidden">
-          <div class="boss-name">断潮督军 · 雷克塞 <span id="boss-phase">P1</span></div>
+          <div class="boss-name">深海魔鲨 · 雷克塞 <span id="boss-phase">P1</span></div>
           <div class="boss-track"><div id="boss-fill"></div><div class="boss-half"></div></div>
         </div>
       </div>
 
       <div class="right-col">
         <div id="minimap-box">
-          <img src="./assets/map1/minimap.png" alt="小地图" />
+          <img src="./assets/map1/minimap.webp" alt="小地图" />
           <canvas id="minimap-cv" width="128" height="128"></canvas>
         </div>
         <button id="btn-pause" class="icon-btn" aria-label="暂停">⏸</button>
@@ -48,21 +57,101 @@
     </div>
 
     <div id="banner" class="hidden"></div>
-    <div id="overload-badge" class="hidden">⚡ 过载</div>
+    <div id="overload-badge" class="hidden">⚡ 罪恶快感！+100% 移速 · +150 技能急速</div>
 
-    <!-- 右下技能区 -->
+    <!-- PC 底部居中原版《无尽狂潮》战斗中控台 -->
+    <div id="swarm-hud">
+      <!-- 悬停提示浮窗 -->
+      <div id="hud-tooltip" class="hidden"></div>
+
+      <!-- 左侧 2x4 实时属性 -->
+      <div id="hero-stats">
+        <div class="st-cell"><span>伤害</span><b id="st-dmg">100%</b></div>
+        <div class="st-cell"><span>急速</span><b id="st-ah">0</b></div>
+        <div class="st-cell"><span>暴击</span><b id="st-crit">0%</b></div>
+        <div class="st-cell"><span>弹数</span><b id="st-proj">+0</b></div>
+        <div class="st-cell"><span>范围</span><b id="st-area">100%</b></div>
+        <div class="st-cell"><span>护甲</span><b id="st-armor">0</b></div>
+        <div class="st-cell"><span>移速</span><b id="st-ms">350</b></div>
+        <div class="st-cell"><span>回血</span><b id="st-regen">0/s</b></div>
+      </div>
+
+      <!-- 英雄圆形头像 + 等级徽章 -->
+      <div id="hero-portrait" data-tip-kind="skill" data-tip-id="passive">
+        <img src="./assets/ui/jinx_circle.webp" alt="金克丝" />
+        <span id="lvl-badge">Lv.1</span>
+      </div>
+
+      <!-- 中央技能栏 + 通栏血条/护盾/经验条 -->
+      <div class="hud-center-deck">
+        <div class="skill-strip">
+          <div id="sk-passive" class="sk-slot" data-tip-kind="skill" data-tip-id="passive">
+            <img src="./assets/heroes/jinx/icons/passive.webp" alt="被动" />
+            <span class="sk-key">P</span>
+            <span id="sk-passive-val" class="sk-badge">0/70</span>
+          </div>
+          <button id="pc-btn-swap" class="sk-slot clickable" data-tip-kind="skill" data-tip-id="aim">
+            <img src="./assets/ui/weapons/jinx_meow.webp" alt="瞄准" />
+            <span class="sk-key">C</span>
+            <span id="pc-aim-val" class="sk-badge cyan">自瞄</span>
+          </button>
+          <button id="pc-btn-e" class="sk-slot clickable" data-tip-kind="skill" data-tip-id="e">
+            <img src="./assets/heroes/jinx/icons/e.webp" alt="鱼骨头" />
+            <div id="pc-e-mask" class="sk-cd-mask"></div>
+            <span class="sk-key">E</span>
+            <span id="pc-e-val" class="sk-cd-num"></span>
+          </button>
+          <button id="pc-btn-r" class="sk-slot ult-slot clickable" data-tip-kind="skill" data-tip-id="r">
+            <img src="./assets/heroes/jinx/icons/r.webp" alt="死神飞弹" />
+            <div id="pc-r-mask" class="sk-cd-mask"></div>
+            <span class="sk-key">R</span>
+            <span id="pc-r-val" class="sk-cd-num">12</span>
+          </button>
+          <button id="pc-btn-dash" class="sk-slot dash-slot clickable" data-tip-kind="skill" data-tip-id="dash">
+            <span class="sk-dash-txt">闪避</span>
+            <div id="pc-dash-mask" class="sk-cd-mask"></div>
+            <span class="sk-key">空格</span>
+            <span id="pc-dash-val" class="sk-cd-num"></span>
+          </button>
+        </div>
+
+        <div class="bar-wrap hp-wrap pc-hp">
+          <div id="hp-fill" class="bar-fill"></div>
+          <div id="sh-fill" class="bar-shield"></div>
+          <span id="hp-text" class="bar-label">1000 / 1000</span>
+        </div>
+        <div class="bar-wrap xp-wrap pc-xp">
+          <div id="xp-fill" class="bar-fill"></div>
+          <span id="xp-text" class="bar-label">0 / 5 EXP</span>
+        </div>
+      </div>
+
+      <!-- 右侧 5 武器 + 6 被动官方图标槽位 -->
+      <div id="build-panel">
+        <div id="weapon-slots" class="icon-slot-row"></div>
+        <div id="passive-slots" class="icon-slot-row"></div>
+      </div>
+    </div>
+
+    <!-- PC 左下角极简操作提示（技能键位已标于技能槽内） -->
+    <div id="pc-hints">WASD 移动 · Esc 暂停</div>
+
+    <!-- 移动端右下角全彩官方图标技能区（桌面端自动隐藏） -->
     <div id="skills">
       <button id="btn-swap" class="skill-btn swap-btn">
-        <span class="sk-title" id="swap-name">机枪</span>
-        <span class="sk-sub" id="swap-cd">Q 换枪</span>
+        <img class="sk-icon" src="./assets/ui/weapons/jinx_meow.webp" alt="" />
+        <span class="sk-title" id="swap-name">自瞄</span>
+        <span class="sk-sub" id="swap-cd">C 切换</span>
       </button>
       <button id="btn-mine" class="skill-btn mine-btn">
-        <span class="sk-title">地雷 <b id="mine-chg">1</b></span>
-        <span class="sk-sub" id="mine-cd">E</span>
+        <img class="sk-icon" src="./assets/heroes/jinx/icons/e.webp" alt="" />
+        <span class="sk-title">鱼骨头</span>
+        <span class="sk-sub" id="mine-cd">就绪</span>
       </button>
       <button id="btn-ult" class="skill-btn ult-btn">
-        <span class="sk-title">贯穿弹</span>
-        <span class="sk-sub" id="ult-pct">0%</span>
+        <img class="sk-icon" src="./assets/heroes/jinx/icons/r.webp" alt="" />
+        <span class="sk-title">飞弹</span>
+        <span class="sk-sub" id="ult-pct">12s</span>
       </button>
       <button id="btn-dash" class="skill-btn dash-btn">
         <span class="sk-title">闪避</span>
@@ -74,11 +163,11 @@
   <!-- 开局封面 -->
   <div id="screen-start" class="modal">
     <div class="panel start-panel">
-      <h1>潮线封锁 <small>v0.2 · 仓库区</small></h1>
-      <p class="subtitle">第一关：仓库区（180m × 180m）· 守住 15 分钟并击败最终首领</p>
+      <h1>无尽狂潮 <small>Patch 14.14 · 仓库区</small></h1>
+      <p class="subtitle">第一关：仓库区（180m × 180m）· 5 武器 + 6 被动进化 · 击败深海魔鲨雷克塞</p>
       <div class="tips">
-        <div><b>操作：</b>手机左半屏拖动移动 / 右侧放技能；电脑 WASD 移动、Q 换枪、E 地雷、R 大招、空格闪避、Esc 暂停</div>
-        <div><b>双形态：</b>铆钉机枪连击提速打单体；震荡炮范围清群</div>
+        <div><b>PC 操作：</b>WASD 移动、C/Q 切换自动瞄准、E 鱼骨头 9 连火箭、R 超究极死神飞弹、空格闪避、1/2/3 选卡</div>
+        <div><b>移动触控：</b>左半屏拖动虚拟摇杆移动，右下角全彩技能键释放大招/火箭/闪避</div>
       </div>
       <div class="opt-row">
         <span>画质：</span>
@@ -95,14 +184,21 @@
         <label><input type="checkbox" id="opt-shake" /> 关闭震屏</label>
         <label><input type="checkbox" id="opt-mute" /> 静音</label>
       </div>
-      <button id="btn-start" class="primary-btn">开始任务</button>
+      <div id="preload-box" class="preload-box">
+        <div class="preload-meta">
+          <span id="preload-label">正在预载仓库区资源...</span>
+          <span id="preload-pct">0%</span>
+        </div>
+        <div class="preload-track"><div id="preload-fill"></div></div>
+      </div>
+      <button id="btn-start" class="primary-btn" disabled>资源加载中...</button>
     </div>
   </div>
 
-  <!-- 升级三选一 -->
+  <!-- 升级 / 访问卡三选一 -->
   <div id="screen-levelup" class="modal hidden">
-    <div class="panel lvl-panel">
-      <h2>等级提升 · 选择强化</h2>
+    <div class="panel lvl-panel swarm-modal">
+      <h2 id="levelup-title">等级提升 · 选择强化</h2>
       <div id="cards" class="cards"></div>
     </div>
   </div>

@@ -60,20 +60,48 @@ export const PLAYER = {
   targetRange: 10.5,
 };
 
+export const JINX_E = {
+  /** 官方 Strawberry_JinxE: cooldownTime=8, castTime=0.35, castRange=925, missileSpeed=1750, RocketAoERadius=300, RocketCount=9 */
+  cooldown: 8,
+  rocketCount: 9,
+  fireInterval: 0.045,
+  range: 9.25,
+  speed: 17.5,
+  aoeRadius: 3.0,
+  aoeIncrease: [0.15, 0.30, 0.45, 0.60, 0.75, 0.90],
+  baseDamage: 95,
+  dmgPerLevel: 8,
+  critDmgBonus: [0, 0.1, 0.2, 0.3, 0.4, 0.5],
+};
+
+export const JINX_R = {
+  /** 官方 Strawberry_JinxR: cooldownTime=50, castRange=2500, mLineWidth=140, missileSpeed=1700, ExplosionSize=500..1000 */
+  cooldown: 50,
+  initCooldown: 12,
+  range: 25,
+  width: 1.4,
+  speed: 17.0,
+  baseDamage: 380,
+  dmgPerLevel: 38,
+  baseExplodeRadius: 5.0,
+  maxExplodeRadius: 10.0,
+};
+
+export const JINX_PASSIVE = {
+  /** 官方 Strawberry_JinxPassiveMarker: BuffDuration=8, AHBuff=150, MinionsToProcEvolve=70 */
+  killsRequired: 70,
+  duration: 8.0,
+  msBonus: 1.0,
+  ahBonus: 150,
+  asBonus: 0.8,
+};
+
 export const MG = {
-  name: '铆钉机枪',
-  baseRate: 4,
-  maxRate: 6,
-  damage: 12,
-  /** 每层提速 (发/秒) */
-  ratePerStack: 0.25,
-  /** 层数衰减速度（层/秒），在转火或断开攻击后触发 */
-  stackDecay: 6,
-  /** 超过该时间未命中同一目标即开始掉层 */
-  stackGrace: 0.45,
-  bulletSpeed: 28,
-  bulletRadius: 0.14,
-  range: 9.5,
+  name: '喵喵枪',
+  bulletSpeed: 35,
+  bulletRadius: 0.16,
+  range: 15.0,
+  burstInterval: 0.075,
 };
 
 export const CANNON = {
@@ -139,35 +167,45 @@ export const DASH = {
   cooldown: 5,
 };
 
-/** 敌人基础属性（移速与碰撞伤害对齐原版 CharacterRecord 比例，hp 随时间乘 hpScale(t)） */
+/** 第一关官方角色模型缩放（0.01 * SkinCharacterDataProperties.skinScale） */
+export const ENEMY_SCALES = {
+  pix: 0.0165,
+  ghoul: 0.009,
+  hunter: 0.009,
+  dasher: 0.0082,
+  bruiser: 0.0068,
+  reksai: 0.0275,
+} as const;
+
+/** 敌人基础属性（M3 全武器体系校准为 Patch 14.14 量级） */
 export const ENEMIES = {
-  crawler: { name: '爬壳虫', hp: 20, speed: 1.55, radius: 0.4, contact: 80, xp: 1 },
+  crawler: { name: '虚空水滴 / 食尸鬼', hp: 58, speed: 1.55, radius: 0.4, contact: 80, xp: 2 },
   spitter: {
-    name: '刺囊兽', hp: 34, speed: 1.3, radius: 0.45, contact: 80, xp: 2,
+    name: '虚空猎手', hp: 200, speed: 1.3, radius: 0.45, contact: 80, xp: 4,
     keepDist: 7.5, windup: 1.1, cooldown: 4.8, bullets: 3, spreadDeg: 34,
     bulletSpeed: 3.8, bulletDamage: 85, bulletRadius: 0.26, bulletLife: 5,
   },
   charger: {
-    name: '裂甲兽', hp: 55, speed: 2.1, radius: 0.45, contact: 100, xp: 3,
+    name: '迷你突进者', hp: 160, speed: 2.1, radius: 0.45, contact: 100, xp: 5,
     triggerDist: 8, windup: 0.95, dashSpeed: 10.5, dashLen: 8, dashWidth: 1.3, dashDamage: 120, cooldown: 4.5,
   },
   elite: {
-    name: '重甲裂甲兽', hp: 520, speed: 1.95, radius: 0.85, contact: 160, xp: 25,
+    name: '重装精英 · 铁背', hp: 4200, speed: 1.95, radius: 0.85, contact: 160, xp: 35,
     triggerDist: 10, windup: 1.0, dashSpeed: 10.5, dashLen: 10, dashWidth: 2.0, dashDamage: 180, cooldown: 3.6,
   },
 };
 
-/** 敌人生命随时间的倍率 */
+/** 敌人生命随时间的倍率（适配单人 15 分钟全武器成长曲线） */
 export function hpScale(t: number): number {
   const m = t / 60;
-  return 1 + 0.03 * m + 0.0018 * m * m;
+  return 1 + 0.16 * m + 0.025 * m * m;
 }
 
 export const BOSS = {
-  name: '断潮督军 · 雷克塞',
-  hp: 3000,
+  name: '深海魔鲨 · 雷克塞',
+  hp: 30000,
   radius: 2.5, // 原版 RekSai pathfindingCollisionRadius=250
-  speed: 1.35, // 原版 RekSai baseMoveSpeed=105..150
+  speed: 1.05, // 原版 RekSai baseMoveSpeed=105
   contact: 140,
   phase2At: 0.5,
   entranceTime: 3.2,
@@ -178,14 +216,25 @@ export const BOSS = {
   window: [2.8, 1.9],
   /** 阶段二招式间隔倍率 */
   phase2Haste: 0.72,
-  /** 首领战期间仍刷少量爬壳虫，提供经验与充能 */
+  /** 首领战期间仍刷少量爬壳虫，提供经验与被动击杀充能 */
   addsInterval: 9,
   addsCount: 5,
 };
 
-/** 升级经验需求：第 n 级 -> n+1 级 */
+/** 官方 Map33 ExperienceCurveData {9f34b4bd} 增量经验曲线 */
+const OFFICIAL_XP_CURVE = [
+  5, 15, 30, 50, 75, 105, 140, 180, 225, 275,
+  341, 413, 491, 575, 665, 761, 863, 971, 1085, 1205,
+  1352, 1506, 1667, 1835, 2010, 2192, 2381, 2577, 2780, 2990,
+];
+
+/** 升级经验需求：第 level 级 -> level+1 级 */
 export function xpForLevel(level: number): number {
-  return Math.round(20 + 9 * (level - 1) + 3.2 * (level - 1) * (level - 1));
+  if (level <= 1) return OFFICIAL_XP_CURVE[0];
+  if (level - 1 < OFFICIAL_XP_CURVE.length) {
+    return OFFICIAL_XP_CURVE[level - 1] - OFFICIAL_XP_CURVE[level - 2];
+  }
+  return 210 + (level - OFFICIAL_XP_CURVE.length) * 28;
 }
 
 export const XP = {
@@ -199,7 +248,7 @@ export const XP = {
 export const BUDGET = {
   maxEnemies: 160,
   maxEnemyBullets: 260,
-  maxPlayerProjectiles: 220,
+  maxPlayerProjectiles: 420,
 };
 
 /** 升级卡数值 */
@@ -221,8 +270,8 @@ export const UPGRADES = {
 
 /** 第一关中央治愈喷泉（Fountain / HealingWell）原版机制参数 */
 export const FOUNTAIN = {
-  x: -1.62,
-  z: -3.53,
+  x: -0.45,
+  z: -2.40,
   innerRadius: 8.1,
   zoneRadius: 11.4,
   chargeTime: 10.0,

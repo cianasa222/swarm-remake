@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import type { Game, Hazard } from '../sim/game';
+import { JinxVfxSystem } from './jinx_vfx';
 import { softDot } from './style';
+import type { WeaponVfxRenderer } from './weapon_vfx';
 
 interface Ring {
   mesh: THREE.Mesh;
@@ -37,8 +39,8 @@ export class VfxRenderer {
   private pCol: Float32Array;
   private pPoints: THREE.Points;
 
-  private muzzle: THREE.Mesh;
-  private muzzleT = 0;
+  readonly jinxVfx: JinxVfxSystem;
+  private weaponVfx: WeaponVfxRenderer | null = null;
 
   shake = 0;
   reduceFlash = false;
@@ -78,13 +80,12 @@ export class VfxRenderer {
       this.particles.push({ active: false, x: 0, y: -50, z: 0, vx: 0, vy: 0, vz: 0, age: 0, life: 1, r: 1, g: 1, b: 1 });
     }
 
-    // 枪口闪光
-    this.muzzle = new THREE.Mesh(
-      new THREE.SphereGeometry(0.32, 8, 8),
-      new THREE.MeshBasicMaterial({ color: 0x8ef9ff, transparent: true, opacity: 0.9 }),
-    );
-    this.muzzle.visible = false;
-    this.root.add(this.muzzle);
+    // 金克丝官方 VFX 系统
+    this.jinxVfx = new JinxVfxSystem(this.root);
+  }
+
+  attachWeaponVfx(w: WeaponVfxRenderer) {
+    this.weaponVfx = w;
   }
 
   private spawnRing(x: number, z: number, maxR: number, life: number, hex: number) {
@@ -125,32 +126,45 @@ export class VfxRenderer {
     const count = (n: number) => Math.max(1, Math.round(n * qScale));
     for (const ev of g.events) {
       if (ev.type === 'shoot') {
-        this.muzzle.position.set(ev.x + Math.cos(ev.ang) * 0.95, 0.86, ev.z + Math.sin(ev.ang) * 0.95);
-        (this.muzzle.material as THREE.MeshBasicMaterial).color.setHex(
-          ev.weapon === 'mg' ? 0x6ef8ff : ev.weapon === 'cn' ? 0xffaa33 : 0xb5fdff,
-        );
-        this.muzzle.scale.setScalar(ev.weapon === 'mg' ? 0.55 : ev.weapon === 'cn' ? 1.15 : 1.7);
-        this.muzzleT = ev.weapon === 'mg' ? 0.04 : 0.09;
-        if (ev.weapon === 'cn') this.addShake(0.12);
+        this.jinxVfx.triggerMuzzle(ev.x, ev.z, ev.ang, ev.weapon, ev.ownerId ?? 0);
+        if (ev.weapon === 'cn') this.addShake(0.1);
         if (ev.weapon === 'ult') this.addShake(0.28);
       } else if (ev.type === 'hit') {
-        this.spawnParticles(ev.x, 0.65, ev.z, count(4), 4.5, 0.22, ev.kind === 'ult' ? 0x70fbff : 0x8ef9ff);
+        const hex = ev.crit ? 0xffe45e : ev.kind === 'meow_evo' ? 0xff6ee6 : ev.kind === 'statikk' ? 0x92fbff : 0x8ef9ff;
+        this.spawnParticles(ev.x, 0.65, ev.z, count(ev.crit ? 7 : 4), 4.5, 0.22, hex);
+        if (ev.kind === 'meow' || ev.kind === 'meow_evo' || ev.kind === 'uwu' || ev.kind === 'crossbow') {
+          this.jinxVfx.spawnGunHit(ev.x, ev.z, !!ev.crit, ev.kind === 'meow_evo');
+        }
       } else if (ev.type === 'explode') {
-        if (ev.kind === 'ult') {
-          // 大招多段爆炸：核心短闪 + 双扩散环 + 碎片 + 余烬
-          this.spawnRing(ev.x, ev.z, ev.r, 0.42, 0xb8feff);
-          this.spawnRing(ev.x, ev.z, ev.r * 0.65, 0.25, 0xffd35c);
-          this.spawnParticles(ev.x, 0.7, ev.z, count(38), 11, 0.55, 0x62f5ff);
-          this.spawnParticles(ev.x, 0.5, ev.z, count(22), 5, 0.85, 0xff9b38);
-          this.addShake(0.45);
-        } else if (ev.kind === 'mine') {
-          this.spawnRing(ev.x, ev.z, ev.r, 0.35, 0x35f0ff);
-          this.spawnParticles(ev.x, 0.4, ev.z, count(14), 6, 0.35, 0x45f5ff);
+        if (ev.kind === 'ult' || ev.kind === 'ult_r') {
+          this.jinxVfx.spawnUltDome(ev.x, ev.z, ev.r);
+          this.spawnRing(ev.x, ev.z, ev.r, 0.45, 0xb8feff);
+          this.spawnRing(ev.x, ev.z, ev.r * 0.65, 0.28, 0xff62d4);
+          this.spawnParticles(ev.x, 0.7, ev.z, count(44), 11, 0.55, 0x62f5ff);
+          this.spawnParticles(ev.x, 0.5, ev.z, count(26), 5.5, 0.85, 0xff80e0);
+          this.addShake(0.48);
+        } else if (ev.kind === 'rocket_e') {
+          this.jinxVfx.spawnRocketEBlast(ev.x, ev.z, ev.r);
+          this.spawnRing(ev.x, ev.z, ev.r, 0.26, 0xff9e2c);
+          this.spawnParticles(ev.x, 0.5, ev.z, count(14), 6.5, 0.3, 0xffae3d);
           this.addShake(0.14);
-        } else if (ev.kind === 'pulse') {
-          this.spawnRing(ev.x, ev.z, ev.r, 0.3, 0x7df9ff);
-          this.spawnParticles(ev.x, 0.5, ev.z, count(16), 7, 0.35, 0xffd044);
+        } else if (ev.kind === 'iceblast') {
+          this.weaponVfx?.spawnIceBlast(ev.x, ev.z, ev.r);
+          this.spawnRing(ev.x, ev.z, ev.r, 0.45, 0x8ef9ff);
+          this.spawnParticles(ev.x, 0.6, ev.z, count(28), 9, 0.5, 0xa8fcff);
+          this.addShake(0.2);
+        } else if (ev.kind === 'orbital') {
+          this.weaponVfx?.spawnOrbitalBeam(ev.x, ev.z, ev.r);
+          this.spawnRing(ev.x, ev.z, ev.r, 0.32, 0x8ef9ff);
+          this.spawnParticles(ev.x, 0.7, ev.z, count(20), 8, 0.36, 0xffe46b);
           this.addShake(0.18);
+        } else if (ev.kind === 'radiant') {
+          this.spawnRing(ev.x, ev.z, ev.r, 0.26, 0xff5a22);
+          this.spawnParticles(ev.x, 0.5, ev.z, count(14), 6, 0.3, 0xff8c38);
+        } else if (ev.kind === 'mine') {
+          this.spawnRing(ev.x, ev.z, ev.r, 0.32, 0xff8c3a);
+          this.spawnParticles(ev.x, 0.4, ev.z, count(14), 6, 0.32, 0xffaa44);
+          this.addShake(0.14);
         } else {
           this.spawnRing(ev.x, ev.z, ev.r, 0.26, 0xff9e2c);
           this.spawnParticles(ev.x, 0.5, ev.z, count(14), 6.5, 0.3, 0xffae3d);
@@ -197,12 +211,6 @@ export class VfxRenderer {
 
   update(dt: number, g: Game) {
     this.shake = Math.max(0, this.shake - dt * 1.8);
-    if (this.muzzleT > 0) {
-      this.muzzleT -= dt;
-      this.muzzle.visible = !this.reduceFlash;
-    } else {
-      this.muzzle.visible = false;
-    }
 
     // 冲击波环
     for (const r of this.rings) {
@@ -234,6 +242,8 @@ export class VfxRenderer {
     }
     this.pGeo.attributes.position.needsUpdate = true;
     this.pGeo.attributes.color.needsUpdate = true;
+
+    this.jinxVfx.update(dt, g.clock, g.player.x, g.player.z, g.player.overloadT > 0, this.reduceFlash);
 
     this.drawHazards(g);
   }

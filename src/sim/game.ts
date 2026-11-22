@@ -3,13 +3,15 @@
  * 渲染、音频、UI 通过读取状态与 events 列表实现解耦，便于后续移植微信小游戏。
  */
 import {
-  ARENA, BOSS, BUDGET, CANNON, DASH, ENEMIES, FOUNTAIN, MATCH, MG, MINE, OVERLOAD, PLAYER, SIM, SPAWN_RING, SUPPLY_BOX, SWAP, ULT, UPGRADES,
+  ARENA, BOSS, BUDGET, DASH, ENEMIES, FOUNTAIN, JINX_E, JINX_PASSIVE, JINX_R, MATCH, MG, PLAYER, SIM, SPAWN_RING, SUPPLY_BOX,
   XP, hpScale, xpForLevel,
 } from '../config';
 import { SpatialGrid } from './grid';
 import { WalkableMap } from './map_grid';
 import { angleDiff, clamp, distToSegment, len, makeRng, sweepCircle } from './math';
-import { UPGRADE_BY_ID, UpgradeId, rollUpgrades } from './upgrades';
+import {
+  PASSIVE_BY_ID, PassiveId, UpgradeOffer, WEAPON_BY_ID, WEAPON_EVOLVED_LEVEL, WeaponId, rollLevelUpOffers,
+} from './weapons';
 import { EnemyKind, WAVES, WaveDef, trickleInterval } from './waves';
 
 export type Weapon = 'mg' | 'cn';
@@ -28,6 +30,7 @@ export interface SimInput {
 export interface Enemy {
   id: number;
   kind: Kind;
+  variant?: 'pix' | 'ghoul';
   x: number; z: number;
   vx: number; vz: number;
   hp: number; maxHp: number;
@@ -50,8 +53,12 @@ export interface Enemy {
   hazardId: number;
 }
 
+export type ProjKind =
+  | 'meow' | 'meow_evo' | 'rocket_e' | 'ult_r'
+  | 'uwu' | 'crossbow' | 'boomerang' | 'boomerang_mini';
+
 export interface Projectile {
-  kind: 'mg' | 'cn' | 'shard' | 'ult';
+  kind: ProjKind;
   x: number; z: number;
   vx: number; vz: number;
   r: number;
@@ -61,8 +68,46 @@ export interface Projectile {
   pierce: number;
   hits: number[];
   alive: boolean;
-  /** mg 的强化外观 */
   tier: number;
+  isCrit?: boolean;
+  returnMode?: boolean;
+  falloff?: number;
+  aoeR?: number;
+  ownerId?: number;
+}
+
+export interface OrbitalBlade {
+  x: number; z: number;
+  ang: number;
+  r: number;
+  dmg: number;
+  evolved: boolean;
+  hitCd: Map<number, number>;
+}
+
+export interface LightningArc {
+  x0: number; z0: number;
+  x1: number; z1: number;
+  age: number; life: number;
+}
+
+export interface WeaponZone {
+  kind: 'storm' | 'mine' | 'mine_sub' | 'orbital_strike';
+  x: number; z: number;
+  r: number;
+  t: number;
+  dur: number;
+  dmg: number;
+  tickT: number;
+  evolved: boolean;
+  isCrit?: boolean;
+  resolved?: boolean;
+}
+
+export interface AccessCard {
+  x: number; z: number;
+  alive: boolean;
+  age: number;
 }
 
 export interface EnemyBullet {
@@ -122,16 +167,16 @@ export interface SupplyBox {
 export interface WaveWarn { entrance: string; t: number; until: number; tag?: string }
 
 export type GameEvent =
-  | { type: 'shoot'; weapon: Weapon | 'ult'; x: number; z: number; ang: number; tier: number }
-  | { type: 'hit'; x: number; z: number; kind: string; crit?: boolean }
-  | { type: 'explode'; x: number; z: number; r: number; kind: 'cn' | 'ult' | 'mine' | 'pulse' | 'shard' }
+  | { type: 'shoot'; weapon: 'mg' | 'cn' | 'ult'; x: number; z: number; ang: number; tier: number; ownerId?: number }
+  | { type: 'hit'; x: number; z: number; kind: string; crit?: boolean; ownerId?: number }
+  | { type: 'explode'; x: number; z: number; r: number; kind: 'cn' | 'ult' | 'mine' | 'pulse' | 'shard' | 'rocket_e' | 'ult_r' | 'radiant' | 'iceblast' | 'orbital'; ownerId?: number }
   | { type: 'kill'; x: number; z: number; kind: Kind }
   | { type: 'playerHurt'; dmg: number }
-  | { type: 'pickup'; kind: 'xp' | 'heal' }
+  | { type: 'pickup'; kind: 'xp' | 'heal' | 'card' }
   | { type: 'fountainHeal'; x: number; z: number; heal: number }
   | { type: 'fountainReady'; x: number; z: number }
   | { type: 'boxBreak'; x: number; z: number }
-  | { type: 'levelUp'; level: number }
+  | { type: 'levelUp'; level: number; isCard?: boolean }
   | { type: 'swap'; weapon: Weapon }
   | { type: 'swapReady'; weapon: Weapon }
   | { type: 'mine'; x: number; z: number }
@@ -156,10 +201,12 @@ export interface PlayerState {
   x: number; z: number;
   vx: number; vz: number;
   hp: number; maxHp: number;
+  shield: number;
   faceX: number; faceZ: number;
   lastMoveX: number; lastMoveZ: number;
   moving: boolean;
   weapon: Weapon;
+  autoAim: boolean;
   swapT: number;
   fireCd: number;
   mgStacks: number;
@@ -167,8 +214,12 @@ export interface PlayerState {
   mgLastHit: number;
   mgRetargetUntil: number;
   targetId: number;
-  mineCharges: number;
-  mineCd: number;
+  eCd: number;
+  eVolleyLeft: number;
+  eVolleyT: number;
+  rCd: number;
+  rMaxCd: number;
+  rReadyAnnounced: boolean;
   dashCd: number;
   dashT: number;
   dashX: number; dashZ: number;
@@ -176,9 +227,17 @@ export interface PlayerState {
   hurtT: number;
   overloadT: number;
   overloadCd: number;
-  killTimes: number[];
-  ult: number;
-  ultReadyAnnounced: boolean;
+  passiveKills: number;
+  meowBurstLeft: number;
+  meowBurstT: number;
+  meowBurstAng: number;
+  weapons: Partial<Record<WeaponId, number>>;
+  weaponOrder: WeaponId[];
+  passives: Partial<Record<PassiveId, number>>;
+  passiveOrder: PassiveId[];
+  weaponCds: Partial<Record<WeaponId, number>>;
+  radiantT: number;
+  cyclonicT: number;
   level: number;
   xp: number;
   recoil: number;
@@ -188,7 +247,7 @@ export interface MatchStats {
   time: number;
   kills: number;
   level: number;
-  build: { id: UpgradeId; name: string; level: number }[];
+  build: { id: string; name: string; level: number }[];
   bossReachedAt: number;
   bossLevel: number;
   bossHpAtStart: number;
@@ -217,14 +276,17 @@ export class Game {
   hazards: Hazard[] = [];
   shards: Shard[] = [];
   pickups: Pickup[] = [];
-  mines: Mine[] = [];
+  orbitals: OrbitalBlade[] = [];
+  lightningArcs: LightningArc[] = [];
+  weaponZones: WeaponZone[] = [];
+  accessCards: AccessCard[] = [];
   fountain!: FountainState;
   boxes: SupplyBox[] = [];
   warnings: WaveWarn[] = [];
   events: GameEvent[] = [];
-  upgrades: Partial<Record<UpgradeId, number>> = {};
   levelUpsTaken = 0;
-  offer: UpgradeId[] = [];
+  offer: UpgradeOffer[] = [];
+  levelUpIsCard = false;
   boss: Enemy | null = null;
   bossPhase = 1;
   bossSeq: { move: string; t: number }[] = [];
@@ -271,7 +333,10 @@ export class Game {
     this.hazards = [];
     this.shards = [];
     this.pickups = [];
-    this.mines = [];
+    this.orbitals = [];
+    this.lightningArcs = [];
+    this.weaponZones = [];
+    this.accessCards = [];
     this.fountain = {
       x: FOUNTAIN.x,
       z: FOUNTAIN.z,
@@ -294,9 +359,9 @@ export class Game {
     }));
     this.warnings = [];
     this.events = [];
-    this.upgrades = {};
     this.levelUpsTaken = 0;
     this.offer = [];
+    this.levelUpIsCard = false;
     this.boss = null;
     this.bossPhase = 1;
     this.bossSeq = [];
@@ -311,37 +376,50 @@ export class Game {
     this.stats = this.freshStats();
     this.player = {
       x: this.map.playerSpawn.x, z: this.map.playerSpawn.z, vx: 0, vz: 0,
-      hp: PLAYER.maxHp, maxHp: PLAYER.maxHp,
+      hp: PLAYER.maxHp, maxHp: PLAYER.maxHp, shield: 0,
       faceX: 0, faceZ: -1, lastMoveX: 0, lastMoveZ: -1, moving: false,
-      weapon: 'mg', swapT: 0, fireCd: 0.3,
+      weapon: 'mg', autoAim: true, swapT: 0, fireCd: 0.25,
       mgStacks: 0, mgTargetId: -1, mgLastHit: -10, mgRetargetUntil: 0, targetId: -1,
-      mineCharges: MINE.charges, mineCd: 0, dashCd: 0, dashT: 0, dashX: 0, dashZ: 0,
-      iframe: 0, hurtT: 0, overloadT: 0, overloadCd: 0, killTimes: [],
-      ult: 0, ultReadyAnnounced: false, level: 1, xp: 0, recoil: 0,
+      eCd: 0, eVolleyLeft: 0, eVolleyT: 0,
+      rCd: JINX_R.initCooldown, rMaxCd: JINX_R.cooldown, rReadyAnnounced: false,
+      dashCd: 0, dashT: 0, dashX: 0, dashZ: 0,
+      iframe: 0, hurtT: 0, overloadT: 0, overloadCd: 0, passiveKills: 0,
+      meowBurstLeft: 0, meowBurstT: 0, meowBurstAng: 0,
+      weapons: { jinx_meow: 1 },
+      weaponOrder: ['jinx_meow'],
+      passives: {},
+      passiveOrder: [],
+      weaponCds: { jinx_meow: 0.25 },
+      radiantT: 0, cyclonicT: 0,
+      level: 1, xp: 0, recoil: 0,
     };
   }
 
-  // ───────────────────────── 派生属性 ─────────────────────────
-  lvl(id: UpgradeId) { return this.upgrades[id] ?? 0; }
+  // ───────────────────────── 派生属性（严格对齐 Patch 14.14 StatAmount） ─────────────────────────
+  weaponLv(id: WeaponId): number { return this.player.weapons[id] ?? 0; }
+  passiveLv(id: PassiveId): number { return this.player.passives[id] ?? 0; }
+  passiveVal(id: PassiveId): number {
+    const lv = this.passiveLv(id);
+    return lv > 0 ? PASSIVE_BY_ID[id].values[lv - 1] : 0;
+  }
   get xpNeed() { return xpForLevel(this.player.level); }
+  get maxHpTotal() { return PLAYER.maxHp + this.passiveVal('maxHp'); }
+  get damageMul() { return 1 + this.passiveVal('damage'); }
+  get abilityHaste() { return this.passiveVal('haste') + (this.player.overloadT > 0 ? JINX_PASSIVE.ahBonus : 0); }
+  get cdMul() { return 100 / (100 + this.abilityHaste); }
+  get critChance() { return this.passiveVal('crit'); }
+  get bonusProjectiles() { return this.passiveVal('projectiles'); }
+  get areaMul() { return 1 + this.passiveVal('area'); }
+  get durationMul() { return 1 + this.passiveVal('duration'); }
+  get armor() { return this.passiveVal('armor'); }
+  get armorDR() { return 100 / (100 + this.armor); }
+  get hpRegen() { return this.passiveVal('hpRegen'); }
   get moveSpeed() {
     const p = this.player;
-    return PLAYER.speed * (1 + UPGRADES.speed.mul * this.lvl('speed')) * (p.overloadT > 0 ? 1 + OVERLOAD.moveBonus : 1);
+    return PLAYER.speed * (1 + this.passiveVal('moveSpeed')) * (p.overloadT > 0 ? 1 + JINX_PASSIVE.msBonus : 1);
   }
-  get pickupRadius() { return PLAYER.pickupRadius * (1 + UPGRADES.magnet.mul * this.lvl('magnet')); }
-  get cdMul() { return 1 - UPGRADES.cooldown.mul * this.lvl('cooldown'); }
-  get mineCharges() { return MINE.charges + (this.lvl('mineCharge') ? UPGRADES.mineCharge.add : 0); }
-  get mineScale() { return 1 + UPGRADES.mineArea.mul * this.lvl('mineArea'); }
-  get mgMaxStacks() { return Math.round((MG.maxRate - MG.baseRate) / MG.ratePerStack); }
-  get mgRate() {
-    const p = this.player;
-    const base = MG.baseRate + Math.min(p.mgStacks, this.mgMaxStacks) * MG.ratePerStack;
-    return base * (1 + (this.lvl('mgRate') ? UPGRADES.mgRate.rateMul : 0)) * (p.overloadT > 0 ? 1 + OVERLOAD.rateBonus : 1);
-  }
-  get cnRate() { return CANNON.rate * (this.player.overloadT > 0 ? 1 + OVERLOAD.rateBonus : 1); }
-  get splashRadius() { return CANNON.splashRadius * (1 + (this.lvl('cnBlast') ? UPGRADES.cnBlast.radiusMul : 0)); }
-  get overloadDuration() { return OVERLOAD.duration + UPGRADES.overload.duration * this.lvl('overload'); }
-  get overloadCooldown() { return OVERLOAD.cooldown - UPGRADES.overload.cooldown * this.lvl('overload'); }
+  get pickupRadius() { return PLAYER.pickupRadius * (1 + this.passiveVal('pickup')); }
+  get xpMul() { return 1 + this.passiveVal('xp'); }
   get missionProgress() { return clamp(this.time / MATCH.bossTime, 0, 1); }
 
   // ───────────────────────── 主循环 ─────────────────────────
@@ -368,7 +446,6 @@ export class Game {
     this.updateProjectiles(dt);
     this.updateEnemyBullets(dt);
     this.updateHazards();
-    this.updateMines(dt);
     this.updateFountain(dt);
     this.updateBoxes(dt);
     this.updateShards(dt);
@@ -391,39 +468,43 @@ export class Game {
     p.iframe = Math.max(0, p.iframe - dt);
     p.hurtT = Math.max(0, p.hurtT - dt);
     p.recoil = Math.max(0, p.recoil - dt * 6);
-    const prevMine = p.mineCd, prevDash = p.dashCd;
-    if (p.mineCharges < this.mineCharges) {
-      p.mineCd -= dt;
-      if (p.mineCd <= 0) {
-        p.mineCharges++;
-        p.mineCd = p.mineCharges < this.mineCharges ? MINE.cooldown * this.cdMul : 0;
-        this.events.push({ type: 'cooldownReady', what: 'mine' });
-      }
+
+    // 生命回复被动
+    if (p.hp > 0 && p.hp < p.maxHp && this.hpRegen > 0) {
+      p.hp = Math.min(p.maxHp, p.hp + this.hpRegen * dt);
     }
+
+    const prevDash = p.dashCd;
     if (p.dashCd > 0) {
-      p.dashCd -= dt;
+      p.dashCd = Math.max(0, p.dashCd - dt);
       if (p.dashCd <= 0 && prevDash > 0) this.events.push({ type: 'cooldownReady', what: 'dash' });
     }
-    void prevMine;
+    if (p.eCd > 0) {
+      const prevE = p.eCd;
+      p.eCd = Math.max(0, p.eCd - dt);
+      if (p.eCd <= 0 && prevE > 0) this.events.push({ type: 'cooldownReady', what: 'mine' });
+    }
+    if (p.rCd > 0) {
+      p.rCd = Math.max(0, p.rCd - dt);
+      if (p.rCd <= 0 && !p.rReadyAnnounced) {
+        p.rReadyAnnounced = true;
+        this.events.push({ type: 'ultReady' });
+      }
+    }
 
-    // 过载
+    // 罪恶快感被动
     if (p.overloadT > 0) {
       p.overloadT -= dt;
-      if (p.overloadT <= 0) this.events.push({ type: 'overload', on: false });
+      if (p.overloadT <= 0) {
+        p.overloadT = 0;
+        this.events.push({ type: 'overload', on: false });
+      }
     }
-    if (p.overloadCd > 0) p.overloadCd -= dt;
 
-    // 换枪
-    if (p.swapT > 0) {
-      p.swapT -= dt;
-      if (p.swapT <= 0) this.events.push({ type: 'swapReady', weapon: p.weapon });
-    }
-    if (inp.swap && p.swapT <= 0) {
-      p.weapon = p.weapon === 'mg' ? 'cn' : 'mg';
-      p.swapT = SWAP.time;
-      p.fireCd = 0;
-      p.mgStacks = 0;
-      this.events.push({ type: 'swap', weapon: p.weapon });
+    // Q：切换自动瞄准 / 移动朝向瞄准
+    if (inp.swap) {
+      p.autoAim = !p.autoAim;
+      this.events.push({ type: 'swap', weapon: p.autoAim ? 'mg' : 'cn' });
     }
 
     // 移动输入
@@ -437,10 +518,10 @@ export class Game {
       p.lastMoveZ = mz / l;
     }
 
-    // 闪避
+    // 空格：闪避
     if (inp.dash && p.dashCd <= 0 && p.dashT <= 0) {
-      p.dashX = p.moving ? p.lastMoveX : p.lastMoveX;
-      p.dashZ = p.moving ? p.lastMoveZ : p.lastMoveZ;
+      p.dashX = p.lastMoveX;
+      p.dashZ = p.lastMoveZ;
       p.dashT = DASH.duration;
       p.iframe = Math.max(p.iframe, DASH.iframes);
       p.dashCd = DASH.cooldown * this.cdMul;
@@ -462,22 +543,53 @@ export class Game {
     p.z += p.vz * dt;
     this.collideStatic(p, PLAYER.radius, true);
 
-    // 地雷：移动方向优先，否则朝向
-    if (inp.mine && p.mineCharges > 0) {
-      const dx = p.moving ? p.lastMoveX : p.faceX;
-      const dz = p.moving ? p.lastMoveZ : p.faceZ;
-      const mx2 = clamp(p.x + dx * MINE.placeDist, -ARENA.halfW, ARENA.halfW);
-      const mz2 = clamp(p.z + dz * MINE.placeDist, -ARENA.halfH, ARENA.halfH);
-      const active = this.mines.filter((m) => m.alive && !m.triggered);
-      if (active.length >= MINE.maxActive) active[0].alive = false;
-      this.mines.push({ x: mx2, z: mz2, age: 0, triggered: false, fieldT: 0, alive: true, scale: this.mineScale });
-      if (p.mineCharges === this.mineCharges) p.mineCd = MINE.cooldown * this.cdMul;
-      p.mineCharges--;
-      this.events.push({ type: 'mine', x: mx2, z: mz2 });
+    // E：鱼骨头 9 连发射火箭（Strawberry_JinxE）
+    if (inp.mine && p.eCd <= 0 && p.eVolleyLeft <= 0) {
+      p.eVolleyLeft = JINX_E.rocketCount;
+      p.eVolleyT = 0;
+      p.eCd = JINX_E.cooldown * this.cdMul;
+      p.weapon = 'cn';
+      this.events.push({ type: 'mine', x: p.x, z: p.z });
+    }
+    if (p.eVolleyLeft > 0) {
+      p.eVolleyT -= dt;
+      while (p.eVolleyLeft > 0 && p.eVolleyT <= 0) {
+        p.eVolleyT += JINX_E.fireInterval;
+        const firedIdx = JINX_E.rocketCount - p.eVolleyLeft;
+        p.eVolleyLeft--;
+        const baseAng = Math.atan2(p.faceZ, p.faceX);
+        // 有规律的 3x3 紧凑扇形齐射角（不再随机乱飞）
+        const fan = ((firedIdx % 3) - 1) * 0.16 + (Math.floor(firedIdx / 3) - 1) * 0.035;
+        const a = baseAng + fan;
+        const eTier = Math.min(5, Math.floor((p.level - 1) / 3));
+        const eDmg = (JINX_E.baseDamage + p.level * JINX_E.dmgPerLevel) * this.damageMul;
+        const isCrit = this.rand() < this.critChance;
+        const critMult = isCrit ? (2 + JINX_E.critDmgBonus[eTier]) : 1;
+        this.projectiles.push({
+          kind: 'rocket_e',
+          x: p.x + Math.cos(a) * 0.75,
+          z: p.z + Math.sin(a) * 0.75,
+          vx: Math.cos(a) * JINX_E.speed,
+          vz: Math.sin(a) * JINX_E.speed,
+          r: 0.28,
+          dmg: eDmg * critMult,
+          travel: 0,
+          range: JINX_E.range,
+          pierce: 0,
+          hits: [],
+          alive: true,
+          tier: 0,
+          isCrit,
+          aoeR: JINX_E.aoeRadius * (1 + JINX_E.aoeIncrease[eTier]) * this.areaMul,
+        });
+        p.recoil = 1;
+        this.events.push({ type: 'shoot', weapon: 'cn', x: p.x, z: p.z, ang: a, tier: 0 });
+      }
+      if (p.eVolleyLeft === 0) p.weapon = 'mg';
     }
 
-    // 大招
-    if (inp.ult && p.ult >= ULT.chargeNeeded) this.fireUlt();
+    // R：超究极死神飞弹（Strawberry_JinxR）
+    if (inp.ult && p.rCd <= 0) this.fireUlt();
   }
 
   /** 与场景边界和仓库区 180x180 可行走栅格障碍的碰撞（玩家与敌人共用） */
@@ -488,11 +600,22 @@ export class Game {
   hurtPlayer(dmg: number) {
     const p = this.player;
     if (p.iframe > 0 || this.dev.invincible || this.endDelay >= 0) return false;
-    p.hp -= dmg;
+    const raw = Math.max(1, Math.round(dmg * this.armorDR));
+    let rem = raw;
+    if (p.shield > 0) {
+      const absorbed = Math.min(p.shield, rem);
+      p.shield -= absorbed;
+      rem -= absorbed;
+      // 进化冰爆护甲（深度冻结）：护盾破裂时再次触发免费冰爆
+      if (p.shield <= 0 && this.weaponLv('iceblast') >= WEAPON_EVOLVED_LEVEL) {
+        this.triggerIceBlast(6);
+      }
+    }
+    p.hp -= rem;
     p.iframe = PLAYER.hurtIFrames;
     p.hurtT = 0.3;
-    this.stats.damageTaken += dmg;
-    this.events.push({ type: 'playerHurt', dmg });
+    this.stats.damageTaken += raw;
+    this.events.push({ type: 'playerHurt', dmg: raw });
     return true;
   }
 
@@ -559,8 +682,11 @@ export class Game {
     const scale = kind === 'boss' ? 1 : hpScale(this.time);
     const base = kind === 'boss' ? { hp: BOSS.hp, speed: BOSS.speed, radius: BOSS.radius } : ENEMIES[kind];
     const hp = base.hp * scale;
+    const variant = kind === 'crawler'
+      ? (this.time < 42 || (this.time >= 105 && this.time <= 125) ? 'pix' : 'ghoul')
+      : undefined;
     return {
-      id: this.nextId++, kind, x, z, vx: 0, vz: 0, hp, maxHp: hp, r: base.radius,
+      id: this.nextId++, kind, variant, x, z, vx: 0, vz: 0, hp, maxHp: hp, r: base.radius,
       speed: base.speed * (0.92 + this.rand() * 0.16), alive: true, state: 'move', stateT: 0,
       cd: 1 + this.rand() * 2, dirX: 0, dirZ: 0, dashLeft: 0, bindT: 0, slowT: 0, slowF: 1, flash: 0,
       age: 0, face: 0, hazardId: 0,
@@ -800,7 +926,7 @@ export class Game {
 
     if (b.state === 'window') {
       // 输出窗口：缓慢逼近
-      const sp = (d > 5 ? BOSS.speed : 0) * (this.bossPhase === 2 ? 1.15 : 1);
+      const sp = (d > 5 ? BOSS.speed : 0) * (this.bossPhase === 2 ? 1.28 : 1);
       b.x += (dx / d) * sp * dt;
       b.z += (dz / d) * sp * dt;
       this.collideStatic(b, b.r, true);
@@ -978,9 +1104,26 @@ export class Game {
     return null;
   }
 
+  private findNearestEnemy(maxDist: number, x = this.player.x, z = this.player.z): Enemy | null {
+    let best: Enemy | null = null;
+    let bd = maxDist;
+    for (const e of this.enemies) {
+      if (!e.alive || (e.kind === 'boss' && e.state === 'enter')) continue;
+      const d = len(e.x - x, e.z - z) - e.r * 0.5;
+      if (d < bd) { bd = d; best = e; }
+    }
+    return best;
+  }
+
+  private rollDmg(base: number, bonusCrit = 0): { dmg: number; isCrit: boolean } {
+    const isCrit = this.rand() < clamp(this.critChance + bonusCrit, 0, 1);
+    const dmg = base * this.damageMul * (isCrit ? 2 : 1);
+    return { dmg, isCrit };
+  }
+
   private updateFiring(dt: number) {
     const p = this.player;
-    const target = this.findAimTarget();
+    const target = p.autoAim ? this.findAimTarget() : null;
     p.targetId = target && !target.isBox ? target.id : -1;
     if (target) {
       const dx = target.x - p.x, dz = target.z - p.z;
@@ -989,67 +1132,364 @@ export class Game {
     } else if (p.moving) {
       p.faceX = p.lastMoveX; p.faceZ = p.lastMoveZ;
     }
-    // 机枪掉层
-    if (p.weapon === 'mg') {
-      if (target && target.id !== p.mgTargetId) {
-        p.mgTargetId = target.id;
-        p.mgRetargetUntil = this.time + 0.5;
-      }
-      const decaying = this.time < p.mgRetargetUntil || this.time - p.mgLastHit > MG.stackGrace;
-      if (decaying && p.mgStacks > 0) {
-        const rate = MG.stackDecay * (this.lvl('mgRate') ? 0.5 : 1);
-        p.mgStacks = Math.max(0, p.mgStacks - rate * dt);
-      }
-    }
-    p.fireCd -= dt;
-    if (!target || p.swapT > 0 || p.dashT > 0) return;
-    if (p.fireCd > 0) return;
+
+    // 1. 驱动所有已装备的武器槽（5 槽独立自动施放）
+    this.updateWeapons(dt, target);
+    this.updateOrbitals(dt);
+    this.updateWeaponZones(dt);
+    this.updateLightningArcs(dt);
+  }
+
+  private updateWeapons(dt: number, target: { id: number; x: number; z: number; isBox: boolean } | null) {
+    const p = this.player;
     const ang = Math.atan2(p.faceZ, p.faceX);
-    if (p.weapon === 'mg') {
-      p.fireCd += 1 / this.mgRate;
-      if (p.fireCd < 0) p.fireCd = 0;
-      const spread = (this.rand() - 0.5) * 0.06;
-      const a = ang + spread;
-      const full = p.mgStacks >= this.mgMaxStacks - 0.01;
-      const tier = (this.lvl('mgPierce') ? 1 : 0) + (this.lvl('mgFocus') && full ? 1 : 0);
-      if (this.projectiles.length < BUDGET.maxPlayerProjectiles) {
-        this.projectiles.push({
-          kind: 'mg', x: p.x + Math.cos(a) * 0.6, z: p.z + Math.sin(a) * 0.6,
-          vx: Math.cos(a) * MG.bulletSpeed, vz: Math.sin(a) * MG.bulletSpeed,
-          r: MG.bulletRadius, dmg: MG.damage + (this.lvl('mgPierce') ? UPGRADES.mgPierce.dmg : 0),
-          travel: 0, range: MG.range + 1, pierce: this.lvl('mgPierce') ? UPGRADES.mgPierce.pierce : 0,
-          hits: [], alive: true, tier,
-        });
+
+    // 金克丝喵喵枪连发弹流
+    if (p.meowBurstLeft > 0) {
+      p.meowBurstT -= dt;
+      while (p.meowBurstLeft > 0 && p.meowBurstT <= 0) {
+        p.meowBurstT += MG.burstInterval / (p.overloadT > 0 ? 1 + JINX_PASSIVE.asBonus : 1);
+        p.meowBurstLeft--;
+        const lv = this.weaponLv('jinx_meow');
+        if (lv <= 0) break;
+        const evolved = lv >= WEAPON_EVOLVED_LEVEL;
+        const def = WEAPON_BY_ID.jinx_meow;
+        const spread = (this.rand() - 0.5) * 0.1;
+        const a = p.meowBurstAng + spread;
+        const { dmg, isCrit } = this.rollDmg(def.dmg[lv - 1]);
+        if (this.projectiles.length < BUDGET.maxPlayerProjectiles) {
+          this.projectiles.push({
+            kind: evolved ? 'meow_evo' : 'meow',
+            x: p.x + Math.cos(a) * 0.65,
+            z: p.z + Math.sin(a) * 0.65,
+            vx: Math.cos(a) * MG.bulletSpeed,
+            vz: Math.sin(a) * MG.bulletSpeed,
+            r: evolved ? 0.22 : MG.bulletRadius,
+            dmg,
+            travel: 0,
+            range: def.radius[lv - 1],
+            pierce: evolved ? 999 : 0,
+            hits: [],
+            alive: true,
+            tier: evolved ? 2 : lv >= 3 ? 1 : 0,
+            isCrit,
+            falloff: evolved ? 0.6 : 1,
+          });
+        }
+        p.recoil = Math.min(1, p.recoil + 0.35);
+        this.events.push({ type: 'shoot', weapon: 'mg', x: p.x, z: p.z, ang: a, tier: evolved ? 2 : 0 });
       }
-      p.recoil = Math.min(1, p.recoil + 0.35);
-      this.events.push({ type: 'shoot', weapon: 'mg', x: p.x, z: p.z, ang: a, tier });
-    } else {
-      p.fireCd += 1 / this.cnRate;
-      if (p.fireCd < 0) p.fireCd = 0;
-      const dist = clamp(len(target.x - p.x, target.z - p.z), 2, CANNON.range);
-      this.projectiles.push({
-        kind: 'cn', x: p.x + Math.cos(ang) * 0.7, z: p.z + Math.sin(ang) * 0.7,
-        vx: Math.cos(ang) * CANNON.shellSpeed, vz: Math.sin(ang) * CANNON.shellSpeed,
-        r: CANNON.shellRadius, dmg: CANNON.directDamage, travel: 0, range: dist + 0.6, pierce: 0,
-        hits: [], alive: true, tier: (this.lvl('cnBlast') ? 1 : 0) + (this.lvl('cnShards') ? 1 : 0) + (this.lvl('cnPulse') ? 1 : 0),
-      });
-      p.recoil = 1;
-      this.events.push({ type: 'shoot', weapon: 'cn', x: p.x, z: p.z, ang, tier: 0 });
     }
+
+    for (const wId of p.weaponOrder) {
+      const lv = p.weapons[wId] ?? 0;
+      if (lv <= 0) continue;
+      const def = WEAPON_BY_ID[wId];
+      const evolved = lv >= WEAPON_EVOLVED_LEVEL;
+
+      if (wId === 'radiant') {
+        p.radiantT -= dt;
+        if (p.radiantT <= 0) {
+          p.radiantT = def.cd[lv - 1];
+          const rad = def.radius[lv - 1] * this.areaMul;
+          const base = def.dmg[lv - 1] + this.maxHpTotal * 0.025;
+          this.forEnemiesInCircle(p.x, p.z, rad, (e) => {
+            const { dmg } = this.rollDmg(base);
+            this.damageEnemy(e, dmg, 'radiant');
+          });
+          this.damageBoxesInCircle(p.x, p.z, rad, base * 0.5);
+        }
+        continue;
+      }
+
+      if (wId === 'cyclonic') {
+        if (p.cyclonicT > 0) {
+          p.cyclonicT -= dt;
+          if (p.cyclonicT <= 0 && !evolved) this.orbitals.length = 0;
+        }
+        p.weaponCds[wId] = Math.max(0, (p.weaponCds[wId] ?? 0) - dt);
+        const wantCount = def.count[lv - 1] + this.bonusProjectiles;
+        if (evolved) {
+          if (this.orbitals.length !== wantCount) this.spawnOrbitals(wantCount, def.radius[lv - 1], def.dmg[lv - 1], true);
+          continue;
+        }
+        if ((p.weaponCds[wId] ?? 0) <= 0 && p.cyclonicT <= 0) {
+          p.cyclonicT = def.duration[lv - 1] * this.durationMul;
+          p.weaponCds[wId] = def.cd[lv - 1] * this.cdMul;
+          this.spawnOrbitals(wantCount, def.radius[lv - 1], def.dmg[lv - 1], false);
+        }
+        continue;
+      }
+
+      p.weaponCds[wId] = Math.max(0, (p.weaponCds[wId] ?? 0) - dt);
+      if ((p.weaponCds[wId] ?? 0) > 0) continue;
+
+      if (wId === 'jinx_meow') {
+        if (!target || p.dashT > 0) continue;
+        p.weaponCds[wId] = def.cd[lv - 1] * this.cdMul;
+        // 官方 ProjectileMultiplier = 3：每 +1 飞弹数量额外 +3 发机枪弹
+        p.meowBurstLeft = Math.min(16, def.count[lv - 1] + this.bonusProjectiles * 3);
+        p.meowBurstT = 0;
+        p.meowBurstAng = ang;
+      } else if (wId === 'uwu_blaster') {
+        const near = this.findNearestEnemy(def.radius[lv - 1]);
+        const tx = near ? near.x : target?.x;
+        const tz = near ? near.z : target?.z;
+        if (tx == null || tz == null) continue;
+        p.weaponCds[wId] = def.cd[lv - 1] * this.cdMul;
+        const a0 = Math.atan2(tz - p.z, tx - p.x);
+        const n = def.count[lv - 1] + this.bonusProjectiles;
+        for (let k = 0; k < n; k++) {
+          const a = a0 + (n > 1 ? (k - (n - 1) / 2) * 0.1 : 0);
+          const { dmg, isCrit } = this.rollDmg(def.dmg[lv - 1]);
+          if (this.projectiles.length < BUDGET.maxPlayerProjectiles) {
+            this.projectiles.push({
+              kind: 'uwu',
+              x: p.x + Math.cos(a) * 0.5, z: p.z + Math.sin(a) * 0.5,
+              vx: Math.cos(a) * 26, vz: Math.sin(a) * 26,
+              r: 0.18, dmg, travel: 0, range: def.radius[lv - 1], pierce: 0, hits: [], alive: true, tier: evolved ? 1 : 0, isCrit,
+            });
+          }
+        }
+      } else if (wId === 'statikk') {
+        const cands = this.enemies
+          .filter((e) => e.alive && (e.kind !== 'boss' || e.state !== 'enter') && len(e.x - p.x, e.z - p.z) <= def.radius[lv - 1])
+          .sort((a, b) => b.hp - a.hp);
+        if (!cands.length) continue;
+        p.weaponCds[wId] = def.cd[lv - 1] * this.cdMul;
+        const chainN = Math.min(cands.length, def.count[lv - 1] + this.bonusProjectiles);
+        let px = p.x, pz = p.z;
+        for (let k = 0; k < chainN; k++) {
+          const e = cands[k];
+          const { dmg, isCrit } = this.rollDmg(def.dmg[lv - 1]);
+          this.damageEnemy(e, dmg, 'statikk');
+          this.events.push({ type: 'hit', x: e.x, z: e.z, kind: 'statikk', crit: isCrit });
+          this.lightningArcs.push({ x0: px, z0: pz, x1: e.x, z1: e.z, age: 0, life: 0.24 });
+          px = e.x; pz = e.z;
+          if (evolved) {
+            this.weaponZones.push({
+              kind: 'storm', x: e.x, z: e.z, r: 2.2 * this.areaMul, t: 0,
+              dur: 3.0 * this.durationMul, dmg: 80, tickT: 0.2, evolved: true,
+            });
+          }
+        }
+      } else if (wId === 'crossbow') {
+        const near = this.findNearestEnemy(def.radius[lv - 1]);
+        if (!near && !target) continue;
+        p.weaponCds[wId] = def.cd[lv - 1] * this.cdMul;
+        const baseA = this.rand() * Math.PI * 2;
+        const aimA = near ? Math.atan2(near.z - p.z, near.x - p.x) : baseA;
+        const n = def.count[lv - 1] + this.bonusProjectiles;
+        const bCrit = def.bonusCrit ? def.bonusCrit[lv - 1] : 0;
+        const spread = evolved ? Math.PI * 1.4 : 0.72;
+        for (let k = 0; k < n; k++) {
+          const a = aimA + (n > 1 ? (k / (n - 1) - 0.5) * spread : 0);
+          const { dmg, isCrit } = this.rollDmg(def.dmg[lv - 1], bCrit);
+          if (this.projectiles.length < BUDGET.maxPlayerProjectiles) {
+            this.projectiles.push({
+              kind: 'crossbow',
+              x: p.x + Math.cos(a) * 0.5, z: p.z + Math.sin(a) * 0.5,
+              vx: Math.cos(a) * 24, vz: Math.sin(a) * 24,
+              r: 0.2, dmg, travel: 0, range: def.radius[lv - 1], pierce: isCrit ? 999 : 0, hits: [], alive: true, tier: evolved ? 1 : 0, isCrit,
+            });
+          }
+        }
+      } else if (wId === 'boomerang') {
+        const near = this.findNearestEnemy(def.radius[lv - 1]);
+        if (!near && !target) continue;
+        p.weaponCds[wId] = def.cd[lv - 1] * this.cdMul;
+        const aimA = near ? Math.atan2(near.z - p.z, near.x - p.x) : ang;
+        const n = def.count[lv - 1] + this.bonusProjectiles;
+        for (let k = 0; k < n; k++) {
+          const a = aimA + (n > 1 ? (k / n) * Math.PI * 2 * (n > 3 ? 0.5 : 0.18) : 0);
+          const { dmg, isCrit } = this.rollDmg(def.dmg[lv - 1]);
+          if (this.projectiles.length < BUDGET.maxPlayerProjectiles) {
+            this.projectiles.push({
+              kind: 'boomerang',
+              x: p.x + Math.cos(a) * 0.5, z: p.z + Math.sin(a) * 0.5,
+              vx: Math.cos(a) * 15, vz: Math.sin(a) * 15,
+              r: 0.42, dmg, travel: 0, range: def.radius[lv - 1], pierce: 999, hits: [], alive: true, tier: evolved ? 1 : 0, isCrit,
+            });
+          }
+        }
+      } else if (wId === 'bunnymega') {
+        const cands = this.enemies.filter((e) => e.alive && (e.kind !== 'boss' || e.state !== 'enter') && len(e.x - p.x, e.z - p.z) <= 10.5);
+        if (!cands.length) continue;
+        p.weaponCds[wId] = def.cd[lv - 1] * this.cdMul;
+        const n = def.count[lv - 1] + this.bonusProjectiles;
+        const bCrit = def.bonusCrit ? def.bonusCrit[lv - 1] : 0;
+        for (let k = 0; k < n; k++) {
+          const tE = cands[Math.floor(this.rand() * cands.length)];
+          const { dmg, isCrit } = this.rollDmg(def.dmg[lv - 1], bCrit);
+          this.weaponZones.push({
+            kind: 'orbital_strike', x: tE.x, z: tE.z, r: def.radius[lv - 1] * this.areaMul,
+            t: 0, dur: 0.35 + k * 0.14, dmg, tickT: 0, evolved, isCrit,
+          });
+        }
+        if (evolved) {
+          const bossOrFirst = this.boss?.alive ? this.boss : cands[0];
+          const { dmg, isCrit } = this.rollDmg(def.dmg[lv - 1] * 1.8, bCrit);
+          this.weaponZones.push({
+            kind: 'orbital_strike', x: bossOrFirst.x, z: bossOrFirst.z, r: 3.6 * this.areaMul,
+            t: 0, dur: 0.85, dmg, tickT: 0, evolved: true, isCrit,
+          });
+        }
+      } else if (wId === 'mines') {
+        p.weaponCds[wId] = def.cd[lv - 1] * this.cdMul;
+        const n = def.count[lv - 1] + this.bonusProjectiles;
+        const rad = def.radius[lv - 1] * this.areaMul;
+        for (let k = 0; k < n; k++) {
+          const a = (k / n) * Math.PI * 2 + this.rand() * 0.4;
+          const dist = 2.6 + this.rand() * 2.2;
+          const mx = clamp(p.x + Math.cos(a) * dist, -ARENA.halfW + 1, ARENA.halfW - 1);
+          const mz = clamp(p.z + Math.sin(a) * dist, -ARENA.halfH + 1, ARENA.halfH - 1);
+          this.weaponZones.push({
+            kind: 'mine', x: mx, z: mz, r: rad, t: 0, dur: 0.4, dmg: def.dmg[lv - 1], tickT: 0, evolved,
+          });
+        }
+      } else if (wId === 'iceblast') {
+        p.weaponCds[wId] = def.cd[lv - 1] * this.cdMul;
+        this.triggerIceBlast(lv);
+      }
+    }
+  }
+
+  private spawnOrbitals(count: number, rad: number, dmg: number, evolved: boolean) {
+    this.orbitals.length = 0;
+    const r = rad * this.areaMul;
+    for (let i = 0; i < count; i++) {
+      this.orbitals.push({
+        x: this.player.x, z: this.player.z,
+        ang: (i / count) * Math.PI * 2,
+        r, dmg, evolved, hitCd: new Map(),
+      });
+    }
+  }
+
+  private updateOrbitals(dt: number) {
+    if (!this.orbitals.length) return;
+    const p = this.player;
+    const speed = 3.6;
+    for (const o of this.orbitals) {
+      o.ang += speed * dt;
+      o.x = p.x + Math.cos(o.ang) * o.r;
+      o.z = p.z + Math.sin(o.ang) * o.r;
+      for (const [id, cd] of o.hitCd) {
+        if (cd - dt <= 0) o.hitCd.delete(id);
+        else o.hitCd.set(id, cd - dt);
+      }
+      this.forEnemiesInCircle(o.x, o.z, 0.7 * this.areaMul, (e) => {
+        if (o.hitCd.has(e.id)) return;
+        o.hitCd.set(e.id, 0.35);
+        const { dmg, isCrit } = this.rollDmg(o.dmg);
+        this.damageEnemy(e, dmg, 'cyclonic');
+        this.events.push({ type: 'hit', x: e.x, z: e.z, kind: 'cyclonic', crit: isCrit });
+        if (e.kind !== 'boss') {
+          const dx = e.x - p.x, dz = e.z - p.z;
+          const d = len(dx, dz) || 1;
+          e.x += (dx / d) * 0.45;
+          e.z += (dz / d) * 0.45;
+        }
+      });
+    }
+  }
+
+  private updateWeaponZones(dt: number) {
+    for (let i = 0; i < this.weaponZones.length; i++) {
+      const z = this.weaponZones[i];
+      z.t += dt;
+      if (z.kind === 'storm') {
+        z.tickT -= dt;
+        if (z.tickT <= 0) {
+          z.tickT = 0.5;
+          this.forEnemiesInCircle(z.x, z.z, z.r, (e) => {
+            const { dmg } = this.rollDmg(z.dmg);
+            this.damageEnemy(e, dmg, 'statikk_storm');
+          });
+        }
+        if (z.t >= z.dur) this.weaponZones.splice(i--, 1);
+      } else if (z.kind === 'mine' || z.kind === 'mine_sub') {
+        if (z.t >= z.dur) {
+          this.forEnemiesInCircle(z.x, z.z, z.r, (e) => {
+            const { dmg } = this.rollDmg(z.dmg);
+            this.damageEnemy(e, dmg, 'mines');
+          });
+          this.damageBoxesInCircle(z.x, z.z, z.r, z.dmg);
+          this.events.push({ type: 'explode', x: z.x, z: z.z, r: z.r, kind: 'mine' });
+          if (z.kind === 'mine' && z.evolved) {
+            for (let k = 0; k < 3; k++) {
+              const a = (k / 3) * Math.PI * 2 + this.rand() * 0.5;
+              this.weaponZones.push({
+                kind: 'mine_sub',
+                x: z.x + Math.cos(a) * 1.9, z: z.z + Math.sin(a) * 1.9,
+                r: 3.0 * this.areaMul, t: 0, dur: 0.25 + k * 0.08, dmg: 70, tickT: 0, evolved: false,
+              });
+            }
+          }
+          this.weaponZones.splice(i--, 1);
+        }
+      } else if (z.kind === 'orbital_strike') {
+        if (!z.resolved && z.t >= z.dur) {
+          z.resolved = true;
+          this.forEnemiesInCircle(z.x, z.z, z.r, (e) => {
+            this.damageEnemy(e, z.dmg, 'bunnymega');
+          });
+          this.damageBoxesInCircle(z.x, z.z, z.r, z.dmg);
+          this.events.push({ type: 'explode', x: z.x, z: z.z, r: z.r, kind: 'orbital' });
+        }
+        if (z.t >= z.dur + 0.22) this.weaponZones.splice(i--, 1);
+      }
+    }
+  }
+
+  private updateLightningArcs(dt: number) {
+    for (let i = 0; i < this.lightningArcs.length; i++) {
+      this.lightningArcs[i].age += dt;
+      if (this.lightningArcs[i].age >= this.lightningArcs[i].life) this.lightningArcs.splice(i--, 1);
+    }
+  }
+
+  private triggerIceBlast(lv: number) {
+    const p = this.player;
+    const def = WEAPON_BY_ID.iceblast;
+    const rad = def.radius[lv - 1] * this.areaMul;
+    const freezeDur = def.duration[lv - 1] * this.durationMul;
+    const baseDmg = def.dmg[lv - 1] + 2.5 * this.armor;
+    this.forEnemiesInCircle(p.x, p.z, rad, (e) => {
+      const { dmg } = this.rollDmg(baseDmg);
+      this.damageEnemy(e, dmg, 'iceblast');
+      if (e.kind !== 'boss') {
+        e.bindT = Math.max(e.bindT, freezeDur);
+      }
+    });
+    if (lv >= WEAPON_EVOLVED_LEVEL) {
+      p.shield = Math.max(p.shield, 200 + this.maxHpTotal * 0.2);
+    }
+    this.events.push({ type: 'explode', x: p.x, z: p.z, r: rad, kind: 'iceblast' });
   }
 
   private fireUlt() {
     const p = this.player;
     let dx: number, dz: number;
-    const t = this.enemies.find((e) => e.id === p.targetId && e.alive);
-    if (p.moving) { dx = p.lastMoveX; dz = p.lastMoveZ; }
-    else if (t) { const l = len(t.x - p.x, t.z - p.z) || 1; dx = (t.x - p.x) / l; dz = (t.z - p.z) / l; }
+    let t = this.enemies.find((e) => e.id === p.targetId && e.alive);
+    if (!t && p.autoAim) {
+      t = this.enemies.find((e) => e.alive && (e.kind === 'boss' || e.kind === 'elite') && e.state !== 'enter' && len(e.x - p.x, e.z - p.z) <= JINX_R.range)
+        ?? this.findNearestEnemy(JINX_R.range)
+        ?? undefined;
+    }
+    if (t) {
+      const l = len(t.x - p.x, t.z - p.z) || 1;
+      dx = (t.x - p.x) / l; dz = (t.z - p.z) / l;
+      p.faceX = dx; p.faceZ = dz;
+    } else if (p.moving) { dx = p.lastMoveX; dz = p.lastMoveZ; }
     else { dx = p.faceX; dz = p.faceZ; }
-    p.ult = 0;
-    p.ultReadyAnnounced = false;
+    p.rMaxCd = JINX_R.cooldown * this.cdMul;
+    p.rCd = p.rMaxCd;
+    p.rReadyAnnounced = false;
+    const base = (JINX_R.baseDamage + p.level * JINX_R.dmgPerLevel) * this.damageMul;
     this.projectiles.push({
-      kind: 'ult', x: p.x + dx * 0.8, z: p.z + dz * 0.8, vx: dx * ULT.speed, vz: dz * ULT.speed,
-      r: ULT.radius, dmg: ULT.pierceDamage, travel: 0, range: ULT.range, pierce: 999, hits: [], alive: true, tier: 0,
+      kind: 'ult_r', x: p.x + dx * 0.9, z: p.z + dz * 0.9, vx: dx * JINX_R.speed, vz: dz * JINX_R.speed,
+      r: JINX_R.width * 0.55, dmg: base, travel: 0, range: JINX_R.range, pierce: 999, hits: [], alive: true, tier: 0,
     });
     p.recoil = 1;
     this.stats.ultCount++;
@@ -1086,30 +1526,29 @@ export class Game {
       let stopT = -1;
       for (const { e, t } of cands) {
         const hx = x0 + (x1 - x0) * t, hz = z0 + (z1 - z0) * t;
-        if (pr.kind === 'mg' || pr.kind === 'shard') {
-          this.damageEnemy(e, this.mgDamageAgainst(pr, e), pr.kind);
-          if (pr.kind === 'mg' && e.id === this.player.mgTargetId && this.time >= this.player.mgRetargetUntil) {
-            this.player.mgStacks = Math.min(this.mgMaxStacks, this.player.mgStacks + 1);
-            this.player.mgLastHit = this.time;
-          } else if (pr.kind === 'mg' && e.id === this.player.mgTargetId) {
-            this.player.mgLastHit = this.time;
-          }
-          this.events.push({ type: 'hit', x: hx, z: hz, kind: pr.kind });
-          pr.hits.push(e.id);
-          if (pr.hits.length > pr.pierce) { stopT = t; break; }
-        } else if (pr.kind === 'cn') {
-          this.cannonExplode(hx, hz, e, Math.atan2(pr.vz, pr.vx));
+        if (pr.kind === 'rocket_e') {
+          this.rocketEExplode(hx, hz, pr.dmg, pr.aoeR ?? JINX_E.aoeRadius * this.areaMul, e);
           stopT = t;
           break;
-        } else if (pr.kind === 'ult') {
+        } else if (pr.kind === 'ult_r') {
           if (e.kind === 'elite' || e.kind === 'boss') {
-            this.ultExplode(hx, hz);
+            this.ultExplode(hx, hz, pr.dmg);
             stopT = t;
             break;
           }
-          this.damageEnemy(e, ULT.pierceDamage, 'ult');
-          this.events.push({ type: 'hit', x: hx, z: hz, kind: 'ult' });
+          this.damageEnemy(e, pr.dmg * 0.55, 'ult_r');
+          this.events.push({ type: 'hit', x: hx, z: hz, kind: 'ult_r', crit: pr.isCrit });
           pr.hits.push(e.id);
+        } else {
+          // meow / meow_evo / uwu / crossbow / boomerang / boomerang_mini
+          let hitDmg = pr.dmg;
+          if (pr.kind === 'meow_evo' && pr.hits.length > 0) {
+            hitDmg = pr.dmg * Math.max(0.4, Math.pow(0.6, pr.hits.length));
+          }
+          this.damageEnemy(e, hitDmg, pr.kind);
+          this.events.push({ type: 'hit', x: hx, z: hz, kind: pr.kind, crit: pr.isCrit });
+          pr.hits.push(e.id);
+          if (pr.hits.length > pr.pierce) { stopT = t; break; }
         }
       }
       if (stopT >= 0) {
@@ -1125,15 +1564,14 @@ export class Game {
         if (bt >= 0) {
           const bx = x0 + (x1 - x0) * bt;
           const bz = z0 + (z1 - z0) * bt;
-          if (pr.kind === 'cn') {
-            this.damageBoxesInCircle(bx, bz, this.splashRadius, CANNON.directDamage);
-            this.events.push({ type: 'explode', x: bx, z: bz, r: this.splashRadius, kind: 'cn' });
+          if (pr.kind === 'rocket_e') {
+            this.rocketEExplode(bx, bz, pr.dmg, pr.aoeR ?? JINX_E.aoeRadius * this.areaMul, null);
             stopT = bt;
             break;
           } else {
             this.damageBox(box, pr.dmg);
             this.events.push({ type: 'hit', x: bx, z: bz, kind: pr.kind });
-            if (pr.kind !== 'ult') {
+            if (pr.pierce === 0) {
               stopT = bt;
               break;
             }
@@ -1149,66 +1587,45 @@ export class Game {
       pr.x = x1; pr.z = z1;
       pr.travel += stepLen;
       if (endByRange) {
-        pr.alive = false;
-        if (pr.kind === 'cn') this.cannonExplode(x1, z1, null, Math.atan2(pr.vz, pr.vx));
-        else if (pr.kind === 'ult') this.ultExplode(x1, z1);
+        if (pr.kind === 'boomerang' && !pr.returnMode) {
+          pr.returnMode = true;
+          pr.travel = 0;
+          pr.vx = -pr.vx;
+          pr.vz = -pr.vz;
+          pr.hits.length = 0;
+          if (pr.tier >= 1) {
+            for (let k = 0; k < 4; k++) {
+              const a = (k / 4) * Math.PI * 2 + 0.35;
+              this.projectiles.push({
+                kind: 'boomerang_mini', x: x1, z: z1,
+                vx: Math.cos(a) * 14, vz: Math.sin(a) * 14,
+                r: 0.28, dmg: pr.dmg * 0.55, travel: 0, range: 5.5, pierce: 999, hits: [], alive: true, tier: 0, isCrit: pr.isCrit,
+              });
+            }
+          }
+        } else {
+          pr.alive = false;
+          if (pr.kind === 'rocket_e') this.rocketEExplode(x1, z1, pr.dmg, pr.aoeR ?? JINX_E.aoeRadius * this.areaMul, null);
+          else if (pr.kind === 'ult_r') this.ultExplode(x1, z1, pr.dmg);
+        }
       }
     }
   }
 
-  private mgDamageAgainst(pr: Projectile, e: Enemy) {
-    if (pr.kind === 'shard') return pr.dmg;
-    let d = pr.dmg;
-    if (this.lvl('mgFocus')) {
-      if (this.player.mgStacks >= this.mgMaxStacks - 0.01) d *= 1 + UPGRADES.mgFocus.fullStackBonus;
-      if (e.kind === 'elite' || e.kind === 'boss') d *= 1 + UPGRADES.mgFocus.bossBonus;
-    }
-    return d;
-  }
-
-  private cannonExplode(x: number, z: number, direct: Enemy | null, ang: number) {
-    const R = this.splashRadius;
-    const splash = CANNON.splashDamage + (this.lvl('cnBlast') ? UPGRADES.cnBlast.splashAdd : 0);
-    const slow = this.lvl('cnPulse') ? UPGRADES.cnPulse : null;
-    if (direct) {
-      this.damageEnemy(direct, CANNON.directDamage + (this.lvl('cnBlast') ? UPGRADES.cnBlast.directAdd : 0), 'cn');
-      if (slow) this.slowEnemy(direct, slow.slow, slow.slowTime);
-    }
-    this.forEnemiesInCircle(x, z, R, (e) => {
-      if (e === direct) return; // 直接命中目标只结算一次
-      this.damageEnemy(e, splash, 'cn');
-      if (slow) this.slowEnemy(e, slow.slow, slow.slowTime);
+  private rocketEExplode(x: number, z: number, dmg: number, r: number, direct: Enemy | null) {
+    if (direct) this.damageEnemy(direct, dmg, 'rocket_e');
+    this.forEnemiesInCircle(x, z, r, (e) => {
+      if (e !== direct) this.damageEnemy(e, dmg * 0.85, 'rocket_e');
     });
-    this.events.push({ type: 'explode', x, z, r: R, kind: 'cn' });
-    // 碎弹
-    if (this.lvl('cnShards')) {
-      const S = UPGRADES.cnShards;
-      for (let k = 0; k < S.count; k++) {
-        const a = ang + (k === 0 ? -0.45 : 0.45);
-        this.projectiles.push({
-          kind: 'shard', x, z, vx: Math.cos(a) * 14, vz: Math.sin(a) * 14, r: 0.2, dmg: S.damage,
-          travel: 0, range: S.range, pierce: 0, hits: direct ? [direct.id] : [], alive: true, tier: 0,
-        });
-      }
-    }
-    // 磁索共振
-    if (slow) {
-      const field = this.mines.find((m) => m.alive && m.triggered && m.fieldT > 0 && len(m.x - x, m.z - z) < MINE.slowRadius * m.scale);
-      if (field) {
-        const P = UPGRADES.cnPulse;
-        this.forEnemiesInCircle(field.x, field.z, P.radius * field.scale, (e) => {
-          this.damageEnemy(e, P.damage, 'pulse');
-          if (e.kind !== 'boss') e.bindT = Math.max(e.bindT, 0.3);
-        });
-        this.events.push({ type: 'explode', x: field.x, z: field.z, r: P.radius * field.scale, kind: 'pulse' });
-      }
-    }
+    this.damageBoxesInCircle(x, z, r, dmg);
+    this.events.push({ type: 'explode', x, z, r, kind: 'rocket_e' });
   }
 
-  private ultExplode(x: number, z: number) {
-    this.forEnemiesInCircle(x, z, ULT.explodeRadius, (e) => this.damageEnemy(e, ULT.explodeDamage, 'ult'));
-    this.damageBoxesInCircle(x, z, ULT.explodeRadius, ULT.explodeDamage);
-    this.events.push({ type: 'explode', x, z, r: ULT.explodeRadius, kind: 'ult' });
+  private ultExplode(x: number, z: number, baseDmg: number) {
+    const r = Math.min(JINX_R.maxExplodeRadius, JINX_R.baseExplodeRadius + Math.floor(this.player.level / 4)) * this.areaMul;
+    this.forEnemiesInCircle(x, z, r, (e) => this.damageEnemy(e, baseDmg * 1.45, 'ult_r'));
+    this.damageBoxesInCircle(x, z, r, baseDmg);
+    this.events.push({ type: 'explode', x, z, r, kind: 'ult_r' });
   }
 
   // ───────────────────────── 中央治愈喷泉 & 补给箱 ─────────────────────────
@@ -1282,10 +1699,10 @@ export class Game {
       }
       if (this.rand() < SUPPLY_BOX.ultChance) {
         const p = this.player;
-        const before = p.ult;
-        p.ult = Math.min(ULT.chargeNeeded, p.ult + SUPPLY_BOX.ultGain);
-        if (before < ULT.chargeNeeded && p.ult >= ULT.chargeNeeded && !p.ultReadyAnnounced) {
-          p.ultReadyAnnounced = true;
+        const before = p.rCd;
+        p.rCd = Math.max(0, p.rCd - 5);
+        if (before > 0 && p.rCd <= 0 && !p.rReadyAnnounced) {
+          p.rReadyAnnounced = true;
           this.events.push({ type: 'ultReady' });
         }
       }
@@ -1344,28 +1761,40 @@ export class Game {
     }
     if (e.kind === 'elite') {
       this.pickups.push({ x: e.x, z: e.z, heal: MATCH.healPickup, alive: true, age: 0 });
-      this.dropXp(e.x + 0.8, e.z, 4);
-      this.dropXp(e.x - 0.8, e.z, 4);
+      this.accessCards.push({ x: e.x + 0.7, z: e.z + 0.4, alive: true, age: 0 });
+      this.dropXp(e.x + 0.8, e.z, 6);
+      this.dropXp(e.x - 0.8, e.z, 6);
     }
-    // 大招充能
-    const before = p.ult;
-    p.ult = Math.min(ULT.chargeNeeded, p.ult + (ULT.chargePerKill[e.kind] ?? 1) * (1 + UPGRADES.cooldown.mul * this.lvl('cooldown')));
-    if (before < ULT.chargeNeeded && p.ult >= ULT.chargeNeeded && !p.ultReadyAnnounced) {
-      p.ultReadyAnnounced = true;
-      this.events.push({ type: 'ultReady' });
+    // 进化耀光力场（爆破之拥）：击杀力场内敌人触发 2m / 300 伤害爆炸
+    if (this.weaponLv('radiant') >= WEAPON_EVOLVED_LEVEL) {
+      const rRad = WEAPON_BY_ID.radiant.radius[5] * this.areaMul;
+      if (len(e.x - p.x, e.z - p.z) <= rRad + 0.4) {
+        const expR = 2.0 * this.areaMul;
+        const { dmg } = this.rollDmg(300);
+        this.forEnemiesInCircle(e.x, e.z, expR, (o) => {
+          if (o !== e) this.damageEnemy(o, dmg, 'radiant_evo');
+        });
+        this.events.push({ type: 'explode', x: e.x, z: e.z, r: expR, kind: 'radiant' });
+      }
     }
-    // 过载
-    p.killTimes.push(this.time);
-    while (p.killTimes.length && p.killTimes[0] < this.time - OVERLOAD.killWindow) p.killTimes.shift();
-    const trig = p.killTimes.length >= OVERLOAD.killsNeeded || e.kind === 'elite';
-    // 已激活时不续时，冷却中不触发：限制后期无限续杯
-    if (trig && p.overloadT <= 0 && p.overloadCd <= 0) {
-      p.overloadT = this.overloadDuration;
-      p.overloadCd = this.overloadCooldown;
-      p.killTimes.length = 0;
-      this.stats.overloadCount++;
-      this.events.push({ type: 'overload', on: true });
+    // 金克丝官方被动「罪恶快感」：每击杀 70 只小怪或击杀精英触发 8s +100% 移速 & +150 技能急速
+    if (e.kind === 'elite') {
+      this.activateGetExcited();
+    } else {
+      p.passiveKills++;
+      if (p.passiveKills >= JINX_PASSIVE.killsRequired) {
+        p.passiveKills -= JINX_PASSIVE.killsRequired;
+        this.activateGetExcited();
+      }
     }
+  }
+
+  private activateGetExcited() {
+    const p = this.player;
+    const wasOff = p.overloadT <= 0;
+    p.overloadT = JINX_PASSIVE.duration;
+    if (wasOff) this.stats.overloadCount++;
+    this.events.push({ type: 'overload', on: true });
   }
 
   private dropXp(x: number, z: number, value: number) {
@@ -1396,38 +1825,7 @@ export class Game {
     }
   }
 
-  // ───────────────────────── 地雷 ─────────────────────────
-  private updateMines(dt: number) {
-    for (const m of this.mines) {
-      if (!m.alive) continue;
-      m.age += dt;
-      if (m.triggered) {
-        m.fieldT -= dt;
-        if (m.fieldT <= 0) m.alive = false;
-        continue;
-      }
-      if (m.age > MINE.life) { m.alive = false; continue; }
-      if (m.age < MINE.armTime) continue;
-      let hit = false;
-      this.forEnemiesInCircle(m.x, m.z, MINE.triggerRadius, (e) => { if (e.kind !== 'boss' || e.state !== 'enter') hit = true; });
-      if (!hit) continue;
-      m.triggered = true;
-      m.fieldT = MINE.fieldTime;
-      const s = m.scale;
-      this.forEnemiesInCircle(m.x, m.z, MINE.slowRadius * s, (e) => {
-        const d = len(e.x - m.x, e.z - m.z);
-        this.damageEnemy(e, MINE.damage, 'mine');
-        if (e.kind === 'boss') return; // 首领免疫硬控
-        if (d < MINE.bindRadius * s + e.r) {
-          e.bindT = Math.max(e.bindT, MINE.bindTime);
-        }
-        this.slowEnemy(e, MINE.slowFactor, MINE.slowTime);
-      });
-      this.events.push({ type: 'explode', x: m.x, z: m.z, r: MINE.slowRadius * s, kind: 'mine' });
-    }
-  }
-
-  // ───────────────────────── 经验 / 补给 ─────────────────────────
+  // ───────────────────────── 经验 / 补给 / 访问卡 ─────────────────────────
   private updateShards(dt: number) {
     const p = this.player;
     const pr = this.pickupRadius;
@@ -1441,7 +1839,7 @@ export class Game {
         const sp = PLAYER.magnetSpeed * dt;
         if (d <= sp + 0.3) {
           s.alive = false;
-          p.xp += s.value;
+          p.xp += s.value * this.xpMul;
           this.events.push({ type: 'pickup', kind: 'xp' });
           continue;
         }
@@ -1462,6 +1860,16 @@ export class Game {
         this.events.push({ type: 'pickup', kind: 'heal' });
       }
     }
+    for (const c of this.accessCards) {
+      if (!c.alive) continue;
+      c.age += dt;
+      if (len(p.x - c.x, p.z - c.z) < PLAYER.radius + 1.0 && this.state === 'play' && this.endDelay < 0) {
+        c.alive = false;
+        this.events.push({ type: 'pickup', kind: 'card' });
+        this.openAccessCardOffer();
+        break;
+      }
+    }
   }
 
   private compact() {
@@ -1470,38 +1878,71 @@ export class Game {
     this.enemyBullets = this.enemyBullets.filter((b) => b.alive);
     this.shards = this.shards.filter((s) => s.alive);
     this.pickups = this.pickups.filter((s) => s.alive);
-    this.mines = this.mines.filter((s) => s.alive);
+    this.accessCards = this.accessCards.filter((c) => c.alive);
   }
 
-  // ───────────────────────── 升级 ─────────────────────────
+  // ───────────────────────── 升级与访问卡进化 ─────────────────────────
   private checkLevelUp() {
     const p = this.player;
+    if (this.state !== 'play') return;
     if (p.xp >= this.xpNeed && this.endDelay < 0) {
       p.xp -= this.xpNeed;
       p.level++;
       this.stats.levelTimes.push(Math.round(this.time));
-      this.offer = rollUpgrades(this.upgrades, this.levelUpsTaken, this.rand);
-      this.events.push({ type: 'levelUp', level: p.level });
+      this.levelUpIsCard = false;
+      this.offer = rollLevelUpOffers(p.weapons, p.passives, this.levelUpsTaken, this.rand, false);
+      this.events.push({ type: 'levelUp', level: p.level, isCard: false });
       if (this.offer.length) this.state = 'levelup';
     }
   }
 
-  chooseUpgrade(id: UpgradeId) {
-    if (this.state !== 'levelup' || !this.offer.includes(id)) return;
-    const cur = this.upgrades[id] ?? 0;
-    this.upgrades[id] = cur + 1;
-    this.levelUpsTaken++;
+  openAccessCardOffer() {
     const p = this.player;
-    if (id === 'vitality') {
-      p.maxHp += UPGRADES.vitality.maxHp;
-      p.hp = Math.min(p.maxHp, p.hp + UPGRADES.vitality.heal);
+    this.levelUpIsCard = true;
+    this.offer = rollLevelUpOffers(p.weapons, p.passives, this.levelUpsTaken, this.rand, true);
+    this.events.push({ type: 'levelUp', level: p.level, isCard: true });
+    if (this.offer.length) this.state = 'levelup';
+  }
+
+  chooseOffer(index: number) {
+    const picked = this.offer[index];
+    if (this.state !== 'levelup' || !picked) return;
+    const p = this.player;
+    if (picked.kind === 'evolve' || picked.kind === 'weapon') {
+      const wId = picked.id as WeaponId;
+      const prev = p.weapons[wId] ?? 0;
+      p.weapons[wId] = picked.nextLevel;
+      if (prev === 0 && !p.weaponOrder.includes(wId)) p.weaponOrder.push(wId);
+      if (picked.kind === 'evolve' && wId === 'iceblast') {
+        this.triggerIceBlast(WEAPON_EVOLVED_LEVEL);
+      }
+    } else {
+      const pId = picked.id as PassiveId;
+      const prev = p.passives[pId] ?? 0;
+      const oldMax = this.maxHpTotal;
+      p.passives[pId] = picked.nextLevel;
+      if (prev === 0 && !p.passiveOrder.includes(pId)) p.passiveOrder.push(pId);
+      if (pId === 'maxHp') {
+        const diff = this.maxHpTotal - oldMax;
+        p.maxHp = this.maxHpTotal;
+        p.hp = Math.min(p.maxHp, p.hp + Math.max(0, diff));
+      }
     }
-    if (id === 'mineCharge') {
-      p.mineCharges++;
-    }
+    this.levelUpsTaken++;
     this.offer = [];
+    this.levelUpIsCard = false;
     this.state = 'play';
     this.checkLevelUp();
+  }
+
+  /** 兼容旧调用 */
+  chooseUpgrade(idxOrId: number | string) {
+    if (typeof idxOrId === 'number') {
+      this.chooseOffer(idxOrId);
+      return;
+    }
+    const i = this.offer.findIndex((o) => o.id === idxOrId);
+    this.chooseOffer(i >= 0 ? i : 0);
   }
 
   // ───────────────────────── 胜负 ─────────────────────────
@@ -1520,9 +1961,19 @@ export class Game {
     this.stats.time = this.time;
     this.stats.kills = this.kills;
     this.stats.level = this.player.level;
-    this.stats.build = (Object.keys(this.upgrades) as UpgradeId[]).map((id) => ({
-      id, name: UPGRADE_BY_ID[id].name, level: this.upgrades[id]!,
-    }));
+    const built: { id: string; name: string; level: number }[] = [];
+    for (const wId of this.player.weaponOrder) {
+      const lv = this.player.weapons[wId] ?? 0;
+      if (lv <= 0) continue;
+      const def = WEAPON_BY_ID[wId];
+      built.push({ id: wId, name: lv >= WEAPON_EVOLVED_LEVEL ? `★${def.evolvedName}` : def.name, level: lv });
+    }
+    for (const pId of this.player.passiveOrder) {
+      const lv = this.player.passives[pId] ?? 0;
+      if (lv <= 0) continue;
+      built.push({ id: pId, name: PASSIVE_BY_ID[pId].name, level: lv });
+    }
+    this.stats.build = built;
   }
 
   /** 重开（同一 Game 实例复用，渲染层对象池不受影响） */
@@ -1544,7 +1995,22 @@ export class Game {
     this.bossWarned = true;
   }
   devLevelUp() { this.player.xp += this.xpNeed; }
-  devFillUlt() { this.player.ult = ULT.chargeNeeded; }
+  devFillUlt() {
+    this.player.rCd = 0;
+    this.player.eCd = 0;
+    this.player.rReadyAnnounced = true;
+  }
+  devGrantEvolvedArsenal() {
+    const p = this.player;
+    p.weapons = { jinx_meow: 6, cyclonic: 6, radiant: 6, statikk: 6, bunnymega: 6 };
+    p.weaponOrder = ['jinx_meow', 'cyclonic', 'radiant', 'statikk', 'bunnymega'];
+    p.passives = { haste: 5, hpRegen: 5, maxHp: 5, crit: 5, area: 5, projectiles: 5 };
+    p.passiveOrder = ['haste', 'hpRegen', 'maxHp', 'crit', 'area', 'projectiles'];
+    p.maxHp = this.maxHpTotal;
+    p.hp = p.maxHp;
+    p.level = 25;
+    this.activateGetExcited();
+  }
 }
 
 /** 危险区判定：渲染预警与伤害结算共用同一函数和数据 */

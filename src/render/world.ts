@@ -13,6 +13,7 @@ import { addOutline, merge, paint, place, toon } from './style';
 export interface WorldView {
   group: THREE.Group;
   sun: THREE.DirectionalLight;
+  ready?: Promise<void>;
   update(t: number, progress: number, alarm: number, warnings: { entrance: string; tag?: string }[], tier: string, fountain?: FountainState): void;
   setShadows(on: boolean): void;
 }

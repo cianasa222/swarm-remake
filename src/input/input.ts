@@ -22,11 +22,11 @@ export class InputManager {
     this.stickKnob = document.getElementById('stick-knob')!;
 
     window.addEventListener('keydown', (e) => {
-      if (e.repeat) { if (['Space', 'KeyQ', 'KeyE', 'KeyR'].includes(e.code)) e.preventDefault(); return; }
+      if (e.repeat) { if (['Space', 'KeyQ', 'KeyC', 'KeyE', 'KeyR'].includes(e.code)) e.preventDefault(); return; }
       this.keys.add(e.code);
       if (!this.enabled) return;
       if (e.code === 'Space') { this.pressed.add('dash'); e.preventDefault(); }
-      if (e.code === 'KeyQ') this.pressed.add('swap');
+      if (e.code === 'KeyQ' || e.code === 'KeyC') this.pressed.add('swap');
       if (e.code === 'KeyE') this.pressed.add('mine');
       if (e.code === 'KeyR') this.pressed.add('ult');
       if (e.code === 'Escape' || e.code === 'KeyP') this.onPause?.();

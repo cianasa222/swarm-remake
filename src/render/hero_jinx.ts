@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import type { Game } from '../sim/game';
 import { angleDiff } from '../sim/math';
+import { getTexture, loadGLB } from './assets';
 import { blobShadowTex } from './style';
 
 export interface HeroRig {
@@ -25,6 +25,7 @@ export class JinxRig implements HeroRig {
   private aimYaw = 0;
   private firingT = 0;
   private ultAnimT = 0;
+  readonly ready: Promise<void>;
 
   private auraRing: THREE.Mesh;
   private aimTri: THREE.Mesh;
@@ -35,7 +36,7 @@ export class JinxRig implements HeroRig {
     // 脚底柔和投影
     const pShadow = new THREE.Mesh(
       new THREE.PlaneGeometry(1.75, 1.75),
-      new THREE.MeshBasicMaterial({ map: blobShadowTex(), transparent: true, opacity: 0.45, depthWrite: false }),
+      new THREE.MeshBasicMaterial({ map: blobShadowTex(), transparent: true, opacity: 0.58, depthWrite: false }),
     );
     pShadow.rotation.x = -Math.PI / 2;
     pShadow.position.y = 0.02;
@@ -67,36 +68,28 @@ export class JinxRig implements HeroRig {
 
     this.root.add(this.auraRing, this.aimTri, this.modelHolder);
 
-    const texLoader = new THREE.TextureLoader();
-    const loadTex = (url: string) => {
-      const t = texLoader.load(url);
-      t.colorSpace = THREE.SRGBColorSpace;
-      t.flipY = false;
-      return t;
-    };
-    const bodyTex = loadTex('./assets/heroes/jinx/body.png');
-    const weaponTex = loadTex('./assets/heroes/jinx/weapon.png');
+    const loadTex = (url: string) => getTexture(url, { flipY: false });
+    const bodyTex = loadTex('./assets/heroes/jinx/body.webp');
+    const weaponTex = loadTex('./assets/heroes/jinx/weapon.webp');
 
     const bodyMat = new THREE.MeshStandardMaterial({
       map: bodyTex,
       roughness: 0.72,
       metalness: 0.14,
-      envMapIntensity: 1.15,
+      envMapIntensity: 0.65,
       side: THREE.DoubleSide,
     });
     const weaponMat = new THREE.MeshStandardMaterial({
       map: weaponTex,
       roughness: 0.62,
       metalness: 0.24,
-      envMapIntensity: 1.25,
+      envMapIntensity: 0.85,
       side: THREE.DoubleSide,
     });
     this.mats.push(bodyMat, weaponMat);
 
-    const gltfLoader = new GLTFLoader();
-    gltfLoader.load(
-      './assets/heroes/jinx/strawberry_jinx.glb',
-      (gltf) => {
+    this.ready = loadGLB('./assets/heroes/jinx/strawberry_jinx.glb')
+      .then((gltf) => {
         const model = gltf.scene;
         // 配合《无尽狂潮》紧凑俯视镜头比例，保持原版清晰轮廓
         model.scale.setScalar(0.0096);
@@ -164,12 +157,10 @@ export class JinxRig implements HeroRig {
           initAct.play();
           this.currentKey = 'mg_idle';
         }
-      },
-      undefined,
-      (err) => {
+      })
+      .catch((err) => {
         console.error('[JinxRig] Failed to load strawberry_jinx.glb:', err);
-      },
-    );
+      });
   }
 
   private playState(key: string, timeScale = 1) {
@@ -211,9 +202,10 @@ export class JinxRig implements HeroRig {
     }
 
     const overloaded = p.overloadT > 0;
+    this.auraRing.visible = !overloaded;
     const auraMat = this.auraRing.material as THREE.MeshBasicMaterial;
-    auraMat.color.setHex(overloaded ? 0xffe46b : 0x52f2ff);
-    auraMat.opacity = overloaded ? 0.78 : 0.48;
+    auraMat.color.setHex(0x52f2ff);
+    auraMat.opacity = 0.48;
 
     // 受击闪白 / 过载微光
     const hitFlash = p.hurtT > 0 && Math.floor(g.clock * 20) % 2 === 0;
@@ -232,8 +224,8 @@ export class JinxRig implements HeroRig {
 
     if (this.mixer) {
       const spd = Math.hypot(p.vx, p.vz);
-      const isCn = p.weapon === 'cn';
-      const firing = this.firingT > 0;
+      const isCn = p.eVolleyLeft > 0 || p.weapon === 'cn';
+      const firing = this.firingT > 0 || p.eVolleyLeft > 0;
 
       if (p.hp <= 0 || g.state === 'lost') {
         this.playState('death', 1);

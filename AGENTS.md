@@ -12,12 +12,12 @@
 `导入现成资产 → 对齐高档实机画面 → 跑通首波到 Boss → 加预载和缓存 → 验收画质档`
 
 ### 里程碑规划（每完成一个里程碑须先经用户确认，再开启下一个）
-- **M0（已完成）**：Map33 原版 3D 仓库场景（`warehouse_map1.glb`，`104/106` 材质映射，1:1 对齐 `180m×180m` `walkableB64` 碰撞网格）+ 第一位英雄 **幻灵战队金克丝**（`strawberry_jinx.glb`，`133` 骨骼、`18` 套 4 向跑打/火箭/大招/死亡动画）与 Swarm 俯视角对齐。
-- **M1（当前收尾中）**：地图核心交互机制与特效对齐——**中央治愈喷泉** + **66 个补给箱（`metalbox.glb` + 蓝光信标 + 破碎特效）**。*注：喷泉底层已首轮修复，但部分视觉还原度仍需继续精修，详见 `PROGRESS.md`。*
-- **M2（待确认开启）**：第一关原版小怪 / 精英怪 / **雷克塞 Boss（`strawberry_boss_reksai`）** 3D 模型与动画导入及首波到 Boss 流程跑通。
-- **M3**：武器 / 被动 / 进化系统对齐原版数值与特效。
-- **M4**：预载与缓存体系（按关分级预载 GLB/贴图 + 纹理与几何体缓存池，消除首刷与切波卡顿）。
-- **M5**：低 / 中 / 高三档画质验收与联机边界验证。
+- **M0（已完成 / PASS）**：Map33 原版 3D 仓库场景（`warehouse_map1.glb`，`104/106` 材质映射，1:1 对齐 `180m×180m` `walkableB64` 碰撞网格）+ 第一位英雄 **幻灵战队金克丝**（`strawberry_jinx.glb`，`133` 骨骼、`18` 套 4 向跑打/火箭/大招/死亡动画）与 Swarm 俯视角对齐。
+- **M1（已完成 / CLEAN PASS）**：地图核心交互机制与特效对齐——**中央治愈喷泉**（官方坐标 `(-0.45, -2.40)` + 5 套 `.scb` 3D 特效网格 + 22 张官方烘焙光照贴图 `MapSunProperties`）+ **66 个补给箱（`metalbox.glb` + 蓝光信标 + 破碎特效）**。
+- **M2（已完成 / PASS）**：第一关原版小怪 / 精英怪 / **雷克塞 Boss（`strawberry_boss_reksai`）** 3D 模型与动画导入及首波到 Boss 流程跑通。
+- **M3（已完成 / CLEAN PASS）**：金克丝官方武器/技能特效 + 5 武器 / 6 被动进化系统 + 官方人物头像技能栏 HUD 对齐原版数值与特效。
+- **M4（已完成 / CLEAN PASS）**：统一两级预载与去重缓存体系（`src/render/assets.ts` + 开局进度条 + WebGL 着色器预编译 + `VITE_ASSET_BASE_URL` CDN 支持）+ 资产 Meshopt/WebP 压缩（`172.56 MB` → `36.75 MB`，最大单文件 `warehouse_map1.glb` 降至 `13.24 MB < 25 MiB`，可直接部署 Cloudflare Pages）。
+- **M5（待开启）**：低 / 中 / 高三档画质验收与联机边界验证，以及后续新英雄扩展。
 
 ---
 
@@ -41,7 +41,7 @@
 
 - **`PLAYER`**：`maxHp: 1000`、`speed: 3.5`、`radius: 0.35`
 - **`MATCH`**：`bossTime: 897`（`14:57` 首领登场）
-- **`FOUNTAIN`**：`x: -1.62`、`z: -3.53`、`innerRadius: 8.1`、`zoneRadius: 11.4`、`chargeTime: 10.0`、`decayRate: 0.35`、`healFraction: 0.60`、`cooldown: 75.0`
+- **`FOUNTAIN`**：`x: -0.45`、`z: -2.40`、`innerRadius: 8.1`、`zoneRadius: 11.4`、`chargeTime: 10.0`、`decayRate: 0.35`、`healFraction: 0.60`、`cooldown: 75.0`
 - **`SUPPLY_BOX`**：`hp: 60`、`radius: 0.68`、`respawnTime: 90`、`xpDrops: 2`、`xpValue: 22`、`healChance: 0.30`、`ultChance: 0.25`、`ultGain: 8`
 
 ---
@@ -56,5 +56,6 @@
 ### Windows 环境与工程避坑清单
 - **PowerShell PATH 与命令**：调用 Node / Git / `gh` 前注意检查 `$env:Path`（`C:\Program Files\nodejs`、`C:\Program Files\Git\cmd`、`C:\Program Files\GitHub CLI`）；Node 脚本统一用 `npm.cmd`（不要用 `npm.ps1`）；PowerShell 5.1 不支持 `&&`，请分行执行并检查 `$LASTEXITCODE`。
 - **防止 Vite Chokidar `EBUSY`**：运行 Vite 开发服务器期间，禁止用脚本直接往 `public/` 下载覆盖文件；应先下载到临时目录，再 `Move-Item -Force` 原子移入 `public/`。
-- **Three.js `PointsMaterial` 精灵图集陷阱**：`PointsMaterial` 会忽略 `Texture.repeat` 与 `Texture.offset`。凡是精灵序列图（如 `hex_plus.png` `2×2`、`lilstar.png` `4×2`），必须先用离屏 Canvas 裁剪为独立 `CanvasTexture`（`loadSpriteCell`），否则每个粒子都会渲染成整张网格缩略图。
+- **Three.js `PointsMaterial` 精灵图集与 `CanvasTexture` 尺寸陷阱**：`PointsMaterial` 会忽略 `Texture.repeat` 与 `Texture.offset`。凡是精灵序列图用于 `PointsMaterial`（如 `lilstar_4x2.png`），必须先用离屏 Canvas 裁剪为固定尺寸 `CanvasTexture`（**禁止在 `img.onload` 中修改 `cv.width`/`cv.height`**，否则 WebGL2 `texStorage2D` 不可变纹理会静默失效变成全透明）；而 `MeshBasicMaterial` 网格材质优先直接用原生 `tex.repeat.set(...)` / `tex.offset.set(...)` 裁剪。
+- **Windows 自动化验证脚本防挂起**：凡是用 Node 启动 Vite + Playwright 的验证脚本，必须设置 **60 秒总超时熔断**、`finally` 中调用 `spawnSync('taskkill', ['/PID', String(vite.pid), '/T', '/F'], { stdio: 'ignore' })` 清理进程树，并在脚本末尾显式执行 **`process.exit(0)`**，杜绝子进程句柄残留导致任务卡死。
 - **加速插件**：本机已全局安装 `agy-fast`（`v0.2.8`），新会话优先使用其提供的 `batch_search`、`read_slices`、`apply_edits`、`run_checks` 批量工具。
