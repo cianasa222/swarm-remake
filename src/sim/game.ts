@@ -780,10 +780,10 @@ export class Game {
       if (e.slowT > 0) { e.slowT -= dt; if (e.slowT <= 0) e.slowF = 1; }
       const dx = p.x - e.x, dz = p.z - e.z;
       const d = len(dx, dz) || 1e-4;
-      // 原版 TeleportDistance：离玩家过远（>30m）时重新传送到视野外圈 [20m, 23m]
+      // 原版 behaviors：离玩家过远（>30m）时重新传送到 [22m, 23m]
       if (!this.boss && d > SPAWN_RING.maxDist) {
         if (e.hazardId) this.cancelWindup(e);
-        const np = this.map.findWalkableAround(p.x, p.z, SPAWN_RING.inner, SPAWN_RING.outer, this.rand);
+        const np = this.map.findWalkableAround(p.x, p.z, SPAWN_RING.teleportInner, SPAWN_RING.teleportOuter, this.rand);
         e.x = np.x;
         e.z = np.z;
         continue;
@@ -1218,7 +1218,8 @@ export class Game {
         if (p.radiantT <= 0) {
           p.radiantT = def.cd[lv - 1];
           const rad = def.radius[lv - 1] * this.areaMul;
-          const base = def.dmg[lv - 1] + this.maxHpTotal * 0.025;
+          // 原版 HollowRadiance Damage = BaseDamage + 0.035 × 最大生命（mStat 11）
+          const base = def.dmg[lv - 1] + this.maxHpTotal * 0.035;
           this.forEnemiesInCircle(p.x, p.z, rad, (e) => {
             const { dmg } = this.rollDmg(base);
             this.damageEnemy(e, dmg, 'radiant');
@@ -1339,7 +1340,7 @@ export class Game {
           }
         }
       } else if (wId === 'bunnymega') {
-        const cands = this.enemies.filter((e) => e.alive && (e.kind !== 'boss' || e.state !== 'enter') && len(e.x - p.x, e.z - p.z) <= 10.5);
+        const cands = this.enemies.filter((e) => e.alive && (e.kind !== 'boss' || e.state !== 'enter') && len(e.x - p.x, e.z - p.z) <= 8); // 原版 StarStrike TargetingRange 800
         if (!cands.length) continue;
         p.weaponCds[wId] = def.cd[lv - 1] * this.cdMul;
         const n = def.count[lv - 1] + this.bonusProjectiles;
@@ -1404,17 +1405,18 @@ export class Game {
         if (cd - dt <= 0) o.hitCd.delete(id);
         else o.hitCd.set(id, cd - dt);
       }
-      this.forEnemiesInCircle(o.x, o.z, 0.7 * this.areaMul, (e) => {
+      // 原版 HolyBauble MissileWidth 100（进化 130）→ 半径 0.5 / 0.65 m
+      this.forEnemiesInCircle(o.x, o.z, (o.evolved ? 0.65 : 0.5) * this.areaMul, (e) => {
         if (o.hitCd.has(e.id)) return;
-        o.hitCd.set(e.id, 0.35);
+        o.hitCd.set(e.id, 1.0); // 原版 LockoutTime 1.0
         const { dmg, isCrit } = this.rollDmg(o.dmg);
         this.damageEnemy(e, dmg, 'cyclonic');
         this.events.push({ type: 'hit', x: e.x, z: e.z, kind: 'cyclonic', crit: isCrit });
         if (e.kind !== 'boss') {
           const dx = e.x - p.x, dz = e.z - p.z;
           const d = len(dx, dz) || 1;
-          e.x += (dx / d) * 0.45;
-          e.z += (dz / d) * 0.45;
+          e.x += (dx / d) * 1.5; // 原版 PushDistance 150
+          e.z += (dz / d) * 1.5;
         }
       });
     }

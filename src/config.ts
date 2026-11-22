@@ -27,16 +27,19 @@ export const ARENA = {
   } as Record<string, { name: string; x: number; z: number; spread: number }>,
 };
 
-/** 原版围绕玩家视野外圈刷怪环（InnerRadius: 2000, OuterRadius: 2300, maxDistance: 3000） */
+/** 原版围绕玩家视野外圈刷怪环（InnerRadius: 2000, OuterRadius: 2300）；
+ *  超距传送（behaviors: maxDistance 3000 → TeleportInnerRadius 2200 / TeleportOuterRadius 2300） */
 export const SPAWN_RING = {
   inner: 20,
   outer: 23,
   maxDist: 30,
+  teleportInner: 22,
+  teleportOuter: 23,
 };
 
 export const MATCH = {
-  /** 首领登场时刻（原版 MapA 20 波总时长：42 + 19*45 = 897s） */
-  bossTime: 897,
+  /** 首领登场时刻（原版 LoLModesPhaseData：开场 3s + 第 1 段 42s + 19×45s = 900s） */
+  bossTime: 900,
   /** 入口预警提前量 */
   waveWarn: 1.4,
   /** 生命补给拾取回复（对齐 1000 HP 基准） */
@@ -251,20 +254,27 @@ export const BOSS = {
   addsCount: 5,
 };
 
-/** 官方 Map33 ExperienceCurveData {9f34b4bd} 增量经验曲线 */
+/** 官方 Map33 ExperienceCurveData {9f34b4bd} 累计经验表（完整 99 级，DefaultMaxLevel = 99）。
+ *  注：原表第 91 项为 19035（原版数据笔误，比前一项还小），这里按前后两项取中值 39040 修正。 */
 const OFFICIAL_XP_CURVE = [
   5, 15, 30, 50, 75, 105, 140, 180, 225, 275,
   341, 413, 491, 575, 665, 761, 863, 971, 1085, 1205,
   1352, 1506, 1667, 1835, 2010, 2192, 2381, 2577, 2780, 2990,
+  3238, 3494, 3758, 4030, 4310, 4598, 4894, 5198, 5510, 5830,
+  6199, 6577, 6964, 7360, 7765, 8179, 8602, 9034, 9475, 9925,
+  10435, 10955, 11485, 12025, 12575, 13135, 13705, 14285, 14875, 15475,
+  16085, 16705, 17335, 17975, 18625, 19285, 19955, 20635, 21325, 22025,
+  22735, 23455, 24185, 24925, 25675, 26435, 27205, 27985, 28775, 29575,
+  30385, 31205, 32035, 32875, 33725, 34585, 35455, 36335, 37225, 38125,
+  39040, 39955, 40885, 41825, 42775, 43735, 44705, 45685, 46675,
 ];
 
 /** 升级经验需求：第 level 级 -> level+1 级 */
 export function xpForLevel(level: number): number {
-  if (level <= 1) return OFFICIAL_XP_CURVE[0];
-  if (level - 1 < OFFICIAL_XP_CURVE.length) {
-    return OFFICIAL_XP_CURVE[level - 1] - OFFICIAL_XP_CURVE[level - 2];
-  }
-  return 210 + (level - OFFICIAL_XP_CURVE.length) * 28;
+  const T = OFFICIAL_XP_CURVE;
+  if (level <= 1) return T[0];
+  const i = Math.min(level - 1, T.length - 1);
+  return T[i] - T[i - 1];
 }
 
 export const XP = {
@@ -311,7 +321,8 @@ export const FOUNTAIN = {
 
 /** 第一关可破坏金属补给箱（66 个原版点位） */
 export const SUPPLY_BOX = {
-  hp: 60,
+  /** 原版 Pod 生命 100（LoL Wiki · Swarm · Pods） */
+  hp: 100,
   radius: 0.68,
   respawnTime: 90,
   xpDrops: 2,
