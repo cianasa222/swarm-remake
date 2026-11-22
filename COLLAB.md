@@ -152,8 +152,8 @@
 | [#1](../../issues/1) | 14.14 `.wad.client` 下载解包（**用 Windows 清单**，见 Issue 21:30 订正）+ 5 个 Nova 网格转 JSON + 15 张贴图（T4）+ 4 种小怪 `skin0.bin.json` | 执行 AI（Muse，待领取） | 🟡 待领取 |
 | — | 验收并修正喷泉第一批（`c63e871`，Quick AI 已提交） | 开发 AI + 用户 | ✅ 已验收（AG-01）并上线（AG-02） |
 | — | 验收并修正小怪模型修复（`46362d7`，Quick AI 已提交） | 开发 AI + 用户 | ✅ 已验收（AG-01）并上线（AG-02） |
-| — | 重新部署线上（线上仍是 `ecc07343`；AG-03、PR #2 已合并未部署，PR #3 合并后一起部署） | 用户 | ⏳ |
-| — | 喷泉第二批：叠加贴图 + 剩余 Nova 层（清单见 `docs/audit/fountain_emitters_14.14.md` 4.3 节） | 开发 AI（Quick AI 审查） | ✅ 已完成（AG-03 `c38c792`），待部署 |
+| — | 重新部署线上 | Antigravity | ✅ 已上线 `701860ff`（AG-05，含 AG-03 喷泉第二批、PR #2 金克丝重建、AG-05 金克丝补层）；PR #3 合并后需再部署一次 |
+| — | 喷泉第二批：叠加贴图 + 剩余 Nova 层（清单见 `docs/audit/fountain_emitters_14.14.md` 4.3 节） | 开发 AI（Quick AI 审查） | ✅ 已完成（AG-03 `c38c792`）并上线（AG-05） |
 | — | M5：三档画质验收 + 联机边界（`teammateVfxScale`、`players[]`） | 开发 AI（Quick AI 审查） | ⏳ 待用户确认开启 |
 | — | 自动部署 `wrangler.jsonc` + `preview` 分支 | 开发 AI + 用户 | ⏳ |
 | — | 其余小项（清理 `lan.ts`/`buildWorld`、`compress_assets.mjs` 绝对路径） | 开发 AI | ⏳ 见 `QUICK_AI_HANDOVER.md` 第 2 节 |
@@ -161,8 +161,8 @@
 | — | 交接按 AI 分目录（`handover/<ai名>/`），新增交接总入口和 2.2 节规则（Q-11） | Quick AI（用户要求） | ✅ 已完成 |
 | — | 线上版本 vs 14.14 全面审计（数值 ✅ Q-14；首领 ✅ Q-17 `docs/audit/boss_reksai_14.14.md`；武器特效 / 敌人模型 / 地图 / 界面 / 镜头 / 音效待补） | Quick AI | 🔄 进行中 |
 | — | 首领雷克塞按原版修复（Q-19 删自编招式和数值、Q-20 狂暴、Q-21 钻地 / 飞弹 / 隧道 / 登场、Q-22 特效与材质，资源见 Issue #4） | Quick AI 提交 → 开发 AI 验收 | ⏳ 待开始 |
-| [#4](https://github.com/cianasa222/swarm-remake/issues/4) | 补原版缺失资源并补做对应层：金克丝 E/R 35 个贴图 / 网格；雷克塞 34 段动作、子网格核对、308 个特效资源、出场动画核对；**全游戏原版音效**（目前 0 个，全是合成音）（清单 `docs/tasks/missing_assets_14.14.md`） | **Antigravity** | 🟡 待领取 |
-| [PR #2](https://github.com/cianasa222/swarm-remake/pull/2) | 金克丝数值与特效按 14.14 原版重建（Q-13） | Quick AI 提交 → 开发 AI 验收 | ✅ 已验收合并（AG-04，`c92c5d5`），待部署 |
+| [#4](https://github.com/cianasa222/swarm-remake/issues/4) | 补原版缺失资源并补做对应层：金克丝 E/R 35 个贴图 / 网格；雷克塞 34 段动作、子网格核对、308 个特效资源、出场动画核对；**全游戏原版音效**（目前 0 个，全是合成音）（清单 `docs/tasks/missing_assets_14.14.md`） | **Antigravity** | 🔄 进行中：A 节 PR #2 缺的金克丝层已由 AG-05 补齐并上线；B 首领、C 音效、D 出场动画未开始 |
+| [PR #2](https://github.com/cianasa222/swarm-remake/pull/2) | 金克丝数值与特效按 14.14 原版重建（Q-13） | Quick AI 提交 → 开发 AI 验收 | ✅ 已合并（AG-04）并上线（AG-05） |
 | [PR #3](https://github.com/cianasa222/swarm-remake/pull/3) | A 类数值对齐 14.14：武器射程、旋风切割器、耀光、首领 900 s、99 级经验表、补给箱、传送环（Q-15） | Quick AI 提交 → 开发 AI 验收 | ⏳ 待构建验收 |
 
 ---
