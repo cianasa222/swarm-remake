@@ -85,7 +85,7 @@ export class Renderer {
 
   applyQuality() {
     const s = this.quality.spec;
-    const dpr = Math.min(window.devicePixelRatio || 1, s.maxDpr) * s.resScale;
+    const dpr = Math.min(window.devicePixelRatio || 1, s.maxDpr) * this.quality.resScale; // Q-23：含档内动态分辨率
     this.gl.setPixelRatio(dpr);
     this.gl.setSize(this.w, this.h, false);
     this.gl.shadowMap.enabled = s.shadows;

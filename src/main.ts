@@ -4,7 +4,7 @@ import { AudioFX } from './audio/audio';
 import { InputManager } from './input/input';
 import { webPlatform } from './platform/platform';
 import { assetUrl, getAssetStats, hasCustomAssetBase, preloadStage1, preloadStage2, uiIconUrl } from './render/assets';
-import { QualityManager, QualitySetting, DetailKey, DetailValue } from './render/quality';
+import { QualityManager, QualitySetting, DetailKey, DetailValue, FrameLimiter } from './render/quality';
 import { Renderer } from './render/renderer';
 import { Game, SimInput } from './sim/game';
 import {
@@ -689,10 +689,45 @@ if (import.meta.env.DEV) {
 // ── 主循环 ──
 const simIn: SimInput = { mx: 0, mz: 0, swap: false, mine: false, ult: false, dash: false };
 
+// Q-23 性能面板：网址加 `?perf=1` 显示帧率 / 帧时间 / 档位 / 渲染比例 / DrawCall / 三角形数（iPhone 实测用）
+const perfEl: HTMLDivElement | null = /[?&]perf=1/.test(location.search) ? document.createElement('div') : null;
+if (perfEl) {
+  perfEl.style.cssText =
+    'position:fixed;left:6px;top:6px;z-index:9999;padding:4px 6px;font:11px/1.35 monospace;color:#fff;background:rgba(0,0,0,.55);border-radius:4px;pointer-events:none;white-space:pre';
+  document.body.appendChild(perfEl);
+}
+let perfFrames = 0;
+let perfT0 = 0;
+let perfWorst = 0;
+
+function updatePerf(now: number, dtMs: number) {
+  if (!perfEl) return;
+  perfFrames++;
+  perfWorst = Math.max(perfWorst, dtMs);
+  if (now - perfT0 < 500) return;
+  const fps = (perfFrames * 1000) / (now - perfT0);
+  const info = renderer.gl.info.render;
+  const pr = renderer.gl.getPixelRatio();
+  perfEl.textContent =
+    `${fps.toFixed(0)} fps  最慢 ${perfWorst.toFixed(1)}ms  平滑 ${quality.smoothedMs.toFixed(1)}ms\n` +
+    `档位 ${quality.active}${quality.setting === 'auto' ? '(自动)' : ''}  上限 ${quality.frameCap || '不限'}\n` +
+    `渲染比例 ${quality.resScale.toFixed(2)}  像素比 ${pr.toFixed(2)}\n` +
+    `DrawCall ${info.calls}  三角形 ${(info.triangles / 1000).toFixed(0)}k`;
+  perfFrames = 0;
+  perfT0 = now;
+  perfWorst = 0;
+}
+
+const frameLimiter = new FrameLimiter();
+
 function frame(now: number) {
   requestAnimationFrame(frame);
-  const dtMs = Math.min(100, Math.max(0, now - lastMs));
+  // Q-23：按独立时间轴限帧，而非从上次实际渲染时间重新计时。
+  if (!frameLimiter.accept(now, quality.frameCap)) return;
+  const rawDtMs = Math.max(0, now - lastMs);
+  const dtMs = Math.min(100, rawDtMs);
   lastMs = now;
+  updatePerf(now, rawDtMs);
   const dt = dtMs / 1000;
 
   if (bannerTimer > 0) {
