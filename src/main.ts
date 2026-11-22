@@ -23,7 +23,7 @@ const pauseModal = $('screen-pause');
 const endModal = $('screen-end');
 
 const quality = new QualityManager(webPlatform);
-const renderer = new Renderer(canvas, quality);
+const renderer = new Renderer(canvas, quality, webPlatform.deviceInfo().mobile);
 const audio = new AudioFX();
 const game = new Game();
 
@@ -73,7 +73,21 @@ let bannerTimer = 0;
 const TIER_LABEL = { low: '低', medium: '中', high: '高' } as const;
 $('q-rec').textContent = `（设备推荐：${TIER_LABEL[quality.recommended]}）`;
 
+const heightSelectors = ['opt-camera-height', 'p-camera-height'].map(id => $<HTMLSelectElement>(id));
+const savedHeight = webPlatform.load('tideline_camera_height');
+if (savedHeight && Array.from(heightSelectors[0].options).some(o => o.value === savedHeight)) {
+  renderer.cameraHeight = Number(savedHeight);
+}
+for (const select of heightSelectors) {
+  select.addEventListener('change', () => {
+    renderer.cameraHeight = Number(select.value);
+    webPlatform.save('tideline_camera_height', select.value);
+    syncOptionUI();
+  });
+}
+
 function syncOptionUI() {
+  for (const select of heightSelectors) select.value = String(renderer.cameraHeight);
   for (const group of ['start-quality', 'pause-quality']) {
     $(group).querySelectorAll('button').forEach((b) => {
       b.classList.toggle('active', b.dataset.q === quality.setting);
