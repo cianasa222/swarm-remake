@@ -9,8 +9,8 @@
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | GPT-01 | 2026-11-23 | `git log --grep "GPT-01"` | 本文件（新增）、handover/README.md（+1 行）、COLLAB.md（新增 GPT 补充节） | 资源最小获取策略、证据标准、协作漏洞审查 | 文档核对 | 不涉及 | 以 KV SYNC_STATE.json 读回哈希为准 |
 | GPT-02 | 2026-11-23 | `git log --grep GPT-02` | RESOURCE_SOURCES.md（新增）、COLLAB.md、入口、本文件 | 统一渠道及禁止无证据否定 | 文档核对 | 不涉及 | 以 KV SYNC_STATE.json 为准 |
-| GPT-05 | 2026-11-23 | `git log --grep GPT-05` | 首页、画质管理、渲染、浏览器测试入口 | 用户授权接手登录/设置；纯代码首页与游客；邮箱跨站授权待实现 | build 通过；浏览器环境拒绝 socket，待真机验收 | 未部署 | 分支，合并后同步 |
-| GPT-06 | 2026-11-23 | PR #7 `gpt/login-home-graphics` | `worker/index.mjs`、`worker/README.md`、`tools/auth-gateway.test.mjs`、首页 | 共享原账号认证、Swarm 同源网关、登录/退出、会话恢复；用户确认合并 | 网关 mock 4/4、build、playtest 4/4；1280×800 静态登录页渲染核对，独立审查通过基础安全，线上真实绑定和全流程待验收 | 未部署 | 合并后按 SHA 核验 |
+| GPT-05 | 2026-11-23 | PR #7 已合并 `accf280` | 首页、画质管理、渲染、浏览器测试入口 | 用户授权接手登录/设置；纯代码首页与游客；共享邮箱见 GPT-06 | build 通过；浏览器环境拒绝 socket，待完整真机验收 | 未部署 | 以 KV SYNC_STATE.json SHA 为准 |
+| GPT-06 | 2026-11-23 | PR #7 已合并 `accf280` | `worker/index.mjs`、`worker/README.md`、`tools/auth-gateway.test.mjs`、首页 | 共享原账号认证、Swarm 同源网关、登录/退出、会话恢复；用户确认合并 | 网关 mock 4/4、build、playtest 4/4；1280×800 静态登录页渲染核对，独立审查通过基础安全，线上真实绑定和全流程待验收 | 未部署 | 以 KV SYNC_STATE.json SHA 为准 |
 
 ## 2. 接手基线
 
