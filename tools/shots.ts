@@ -29,6 +29,7 @@ async function main() {
   await page.goto(URL, { waitUntil: 'networkidle' });
   await page.waitForTimeout(600);
   await page.screenshot({ path: `${OUT}/0_start.png` });
+  await page.locator('#home-guest').click();
 
   await page.click('#btn-start');
   await page.evaluate(() => {

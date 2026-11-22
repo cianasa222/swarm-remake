@@ -25,6 +25,7 @@ async function main() {
   page.on('console', (m) => { if (m.type() === 'error') errors.push(`console.error: ${m.text()}`); });
 
   await page.goto(URL, { waitUntil: 'networkidle' });
+  await page.locator('#home-guest').click();
   await page.waitForSelector('#btn-start');
 
   // 1. 开局
