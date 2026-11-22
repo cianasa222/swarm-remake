@@ -155,7 +155,8 @@
 | — | 其余小项（清理 `lan.ts`/`buildWorld`、`compress_assets.mjs` 绝对路径） | 开发 AI | ⏳ 见 `QUICK_AI_HANDOVER.md` 第 2 节 |
 | — | 网站下线交接文档、停用 `/__sync_kv`（QC-05） | Quick AI（用户要求） | ✅ 已完成 |
 | — | 交接按 AI 分目录（`handover/<ai名>/`），新增交接总入口和 2.2 节规则（Q-11） | Quick AI（用户要求） | ✅ 已完成 |
-| — | 线上版本 vs 14.14 全面审计（数值已完成 Q-14；特效/模型/地图/首领/界面/音效待补，见 `docs/audit/live_vs_14.14.md`） | Quick AI | 🔄 进行中 |
+| — | 线上版本 vs 14.14 全面审计（数值 ✅ Q-14；首领 ✅ Q-17 `docs/audit/boss_reksai_14.14.md`；武器特效 / 敌人模型 / 地图 / 界面 / 镜头 / 音效待补） | Quick AI | 🔄 进行中 |
+| — | 首领雷克塞按原版修复（Q-18 删自编招式和数值、Q-19 狂暴、Q-20 钻地 / 飞弹 / 隧道 / 登场、Q-21 特效与材质，需先解包资源） | Quick AI 提交 → 开发 AI 验收 | ⏳ 待开始 |
 | [PR #2](https://github.com/cianasa222/swarm-remake/pull/2) | 金克丝数值与特效按 14.14 原版重建（Q-13） | Quick AI 提交 → 开发 AI 验收 | ✅ 已验收合并（AG-04，`c92c5d5`），待部署 |
 | [PR #3](https://github.com/cianasa222/swarm-remake/pull/3) | A 类数值对齐 14.14：武器射程、旋风切割器、耀光、首领 900 s、99 级经验表、补给箱、传送环（Q-15） | Quick AI 提交 → 开发 AI 验收 | ⏳ 待构建验收 |
 
