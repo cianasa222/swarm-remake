@@ -1,7 +1,7 @@
 # Antigravity（开发 AI）交接文档（handover/antigravity/HANDOVER.md）
 
 > **本文档由 Antigravity（主线开发 AI）编写和维护。**
-> 最后更新：2026-11-22 23:32 CST · 改动编号已排到 **AG-01**
+> 最后更新：2026-11-22 23:52 CST · 改动编号已排到 **AG-02**
 > 交接总入口：[`handover/README.md`](../README.md) · 协作规范：[`COLLAB.md`](../../COLLAB.md)
 
 ---
@@ -10,7 +10,8 @@
 
 | 编号 | 时间（CST） | 提交 | 文件（+增 / −删 行） | 改了什么 | 验收 | 部署 | KV |
 | :--- | :--- | :--- | :--- | :--- | :---: | :---: | :---: |
-| AG-01 | 11-22 23:32 | `[Antigravity AG-01]` | `src/render/map_warehouse.ts`（+29 / −26）、`handover/antigravity/HANDOVER.md`（新增）、`handover/README.md`（+1 / −1） | 验收 Quick AI 的 Q-04（`c63e871`）与 Q-05（`46362d7`）：Q-05 小怪 4 模型全部 **PASS**；修复 Q-04 喷泉 3 处实机视觉缺陷——修正 `novaWaves` 缩放（`fountain_wave.json` 顶点 `maxR=46.33`，`novaGroup ×1.75` 下由 `0.8/0.4` 修正为 `0.175/0.135`，消除 64.9m 穿墙与低面数折线）、修复 `makeFxPool` 亮度与 `healspark` / `sparklies1` / `Gold` / `Gold1` 粒子尺寸和起始缩放曲线（消除 10% 零缩放延迟） | ✅ **CLEAN PASS**（`build` + `playtest` 4/4 + 5 张 `1280×800` 实机截图独立审计通过） | ⏳ 待部署 | 已同步 |
+| AG-01 | 11-22 23:32 | `[Antigravity AG-01]` (`a84d57a`) | `src/render/map_warehouse.ts`（+29 / −26）、`handover/antigravity/HANDOVER.md`（新增）、`handover/README.md`（+1 / −1） | 验收 Quick AI 的 Q-04（`c63e871`）与 Q-05（`46362d7`）：Q-05 小怪 4 模型全部 **PASS**；修复 Q-04 喷泉 3 处实机视觉缺陷——修正 `novaWaves` 缩放（`fountain_wave.json` 顶点 `maxR=46.33`，`novaGroup ×1.75` 下由 `0.8/0.4` 修正为 `0.175/0.135`，消除 64.9m 穿墙与低面数折线）、修复 `makeFxPool` 亮度与 `healspark` / `sparklies1` / `Gold` / `Gold1` 粒子尺寸和起始缩放曲线（消除 10% 零缩放延迟） | ✅ **CLEAN PASS**（`build` + `playtest` 4/4 + 5 张 `1280×800` 实机截图独立审计通过） | ✅ 已部署（见 AG-02） | 已同步 |
+| AG-02 | 11-22 23:52 | `[Antigravity AG-02]` | `handover/antigravity/HANDOVER.md`、`handover/README.md`（+1 / −1） | 发布 `a84d57a` 最新构建（276 个静态文件，`index-BKy7dgh5.js` + `index-BNns1gdj.css` + M4 压缩资产，不含任何交接文档）至 Cloudflare Worker `tideline-swarm`（`deployment_id: 54a77c68c50947ad81ab9cda3a0a0e78`），保留 v7 410 文档拦截、`public/_headers` CORS 与零 KV 绑定，线上全端点验收通过 | ✅ 线上实测 PASS（`/`、`index-BKy7dgh5.js`、`index-BNns1gdj.css`、`warehouse_map1.glb`、`enemy_dasher.glb` 均 `200` + `ACAO: *`；4 交接文档与 `/__sync_kv` 均 `410`） | ✅ 已上线 | 已同步 |
 
 ---
 
@@ -34,5 +35,4 @@
 
 ## 4. 下一步建议
 
-1. **部署最新线上版本**：将包含 Q-04 精修（含 AG-01 修复）、Q-05 小怪修复与 `public/_headers` 的最新 `dist/` 发布到 `tideline-swarm.cianasa888-gbd.workers.dev`。
-2. **等待用户确认后开启 M5**：低/中/高三档画质验收 + `weapon_vfx.ts` 补齐 `teammateVfxScale` + `game.ts` 预留 `players[]` + 清理未使用的 `lan.ts` 与 `compress_assets.mjs` 绝对路径。
+1. **等待用户确认后开启 M5**：低/中/高三档画质验收 + `weapon_vfx.ts` 补齐 `teammateVfxScale` + `game.ts` 预留 `players[]` + 清理未使用的 `lan.ts` 与 `compress_assets.mjs` 绝对路径。
