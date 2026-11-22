@@ -8,7 +8,7 @@
 
 | 编号 | 时间（CST） | 提交 | 文件（+增/−删） | 改了什么 | 验收 | 部署 | KV |
 |---|---|---|---|---|---|---|---|
-| MU-01 | 2026-11-23 06:40 | 待填（本轮提交） | `handover/muse/HANDOVER.md`（新建）；`handover/README.md`（合并 KV 新版 + GitHub GPT-08 行 + Muse 行 + §5 线上版本） | 按 `handover/gpt/DEPLOYMENT_GPT08.md` 部署 PR #8（main `6962303`）到生产 Worker `tideline-swarm`；登记实际版本号；合并 README 时保留 Quick AI 的 KV 独有内容（`kv_only_pending`、`pending/` 均未动） | 构建：vite 构建通过；网关测试 4/4；playtest 4/4 全胜；dist 415 文件 / 51 MiB / 最大 13.24 MiB / 无交接文件。线上：首页 200（主域 + workers.dev）、匿名 session `{"accountId":null}`、跨域 POST 403、错误方法 405、profile/save 404、抽查资源 200、交接文档 410 | ✅ 已上线：Version `5955ad9a-6fa9-4355-9f7c-12672c9d0c78`，Deployment `f94499ee-a2a9-486e-a8ee-4c8087ebf9b3`，100% 流量；旧版 `7d862759`（deployment `44d8772f`）保留可回退 | 已同步（本轮） |
+| MU-01 | 2026-11-23 06:40 | `5e92b91` | `handover/muse/HANDOVER.md`（新建）；`handover/README.md`（合并 KV 新版 + GitHub GPT-08 行 + Muse 行 + §5 线上版本） | 按 `handover/gpt/DEPLOYMENT_GPT08.md` 部署 PR #8（main `6962303`）到生产 Worker `tideline-swarm`；登记实际版本号；合并 README 时保留 Quick AI 的 KV 独有内容（`kv_only_pending`、`pending/` 均未动） | 构建：vite 构建通过；网关测试 4/4；playtest 4/4 全胜；dist 415 文件 / 51 MiB / 最大 13.24 MiB / 无交接文件。线上：首页 200（主域 + workers.dev）、匿名 session `{"accountId":null}`、跨域 POST 403、错误方法 405、profile/save 404、抽查资源 200、交接文档 410 | ✅ 已上线：Version `5955ad9a-6fa9-4355-9f7c-12672c9d0c78`，Deployment `f94499ee-a2a9-486e-a8ee-4c8087ebf9b3`，100% 流量；旧版 `7d862759`（deployment `44d8772f`）保留可回退 | 已同步（本轮） |
 
 ## 本轮部署详情（MU-01）
 
