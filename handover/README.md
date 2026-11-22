@@ -29,7 +29,7 @@
 
 | AI | 目录 | 角色 | 编号前缀 | 最后更新（CST） | 最后提交 | 当前在做 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Quick AI（AWS Quick） | [`handover/quick/`](./quick/HANDOVER.md) | 审查、与 14.14 原版比对、优化建议（不做功能开发） | `Q-`（git）、`QC-`（Cloudflare）、`QI-`（Issue） | 2026-11-23 00:35 | `[Quick AI Q-12]` | 完成金克丝与 14.14 原版比对（[`docs/audit/jinx_14.14.md`](../docs/audit/jinx_14.14.md)），P0 修改建议待开发 AI 处理 |
+| Quick AI（AWS Quick） | [`handover/quick/`](./quick/HANDOVER.md) | 审查、与 14.14 原版比对；**审查发现的不一致项由 Quick AI 修复，代码走 PR** | `Q-`（git）、`QC-`（Cloudflare）、`QI-`（Issue） | 2026-11-23 01:00 | `[Quick AI Q-13]` | 金克丝按 14.14 原版修复，[PR #2](https://github.com/cianasa222/swarm-remake/pull/2) 待开发 AI 构建验收 |
 | Antigravity（原主线开发 AI） | [`handover/antigravity/`](./antigravity/HANDOVER.md) | 主线开发、本机编译/实机截图验收与修复 | `AG-` | 2026-11-23 00:20 | `[Antigravity AG-03]` | 已完成中央喷泉第二批（43/43 发射器补全，CLEAN PASS），待部署线上 / 开启 M5 |
 | Muse（执行 AI） | 领取任务时建 `handover/muse/` | 执行 Issue #1（解包、转换、贴图） | 首次建目录时登记，建议 `MU-` | — | — | Issue #1 待领取 |
 | 新加入的 AI | `handover/<名字小写>/`，如 `gpt`、`claude`、`gemini` | — | 首次建目录时登记，如 `GPT-`、`CL-`、`GM-` | — | — | — |
@@ -51,17 +51,18 @@
 
 ---
 
-## 5. 当前状态速览（2026-11-23 00:35，由 Quick AI 填写）
+## 5. 当前状态速览（2026-11-23 01:00，由 Quick AI 填写）
 
 | 事项 | 状态 |
 | :--- | :--- |
 | 里程碑 | M0–M4 已完成；M5 待用户确认开启 |
-| Q-04 喷泉精修第一批 + AG-01 修正 | ✅ Antigravity 验收 CLEAN PASS，已上线 |
-| Q-05 小怪只剩影子修复 | ✅ Antigravity 验收 PASS，已上线 |
-| 线上网站 | Antigravity AG-02 部署（`54a77c68`）：含 Q-04 / AG-01 / Q-05；交接文档地址返回 410，`/__sync_kv` 已停用 |
-| **最新审查** | [`docs/audit/jinx_14.14.md`](../docs/audit/jinx_14.14.md)（Q-12）：移速、Q、E/R 基本参数 ✅；**E 伤害、R 伤害、被动移速 ❌**；特效尺寸换算规则全项目不统一 ⚠️。P0 建议待开发 AI 修改，改完交 Quick AI 复核 |
-| [Issue #1](https://github.com/cianasa222/swarm-remake/issues/1) | 待领取（以最新评论为准，清单要用 Windows 版） |
-| 用户决定 | M4 压缩后的资产保留在公开仓库（见 `handover/quick/HANDOVER.md` 1.6 节） |
+| 中央喷泉 | 第一批（Q-04 + AG-01）已上线；第二批（AG-03，43/43 发射器）Antigravity 记为 CLEAN PASS，待部署 |
+| Q-05 小怪只剩影子修复 | ✅ 已上线 |
+| 线上网站 | Antigravity AG-02 部署（`54a77c68`）：含 Q-04 / AG-01 / Q-05，不含 AG-03 和 Q-13；交接文档地址返回 410 |
+| **待验收的 PR** | [PR #2](https://github.com/cianasa222/swarm-remake/pull/2)（Quick AI Q-13）：金克丝数值与特效按 14.14 原版重建，**Quick AI 未编译**，请开发 AI 构建、playtest、截图后合并 |
+| 审查报告 | [`docs/audit/jinx_14.14.md`](../docs/audit/jinx_14.14.md)（Q-12，Q-13 已订正 2 处错误并加第 9 节修复状态）；[`docs/audit/fountain_emitters_14.14.md`](../docs/audit/fountain_emitters_14.14.md) |
+| [Issue #1](https://github.com/cianasa222/swarm-remake/issues/1) | 待领取（喷泉部分资产已由 AG-03 补齐，Issue 范围待更新） |
+| 用户决定 | M4 压缩后的资产保留在公开仓库（见 `handover/quick/HANDOVER.md` 1.6 节）；审查发现的不一致由 Quick AI 修复、走 PR（同上 0 节） |
 
 ---
 

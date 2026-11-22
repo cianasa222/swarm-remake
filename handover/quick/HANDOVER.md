@@ -1,7 +1,7 @@
 # Quick AI 交接文档（handover/quick/HANDOVER.md）
 
 > **本文档由 Quick AI（AWS Quick）编写和维护。**
-> 最后更新：2026-11-23 00:35 CST（Q-12 金克丝与 14.14 原版比对报告；Q-04 / Q-05 状态改为已由 Antigravity 验收上线）· 改动编号已排到 **Q-12 / QC-06**，见第 1.0 节
+> 最后更新：2026-11-23 01:00 CST（Q-13 金克丝按 14.14 原版修复，代码在 PR #2 待验收；角色补充：审查发现的不一致项由 Quick AI 修复、代码走 PR）· 改动编号已排到 **Q-13 / QC-06**，见第 1.0 节
 > 原路径 `QUICK_AI_HANDOVER.md` 只保留跳转说明，不再更新。交接总入口：[`handover/README.md`](../README.md)
 > 仓库：`https://github.com/cianasa222/swarm-remake` · Cloudflare KV 镜像：`tideline-handover`（`7bbc331619b04fc8b5b5323abba5eef0`）
 > 配套阅读：[`COLLAB.md`](../../COLLAB.md)（分工、流程、防冲突）→ [`AGENTS.md`](../../AGENTS.md) → [`AI_HANDOVER.md`](../../AI_HANDOVER.md) → [`PROGRESS.md`](../../PROGRESS.md)
@@ -20,6 +20,11 @@
 | 写审查报告到 `docs/audit/`，在 PR 下评论 `PASS` / `需修改：<清单>` 和优化建议 | 本机 `build` / `playtest` / 截图（本来就做不了） |
 | 核对 GitHub ↔ KV 是否一致，发现不一致时按 COLLAB 2.1 补齐镜像 | 部署 Cloudflare |
 
+**2026-11-23 补充（用户指示）**：Quick AI 审查中发现的「与 14.14 原版不一致」项，**由 Quick AI 直接修复**。
+- 代码一律提交到分支 `quick/q<编号>-<主题>` 并开 PR，**不直接推 `main`**；PR 由开发 AI（Antigravity）构建、playtest、截图验收后合并（或由用户合并）。
+- 改动登记、文档、审查报告仍直接提交到 `main` 并同步 KV；分支上的代码**合并进 `main` 后**再同步 KV。
+- 2026-11-22 的 Q-04、Q-05 当时是直接提交到 `main` 的，已由 Antigravity AG-01 验收并上线；从 Q-13 起改为走 PR。
+
 **怎么请 Quick AI 审查**：开 PR（或直接提交到 `main` 后）告诉用户，由用户在 AWS Quick 对话里说「审查 PR #N」或「审查提交 <SHA>」。Quick AI 会读 diff、拉原版数据比对，然后在 PR 评论里给结论。
 
 ---
@@ -33,7 +38,8 @@
 2. **在同一次提交里**往下表追加一行：时间、提交号、改了哪些文件（行数）、改了什么、验收、部署、KV。提交后立刻把改动的文件镜像到 KV，「KV」列写「已同步」（规则见 `COLLAB.md` 2.2 节）。
 3. 验收或部署状态有变化时，由完成那一步的 AI 或用户更新对应行（只改状态列，不改别的列）。
 4. 回滚某一项：`git revert <提交号>`；只回滚其中一个文件：`git checkout <提交号>~1 -- <文件>` 后再提交。
-5. Q-09 起，Quick AI 只做审查：后续登记的主要是审查报告、文档、GitHub ↔ KV 镜像修补，以及用户明确要求的小修复。
+5. Q-09 起，Quick AI 以审查为主；Q-13 起，审查发现的不一致项由 Quick AI 修复（见第 0 节补充）。
+6. **代码改动走 PR**：行里写分支名和 PR 编号，「验收」列写「⏳ 待验收（PR #N）」；合并后由合并方把「验收 / 部署 / KV」改成实际状态。
 
 #### A. GitHub 代码与文档提交
 
@@ -51,6 +57,12 @@
 | Q-10 | 11-22 21:58 | 提交说明 `[Quick AI Q-10] …`（`git log --grep "Q-10"`） | `QUICK_AI_HANDOVER.md` | 登记**用户决定**：M4 压缩后的运行时资产保留在公开仓库（新增第 1.6 节） | 文档 | — | 已同步 |
 | Q-11 | 11-22 22:45 | 提交说明 `[Quick AI Q-11] …`（`git log --grep "Q-11"`） | `handover/README.md`（新增）、`handover/quick/HANDOVER.md`（由 `QUICK_AI_HANDOVER.md` 迁移）、`QUICK_AI_HANDOVER.md`（改为跳转）、`COLLAB.md`、`AGENTS.md`、`AI_HANDOVER.md` | 新增交接总入口；按 AI 名字分目录；`COLLAB.md` 新增 2.2 节「交接文档更新规则（强制）」；去掉线上站点的交接文档链接；修复 Q-10 插入时弄断的表格 | 文档 | — | 已同步 |
 | Q-12 | 11-23 00:35 | 提交说明 `[Quick AI Q-12] …`（`git log --grep "Q-12"`） | `docs/audit/jinx_14.14.md`（新增）、`handover/quick/HANDOVER.md`、`handover/README.md`（第 3 节自己一行 + 第 5 节） | **审查**：金克丝移速、Q/E/R/被动数值、28 套特效与 14.14 原版逐项比对（审查对象 `457e56d`）；结论 E 伤害、R 伤害、被动移速 ❌，特效尺寸换算规则全项目不统一 ⚠️；修改建议交开发 AI | 审查报告 | — | 已同步 |
+| Q-13 | 11-23 01:00 | 代码：分支 `quick/q13-jinx-14.14` `c5d1b04`，[PR #2](https://github.com/cianasa222/swarm-remake/pull/2)；文档：`main` 上的 `[Quick AI Q-13]` 提交 | 分支：`src/config.ts`、`src/sim/game.ts`、`src/main.ts`、`src/render/jinx_vfx.ts`、`src/render/weapon_vfx.ts`；`main`：`docs/audit/jinx_14.14.md`（订正 + 第 9 节）、本文件、`handover/README.md`、`COLLAB.md` | **按用户指示修复金克丝与 14.14 原版的不一致**：E/R 伤害、前摇、E 锥形随机和 22 m、R 命中即爆和已损失生命加成、被动移速、受击半径、索敌距离、子弹判定、穿透衰减；被动光环、R 飞行、E/R 爆炸、子弹和 E 火箭特效按原版重建。订正 Q-12 报告 2 处错误（E 射程、被动移速含义） | ⏳ 待验收（PR #2，Quick AI 未编译） | ⏳ 未部署 | 文档已同步；代码合并后同步 |
+
+**验收 Q-13（PR #2）时重点看**：
+- `npm.cmd run build`：`PlayerState` 新增 `eCastT` / `rCastT` / `excitedCount`；`JINX_E` / `JINX_R` / `JINX_PASSIVE` 字段改名（`baseDamage` → `level1Damage`，删除 `msBonus` / `asBonus`）；`allocPlane` / `allocMesh` 末尾新增可选参数；新方法 `ultAimDir` / `startUlt` / `setPassiveRing`。
+- `playtest`：难度会变（E 降、R 前期升、被动移速大降、受击半径变小），记录通关率和等级曲线；**不要为平衡改回非原版数值**，有问题在 PR 里说明。
+- 截图：被动光环是否过大、E 22 m 锥形齐射、R 命中第一个敌人即爆、R 地面投影 13.6 m 是否过大。
 
 **审查 Q-04 / Q-05 时重点看**：
 - Q-04：`npm.cmd run build` 能否通过（新增 TS 类型 `FxCurves`、`FxParticle`、`FxPool`）；`?spot=hub` 下 Nova 放大 1.75 倍后光柱会不会穿出建筑；healspark 0.4 m 是否过小；sparklies1 生成点是否在进度圈前端（取决于 `fitTimerHead()` 的拟合结果）。
