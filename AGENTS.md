@@ -59,3 +59,5 @@
 - **Three.js `PointsMaterial` 精灵图集与 `CanvasTexture` 尺寸陷阱**：`PointsMaterial` 会忽略 `Texture.repeat` 与 `Texture.offset`。凡是精灵序列图用于 `PointsMaterial`（如 `lilstar_4x2.png`），必须先用离屏 Canvas 裁剪为固定尺寸 `CanvasTexture`（**禁止在 `img.onload` 中修改 `cv.width`/`cv.height`**，否则 WebGL2 `texStorage2D` 不可变纹理会静默失效变成全透明）；而 `MeshBasicMaterial` 网格材质优先直接用原生 `tex.repeat.set(...)` / `tex.offset.set(...)` 裁剪。
 - **Windows 自动化验证脚本防挂起**：凡是用 Node 启动 Vite + Playwright 的验证脚本，必须设置 **60 秒总超时熔断**、`finally` 中调用 `spawnSync('taskkill', ['/PID', String(vite.pid), '/T', '/F'], { stdio: 'ignore' })` 清理进程树，并在脚本末尾显式执行 **`process.exit(0)`**，杜绝子进程句柄残留导致任务卡死。
 - **加速插件**：本机已全局安装 `agy-fast`（`v0.2.8`），新会话优先使用其提供的 `batch_search`、`read_slices`、`apply_edits`、`run_checks` 批量工具。
+
+- **GPT-07 · 备用资源保护（用户要求）**：`asset/14.14-unpacked-assets-20261123` 是持久备用库，未上线资源不得删除、覆盖或强推。先看 [备用资产库动画清单](handover/gpt/ASSET_LIBRARY_14.14.md)，已有资产直接复用，缺失才定向补导；任何镜像同步必须保留独有更新和 pending 原件，不能仅以 commit 相同判断一致。
