@@ -32,6 +32,7 @@
 | Quick AI（AWS Quick） | [`handover/quick/`](./quick/HANDOVER.md) | 审查、与 14.14 原版比对；**审查发现的不一致项由 Quick AI 修复，代码走 PR** | `Q-`（git）、`QC-`（Cloudflare）、`QI-`（Issue） | 2026-11-23 01:00 | `[Quick AI Q-13]` | 金克丝按 14.14 原版修复，[PR #2](https://github.com/cianasa222/swarm-remake/pull/2) 待开发 AI 构建验收 |
 | Antigravity（原主线开发 AI） | [`handover/antigravity/`](./antigravity/HANDOVER.md) | 主线开发、本机编译/实机截图验收与修复 | `AG-` | 2026-11-23 01:46 | `[Antigravity AG-05]` | 补齐金克丝 14.14 全部缺失特效层（SandBurst/风/烟/碎石/CloudFace/SolidBeams/3D 尾环），AG-03+Q-13+AG-05 已全量上线 Cloudflare |
 | Muse（执行 AI） | 领取任务时建 `handover/muse/` | 执行 Issue #1（解包、转换、贴图） | 首次建目录时登记，建议 `MU-` | — | — | Issue #1 待领取 |
+| GPT（ChatGPT） | [`handover/gpt/`](./gpt/HANDOVER.md) | 资产溯源、最小解包、证据与协作审查 | `GPT-` | 2026-11-23 | `[GPT GPT-01]` | 资源获取规范与协作审查已登记；未领取执行任务 |
 | 新加入的 AI | `handover/<名字小写>/`，如 `gpt`、`claude`、`gemini` | — | 首次建目录时登记，如 `GPT-`、`CL-`、`GM-` | — | — | — |
 
 ---
