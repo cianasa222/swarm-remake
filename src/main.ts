@@ -368,7 +368,7 @@ function renderTooltip(kind: string, id: string) {
     if (id === 'passive') {
       title = '罪恶快感（金克丝被动）';
       badge = game.player.overloadT > 0 ? `激活 ${game.player.overloadT.toFixed(1)}s` : `${game.player.passiveKills}/${JINX_PASSIVE.killsRequired}`;
-      desc = `每击杀 ${JINX_PASSIVE.killsRequired} 只小怪或击杀重装精英时，获得 8 秒 +100% 移速与 +150 技能急速。`;
+      desc = `每击杀 ${JINX_PASSIVE.killsRequired} 只小怪或击杀重装精英时，获得 ${JINX_PASSIVE.duration} 秒 +${JINX_PASSIVE.ahBonus} 技能急速，以及 +${(JINX_PASSIVE.msPerStack * 100).toFixed(1)}% × 累计兴奋次数（当前 ${game.player.excitedCount} 次）的移速，持续期间逐渐衰减。`;
       sub = '官方 Patch 14.14 机制对齐';
     } else if (id === 'aim') {
       title = '瞄准模式切换';
@@ -378,12 +378,12 @@ function renderTooltip(kind: string, id: string) {
     } else if (id === 'e') {
       title = '鱼骨头火箭发射器（E）';
       badge = game.player.eCd <= 0 ? '已就绪' : `${game.player.eCd.toFixed(1)}s`;
-      desc = `扇形齐射 ${JINX_E.rocketCount} 枚鱼骨头猫猫火箭，命中爆炸造成范围伤害（当前冷却 ${(JINX_E.cooldown * game.cdMul).toFixed(1)}s）。`;
+      desc = `向前方 ${JINX_E.coneDeg}° 锥形随机齐射 ${JINX_E.rocketCount} 枚鱼骨头猫猫火箭，命中敌人爆炸，对主目标和周围敌人造成同等伤害（当前冷却 ${(JINX_E.cooldown * game.cdMul).toFixed(1)}s）。`;
       sub = `射程 ${JINX_E.range}m · 基础爆炸半径 ${JINX_E.aoeRadius}m`;
     } else if (id === 'r') {
       title = '超究极死神飞弹（R）';
       badge = game.player.rCd <= 0 ? '已就绪' : `${Math.ceil(game.player.rCd)}s`;
-      desc = `发射全图级超究极死神飞弹，穿透普通怪物并在命中精英/首领或终点时触发超大核爆（当前冷却 ${(JINX_R.cooldown * game.cdMul).toFixed(1)}s）。`;
+      desc = `发射超究极死神飞弹，命中第一个敌人或飞到最远距离时爆炸；爆炸伤害按目标已损失生命最多提高 ${JINX_R.missingHpBonus * 100}%（当前冷却 ${(JINX_R.cooldown * game.cdMul).toFixed(1)}s）。`;
       sub = `射程 ${JINX_R.range}m · 爆炸半径随等级提升`;
     } else if (id === 'dash') {
       title = '战术闪避（空格）';

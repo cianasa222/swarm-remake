@@ -47,59 +47,89 @@ export const MATCH = {
 };
 
 export const PLAYER = {
-  /** 原版 Strawberry_Jinx: baseHP=1000, baseMoveSpeed=350, collisionRadius=35 */
+  /** 原版 Strawberry_Jinx: baseHP=1000, baseMoveSpeed=350, pathfindingCollisionRadius=35 */
   maxHp: 1000,
   radius: 0.35,
+  /** 受击判定半径：原版 overrideGameplayCollisionRadius=20（Quick AI Q-13，14.14 对齐） */
+  hurtRadius: 0.2,
   speed: 3.5,
   pickupRadius: 3.2,
   /** 经验晶片被吸取后的飞行速度 */
   magnetSpeed: 13,
   /** 受伤后短暂无敌，避免同帧多段伤害叠爆 */
   hurtIFrames: 0.45,
-  /** 自动索敌射程 */
-  targetRange: 10.5,
+  /** 自动索敌射程：原版 Strawberry_JinxAutoAttack castRange=900（Quick AI Q-13） */
+  targetRange: 9.0,
 };
 
 export const JINX_E = {
-  /** 官方 Strawberry_JinxE: cooldownTime=8, castTime=0.35, castRange=925, missileSpeed=1750, RocketAoERadius=300, RocketCount=9 */
+  /**
+   * Patch 14.14 Strawberry_JinxE：cooldownTime=8, mCastTime=0.35, RocketCount=9, RocketAoERadius=300,
+   * RocketDamage = 55 + 6 ×（角色等级 − 1）（ByCharLevelBreakpointsCalculationPart）。
+   * 火箭弹道 {69358b90}：castRange=2200（mProjectTargetToCastRange，飞满 22 m）、mMissileSpec.mSpeed=1800。
+   * LoL Wiki「Swarm/Jinx」：9 枚火箭在 90° 锥形内随机方向直线飞行，宽 80，爆炸对主目标和周围敌人造成同等伤害。
+   * （Quick AI Q-13 按原版重建；旧值：range 9.25 / speed 17.5 / 伤害 95+8×等级 / 规则 3×3 扇形）
+   */
   cooldown: 8,
+  castTime: 0.35,
   rocketCount: 9,
   fireInterval: 0.045,
-  range: 9.25,
-  speed: 17.5,
+  coneDeg: 90,
+  range: 22,
+  speed: 18,
+  /** 火箭碰撞半径（宽 80 → 半径 0.4 m） */
+  radius: 0.4,
   aoeRadius: 3.0,
   aoeIncrease: [0.15, 0.30, 0.45, 0.60, 0.75, 0.90],
-  baseDamage: 95,
-  dmgPerLevel: 8,
+  level1Damage: 55,
+  dmgPerLevel: 6,
   critDmgBonus: [0, 0.1, 0.2, 0.3, 0.4, 0.5],
 };
 
 export const JINX_R = {
-  /** 官方 Strawberry_JinxR: cooldownTime=50, castRange=2500, mLineWidth=140, missileSpeed=1700, ExplosionSize=500..1000 */
+  /**
+   * Patch 14.14 Strawberry_JinxR：cooldownTime=50, mCastTime=0.5, castRange=2500, mLineWidth=140（全宽 280），
+   * mMissileSpec.mSpeed=2000, ExplosionSize=500..1100, Damage = 500 + 50 ×（角色等级 − 1），MaxDamage = Damage × DamageMulti(3)。
+   * LoL Wiki「Swarm/Jinx」：命中第一个敌人或飞到最远距离时爆炸，爆炸伤害按目标已损失生命 +0%–200%。
+   * （Quick AI Q-13 按原版重建；旧值：speed 17 / 伤害 380+38×等级、穿透普通怪、爆炸 ×1.45）
+   */
   cooldown: 50,
+  /** 开局冷却（原版数据无此字段，沿用项目设定） */
   initCooldown: 12,
+  castTime: 0.5,
   range: 25,
-  width: 1.4,
-  speed: 17.0,
-  baseDamage: 380,
-  dmgPerLevel: 38,
+  /** 飞弹全宽 2.8 m（碰撞半径 1.4 m） */
+  width: 2.8,
+  speed: 20,
+  level1Damage: 500,
+  dmgPerLevel: 50,
+  /** 按目标已损失生命比例额外 +0%–200% */
+  missingHpBonus: 2.0,
   baseExplodeRadius: 5.0,
-  maxExplodeRadius: 10.0,
+  maxExplodeRadius: 11.0,
 };
 
 export const JINX_PASSIVE = {
-  /** 官方 Strawberry_JinxPassiveMarker: BuffDuration=8, AHBuff=150, MinionsToProcEvolve=70 */
+  /**
+   * Patch 14.14 Strawberry_JinxPassiveMarker：BuffDuration=8, AHBuff=150, MinionsToProcEvolve=70, MSBuff=2.5, MSDecayRate=0.95。
+   * LoL Wiki「Swarm/Jinx」：击杀 70 个非精英或 1 个精英后 8 秒内 +150 技能急速，
+   * +（2.5% × 累计兴奋次数）移速并在持续期间衰减，与其他移速加成相加。Wiki 未列攻速加成。
+   * 衰减按 MSDecayRate 线性处理：持续结束时衰减掉 95%（此为推断，需实机录像确认）。
+   * ASBuff（1.5–3.9）未在 Wiki 中出现，推测为奔跑动画速率，不作为攻速使用。
+   * （Quick AI Q-13 按原版重建；旧值：固定 +100% 移速、+80% 攻速）
+   */
   killsRequired: 70,
   duration: 8.0,
-  msBonus: 1.0,
   ahBonus: 150,
-  asBonus: 0.8,
+  msPerStack: 0.025,
+  msDecay: 0.95,
 };
 
 export const MG = {
   name: '喵喵枪',
   bulletSpeed: 35,
-  bulletRadius: 0.16,
+  /** 原版子弹 mMissileWidth=90（Wiki 宽 90）→ 碰撞半径 0.45 m；进化同宽（Quick AI Q-13，旧值 0.16 / 0.22） */
+  bulletRadius: 0.45,
   range: 15.0,
   burstInterval: 0.075,
 };
