@@ -1,6 +1,6 @@
 # 无尽狂潮复刻（Swarm Map33 Warehouse District）— 开发总纲与工作区规范
 
-> 新会话开启后，请先阅读本文件与同目录下的 [`PROGRESS.md`](./PROGRESS.md)，再接续当前进度。
+> **新会话开启后，必须先按 [`COLLAB.md`](./COLLAB.md) 第 0 节的顺序读完交接文档再动手**：`COLLAB.md` → [`QUICK_AI_HANDOVER.md`](./QUICK_AI_HANDOVER.md)（第 1.0 节改动总索引）→ 本文件 → [`AI_HANDOVER.md`](./AI_HANDOVER.md) → [`PROGRESS.md`](./PROGRESS.md) → 相关 Issue。（2026-11-22 Quick AI 按用户要求修改本行）
 
 ---
 

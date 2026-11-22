@@ -1,7 +1,7 @@
 # Quick AI 交接文档（QUICK_AI_HANDOVER）
 
 > **本文档由 Quick AI（AWS Quick）编写和维护。**
-> 最后更新：2026-11-22 21:40 CST · 对应 GitHub `main` 提交：`bdd38ad` 之后的文档同步提交
+> 最后更新：2026-11-22 21:50 CST（新增第 1.0 节改动总索引）· 改动编号已排到 **Q-09**，见第 1.0 节
 > 仓库：`https://github.com/cianasa222/swarm-remake` · Cloudflare KV 镜像：`tideline-handover`（`7bbc331619b04fc8b5b5323abba5eef0`）
 > 配套阅读：[`COLLAB.md`](./COLLAB.md)（分工、流程、防冲突）→ [`AGENTS.md`](./AGENTS.md) → [`AI_HANDOVER.md`](./AI_HANDOVER.md) → [`PROGRESS.md`](./PROGRESS.md)
 
@@ -25,7 +25,45 @@
 
 ## 1. Quick AI 已完成的操作（2026-11-22）
 
-### 1.1 代码改动（都在 `main` 上，**都还没有在本机编译和实测**）
+### 1.0 改动总索引（Quick AI 的每一次改动都必须登记在这里）
+
+**登记规则**（Quick AI 自己遵守，也方便别的 AI 审查、检查和部署）：
+1. 每次改动分配一个递增编号 `Q-xx`，提交说明以 `[Quick AI Q-xx]` 开头。别的 AI 用 `git log --grep "Quick AI"` 就能列出 Quick AI 的全部提交。
+2. 提交后立刻在下表追加一行：时间、提交号、改了哪些文件（行数）、改了什么、验收状态、部署状态。
+3. 验收或部署状态有变化时，由完成那一步的 AI 或用户更新对应行（只改状态列，不改别的列）。
+4. 回滚某一项：`git revert <提交号>`；只回滚其中一个文件：`git checkout <提交号>~1 -- <文件>` 后再提交。
+5. Q-09 起，Quick AI 只做审查：后续登记的主要是审查报告、文档、GitHub ↔ KV 镜像修补，以及用户明确要求的小修复。
+
+#### A. GitHub 代码与文档提交
+
+| 编号 | 时间（CST） | 提交 | 文件（+增 / −删 行） | 改了什么 | 验收 | 部署 |
+| :--- | :--- | :--- | :--- | :--- | :---: | :---: |
+| Q-01 | 11-22 09:04 | [`05a1ef1`](https://github.com/cianasa222/swarm-remake/commit/05a1ef170b672d4c1196b6cfd8b78812cce8caff) | `public/_headers`（+2，新增） | 静态资源统一加 `Access-Control-Allow-Origin: *` | — | ⏳ 未部署 |
+| Q-02 | 11-22 09:48 | [`a6dfb65`](https://github.com/cianasa222/swarm-remake/commit/a6dfb65bbf9f799914e8b7f58a35e5ba10e72261) | `COLLAB.md`（+115，新增） | 分工、GitHub ↔ KV 同步、任务流程、看板 | 文档 | — |
+| Q-03 | 11-22 20:40 | [`834ca30`](https://github.com/cianasa222/swarm-remake/commit/834ca3059a88e8274ad343bbe47e75e264eb0305) | `docs/audit/fountain_emitters_14.14.md`（+120，新增） | 喷泉 43 个发射器与代码逐项比对报告 | 文档 | — |
+| Q-04 | 11-22 21:05 | [`c63e871`](https://github.com/cianasa222/swarm-remake/commit/c63e871b57276799c51b90611c7fd463041d708f) | `src/render/map_warehouse.ts`（+552 / −188）、`PROGRESS.md`（+20 / −1）、审查报告（+10 / −10） | **喷泉精修第一批 9 项**：新增 `makeWaveMat`、`makeFxPool`、`curve1/curve4/curveIntegral`、`fitTimerHead`、`novaGroup`（×1.75）；healspark、sparklies1 改为原版发射式；补 Nova 两层冲击波、Gold/Gold1、Timer `Decal_Start2`；修正 Basic4 / Edge12 / Edge17 / 波浪峰值；去掉计时圈暖黄；删除旧的 `hexPts/hex2Pts/chargePts/novaT` | 🧪 **未编译、未实测** | ⏳ 未部署 |
+| Q-05 | 11-22 21:11 | [`46362d7`](https://github.com/cianasa222/swarm-remake/commit/46362d7a170fae55135e1f6a128317a266c1b70e) | `src/render/enemy_models.ts`（+46 / −12） | **修复小怪只剩影子**：新增 `bakeStaticGeometry()`，量化蒙皮 GLB 在合批前按骨骼烘焙；`InstancedEnemyModel.ensureLoaded()` 改用它 | 🧪 **未编译、未实测** | ⏳ 未部署 |
+| Q-06 | 11-22 21:29 | [`7ce4bd1`](https://github.com/cianasa222/swarm-remake/commit/7ce4bd126c2151439e1f6e0a1c1b6afc900d5880) | `AI_HANDOVER.md`（+14） | 2.2 节补 14.14 Windows 客户端 7 个官方清单地址 | 文档 | — |
+| Q-07 | 11-22 21:30 | [`bdd38ad`](https://github.com/cianasa222/swarm-remake/commit/bdd38ad073a19a6c264e9b10b1bfa75cb05b0b9c) | `COLLAB.md`（+21 / −3） | 新增 2.1 节防冲突规则，刷新看板 | 文档 | — |
+| Q-08 | 11-22 21:39 | [`06ed484`](https://github.com/cianasa222/swarm-remake/commit/06ed484aefc57a44d6e073a69c6666ff017b09ed) | `QUICK_AI_HANDOVER.md`（+196，新增）、`COLLAB.md`（+14 / −10）、`PROGRESS.md`（+5 / −2）、`AI_HANDOVER.md`（+2）、`docs/ci/fetch-14.14-reference.yml`（+84，新增） | 角色变更为只做审查；本交接文档；Actions 下载工作流（放在 `docs/ci/`，需手动复制到 `.github/workflows/`） | 文档 | — |
+| Q-09 | 11-22 21:50 | 提交说明 `[Quick AI Q-09] …`（`git log --grep "Q-09"`） | `QUICK_AI_HANDOVER.md`、`COLLAB.md`、`AGENTS.md` | 新增本改动总索引；「开工前必读交接文档」写成规则（`COLLAB.md` 第 0 节，`AGENTS.md` 开头指向它）；下载方法改为「先直接下载，被拒才用 Worker」 | 文档 | — |
+
+**审查 Q-04 / Q-05 时重点看**：
+- Q-04：`npm.cmd run build` 能否通过（新增 TS 类型 `FxCurves`、`FxParticle`、`FxPool`）；`?spot=hub` 下 Nova 放大 1.75 倍后光柱会不会穿出建筑；healspark 0.4 m 是否过小；sparklies1 生成点是否在进度圈前端（取决于 `fitTimerHead()` 的拟合结果）。
+- Q-05：第一波小怪模型是否出现，大小、朝向、姿势是否正确；精英怪、雷克塞不经过这段代码，不受影响。
+
+#### B. Cloudflare 与 GitHub Issue 操作（不在 git 历史里，单独登记）
+
+| 编号 | 时间（CST） | 位置 | 操作 | 当前状态 |
+| :--- | :--- | :--- | :--- | :--- |
+| C-01 | 11-22 09:15–09:21 | Worker `tideline-ref-fetcher` | 新建：关闭公网访问，每分钟定时抓 `map33.bin.json` 写入 KV | 抓取成功后已清空定时任务 |
+| C-02 | 11-22 09:33–09:42 | 同上 | 扩到 15 个路径（10 个 `.bin.json` + 5 个 `.scb`） | 8 个成功、7 个 404；已清空定时任务 |
+| C-03 | 每个 Q-xx 之后 | KV `tideline-handover` | 镜像对应文件，更新 `FILE_INDEX.json` / `SYNC_STATE.json`，写完核对 SHA-256 | 与 GitHub `main` 一致 |
+| C-04 | 11-22 21:08 | KV `FILE_INDEX.json` | 发现被别处整份覆盖成 5 条，按 KV 实际 key 重建为 47 条 | 已修复（现 49+ 条） |
+| I-01 | 11-22 09:35 | [Issue #1](https://github.com/cianasa222/swarm-remake/issues/1) | 新建外包任务 | 待领取 |
+| I-02 | 11-22 09:42 / 09:48 / 20:41 / 21:30 | Issue #1 评论 | 范围更新 / 流程说明 / 网格与贴图订正 / 改用 Windows 清单 | 以最新评论为准 |
+
+### 1.1 代码改动详情（都在 `main` 上，**都还没有在本机编译和实测**）
 
 | 提交 | 文件 | 内容 | 状态 |
 | :--- | :--- | :--- | :--- |
@@ -92,6 +130,13 @@
 
 ## 3. 原版数据来源与「免解包直链直下」方法
 
+### 3.0 先选下载方法（按环境决定，Worker 和 Actions 都是可选方案）
+
+1. **先直接下载**：在你自己的环境里对第 3.1 节的直链执行 `curl -L -o <文件> <地址>` 或 `fetch`。返回 200 且内容正确（`.json` 以 `{` 开头、`.png` 以 PNG 文件头开头），就直接用，**不需要 Worker**。用户本机、大多数开发 AI 的本机环境都属于这种情况。
+2. **直接下载被拒**（403、域名解析失败、执行环境禁止外网）时，才用 **3.3 节 Cloudflare Worker 方案**（可选，已验证）。Quick AI 的执行环境就是这种情况。
+3. 也可以用 **3.4 节 GitHub Actions 方案**（可选，尚未验证），前提是有人能在 GitHub 网页上建工作流文件。
+4. `.scb` 网格和 Pix / Ghoul / Dasher 的 `skin0.bin.json` 在 CommunityDragon 上 404，任何方法都直链不到，只能按 3.2 节下载 `.wad.client` 解包。
+
 ### 3.1 CommunityDragon Patch 14.14（免解包，直接 HTTP GET）
 
 根地址：`https://raw.communitydragon.org/14.14/game/`（目录页可在浏览器直接浏览，路径全小写）
@@ -120,9 +165,9 @@
 
 清单只记录文件名和数据块索引，要用 ManifestDownloader 按清单从同一 CDN 下载拼出 `.wad.client`，再用 `hashes.game.txt` 解包。
 
-### 3.3 方法 A（已验证）：用 Cloudflare Worker 定时任务抓到 KV
+### 3.3 可选方案 A（已验证）：用 Cloudflare Worker 定时任务抓到 KV
 
-**为什么需要**：从 AI 执行环境或部分数据中心直接请求 CommunityDragon 会返回 403 或被禁止外网，但部署好的 Worker 可以正常访问。
+**什么时候用**：只有在 3.0 节第 1 步直接下载失败时才用。从部分 AI 执行环境或数据中心直接请求 CommunityDragon 会返回 403 或被禁止外网，但部署好的 Worker 可以正常访问。需要有用户 Cloudflare 账号的 API 权限。
 
 **步骤**（Cloudflare API，账号 `63223f8370990e669e94ab2e9c56683a`）：
 1. `PUT /accounts/{id}/workers/scripts/tideline-ref-fetcher`（multipart：`metadata` 绑定 KV `KV` → `7bbc331619b04fc8b5b5323abba5eef0`，加下面的 `worker.js`）。
@@ -165,7 +210,7 @@ export default {
 
 **已抓到的 KV 参考数据**（`ref/14.14/` 下，不进公开仓库）：`map33.bin.json`、`strawberry_animasquad_map1.materials.bin.json`、金克丝 ×2、雷克塞 ×2、Bruiser `skin0`、Hunter `skin0`（不完整）。
 
-### 3.4 方法 B（未验证）：GitHub Actions 抓到 `reference-14.14` 分支
+### 3.4 可选方案 B（未验证）：GitHub Actions 抓到 `reference-14.14` 分支
 
 工作流文件已写好，放在 [`docs/ci/fetch-14.14-reference.yml`](./docs/ci/fetch-14.14-reference.yml)（Quick AI 没有 workflow 权限，只能放在 `docs/` 下）。用户在 GitHub 网页新建 `.github/workflows/fetch-14.14-reference.yml` 并粘贴内容即可启用；运行后结果写进 `reference-14.14` 分支的 `FETCH_STATUS.txt`。GitHub 运行机是否也被 CommunityDragon 拦截**尚未测试**。如需在 Windows 运行机上跑 ManifestDownloader / lol2gltf，可在此基础上改 `runs-on: windows-latest`。
 

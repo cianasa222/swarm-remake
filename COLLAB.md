@@ -1,7 +1,26 @@
 # 协作与任务交接规范（COLLAB）
 
-> 最后更新：2026-11-22 21:40（角色变更：Quick AI 改为只做审查）· 第 1、5 节维护者：Quick AI（AWS Quick）
+> 最后更新：2026-11-22 21:50（新增第 0 节开工前必读）· 第 0、1、5 节维护者：Quick AI（AWS Quick）
 > 新加入的 AI / 开发者：先读本文件，再读 [`QUICK_AI_HANDOVER.md`](./QUICK_AI_HANDOVER.md)（Quick AI 已完成的工作、剩余工作、免解包直链方法）、[`AGENTS.md`](./AGENTS.md)、[`PROGRESS.md`](./PROGRESS.md)、[`AI_HANDOVER.md`](./AI_HANDOVER.md)。
+
+---
+
+## 0. 开工前必读（所有 AI、所有会话都必须遵守）
+
+**任何 AI 在开始写代码、改文档、下载资产或审查之前，必须先按顺序读完下列交接文档。没读完不要动手。**
+
+| 顺序 | 文件 | 重点 |
+| :---: | :--- | :--- |
+| 1 | `COLLAB.md`（本文件） | 分工、第 2.1 节防冲突规则、任务流程 |
+| 2 | [`QUICK_AI_HANDOVER.md`](./QUICK_AI_HANDOVER.md) | **第 1.0 节改动总索引**（Quick AI 改过什么、是否已验收和部署）、剩余工作、原版数据来源和下载方法 |
+| 3 | [`AGENTS.md`](./AGENTS.md) | 开发总纲、硬性验收流程、Windows 避坑 |
+| 4 | [`AI_HANDOVER.md`](./AI_HANDOVER.md) | 架构与五大契约、资产来源、部署 |
+| 5 | [`PROGRESS.md`](./PROGRESS.md) | 里程碑进度 |
+| 6 | 与本次任务相关的 Issue 正文和**全部评论** | 以最新评论为准 |
+
+- 读文档时以 GitHub `main` 上的最新版为准；KV 里的副本只是镜像（核对 KV 里 `SYNC_STATE.json` 的 `commit` 是否等于 GitHub `main` 最新提交）。
+- 下载原版数据先按 `QUICK_AI_HANDOVER.md` 第 3.0 节判断：环境能直接下载就直接下载；被拒才用 Worker 或 Actions 等可选方案。
+- 每个 AI 的改动都要能追溯：提交说明写清改了哪些文件和哪一节；Quick AI 的改动另外登记在 `QUICK_AI_HANDOVER.md` 第 1.0 节（提交说明以 `[Quick AI Q-xx]` 开头）。
 
 ---
 
