@@ -10,6 +10,8 @@
 | GPT-01 | 2026-11-23 | `git log --grep "GPT-01"` | 本文件（新增）、handover/README.md（+1 行）、COLLAB.md（新增 GPT 补充节） | 资源最小获取策略、证据标准、协作漏洞审查 | 文档核对 | 不涉及 | 以 KV SYNC_STATE.json 读回哈希为准 |
 | GPT-02 | 2026-11-23 | `git log --grep GPT-02` | RESOURCE_SOURCES.md（新增）、COLLAB.md、入口、本文件 | 统一渠道及禁止无证据否定 | 文档核对 | 不涉及 | 以 KV SYNC_STATE.json 为准 |
 
+| GPT-03 | 2026-11-23 | `gpt/fountain-decal-coverage` | 喷泉贴花着色器、交接总入口及本页 | 用 Alpha 读取轮廓和乘层覆盖率 | 构建通过，模拟 4/4；真机待验 | 分支待验收 | 合并后同步 |
+
 ## 2. 接手基线
 
 已读交接入口、COLLAB、Quick / Antigravity 交接、AGENTS、AI_HANDOVER、PROGRESS、Issue #1 / #4 及评论、雷克塞审计及缺失资产清单。基线 main `85714eadad3b8f3a0fb62653835ded9582be005f`（Q-20）。KV 对上述交接正文逐一比对一致；KV 状态所记 commit 同基线。M0–M4 已完成阶段验收，不等于完全 1:1；M5 等用户确认。AG-05 已上线 Worker 版本 701860ff；PR #3 尚待验收，不能按已合并处理。Issue #1 Muse 已领取 T1/T2/T4（评论可见）；AG-03 已交付喷泉 5 个 Nova 网格及 15 张贴图，先查剩余小怪配置，不重复下载。Issue #4 A 金克丝已补，B 雷克塞动作/子网格/VFX、C 原版音效、D 出场仍待执行。未领取这些执行任务，本轮无代码/资产改动。
@@ -64,3 +66,9 @@
 ## 8. GPT-02 用户补充要求
 
 统一资源来源渠道与查证结论，见 [RESOURCE_SOURCES.md](./RESOURCE_SOURCES.md)。任何 AI 不得将未检索到、站点未收录或访问失败等同原版不存在；新增渠道统一登记。私人非商业娱乐；原始资产私有保存。Muse 的 10 WAD 方案先验证依赖，不预判齐全或缺失。
+
+## GPT-03 喷泉圆环边缘修复
+
+现行双贴图材质把 RGB 亮度并入透明度，使低 Alpha 像素重新显色。核对该材质全部六种输入均有变化的 Alpha。内圈、点阵和外圈共用的贴花材质改读两张图各自的 Alpha。沿用现有尺寸、相位、时长及粒子配置。本次只修复已定位的覆盖率问题；原引擎完整混合公式尚未验证。
+
+`npm run build` 通过；`node --import tsx tools/playtest.ts 2 0.85` 两种构筑各两种种子均获胜。当前环境 Chromium 因 socket 权限无法启动。待同机位、同阶段检查内圈阶梯、外圈方块及充能亮度；通过后合并、部署并核验 KV。

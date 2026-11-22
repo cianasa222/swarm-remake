@@ -498,8 +498,9 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
         void main() {
           vec4 base = texture2D(uTex, vUv);
           vec4 mult = texture2D(uMult, vUv * uMultScale + vec2(uTime * 0.04, -uTime * 0.03));
-          float bm = max(base.a, max(base.r, base.g));
-          float mm = mix(0.45, 1.25, max(mult.a, max(mult.r, mult.g)));
+          // These RGBA decals store coverage in alpha, including at filtered edges.
+          float bm = base.a;
+          float mm = mix(0.45, 1.25, mult.a);
           float a = bm * mm * uOpacity;
           if (a < 0.004) discard;
           gl_FragColor = vec4(uColor * (0.85 + 0.35 * mult.rgb), a);
