@@ -33,7 +33,7 @@
 | Quick AI（AWS Quick） | [`handover/quick/`](./quick/HANDOVER.md) | 临时审查 / 辅助：与 14.14 原版比对，审查发现的不一致项由 Quick AI 修复，代码走 PR | `Q-`（git）、`QC-`（Cloudflare）、`QI-`（Issue） | 2026-11-23 03:45 | `[Quick AI Q-21]` | 已审：数值（Q-14，修复见 [PR #3](https://github.com/cianasa222/swarm-remake/pull/3) 待验收）、首领雷克塞（Q-17）；下一步审武器特效 / 敌人模型 / 地图 |
 | Antigravity（原主线开发 AI） | [`handover/antigravity/`](./antigravity/HANDOVER.md) | 主线开发、本机编译/实机截图验收与修复 | `AG-` | 2026-11-23 03:55 | `[Antigravity AG-09]` | **两步任务全部完成**：① AG-08 93 条 14.14 原版 SFX + 5 首原版 BGM 已接入 `src/audio/audio.ts`；② AG-09 已验收并合并 PR #3（`c056396`）+ 合入 42 动作版 `reksai.glb`、彻底修复 `Wrap/Plane` 子网格隐藏并接入 17 个原版动作剪辑，3 张特写截图视觉审计 CLEAN PASS；待按需部署线上 |
 | Muse（执行 AI） | 领取任务时建 `handover/muse/` | 执行 Issue #1（解包、转换、贴图） | 首次建目录时登记，建议 `MU-` | — | — | Issue #1 待领取 |
-| GPT（ChatGPT） | [`handover/gpt/`](./gpt/HANDOVER.md) | 资产溯源、最小解包、证据与协作审查；用户授权开发 UI | `GPT-` | 2026-11-23 | `[GPT GPT-06]` | PR #7 已合并 `accf280`：登录首页、游客、共享邮箱网关、细节画质；待线上绑定/真机验收；[资源渠道表](./gpt/RESOURCE_SOURCES.md) |
+| GPT（ChatGPT） | [`handover/gpt/`](./gpt/HANDOVER.md) | 资产溯源、最小解包、审查修复、用户授权开发与发布 | `GPT-` | 2026-11-23 | `[GPT-08]` | PR #8 已合并 `797ef1d`，Q22–Q28 + 9 武器音效；上线受静态资产上传授权阻塞，[部署交接](./gpt/DEPLOYMENT_GPT08.md)；真实视听待验。PR #7 邮箱网关待服务绑定 |
 | 新加入的 AI | `handover/<名字小写>/`，如 `gpt`、`claude`、`gemini` | — | 首次建目录时登记，如 `GPT-`、`CL-`、`GM-` | — | — | — |
 
 ---
@@ -70,8 +70,8 @@
 
 ## 6. 怎么读 Cloudflare KV（需要用户 Cloudflare 账号的 API 权限）
 
-- 账号 `63223f8370990e669e94ab2e9c56683a`，KV `tideline-handover`（`7bbc331619b04fc8b5b5323abba5eef0`）。
-- 读文件：`GET /accounts/63223f8370990e669e94ab2e9c56683a/storage/kv/namespaces/7bbc331619b04fc8b5b5323abba5eef0/values/<仓库相对路径>`，路径里的 `/` 写成 `%2F`，例如 `handover%2FREADME.md`。
+- 账号 `<account_id>`，KV `tideline-handover`（`<namespace_id>`）。
+- 读文件：`GET /accounts/<account_id>/storage/kv/namespaces/<namespace_id>/values/<仓库相对路径>`，路径里的 `/` 写成 `%2F`，例如 `handover%2FREADME.md`。
 - `FILE_INDEX.json`：KV 里全部镜像文件的目录（第一条就是本页）。`SYNC_STATE.json`：最后同步的提交号、时间和每个文件的 SHA-256。
 - `ref/14.14/` 开头的是 14.14 原版参考数据（版权原因不进公开仓库），读取方式相同。
 - KV 的写入规则见 [`COLLAB.md`](../COLLAB.md) 2.1 节第 4 条和 2.2 节：只镜像 GitHub 已提交的内容、只做增量、写完核对哈希。

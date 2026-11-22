@@ -12,6 +12,9 @@
 | GPT-05 | 2026-11-23 | PR #7 已合并 `accf280` | 首页、画质管理、渲染、浏览器测试入口 | 用户授权接手登录/设置；纯代码首页与游客；共享邮箱见 GPT-06 | build 通过；浏览器环境拒绝 socket，待完整真机验收 | 未部署 | 以 KV SYNC_STATE.json SHA 为准 |
 | GPT-06 | 2026-11-23 | PR #7 已合并 `accf280` | `worker/index.mjs`、`worker/README.md`、`tools/auth-gateway.test.mjs`、首页 | 共享原账号认证、Swarm 同源网关、登录/退出、会话恢复；用户确认合并 | 网关 mock 4/4、build、playtest 4/4；1280×800 静态登录页渲染核对，独立审查通过基础安全，线上真实绑定和全流程待验收 | 未部署 | 以 KV SYNC_STATE.json SHA 为准 |
 
+| GPT-07 | 2026-11-23 | PR #8 `b688d0f` | 11 个 src 文件、17 个复用音频、2 个回归测试、Q28 审查文档 | Q22/Q23/Q25/Q27/Q28 审查，精英死亡与帧率修复，九种武器音效关键事件接入，纠正 StarStrike/PierceShot/HolyBauble 映射 | build、playtest 4/4、21 种帧率组合、18 组音效及精英复位测试通过，实机待验 | 已合并，未部署 | 见 SYNC_STATE.json |
+| GPT-08 | 2026-11-23 | PR #8 合并 `797ef1d` | `wrangler.jsonc`、本交接、Q28 审查、[部署交接](DEPLOYMENT_GPT08.md) | 用户明确要求先合并部署；核对 30 个 PR 变更文件与本机 Git blob 一致，准备完整 Worker 静态资产及 ACCOUNT_AUTH 绑定配置 | 网关 mock 4/4；构建产物 415 文件、约 51 MiB；实机待验 | 合并成功；线上发布受上传授权阻塞，旧版本保留 | 见 SYNC_STATE.json |
+
 ## 2. 接手基线
 
 已读交接入口、COLLAB、Quick / Antigravity 交接、AGENTS、AI_HANDOVER、PROGRESS、Issue #1 / #4 及评论、雷克塞审计及缺失资产清单。基线 main `85714eadad3b8f3a0fb62653835ded9582be005f`（Q-20）。KV 对上述交接正文逐一比对一致；KV 状态所记 commit 同基线。M0–M4 已完成阶段验收，不等于完全 1:1；M5 等用户确认。AG-05 已上线 Worker 版本 701860ff；PR #3 尚待验收，不能按已合并处理。Issue #1 Muse 已领取 T1/T2/T4（评论可见）；AG-03 已交付喷泉 5 个 Nova 网格及 15 张贴图，先查剩余小怪配置，不重复下载。Issue #4 A 金克丝已补，B 雷克塞动作/子网格/VFX、C 原版音效、D 出场仍待执行。未领取这些执行任务，本轮无代码/资产改动。

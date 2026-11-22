@@ -19,3 +19,5 @@
 2026-11-23：用户明确确认现阶段公开仓库可同步，后期转私有。不上传原始解包档、账号凭据或隐私信息。同步前重读 GitHub main 与 KV `kv_only_pending`、`pending_branches`、`FILE_INDEX.json`，保留 Quick QC-07 至 QC-12 所有更新；文档同步 main，待验收代码单独 PR；未完成合并前不得清理 `pending/`。所有 KV 写前读回核对，写后 SHA-256 验证，不能只看 commit 相同就认定全部一致。
 
 **备用资产分支保护（用户明确要求）**：见 [ASSET_LIBRARY_14.14.md](ASSET_LIBRARY_14.14.md)。即使未上线、未被 main 引用也不得删除或重写 AG-06 资产分支；按需从现有资源复用。
+
+**GPT-08 状态更新**：用户明确要求先合并部署，PR #8 已合并 `797ef1d`，尚未上线。未完成实机视听验收的情况仍保留；见 [部署交接](DEPLOYMENT_GPT08.md)。

@@ -1,0 +1,20 @@
+{
+  // Existing production Worker; preserve current compatibility baseline and routes.
+  "name": "tideline-swarm",
+  "main": "worker/index.mjs",
+  "compatibility_date": "2025-01-01",
+  "workers_dev": true,
+  "preview_urls": true,
+  "routes": [{ "pattern": "swarm.cianasa888.cfd", "custom_domain": true }],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/swarm/auth/*", "/handover/*", "/__sync_kv", "/AGENTS.md", "/AI_HANDOVER.md", "/COLLAB.md", "/PROGRESS.md"]
+  },
+  "services": [{ "binding": "ACCOUNT_AUTH", "service": "trash-simulator-auth" }],
+  "observability": {
+    "enabled": true,
+    "logs": { "enabled": true, "head_sampling_rate": 0.1 },
+    "traces": { "enabled": true, "head_sampling_rate": 0.01 }
+  }
+}
