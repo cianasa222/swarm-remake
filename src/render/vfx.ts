@@ -171,7 +171,9 @@ export class VfxRenderer {
           this.addShake(0.15);
         }
       } else if (ev.type === 'kill') {
-        this.spawnParticles(ev.x, 0.45, ev.z, count(ev.kind === 'elite' ? 24 : 7), 4.5, 0.35, 0x3a6f74);
+        // Q-27：原版 Strawberry_Enemy_Death 是红橙色（HeartGlow (1, 0.27, 0.22)、Spark (1, 0.09, 0.09)、HeartGlow2 (1, 0.33, 0.24)），
+        // 火花层 FN_Universal_Sparks 寿命 0.5 s。旧值暗青 0x3a6f74、0.35 s。
+        this.spawnParticles(ev.x, 0.45, ev.z, count(ev.kind === 'elite' ? 24 : 7), 4.5, 0.5, 0xff4639);
       } else if (ev.type === 'dash') {
         this.spawnParticles(ev.x, 0.5, ev.z, count(10), 4, 0.28, 0x4df5ff);
       } else if (ev.type === 'overload' && ev.on) {
