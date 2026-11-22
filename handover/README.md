@@ -30,7 +30,7 @@
 
 | AI | 目录 | 角色 | 编号前缀 | 最后更新（CST） | 最后提交 | 当前在做 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Quick AI（AWS Quick） | [`handover/quick/`](./quick/HANDOVER.md) | 审查、与 14.14 原版比对；**审查发现的不一致项由 Quick AI 修复，代码走 PR** | `Q-`（git）、`QC-`（Cloudflare）、`QI-`（Issue） | 2026-11-23 01:00 | `[Quick AI Q-13]` | 金克丝按 14.14 原版修复，[PR #2](https://github.com/cianasa222/swarm-remake/pull/2) 待开发 AI 构建验收 |
+| Quick AI（AWS Quick） | [`handover/quick/`](./quick/HANDOVER.md) | 临时审查 / 辅助：与 14.14 原版比对，审查发现的不一致项由 Quick AI 修复，代码走 PR | `Q-`（git）、`QC-`（Cloudflare）、`QI-`（Issue） | 2026-11-23 03:45 | `[Quick AI Q-21]` | 已审：数值（Q-14，修复见 [PR #3](https://github.com/cianasa222/swarm-remake/pull/3) 待验收）、首领雷克塞（Q-17）；下一步审武器特效 / 敌人模型 / 地图 |
 | Antigravity（原主线开发 AI） | [`handover/antigravity/`](./antigravity/HANDOVER.md) | 主线开发、本机编译/实机截图验收与修复 | `AG-` | 2026-11-23 03:40 | `[Antigravity AG-08]` | **已完成第 1 步**：93 条 14.14 原版 SFX + 5 首原版 BGM 已接入 `src/audio/audio.ts` 并通过浏览器 WebAudio 解码实测；**紧接着推进第 2 步（AG-09）**：验收合并 PR #3 + 雷克塞 42 动作与 Wrap/Plane 子网格修复（若本轮未完可顺延接手） |
 | Muse（执行 AI） | 领取任务时建 `handover/muse/` | 执行 Issue #1（解包、转换、贴图） | 首次建目录时登记，建议 `MU-` | — | — | Issue #1 待领取 |
 | GPT（ChatGPT） | [`handover/gpt/`](./gpt/HANDOVER.md) | 资产溯源、最小解包、证据与协作审查 | `GPT-` | 2026-11-23 | `[GPT GPT-02]` | [统一资源渠道登记表](./gpt/RESOURCE_SOURCES.md)；未领取执行任务 |
@@ -53,18 +53,18 @@
 
 ---
 
-## 5. 当前状态速览（2026-11-23 01:00，由 Quick AI 填写）
+## 5. 当前状态速览（2026-11-23 03:45，由 Quick AI 更新；以各 AI 交接文档和 `COLLAB.md` 看板为准）
 
 | 事项 | 状态 |
 | :--- | :--- |
 | 里程碑 | M0–M4 已完成；M5 待用户确认开启 |
-| 中央喷泉 | 第一批（Q-04 + AG-01）已上线；第二批（AG-03，43/43 发射器）Antigravity 记为 CLEAN PASS，待部署 |
-| Q-05 小怪只剩影子修复 | ✅ 已上线 |
-| 线上网站 | Antigravity AG-02 部署（`54a77c68`）：含 Q-04 / AG-01 / Q-05，不含 AG-03 和 Q-13；交接文档地址返回 410 |
-| **待验收的 PR** | [PR #2](https://github.com/cianasa222/swarm-remake/pull/2)（Quick AI Q-13）：金克丝数值与特效按 14.14 原版重建，**Quick AI 未编译**，请开发 AI 构建、playtest、截图后合并 |
-| 审查报告 | [`docs/audit/jinx_14.14.md`](../docs/audit/jinx_14.14.md)（Q-12，Q-13 已订正 2 处错误并加第 9 节修复状态）；[`docs/audit/fountain_emitters_14.14.md`](../docs/audit/fountain_emitters_14.14.md) |
-| [Issue #1](https://github.com/cianasa222/swarm-remake/issues/1) | 待领取（喷泉部分资产已由 AG-03 补齐，Issue 范围待更新） |
-| 用户决定 | M4 压缩后的资产保留在公开仓库（见 `handover/quick/HANDOVER.md` 1.6 节）；审查发现的不一致由 Quick AI 修复、走 PR（同上 0 节） |
+| 线上网站 | `701860ff`（AG-05）：含喷泉第二批（AG-03）、金克丝重建（PR #2）、金克丝补层（AG-05）。**不含** AG-08 原版音效、PR #3 |
+| 待验收的 PR | [PR #3](https://github.com/cianasa222/swarm-remake/pull/3)（Quick AI Q-15：A 类 14 项数值对齐 14.14），AG-09 进行中 |
+| 原版音效 | ✅ AG-08 已接入 93 条原版 `.ogg` + BGM（`main`，待部署）；全部 736 条在资产分支 |
+| 原版资产分支 | [`asset/14.14-unpacked-assets-20261123`](https://github.com/cianasa222/swarm-remake/tree/asset/14.14-unpacked-assets-20261123)（AG-06）：雷克塞 42 段动作、子网格表、55 个特效网格、16 个补充小怪模型、全部音效 |
+| 审查报告 | `docs/audit/`：`live_vs_14.14.md`（数值）、`boss_reksai_14.14.md`（首领）、`jinx_14.14.md`、`fountain_emitters_14.14.md` |
+| Issue | [#1](https://github.com/cianasa222/swarm-remake/issues/1)（Muse 已领取）；[#4](https://github.com/cianasa222/swarm-remake/issues/4)（大部分已由 AG-05 / 06 / 08 完成，余首领出场） |
+| 资源渠道 | 统一看 [`handover/gpt/RESOURCE_SOURCES.md`](./gpt/RESOURCE_SOURCES.md)（GPT-02） |
 
 ---
 

@@ -1,5 +1,12 @@
 # 待补原版资源清单（14.14）—— 交给能解包 / 能编译的 AI 执行
 
+> **状态更新（Quick AI Q-21，2026-11-23 03:45）：本清单大部分已由 Antigravity 完成，以交接文档为准。**
+> - A 金克丝缺层：✅ AG-05 已补齐上线；3 个 `.scb` 网格已解包（AG-06，在资产分支）。
+> - B1 雷克塞 42 段动作、B2 子网格顺序（`[0] Body [1] Fin [2] Scale [3] Wrap [4] Plane`，与 Quick AI 的推断一致）、B3 55 个特效网格：✅ AG-06 已解包，在分支 `asset/14.14-unpacked-assets-20261123`（`4b1b5f7`），清单见该分支 `reference/14.14/UNPACKED_ASSETS_MANIFEST.md`；合入 `main` 与修 `boss_reksai.ts` 由 AG-09 进行中。
+> - C 音效：✅ AG-06 从本机 wad 解出 736 条原版 `.ogg` + 305 个事件映射；AG-08 已把其中 93 条（金克丝、全局、第一关 BGM 和首领战音乐）合入 `main` 并接入 `src/audio/audio.ts`。**本清单 C 节和 F 节里「原版音频 0 个」「没有直链」的说法已过时**：CommunityDragon 确实没有，但已经从本机客户端解出来了。
+> - D 首领出场动画：动作已齐（42 段），用哪几段、出场特效链仍待做。
+> - 另外 16 个第一关补充小怪 / 小首领模型也已解包（AG-06），可用于 Q-14 B1 的刷怪重建。
+
 > 由 Quick AI 生成（Q-18，2026-11-23）。Quick AI 的环境下载不了二进制文件，也不能编译。**任何能做的 AI 都可以直接做**（按 `COLLAB.md` 2.2 节第 9 条：在 Issue #4 评论领取、做完登记即可，不指定人）。
 > 执行方式：`.dds` / `.tex` 从 CommunityDragon 下载 `.png`（路径规则：全部小写，扩展名改成 `.png`，见下表「下载地址」）后转 `.webp`；`.scb` 网格转 JSON，格式与现有 `public/assets/map1/vfx/fountain_*.json` 一致；`.anm` 动画合并进对应 `.glb`，再按 `tools/compress_assets.mjs` 压缩。
 > **特效参数不用推断，直接照抄原版**：每层的尺寸、颜色、时长、曲线都在 KV `ref/14.14/data/characters/<角色>/skins/skin0.bin.json` 里（按下表「用在哪」的系统名 / 发射器名查找），换算规则：平面全宽 = 2 × birthScale.x / 100 m；网格 = birthScale / 100 × 系统 transform。
