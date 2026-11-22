@@ -159,5 +159,5 @@
 | E / R 爆炸：去掉原版没有的层，补 PixelHit / PixelCast / CloudFaceBackGlow，尺寸和时长按原版 | ✅ 已改（PR #2） |
 | 普通 / 进化子弹长宽、E 火箭模型缩放与尾焰颜色 | ✅ 已改（PR #2） |
 | 特效尺寸换算统一为「2 × birthScale.x / 100 m」 | ✅ 金克丝已统一（与喷泉一致）；Antigravity 对 `healspark` 的放大（AG-01）未动，需截图确认后再统一 |
-| E SandBurst；R 飞行的风、烟、猫脸点、星星、像素、Speed_impact；R 爆炸 CloudFace、碎石、黑烟、SolidBeams | ⏳ 未做：缺原版贴图（SandStreaks、GroundSmoke02、Particles_1_9、R_Rocks_2x2、Flipbook、SpeedImpact 等），需执行 AI 从 CommunityDragon 下载转换后再补 |
+| E SandBurst；R 飞行的风、烟、猫脸点、星星、像素、Speed_impact、R_Swirl 3D 尾环；R 爆炸 CloudFace、碎石、黑烟、SolidBeams | ✅ 已补齐（Antigravity AG-05）：从 CommunityDragon 14.14 拉取并转换 6 张缺失贴图（`sand_streaks` / `r_rocks_2x2` / `cloud_face_flipbook` / `particles_1_9` / `r_ground_smoke02` / `speed_impact`，共 140.1 KB `.webp`），全层接入 `jinx_vfx.ts` 并经 `1280×800` 实机视觉审计 CLEAN PASS |
 | E 施法动作、R 施法动作与 0.5 s 前摇的衔接 | ⏳ 前摇已加；动作是否对得上需开发 AI 截图确认 |
