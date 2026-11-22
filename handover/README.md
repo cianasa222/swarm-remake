@@ -10,6 +10,7 @@
 - **以谁为准**：GitHub [`cianasa222/swarm-remake`](https://github.com/cianasa222/swarm-remake) 的 `main` 分支是唯一权威版本。Cloudflare KV `tideline-handover` 是镜像，**可能落后**。线上网站只放游戏，**不放交接文档**。
 - **KV 是不是最新**：读 KV 里的 `SYNC_STATE.json`，它的 `commit` 等于 GitHub `main` 最新提交就是一致；不等就以 GitHub 为准。KV 不会自动跟着 GitHub 变，要由改动的 AI 手动同步。
 - **改了代码要做什么**：同一轮工作里，在自己的 `handover/<ai名>/HANDOVER.md` 登记改动，提交到 GitHub，再同步到 KV（规则见 [`COLLAB.md`](../COLLAB.md) 2.2 节）。
+- **决策与推进方式（2026-11-23 用户指示）**：**Quick AI 是临时审查/辅助角色**，大部分决策由用户拍板，任何具备能力的 AI 均可按用户决定**自主完成开发、解包、验收与推进**，不必等待 Quick AI。
 
 ---
 
@@ -30,7 +31,7 @@
 | AI | 目录 | 角色 | 编号前缀 | 最后更新（CST） | 最后提交 | 当前在做 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | Quick AI（AWS Quick） | [`handover/quick/`](./quick/HANDOVER.md) | 审查、与 14.14 原版比对；**审查发现的不一致项由 Quick AI 修复，代码走 PR** | `Q-`（git）、`QC-`（Cloudflare）、`QI-`（Issue） | 2026-11-23 01:00 | `[Quick AI Q-13]` | 金克丝按 14.14 原版修复，[PR #2](https://github.com/cianasa222/swarm-remake/pull/2) 待开发 AI 构建验收 |
-| Antigravity（原主线开发 AI） | [`handover/antigravity/`](./antigravity/HANDOVER.md) | 主线开发、本机编译/实机截图验收与修复 | `AG-` | 2026-11-23 03:15 | `[Antigravity AG-06]` | 本机解包专属资产（736 条 `.ogg` 音效/BGM + 事件映射、雷克塞 42 动作/子网格/55 `.scb`、金克丝 3 `.scb`、16 个第一关补充小怪 `.glb`）已推送分支 `asset/14.14-unpacked-assets-20261123` (`4b1b5f7`) |
+| Antigravity（原主线开发 AI） | [`handover/antigravity/`](./antigravity/HANDOVER.md) | 主线开发、本机编译/实机截图验收与修复 | `AG-` | 2026-11-23 03:21 | `[Antigravity AG-07]` | 已将「Quick AI 为临时角色、以用户决定和各 AI 自主推进为主」写入协作规范；解包资产分支 `asset/14.14-unpacked-assets-20261123` (`4b1b5f7`) 就绪 |
 | Muse（执行 AI） | 领取任务时建 `handover/muse/` | 执行 Issue #1（解包、转换、贴图） | 首次建目录时登记，建议 `MU-` | — | — | Issue #1 待领取 |
 | GPT（ChatGPT） | [`handover/gpt/`](./gpt/HANDOVER.md) | 资产溯源、最小解包、证据与协作审查 | `GPT-` | 2026-11-23 | `[GPT GPT-02]` | [统一资源渠道登记表](./gpt/RESOURCE_SOURCES.md)；未领取执行任务 |
 | 新加入的 AI | `handover/<名字小写>/`，如 `gpt`、`claude`、`gemini` | — | 首次建目录时登记，如 `GPT-`、`CL-`、`GM-` | — | — | — |
