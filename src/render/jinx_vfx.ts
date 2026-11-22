@@ -14,6 +14,8 @@ interface BurstPlane {
   rotSpeed: number;
   maxOp: number;
   active: boolean;
+  /** 各轴尺寸系数（平面：x 宽、z 长） */
+  ax: number; ay: number; az: number;
 }
 
 interface BurstMesh {
@@ -25,6 +27,8 @@ interface BurstMesh {
   rotY: number;
   maxOp: number;
   active: boolean;
+  /** 各轴缩放系数（网格局部 x / y / z，对应原版 birthScale 三个分量） */
+  ax: number; ay: number; az: number;
 }
 
 interface StarParticle {
@@ -41,6 +45,10 @@ interface StarParticle {
  * - R 8 层核爆：黑曜石焦痕 + 3D 弹坑 + 致盲闪光 + 3D 穹顶 + 3D 涡流 + 3D 二次元爆裂网 + 3D 刃环 + 巨型猫脸 & 星辰
  * - E 鱼骨头 5 层爆炸：地面闪光 + 3D q_animeburst + 3D q_praxis + 猫脸爆裂 + 3D 弹坑 + 星辰
  * - 罪恶快感 5 层官方光环：深蓝底环 + 亮金旋转环 + 脉冲猫脸徽章 + 3D 漩涡 + 外扩疾跑环
+ *
+ * Quick AI Q-13（2026-11-23）：被动光环、R 飞行、E / R 爆炸按 14.14 skin0.bin.json 重建。
+ * 尺寸统一换算：平面全宽 = 2 × birthScale.x / 100 m（贴地平面只取 x）；网格缩放 = birthScale / 100；再乘系统 transform。
+ * 与中央喷泉（map_warehouse.ts）同一规则。原版缺贴图的层（SandBurst、风、烟、碎石、CloudFace 等）未做，见 docs/audit/jinx_14.14.md。
  */
 export class JinxVfxSystem {
   readonly root = new THREE.Group();
@@ -50,11 +58,14 @@ export class JinxVfxSystem {
 
   private passiveGroup = new THREE.Group();
   private passiveDarkBg: THREE.Mesh;
-  private passiveGoldRing: THREE.Mesh;
-  private passiveCat: THREE.Mesh;
-  private passiveCatOut: THREE.Mesh;
+  private passiveRingDots: THREE.Mesh[] = [];
+  private passiveGoldRings: THREE.Mesh[] = [];
+  private passiveCats: THREE.Mesh[] = [];
+  private passiveCatOuts: THREE.Mesh[] = [];
   private passiveSwirl: THREE.Mesh | null = null;
-  private passivePulseRing: THREE.Mesh;
+  private passiveStreakAcc = 0;
+  private rGroundMat: THREE.MeshBasicMaterial;
+  private rocketAge = 0;
 
   private muzzlePlane: THREE.Mesh;
   private muzzlePaw: THREE.Mesh;
@@ -86,6 +97,8 @@ export class JinxVfxSystem {
   private texCrater: THREE.Texture;
   private texCraterObsi: THREE.Texture;
   private texCircleMis: THREE.Texture;
+  private texHitSquares: THREE.Texture;
+  private texPixel: THREE.Texture;
 
   private starPts: THREE.Points;
   private starGeo: THREE.BufferGeometry;
@@ -124,6 +137,8 @@ export class JinxVfxSystem {
     this.texCrater = loadTex('./assets/heroes/jinx/vfx/crater_01.webp');
     this.texCraterObsi = loadTex('./assets/heroes/jinx/vfx/r_craterobsi.webp');
     this.texCircleMis = loadTex('./assets/heroes/jinx/vfx/circle_mis.webp');
+    this.texHitSquares = loadTex('./assets/heroes/jinx/vfx/hit_squares.webp');
+    this.texPixel = loadTex('./assets/heroes/jinx/vfx/base_pixel.webp');
 
     // 1. R 超究极死神飞弹完整飞行组件
     this.rocketGroup.visible = false;
@@ -132,15 +147,18 @@ export class JinxVfxSystem {
     });
 
     // 青蓝大光晕 + 双交叉尾焰 + 地面前导投影
-    const rGlowGeo = new THREE.PlaneGeometry(2.8, 6.2);
+    // 原版 R_Mis「Glow」：Aura_Self (0, 0.667, 1) α 0.502，2 × 275 / 100 = 5.5 m（Quick AI Q-13，旧值 2.8 × 6.2、α 0.72）
+    const rGlowGeo = new THREE.PlaneGeometry(5.5, 5.5);
     rGlowGeo.rotateX(-Math.PI / 2);
-    rGlowGeo.translate(0, 0.05, -0.6);
-    const rGlow = new THREE.Mesh(rGlowGeo, mkAdd(this.texAura, 0x00aaff, 0.72));
+    rGlowGeo.translate(0, 0.05, 0);
+    const rGlow = new THREE.Mesh(rGlowGeo, mkAdd(this.texAura, 0x00aaff, 0.502));
 
-    const rGroundGeo = new THREE.PlaneGeometry(4.2, 7.2);
+    // 原版 R_Mis「Ground Front Glow」：R_Shape 2 × 800 / 100 × 0.85 = 13.6 m，颜色随飞行时间变化（见 update）（Quick AI Q-13，旧值 4.2 × 7.2）
+    const rGroundGeo = new THREE.PlaneGeometry(13.6, 13.6);
     rGroundGeo.rotateX(-Math.PI / 2);
-    const rGround = new THREE.Mesh(rGroundGeo, mkAdd(rShapeTex, 0x62f8ff, 0.52));
-    rGround.position.set(0, -0.96, 1.1);
+    this.rGroundMat = mkAdd(rShapeTex, 0xffaaff, 0.75);
+    const rGround = new THREE.Mesh(rGroundGeo, this.rGroundMat);
+    rGround.position.set(0, -0.96, 0);
     rGround.renderOrder = 8;
 
     const trailGeo = new THREE.PlaneGeometry(1.6, 3.6);
@@ -176,7 +194,10 @@ export class JinxVfxSystem {
       this.rocketGroup.add(m);
     }).catch(() => {});
 
-    // 2. 罪恶快感 5 层官方脚底光环（严格对齐 skin0.bin.json 尺寸 ~1.45m，绕 Y 轴水平旋转）
+    // 2. 罪恶快感 Strawberry_Jinx_Base_Passive_Buff（Quick AI Q-13 按 14.14 原版重建）
+    //    DarkBG 常驻 2.2 m；GlowRing 2.3 m / CatFace 2.5 m / Outline 2.5 m / RingGlowDot 1.9 m 每秒 1.5 个新环，
+    //    寿命 1 s，0.8 → 1.0 倍外扩并淡入淡出（原版不旋转）；SpeedRing（Passive_Swirl 网格 ×0.007）每秒 1 个、寿命 0.5 s；
+    //    Streak 速度线见 update。旧版为 5 层常驻旋转 + 正弦脉动、尺寸约原版 60%
     this.passiveGroup.visible = false;
     const flatPlane = (size: number) => {
       const g = new THREE.PlaneGeometry(size, size);
@@ -184,36 +205,39 @@ export class JinxVfxSystem {
       return g;
     };
     this.passiveDarkBg = new THREE.Mesh(
-      flatPlane(1.35),
-      new THREE.MeshBasicMaterial({ map: ringTex, color: 0x052854, transparent: true, opacity: 0.48, depthWrite: false }),
+      flatPlane(2.2),
+      new THREE.MeshBasicMaterial({ map: ringTex, color: 0x052854, transparent: true, opacity: 0.451, depthWrite: false }),
     );
     this.passiveDarkBg.position.y = 0.04;
     this.passiveDarkBg.renderOrder = 5;
+    this.passiveGroup.add(this.passiveDarkBg);
 
-    this.passiveGoldRing = new THREE.Mesh(flatPlane(1.45), mkAdd(ringTex, 0xffff7f, 0.62));
-    this.passiveGoldRing.position.y = 0.06;
-    this.passiveGoldRing.renderOrder = 6;
-
-    this.passiveCat = new THREE.Mesh(flatPlane(1.35), mkAdd(this.texCatLogo, 0xff5ce0, 0.78));
-    this.passiveCat.position.y = 0.07;
-    this.passiveCat.renderOrder = 7;
-
-    this.passiveCatOut = new THREE.Mesh(flatPlane(1.42), mkAdd(this.texCatOut, 0x6ef8ff, 0.65));
-    this.passiveCatOut.position.y = 0.08;
-    this.passiveCatOut.renderOrder = 7;
-
-    this.passivePulseRing = new THREE.Mesh(flatPlane(1.2), mkAdd(this.texCircleMis, 0x72f8ff, 0.45));
-    this.passivePulseRing.position.y = 0.05;
-    this.passivePulseRing.renderOrder = 6;
-
-    this.passiveGroup.add(this.passiveDarkBg, this.passiveGoldRing, this.passiveCat, this.passiveCatOut, this.passivePulseRing);
+    const ringLayer = (tex: THREE.Texture, size: number, additive: boolean, y: number, order: number): THREE.Mesh[] => {
+      const out: THREE.Mesh[] = [];
+      for (let j = 0; j < 2; j++) {
+        const m = new THREE.Mesh(flatPlane(size), new THREE.MeshBasicMaterial({
+          map: tex, color: 0xffffff, transparent: true, opacity: 0,
+          blending: additive ? THREE.AdditiveBlending : THREE.NormalBlending, side: THREE.DoubleSide, depthWrite: false,
+        }));
+        m.position.y = y;
+        m.renderOrder = order;
+        m.visible = false;
+        this.passiveGroup.add(m);
+        out.push(m);
+      }
+      return out;
+    };
+    this.passiveRingDots = ringLayer(ringTex, 1.9, false, 0.05, 6);
+    this.passiveGoldRings = ringLayer(ringTex, 2.3, true, 0.06, 6);
+    this.passiveCats = ringLayer(this.texCatLogo, 2.5, true, 0.07, 7);
+    this.passiveCatOuts = ringLayer(this.texCatOut, 2.5, true, 0.08, 7);
     this.root.add(this.passiveGroup);
 
     loadScbGeo('./assets/heroes/jinx/vfx/passive_swirl.json').then((geo) => {
-      const m = new THREE.Mesh(geo, mkAdd(this.texREnergy, 0xff66cc, 0.72));
-      m.scale.setScalar(0.0082);
-      m.position.y = 0.18;
+      const m = new THREE.Mesh(geo, mkAdd(this.texCircleMis, 0xffff7f, 0.27));
+      m.scale.setScalar(0.007);
       m.renderOrder = 7;
+      m.visible = false;
       this.passiveSwirl = m;
       this.passiveGroup.add(m);
     }).catch(() => {});
@@ -229,15 +253,15 @@ export class JinxVfxSystem {
     this.muzzlePaw.renderOrder = 14;
     this.root.add(this.muzzlePlane, this.muzzlePaw);
 
-    // 4. 广告牌特效池（64 个）与 3D SCB 特效池（36 个）
+    // 4. 广告牌特效池（160 个）与 3D SCB 特效池（36 个）
     const unitGeo = new THREE.PlaneGeometry(1, 1);
     unitGeo.rotateX(-Math.PI / 2);
-    for (let i = 0; i < 64; i++) {
+    for (let i = 0; i < 160; i++) {
       const m = new THREE.Mesh(unitGeo, mkAdd(this.texGunHit, 0xffffff, 0.9));
       m.visible = false;
       m.renderOrder = 13;
       this.root.add(m);
-      this.planes.push({ mesh: m, age: 0, life: 0.3, s0: 1, s1: 2, rotSpeed: 0, maxOp: 0.9, active: false });
+      this.planes.push({ mesh: m, age: 0, life: 0.3, s0: 1, s1: 2, rotSpeed: 0, maxOp: 0.9, active: false, ax: 1, ay: 1, az: 1 });
     }
 
     const dummyGeo = new THREE.BufferGeometry();
@@ -246,7 +270,7 @@ export class JinxVfxSystem {
       m.visible = false;
       m.renderOrder = 15;
       this.root.add(m);
-      this.meshes.push({ mesh: m, age: 0, life: 0.4, s0: 0.01, s1: 0.05, rotY: 0, maxOp: 0.85, active: false });
+      this.meshes.push({ mesh: m, age: 0, life: 0.4, s0: 0.01, s1: 0.05, rotY: 0, maxOp: 0.85, active: false, ax: 1, ay: 1, az: 1 });
     }
 
     // 5. 离屏裁剪官方 lilstar_4x2.webp 星辰爆发粒子池
@@ -289,6 +313,7 @@ export class JinxVfxSystem {
   private allocPlane(
     x: number, y: number, z: number, tex: THREE.Texture, hex: number,
     s0: number, s1: number, life: number, maxOp = 0.9, rotSpeed = 0, additive = true, verticalYaw: number | null = null,
+    ax = 1, az = 1,
   ) {
     const b = this.planes.find((p) => !p.active);
     if (!b) return;
@@ -299,6 +324,9 @@ export class JinxVfxSystem {
     b.s1 = s1;
     b.rotSpeed = rotSpeed;
     b.maxOp = maxOp;
+    b.ax = ax;
+    b.ay = 1;
+    b.az = az;
     b.mesh.visible = true;
     b.mesh.position.set(x, y, z);
     if (verticalYaw !== null) {
@@ -306,7 +334,7 @@ export class JinxVfxSystem {
     } else {
       b.mesh.rotation.set(0, Math.random() * Math.PI * 2, 0);
     }
-    b.mesh.scale.setScalar(s0);
+    b.mesh.scale.set(s0 * ax, s0, s0 * az);
     const mat = b.mesh.material as THREE.MeshBasicMaterial;
     mat.map = tex;
     mat.color.setHex(hex);
@@ -318,6 +346,7 @@ export class JinxVfxSystem {
   private allocMesh(
     geo: THREE.BufferGeometry | null, x: number, y: number, z: number, tex: THREE.Texture,
     hex: number, s0: number, s1: number, life: number, maxOp = 0.85, rotY = 0, additive = true,
+    ax = 1, ay = 1, az = 1,
   ) {
     if (!geo) return;
     const b = this.meshes.find((m) => !m.active);
@@ -329,17 +358,30 @@ export class JinxVfxSystem {
     b.s1 = s1;
     b.rotY = rotY;
     b.maxOp = maxOp;
+    b.ax = ax;
+    b.ay = ay;
+    b.az = az;
     b.mesh.geometry = geo;
     b.mesh.visible = true;
     b.mesh.position.set(x, y, z);
     b.mesh.rotation.set(0, Math.random() * Math.PI * 2, 0);
-    b.mesh.scale.setScalar(s0);
+    b.mesh.scale.set(s0 * ax, s0 * ay, s0 * az);
     const mat = b.mesh.material as THREE.MeshBasicMaterial;
     mat.map = tex;
     mat.color.setHex(hex);
     mat.opacity = maxOp;
     mat.blending = additive ? THREE.AdditiveBlending : THREE.NormalBlending;
     mat.needsUpdate = true;
+  }
+
+  /** 罪恶快感外扩环：设置一帧的可见、缩放、颜色（原版 sRGB 数值）与透明度 */
+  private setPassiveRing(m: THREE.Mesh, alive: boolean, s: number, r: number, g: number, b: number, a: number) {
+    m.visible = alive && a > 0.002;
+    if (!m.visible) return;
+    m.scale.setScalar(s);
+    const mat = m.material as THREE.MeshBasicMaterial;
+    mat.color.setRGB(r, g, b, THREE.SRGBColorSpace);
+    mat.opacity = a;
   }
 
   private spawnStars(x: number, z: number, count: number, speed: number, hex: number) {
@@ -391,37 +433,57 @@ export class JinxVfxSystem {
 
   private eCraterCooldownT = 0;
 
-  /** E 鱼骨头 5 层官方爆炸（弹坑节流防 9 枚齐射叠糊） */
+  /**
+   * E 鱼骨头爆炸：Strawberry_Jinx_Base_Q_Rocket_GroundAOE（系统整体 ×0.5；按爆炸半径相对基础 3 m 等比放大）
+   * Quick AI Q-13 按 14.14 原版重建：去掉原版没有的猫脸、rocket_hit 两层和星星；补 PixelHit；
+   * SandBurst（SandStreaks 贴图未导出）暂缺。弹坑节流防 9 枚齐射叠糊。
+   */
   spawnRocketEBlast(x: number, z: number, radius: number) {
-    this.allocPlane(x, 0.08, z, this.texAura, 0x0096ff, radius * 0.5, radius * 1.4, 0.22, 0.52, 0);
+    const k = radius / 3.0;
+    // Jinx_E_FloorFlash：Aura_Self 蓝 (0, 0.59, 1)，2 × 450 / 100 × 0.5 = 4.5 m，0.2 s 内缩到 0.75 倍
+    this.allocPlane(x, 0.08, z, this.texAura, 0x0096ff, 4.5 * k, 3.375 * k, 0.2, 1.0, 0);
     if (this.eCraterCooldownT <= 0) {
       this.eCraterCooldownT = 0.16;
-      this.allocMesh(this.geoCrater, x, 0.04, z, this.texCrater, 0xd1c2ba, radius * 0.007, radius * 0.0095, 0.95, 0.42, 0, false);
+      // Jinx_E_Crater：Crater_01 网格 bS (7, 5, 3.4) × 0.5，普通混合，1.25 s，0.7 → 1.01 倍
+      this.allocMesh(this.geoCrater, x, 0.04, z, this.texCrater, 0xd1c2ba, 0.7, 1.01, 1.25, 0.34, 0, false, 0.035 * k, 0.025 * k, 0.017 * k);
     }
-    this.allocMesh(this.geoQAnime, x, 0.12, z, this.texEErosion, 0xff9b42, radius * 0.0035, radius * 0.0095, 0.32, 0.72, 4);
-    this.allocMesh(this.geoQPraxis, x, 0.15, z, this.texEPraxis, 0x7df9ff, radius * 0.0028, radius * 0.007, 0.36, 0.72, -3);
-    this.allocPlane(x, 0.42, z, this.texCatLogo, 0xff7be0, radius * 0.35, radius * 0.72, 0.36, 0.72, 1.5, false);
-    this.allocPlane(x, 0.36, z, this.texRocketHit, 0xffc852, radius * 0.4, radius * 1.05, 0.25, 0.82, 2);
-    this.spawnStars(x, z, 6, 7.0, 0xffdd30);
+    // Jinx_E_Swirls：Q_AnimeBurstMesh02 bS (4, 2.75, 2.75) × 0.5，E_ErosionSphere02，0.35 s，0.5 → 1.2 倍，自转 100°/s
+    this.allocMesh(this.geoQAnime, x, 0.12, z, this.texEErosion, 0xffff00, 0.5, 1.2, 0.35, 1.0, 1.745, true, 0.02 * k, 0.01375 * k, 0.01375 * k);
+    // Jinx_E_RingOut：Q_Praxis bS (3.25, 1.25, 1.0) × 0.5，E_Praxis，0.45 s，黄色 α 0.4
+    this.allocMesh(this.geoQPraxis, x, 0.15, z, this.texEPraxis, 0xffff7f, 1, 1, 0.45, 0.4, 0, true, 0.01625 * k, 0.00625 * k, 0.005 * k);
+    // Jinx_E_PixelHit：Pixel 像素块 8 个，2 × 30 / 100 × 0.5 = 0.3 m，0.65 s
+    for (let i = 0; i < 8; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const d = Math.random() * 0.9 * k;
+      this.allocPlane(x + Math.cos(a) * d, 0.25, z + Math.sin(a) * d, this.texPixel, 0xffff00, 0.3 * k, 0.6 * k, 0.65, 1.0, 0);
+    }
   }
 
-  /** R 超究极死神飞弹 8 层二次元核爆 */
+  /**
+   * R 超究极死神飞弹爆炸：Strawberry_Jinx_Base_R_Tar（按爆炸半径相对基础 5 m 等比放大）
+   * Quick AI Q-13 按 14.14 原版重建：去掉原版没有的弹坑网格、穹顶、R_Swirl、巨型猫脸和外框；Swirls 贴图改回 E_ErosionSphere02；
+   * 补 CloudFaceBackGlow、PixelCast；焦痕 1.85 s → 1.0 s。CloudFace 翻页图、碎石、黑烟、SolidBeams 暂缺。
+   */
   spawnUltDome(x: number, z: number, radius: number) {
-    // 1. 黑曜石焦痕 & 3D 弹坑
-    this.allocPlane(x, 0.03, z, this.texCraterObsi, 0x26202b, radius * 1.5, radius * 2.35, 1.85, 0.78, 0, false);
-    this.allocMesh(this.geoCrater, x, 0.05, z, this.texCrater, 0xd8c8be, radius * 0.009, radius * 0.013, 1.45, 0.65, 0, false);
-    // 2. 致盲白黄闪光
-    this.allocPlane(x, 0.28, z, this.texGlow2, 0xffff80, radius * 0.8, radius * 2.5, 0.26, 0.95, 0);
-    this.allocPlane(x, 0.24, z, this.texAura, 0xffff40, radius * 0.9, radius * 2.3, 0.38, 0.85, 0);
-    // 3. 四重官方 3D SCB 特效网格（穹顶 + 涡流 + 二次元爆裂网 + 切割刃环）
-    this.allocMesh(this.geoDome, x, 0.08, z, this.texREnergy, 0x64f6ff, radius * 0.006, radius / 52.3, 0.58, 0.88, 1.2);
-    this.allocMesh(this.geoSwirl, x, 0.16, z, this.texEErosion, 0x52f2ff, radius * 0.004, radius / 91.6, 0.52, 0.82, 5.5);
-    this.allocMesh(this.geoRAnime, x, 0.12, z, this.texRShapes01, 0xffe354, radius * 0.004, radius / 104.7, 0.44, 0.9, -2.5);
-    this.allocMesh(this.geoRPraxis, x, 0.18, z, this.texEPraxis, 0xff70df, radius * 0.003, radius / 163.4, 0.52, 0.85, 3.2);
-    // 4. 巨型猫脸徽章 + 外框 + 星辰爆发
-    this.allocPlane(x, 0.45, z, this.texCatLogo, 0xff80e0, radius * 0.65, radius * 1.55, 0.65, 0.92, 1.4, false);
-    this.allocPlane(x, 0.48, z, this.texCatOut, 0x62f8ff, radius * 0.7, radius * 1.7, 0.6, 0.85, -1.0);
-    this.spawnStars(x, z, 28, 11.5, 0xffdd30);
+    const k = radius / 5.0;
+    // vortex：R_CraterObsi 焦痕 2 × 580 / 100 = 11.6 m，普通混合，1.0 s，0.5 → 1.0 倍
+    this.allocPlane(x, 0.03, z, this.texCraterObsi, 0xc8c8c8, 5.8 * k, 11.6 * k, 1.0, 1.0, 0, false);
+    // Hit_Flash：Glow2 黄白 (1, 1, 0.498)，2 × 500 / 100 = 10 m，0.2 s 内收缩
+    this.allocPlane(x, 0.28, z, this.texGlow2, 0xffff7f, 10 * k, 5 * k, 0.2, 1.0, 0);
+    // CloudFaceBackGlow：Aura_Self 2 × 425 / 100 = 8.5 m，y = 1.2 m，0.45 s，0.7 → 1.0 倍，黄 → 青 → 蓝
+    this.allocPlane(x, 1.2, z, this.texAura, 0xffff00, 5.95 * k, 8.5 * k, 0.45, 1.0, 0);
+    // Swirls：R_AnimeBurstMesh02 bS (4, 2.75, 2.75)，E_ErosionSphere02，0.375 s，0.5 → 1.2 倍，自转 100°/s，α 0.659
+    this.allocMesh(this.geoRAnime, x, 0.12, z, this.texEErosion, 0xffff00, 0.5, 1.2, 0.375, 0.659, 1.745, true, 0.04 * k, 0.0275 * k, 0.0275 * k);
+    // EnergyRing_Out：R_Praxis bS (2.65, 1.25, 1.0)，E_Praxis，0.45 s，黄色，峰值 α 0.4 × 0.647
+    this.allocMesh(this.geoRPraxis, x, 0.18, z, this.texEPraxis, 0xffff00, 1, 1, 0.45, 0.26, 0, true, 0.0265 * k, 0.0125 * k, 0.01 * k);
+    // PixelCast：Pixel 15 个，2 × 25 / 100 = 0.5 m，0.65 s
+    for (let i = 0; i < 15; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const d = Math.random() * 2.0 * k;
+      this.allocPlane(x + Math.cos(a) * d, 0.25, z + Math.sin(a) * d, this.texPixel, 0xffff00, 0.5 * k, 1.0 * k, 0.65, 1.0, 0);
+    }
+    // LingerBoxes：lilStar 4 颗，黄 (1, 0.867, 0.184)
+    this.spawnStars(x, z, 4, 6.0, 0xffdd2f);
   }
 
   update(dt: number, clock: number, px: number, pz: number, excited: boolean, reduceFlash: boolean) {
@@ -435,41 +497,105 @@ export class JinxVfxSystem {
       this.muzzlePaw.visible = false;
     }
 
-    // R 飞弹飞行时气浪锥旋转 + 每 0.06s 发射双色垂直扩散尾环
+    const opScale = reduceFlash ? 0.5 : 1.0;
+
+    // R 飞弹飞行：气浪锥旋转 + 地面前导投影变色 + 双色尾环（Quick AI Q-13 按 14.14 R_Mis 重建）
     if (this.rocketGroup.visible) {
+      this.rocketAge += dt;
+      // Ground Front Glow 颜色曲线（粒子寿命 50 s，原版时间点 0 / 0.005 / 0.01 / 0.02 / 1 → 0 / 0.25 / 0.5 / 1 / 50 s）
+      const ta = this.rocketAge;
+      const gk: [number, number, number, number][] = [
+        [1, 0.667, 1, 0.75], [1, 1, 0, 0.75], [0, 0.843, 1, 0.435], [0.67, 1, 1, 0.157], [0.33, 1, 1, 0],
+      ];
+      const gt = [0, 0.25, 0.5, 1.0, 50];
+      let gi = 0;
+      while (gi < gt.length - 2 && ta > gt[gi + 1]) gi++;
+      const gf = Math.min(1, Math.max(0, (ta - gt[gi]) / (gt[gi + 1] - gt[gi])));
+      const c0 = gk[gi];
+      const c1 = gk[gi + 1];
+      this.rGroundMat.color.setRGB(
+        c0[0] + (c1[0] - c0[0]) * gf, c0[1] + (c1[1] - c0[1]) * gf, c0[2] + (c1[2] - c0[2]) * gf, THREE.SRGBColorSpace,
+      );
+      this.rGroundMat.opacity = (c0[3] + (c1[3] - c0[3]) * gf) * opScale;
+
       if (this.rocketCone) this.rocketCone.rotation.y += dt * 12;
       this.rocketRingSpawnT -= dt;
       if (this.rocketRingSpawnT <= 0) {
-        this.rocketRingSpawnT = 0.065;
+        // 原版 Ring Blue Big / Ring Yellow Small：各每秒 3 个，寿命 0.35 s，生成在飞弹前方 1 m（EmitterPosition z = 100）
+        // （旧版每 0.065 s 一对，约为原版 5 倍；原版为 R_Swirl 3D 网格，此处仍用竖直平面近似）
+        this.rocketRingSpawnT = 1 / 3;
         const rx = this.rocketGroup.position.x;
         const ry = this.rocketGroup.position.y;
         const rz = this.rocketGroup.position.z;
         const yaw = this.rocketGroup.rotation.y;
-        const bx = rx - Math.sin(yaw) * 1.1;
-        const bz = rz - Math.cos(yaw) * 1.1;
-        this.allocPlane(bx, ry, bz, this.texCircleMis, 0x00d8e6, 0.65, 1.85, 0.34, 0.8, 0, true, yaw);
-        this.allocPlane(bx, ry, bz, this.texCircleMis, 0xffaa00, 0.45, 1.35, 0.28, 0.8, 0, true, yaw);
+        const bx = rx + Math.sin(yaw) * 1.0;
+        const bz = rz + Math.cos(yaw) * 1.0;
+        this.allocPlane(bx, ry, bz, this.texCircleMis, 0x00a5a5, 0.65, 1.85, 0.35, 0.769, 0, true, yaw);
+        this.allocPlane(bx, ry, bz, this.texCircleMis, 0xffaa00, 0.45, 1.35, 0.35, 0.769, 0, true, yaw);
       }
+    } else {
+      this.rocketAge = 0;
+      this.rocketRingSpawnT = 0;
     }
 
-    // 罪恶快感 5 层光环（全绕 Y 轴水平旋转）
+    // 罪恶快感 Passive_Buff（Quick AI Q-13 按 14.14 原版重建：外扩环每秒 1.5 个、寿命 1 s，不旋转）
     this.passiveGroup.visible = excited;
     if (excited) {
       this.passiveGroup.position.set(px, 0, pz);
-      this.passiveDarkBg.rotation.y = clock * 0.6;
-      this.passiveGoldRing.rotation.y = clock * 2.6;
-      const pulse = 1 + Math.sin(clock * 10) * 0.08;
-      this.passiveGoldRing.scale.setScalar(pulse);
-      const catPulse = 0.92 + Math.sin(clock * 8) * 0.1;
-      this.passiveCat.scale.setScalar(catPulse);
-      this.passiveCatOut.scale.setScalar(catPulse * 1.04);
-      const ringK = (clock * 1.8) % 1;
-      this.passivePulseRing.scale.setScalar(0.7 + ringK * 0.95);
-      (this.passivePulseRing.material as THREE.MeshBasicMaterial).opacity = (1 - ringK) * 0.52;
-      if (this.passiveSwirl) this.passiveSwirl.rotation.y = -clock * 4.2;
+      (this.passiveDarkBg.material as THREE.MeshBasicMaterial).opacity = 0.451 * opScale;
+      const ph = clock * 1.5;
+      for (let j = 0; j < 2; j++) {
+        const age = ((((ph - j) % 2) + 2) % 2) / 1.5;
+        const alive = age < 1;
+        const s = 0.8 + 0.2 * Math.min(1, age);
+        // GlowRing / CatFace / Outline：α 0 →（0.2）峰值 → 0；峰值 = birthColor.a × color.a
+        const fade = age < 0.2 ? age / 0.2 : Math.max(0, (1 - age) / 0.8);
+        this.setPassiveRing(this.passiveGoldRings[j], alive, s, 1, 1, 0.498, 0.62 * 0.451 * fade * opScale);
+        this.setPassiveRing(this.passiveCats[j], alive, s, 1, 1, 1, 0.28 * 0.43 * fade * opScale);
+        this.setPassiveRing(this.passiveCatOuts[j], alive, s, 1, 1, 1, 0.65 * 0.49 * fade * opScale);
+        // RingGlowDot：0.226 前黄 (1, 1, 0) → 0.388 青 (0.333, 1, 1) → 0.8 (0, 1, 1)；α 0.42，0.8 后渐隐
+        let dr = 1;
+        let db = 0;
+        if (age >= 0.388) {
+          dr = age < 0.8 ? 0.333 * (1 - (age - 0.388) / 0.412) : 0;
+          db = 1;
+        } else if (age > 0.226) {
+          const f = (age - 0.226) / 0.162;
+          dr = 1 - 0.667 * f;
+          db = f;
+        }
+        const dotA = age < 0.8 ? 0.42 : Math.max(0, (0.42 * (1 - age)) / 0.2);
+        this.setPassiveRing(this.passiveRingDots[j], alive, s, dr, 1, db, dotA * opScale);
+      }
+      // SpeedRing：Passive_Swirl 网格，每秒 1 个、寿命 0.5 s；缩放 (1, 2, 1) → (1.25, 1.25, 1.25)；黄 → 青 → 紫并渐隐
+      if (this.passiveSwirl) {
+        const age = clock % 1;
+        const on = age < 0.5;
+        this.passiveSwirl.visible = on;
+        if (on) {
+          const k = age / 0.5;
+          this.passiveSwirl.scale.set(0.007 * (1 + 0.25 * k), 0.007 * (2 - 0.75 * k), 0.007 * (1 + 0.25 * k));
+          const mat = this.passiveSwirl.material as THREE.MeshBasicMaterial;
+          if (k < 0.5) {
+            const f = k / 0.5;
+            mat.color.setRGB(1 - 0.667 * f, 1, 0.498 + 0.502 * f, THREE.SRGBColorSpace);
+          } else if (k < 0.7) {
+            mat.color.setRGB(0.333, 1, 1, THREE.SRGBColorSpace);
+          } else {
+            mat.color.setRGB(0.333, 1 - (k - 0.7) / 0.3, 1, THREE.SRGBColorSpace);
+          }
+          mat.opacity = (k < 0.7 ? 0.27 : 0.27 * (1 - (k - 0.7) / 0.3)) * opScale;
+        }
+      }
+      // Jinx_P_Streak：hit_squares 速度线，每秒 15 条，寿命 0.3 s，2 × (5, 80) / 100 = 0.1 m × 1.6 m 竖直
+      this.passiveStreakAcc += dt * 15;
+      while (this.passiveStreakAcc >= 1) {
+        this.passiveStreakAcc -= 1;
+        this.allocPlane(px, 0.8, pz + 0.1, this.texHitSquares, 0xffff00, 1, 1, 0.3, 1.0, 0, true, 0, 0.1, 1.6);
+      }
+    } else {
+      this.passiveStreakAcc = 0;
     }
-
-    const opScale = reduceFlash ? 0.5 : 1.0;
 
     for (const b of this.planes) {
       if (!b.active) continue;
@@ -477,7 +603,8 @@ export class JinxVfxSystem {
       if (b.age >= b.life) { b.active = false; b.mesh.visible = false; continue; }
       const k = b.age / b.life;
       const ease = 1 - Math.pow(1 - k, 2);
-      b.mesh.scale.setScalar(b.s0 + (b.s1 - b.s0) * ease);
+      const sP = b.s0 + (b.s1 - b.s0) * ease;
+      b.mesh.scale.set(sP * b.ax, sP * b.ay, sP * b.az);
       if (b.rotSpeed) b.mesh.rotation.y += b.rotSpeed * dt;
       (b.mesh.material as THREE.MeshBasicMaterial).opacity = (1 - k) * b.maxOp * opScale;
     }
@@ -488,7 +615,8 @@ export class JinxVfxSystem {
       if (b.age >= b.life) { b.active = false; b.mesh.visible = false; continue; }
       const k = b.age / b.life;
       const ease = 1 - Math.pow(1 - k, 2);
-      b.mesh.scale.setScalar(b.s0 + (b.s1 - b.s0) * ease);
+      const sM = b.s0 + (b.s1 - b.s0) * ease;
+      b.mesh.scale.set(sM * b.ax, sM * b.ay, sM * b.az);
       if (b.rotY) b.mesh.rotation.y += b.rotY * dt;
       (b.mesh.material as THREE.MeshBasicMaterial).opacity = (1 - k) * b.maxOp * opScale;
     }

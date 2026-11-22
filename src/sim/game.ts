@@ -217,9 +217,13 @@ export interface PlayerState {
   eCd: number;
   eVolleyLeft: number;
   eVolleyT: number;
+  /** E 施法前摇剩余（原版 mCastTime 0.35 s） */
+  eCastT: number;
   rCd: number;
   rMaxCd: number;
   rReadyAnnounced: boolean;
+  /** R 施法前摇剩余（原版 mCastTime 0.5 s） */
+  rCastT: number;
   dashCd: number;
   dashT: number;
   dashX: number; dashZ: number;
@@ -228,6 +232,8 @@ export interface PlayerState {
   overloadT: number;
   overloadCd: number;
   passiveKills: number;
+  /** 罪恶快感累计触发次数（原版 MSBuff = 2.5% × 累计次数） */
+  excitedCount: number;
   meowBurstLeft: number;
   meowBurstT: number;
   meowBurstAng: number;
@@ -382,10 +388,10 @@ export class Game {
       faceX: 0, faceZ: -1, lastMoveX: 0, lastMoveZ: -1, moving: false,
       weapon: 'mg', autoAim: true, swapT: 0, fireCd: 0.25,
       mgStacks: 0, mgTargetId: -1, mgLastHit: -10, mgRetargetUntil: 0, targetId: -1,
-      eCd: 0, eVolleyLeft: 0, eVolleyT: 0,
-      rCd: JINX_R.initCooldown, rMaxCd: JINX_R.cooldown, rReadyAnnounced: false,
+      eCd: 0, eVolleyLeft: 0, eVolleyT: 0, eCastT: 0,
+      rCd: JINX_R.initCooldown, rMaxCd: JINX_R.cooldown, rReadyAnnounced: false, rCastT: 0,
       dashCd: 0, dashT: 0, dashX: 0, dashZ: 0,
-      iframe: 0, hurtT: 0, overloadT: 0, overloadCd: 0, passiveKills: 0,
+      iframe: 0, hurtT: 0, overloadT: 0, overloadCd: 0, passiveKills: 0, excitedCount: 0,
       meowBurstLeft: 0, meowBurstT: 0, meowBurstAng: 0,
       weapons: { jinx_meow: 1 },
       weaponOrder: ['jinx_meow'],
@@ -418,7 +424,13 @@ export class Game {
   get hpRegen() { return this.passiveVal('hpRegen'); }
   get moveSpeed() {
     const p = this.player;
-    return PLAYER.speed * (1 + this.passiveVal('moveSpeed')) * (p.overloadT > 0 ? 1 + JINX_PASSIVE.msBonus : 1);
+    // 原版罪恶快感：+2.5% × 累计兴奋次数，持续期间按 MSDecayRate 线性衰减；与其他移速加成相加（Quick AI Q-13）
+    let excitedMs = 0;
+    if (p.overloadT > 0) {
+      const k = clamp(1 - p.overloadT / JINX_PASSIVE.duration, 0, 1);
+      excitedMs = JINX_PASSIVE.msPerStack * p.excitedCount * (1 - JINX_PASSIVE.msDecay * k);
+    }
+    return PLAYER.speed * (1 + this.passiveVal('moveSpeed') + excitedMs);
   }
   get pickupRadius() { return PLAYER.pickupRadius * (1 + this.passiveVal('pickup')); }
   get xpMul() { return 1 + this.passiveVal('xp'); }
@@ -545,26 +557,31 @@ export class Game {
     p.z += p.vz * dt;
     this.collideStatic(p, PLAYER.radius, true);
 
-    // E：鱼骨头 9 连发射火箭（Strawberry_JinxE）
-    if (inp.mine && p.eCd <= 0 && p.eVolleyLeft <= 0) {
-      p.eVolleyLeft = JINX_E.rocketCount;
-      p.eVolleyT = 0;
+    // E：鱼骨头 9 连发射火箭（Strawberry_JinxE，Quick AI Q-13 按 14.14 原版重建）
+    if (inp.mine && p.eCd <= 0 && p.eVolleyLeft <= 0 && p.eCastT <= 0) {
+      p.eCastT = JINX_E.castTime;
       p.eCd = JINX_E.cooldown * this.cdMul;
       p.weapon = 'cn';
       this.events.push({ type: 'mine', x: p.x, z: p.z });
+    }
+    if (p.eCastT > 0) {
+      p.eCastT -= dt;
+      if (p.eCastT <= 0) {
+        p.eCastT = 0;
+        p.eVolleyLeft = JINX_E.rocketCount;
+        p.eVolleyT = 0;
+      }
     }
     if (p.eVolleyLeft > 0) {
       p.eVolleyT -= dt;
       while (p.eVolleyLeft > 0 && p.eVolleyT <= 0) {
         p.eVolleyT += JINX_E.fireInterval;
-        const firedIdx = JINX_E.rocketCount - p.eVolleyLeft;
         p.eVolleyLeft--;
         const baseAng = Math.atan2(p.faceZ, p.faceX);
-        // 有规律的 3x3 紧凑扇形齐射角（不再随机乱飞）
-        const fan = ((firedIdx % 3) - 1) * 0.16 + (Math.floor(firedIdx / 3) - 1) * 0.035;
-        const a = baseAng + fan;
+        // 原版：每枚火箭在 90° 锥形内随机方向直线飞行
+        const a = baseAng + (this.rand() - 0.5) * (JINX_E.coneDeg * Math.PI / 180);
         const eTier = Math.min(5, Math.floor((p.level - 1) / 3));
-        const eDmg = (JINX_E.baseDamage + p.level * JINX_E.dmgPerLevel) * this.damageMul;
+        const eDmg = (JINX_E.level1Damage + (p.level - 1) * JINX_E.dmgPerLevel) * this.damageMul;
         const isCrit = this.rand() < this.critChance;
         const critMult = isCrit ? (2 + JINX_E.critDmgBonus[eTier]) : 1;
         this.projectiles.push({
@@ -573,7 +590,7 @@ export class Game {
           z: p.z + Math.sin(a) * 0.75,
           vx: Math.cos(a) * JINX_E.speed,
           vz: Math.sin(a) * JINX_E.speed,
-          r: 0.28,
+          r: JINX_E.radius,
           dmg: eDmg * critMult,
           travel: 0,
           range: JINX_E.range,
@@ -590,8 +607,15 @@ export class Game {
       if (p.eVolleyLeft === 0) p.weapon = 'mg';
     }
 
-    // R：超究极死神飞弹（Strawberry_JinxR）
-    if (inp.ult && p.rCd <= 0) this.fireUlt();
+    // R：超究极死神飞弹（Strawberry_JinxR）：按下进入 0.5 s 施法前摇，结束后发射（Quick AI Q-13）
+    if (inp.ult && p.rCd <= 0 && p.rCastT <= 0) this.startUlt();
+    if (p.rCastT > 0) {
+      p.rCastT -= dt;
+      if (p.rCastT <= 0) {
+        p.rCastT = 0;
+        this.fireUlt();
+      }
+    }
   }
 
   /** 与场景边界和仓库区 180x180 可行走栅格障碍的碰撞（玩家与敌人共用） */
@@ -807,7 +831,7 @@ export class Game {
           e.x += e.dirX * step;
           e.z += e.dirZ * step;
           e.dashLeft -= step;
-          if (len(p.x - e.x, p.z - e.z) < C.dashWidth / 2 + PLAYER.radius) this.hurtPlayer(C.dashDamage);
+          if (len(p.x - e.x, p.z - e.z) < C.dashWidth / 2 + PLAYER.hurtRadius) this.hurtPlayer(C.dashDamage);
           if (e.dashLeft <= 0) {
             e.state = 'recover';
             e.stateT = 0.5;
@@ -857,7 +881,7 @@ export class Game {
       const inside = Math.abs(e.x) < ARENA.halfW - e.r && Math.abs(e.z) < ARENA.halfH - e.r;
       this.collideStatic(e, e.r, inside && e.age > 0.5);
       // 接触伤害
-      if (d < e.r + PLAYER.radius) {
+      if (d < e.r + PLAYER.hurtRadius) {
         const c = (ENEMIES as Record<string, { contact: number }>)[e.kind].contact;
         this.hurtPlayer(c);
       }
@@ -946,7 +970,7 @@ export class Game {
         b.cd = BOSS.window[this.bossPhase - 1];
       }
     }
-    if (d < b.r + PLAYER.radius) this.hurtPlayer(BOSS.contact);
+    if (d < b.r + PLAYER.hurtRadius) this.hurtPlayer(BOSS.contact);
   }
 
   /** 招式组合：阶段一单招，阶段二两两组合；每组后留输出窗口 */
@@ -1067,7 +1091,7 @@ export class Game {
         h.resolved = true;
         if (h.dmg > 0) {
           this.events.push({ type: 'hazardHit', id: h.id, x: h.x, z: h.z, kind: h.kind });
-          if (hazardContains(h, p.x, p.z, PLAYER.radius)) this.hurtPlayer(h.dmg);
+          if (hazardContains(h, p.x, p.z, PLAYER.hurtRadius)) this.hurtPlayer(h.dmg);
         }
       }
       if (h.resolved && this.time >= h.t1 + h.linger) this.hazards.splice(i--, 1);
@@ -1150,7 +1174,7 @@ export class Game {
     if (p.meowBurstLeft > 0) {
       p.meowBurstT -= dt;
       while (p.meowBurstLeft > 0 && p.meowBurstT <= 0) {
-        p.meowBurstT += MG.burstInterval / (p.overloadT > 0 ? 1 + JINX_PASSIVE.asBonus : 1);
+        p.meowBurstT += MG.burstInterval; // 原版罪恶快感不加攻速（Quick AI Q-13）
         p.meowBurstLeft--;
         const lv = this.weaponLv('jinx_meow');
         if (lv <= 0) break;
@@ -1166,7 +1190,7 @@ export class Game {
             z: p.z + Math.sin(a) * 0.65,
             vx: Math.cos(a) * MG.bulletSpeed,
             vz: Math.sin(a) * MG.bulletSpeed,
-            r: evolved ? 0.22 : MG.bulletRadius,
+            r: MG.bulletRadius,
             dmg,
             travel: 0,
             range: def.radius[lv - 1],
@@ -1470,9 +1494,9 @@ export class Game {
     this.events.push({ type: 'explode', x: p.x, z: p.z, r: rad, kind: 'iceblast' });
   }
 
-  private fireUlt() {
+  /** R 瞄准方向：优先当前目标，其次射程内精英/首领，再其次最近敌人，否则按移动/朝向 */
+  private ultAimDir(): { dx: number; dz: number } {
     const p = this.player;
-    let dx: number, dz: number;
     let t = this.enemies.find((e) => e.id === p.targetId && e.alive);
     if (!t && p.autoAim) {
       t = this.enemies.find((e) => e.alive && (e.kind === 'boss' || e.kind === 'elite') && e.state !== 'enter' && len(e.x - p.x, e.z - p.z) <= JINX_R.range)
@@ -1481,23 +1505,39 @@ export class Game {
     }
     if (t) {
       const l = len(t.x - p.x, t.z - p.z) || 1;
-      dx = (t.x - p.x) / l; dz = (t.z - p.z) / l;
-      p.faceX = dx; p.faceZ = dz;
-    } else if (p.moving) { dx = p.lastMoveX; dz = p.lastMoveZ; }
-    else { dx = p.faceX; dz = p.faceZ; }
+      return { dx: (t.x - p.x) / l, dz: (t.z - p.z) / l };
+    }
+    if (p.moving) return { dx: p.lastMoveX, dz: p.lastMoveZ };
+    return { dx: p.faceX, dz: p.faceZ };
+  }
+
+  /** R 开始施法：进入冷却并播放施法动作，0.5 s 后由 fireUlt 真正发射（原版 mCastTime 0.5） */
+  private startUlt() {
+    const p = this.player;
+    const { dx, dz } = this.ultAimDir();
+    p.faceX = dx; p.faceZ = dz;
     p.rMaxCd = JINX_R.cooldown * this.cdMul;
     p.rCd = p.rMaxCd;
     p.rReadyAnnounced = false;
-    const base = (JINX_R.baseDamage + p.level * JINX_R.dmgPerLevel) * this.damageMul;
-    this.projectiles.push({
-      kind: 'ult_r', x: p.x + dx * 0.9, z: p.z + dz * 0.9, vx: dx * JINX_R.speed, vz: dz * JINX_R.speed,
-      r: JINX_R.width * 0.55, dmg: base, travel: 0, range: JINX_R.range, pierce: 999, hits: [], alive: true, tier: 0,
-    });
+    p.rCastT = JINX_R.castTime;
     p.recoil = 1;
     this.stats.ultCount++;
     if (this.stats.firstUltAt < 0) this.stats.firstUltAt = this.time;
     this.events.push({ type: 'shoot', weapon: 'ult', x: p.x, z: p.z, ang: Math.atan2(dz, dx), tier: 0 });
   }
+
+  private fireUlt() {
+    const p = this.player;
+    const { dx, dz } = this.ultAimDir();
+    p.faceX = dx; p.faceZ = dz;
+    // 原版 Damage = 500 + 50 ×（等级 − 1）；爆炸时再按目标已损失生命加成（见 ultExplode）
+    const base = (JINX_R.level1Damage + (p.level - 1) * JINX_R.dmgPerLevel) * this.damageMul;
+    this.projectiles.push({
+      kind: 'ult_r', x: p.x + dx * 0.9, z: p.z + dz * 0.9, vx: dx * JINX_R.speed, vz: dz * JINX_R.speed,
+      r: JINX_R.width * 0.5, dmg: base, travel: 0, range: JINX_R.range, pierce: 999, hits: [], alive: true, tier: 0,
+    });
+  }
+
 
   // ───────────────────────── 投射物（连续碰撞） ─────────────────────────
   private updateProjectiles(dt: number) {
@@ -1533,19 +1573,16 @@ export class Game {
           stopT = t;
           break;
         } else if (pr.kind === 'ult_r') {
-          if (e.kind === 'elite' || e.kind === 'boss') {
-            this.ultExplode(hx, hz, pr.dmg);
-            stopT = t;
-            break;
-          }
-          this.damageEnemy(e, pr.dmg * 0.55, 'ult_r');
-          this.events.push({ type: 'hit', x: hx, z: hz, kind: 'ult_r', crit: pr.isCrit });
-          pr.hits.push(e.id);
+          // 原版：命中第一个敌人即爆炸（Quick AI Q-13；旧逻辑穿透普通怪、只在精英/首领处爆炸）
+          this.ultExplode(hx, hz, pr.dmg);
+          stopT = t;
+          break;
         } else {
           // meow / meow_evo / uwu / crossbow / boomerang / boomerang_mini
           let hitDmg = pr.dmg;
           if (pr.kind === 'meow_evo' && pr.hits.length > 0) {
-            hitDmg = pr.dmg * Math.max(0.4, Math.pow(0.6, pr.hits.length));
+            // 原版 FallOffDamagePercent=0.4：首个目标之后的每个目标都受 40% 伤害（Quick AI Q-13）
+            hitDmg = pr.dmg * 0.4;
           }
           this.damageEnemy(e, hitDmg, pr.kind);
           this.events.push({ type: 'hit', x: hx, z: hz, kind: pr.kind, crit: pr.isCrit });
@@ -1617,7 +1654,7 @@ export class Game {
   private rocketEExplode(x: number, z: number, dmg: number, r: number, direct: Enemy | null) {
     if (direct) this.damageEnemy(direct, dmg, 'rocket_e');
     this.forEnemiesInCircle(x, z, r, (e) => {
-      if (e !== direct) this.damageEnemy(e, dmg * 0.85, 'rocket_e');
+      if (e !== direct) this.damageEnemy(e, dmg, 'rocket_e'); // 原版主目标与周围同等伤害（Quick AI Q-13，旧值 ×0.85）
     });
     this.damageBoxesInCircle(x, z, r, dmg);
     this.events.push({ type: 'explode', x, z, r, kind: 'rocket_e' });
@@ -1625,7 +1662,11 @@ export class Game {
 
   private ultExplode(x: number, z: number, baseDmg: number) {
     const r = Math.min(JINX_R.maxExplodeRadius, JINX_R.baseExplodeRadius + Math.floor(this.player.level / 4)) * this.areaMul;
-    this.forEnemiesInCircle(x, z, r, (e) => this.damageEnemy(e, baseDmg * 1.45, 'ult_r'));
+    // 原版 DamageMulti=3：按目标已损失生命 +0%–200%，最高 3 倍（Quick AI Q-13，旧值固定 ×1.45）
+    this.forEnemiesInCircle(x, z, r, (e) => {
+      const missing = e.maxHp > 0 ? clamp(1 - e.hp / e.maxHp, 0, 1) : 0;
+      this.damageEnemy(e, baseDmg * (1 + JINX_R.missingHpBonus * missing), 'ult_r');
+    });
     this.damageBoxesInCircle(x, z, r, baseDmg);
     this.events.push({ type: 'explode', x, z, r, kind: 'ult_r' });
   }
@@ -1794,6 +1835,7 @@ export class Game {
   private activateGetExcited() {
     const p = this.player;
     const wasOff = p.overloadT <= 0;
+    p.excitedCount++;
     p.overloadT = JINX_PASSIVE.duration;
     if (wasOff) this.stats.overloadCount++;
     this.events.push({ type: 'overload', on: true });
@@ -1821,7 +1863,7 @@ export class Game {
       b.z += b.vz * dt;
       b.life -= dt;
       if (b.life <= 0 || Math.abs(b.x) > ARENA.halfW + 4 || Math.abs(b.z) > ARENA.halfH + 4) { b.alive = false; continue; }
-      if (sweepCircle(x0, z0, b.x, b.z, b.r, p.x, p.z, PLAYER.radius * 0.85) >= 0) {
+      if (sweepCircle(x0, z0, b.x, b.z, b.r, p.x, p.z, PLAYER.hurtRadius) >= 0) {
         if (this.hurtPlayer(b.dmg)) b.alive = false;
       }
     }

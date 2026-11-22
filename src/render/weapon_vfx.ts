@@ -164,15 +164,18 @@ export class WeaponVfxRenderer {
       emissive: new THREE.Color(0x552210), emissiveIntensity: 0.45, side: THREE.DoubleSide,
     });
     const baseGlow = loadTex('./assets/heroes/jinx/vfx/base_glow.webp');
-    this.catGlowGeo = mkFlatGeo(0.55, 1.35);
-    this.catGlowMat = mkAdd(baseGlow, 0xff9e38, 0.78);
+    // 原版 Q_Rocket_mis_child_Cat_CRIT「Rocket Booter_Backing」：R_SmokeShapes 青色 (0.333, 1, 1)，bS 70×35，父系统 ×1.2
+    // → 0.84 m × 1.68 m（贴图暂用 base_glow 代替，原版 R_SmokeShapes 未导出）（Quick AI Q-13，旧值橙色 0.55×1.35）
+    this.catGlowGeo = mkFlatGeo(0.84, 1.68);
+    this.catGlowMat = mkAdd(baseGlow, 0x55ffff, 0.78);
 
     loadScbGeo('./assets/heroes/jinx/vfx/cat_rocket.json').then((geo) => {
       this.catGeo = geo;
       for (let i = 0; i < 18; i++) {
         const g = new THREE.Group();
         const m = new THREE.Mesh(this.catGeo, this.catMat);
-        m.scale.setScalar(0.020);
+        // 原版 missle_Main：Props_MD_Cat bS (1.15, 1.3, 1.3) × 父系统 1.2 / 100（Quick AI Q-13，旧值统一 0.020）
+        m.scale.set(0.0138, 0.0156, 0.0156);
         const tail = new THREE.Mesh(this.catGlowGeo, this.catGlowMat);
         tail.position.z = -0.7;
         g.add(m, tail);
@@ -354,7 +357,8 @@ export class WeaponVfxRenderer {
           const evo = pr.kind === 'meow_evo';
           D.position.set(pr.x, 0.9, pr.z);
           D.rotation.set(0, yaw, 0);
-          D.scale.set(evo ? 1.55 : 0.95, evo ? 1.55 : 0.95, evo ? 1.75 : 1.05);
+          // 原版 Project_Bolts：普通 bS 75×15 → 1.5 m × 0.3 m；进化 bS 200×30 → 4.0 m × 0.6 m（几何基准 0.45 × 1.45）（Quick AI Q-13）
+          D.scale.set(evo ? 1.333 : 0.667, evo ? 1.333 : 0.667, evo ? 2.759 : 1.034);
           D.updateMatrix();
           this.meowInst.setMatrixAt(mIdx, D.matrix);
           this.meowInst.setColorAt(mIdx++, pr.isCrit ? COL_CRIT : evo ? COL_EVO : (pi % 2 === 0 ? COL_CYAN : COL_GOLD));
