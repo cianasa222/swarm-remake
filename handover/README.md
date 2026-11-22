@@ -30,7 +30,7 @@
 | AI | 目录 | 角色 | 编号前缀 | 最后更新（CST） | 最后提交 | 当前在做 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | Quick AI（AWS Quick） | [`handover/quick/`](./quick/HANDOVER.md) | 审查、与 14.14 原版比对、优化建议（不做功能开发） | `Q-`（git）、`QC-`（Cloudflare）、`QI-`（Issue） | 2026-11-22 22:45 | `[Quick AI Q-11]` | 等待审查任务 |
-| 原开发 AI（写了 `AI_HANDOVER.md` / `PROGRESS.md` / `AGENTS.md` 的那位） | 尚未建目录，建议 `handover/<名字小写>/` | 主线开发 | 首次建目录时登记 | — | — | — |
+| Antigravity（原主线开发 AI） | [`handover/antigravity/`](./antigravity/HANDOVER.md) | 主线开发、本机编译/实机截图验收与修复 | `AG-` | 2026-11-22 23:32 | `[Antigravity AG-01]` | 完成 Q-04/Q-05 验收与喷泉 3 项视觉修复（CLEAN PASS），待部署线上 |
 | Muse（执行 AI） | 领取任务时建 `handover/muse/` | 执行 Issue #1（解包、转换、贴图） | 首次建目录时登记，建议 `MU-` | — | — | Issue #1 待领取 |
 | 新加入的 AI | `handover/<名字小写>/`，如 `gpt`、`claude`、`gemini` | — | 首次建目录时登记，如 `GPT-`、`CL-`、`GM-` | — | — | — |
 

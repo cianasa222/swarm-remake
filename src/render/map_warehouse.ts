@@ -670,9 +670,10 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
           float row = floor(f / uGrid.x);
           vec2 uv = vec2((col + gl_PointCoord.x) / uGrid.x, 1.0 - (row + gl_PointCoord.y) / uGrid.y);
           vec4 tex = texture2D(uAtlas, uv);
-          float a = tex.a * vColor.a;
-          if (a < 0.003) discard;
-          gl_FragColor = vec4(tex.rgb * vColor.rgb, a);
+          float luma = max(tex.r, max(tex.g, tex.b));
+          float a = min(tex.a, luma) * vColor.a;
+          if (a < 0.005) discard;
+          gl_FragColor = vec4(tex.rgb * vColor.rgb * 1.45, a);
           #include <colorspace_fragment>
         }
       `,
@@ -757,7 +758,7 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
       dy: 1.0,
       dz: 0,
       ay: 0,
-      size: 0.4 * rnd(0.2, 1.0),
+      size: 1.15 * rnd(0.55, 1.0),
       frame: Math.floor(Math.random() * 4),
       cv: HEALSPARK_CV,
     });
@@ -954,19 +955,19 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
   //    40 个/s；沿 8.5 m × U(0.85, 1.1) 圆周、跟随充能进度头（emitRotation 0 → -360°/10 s）生成；
   //    y = 0.6 m，上浮 1 m/s × U(0.2, 1)；寿命 2 s × 概率表(0.5, 1, 1.5)；尺寸 1 m × U(0.7, 1) × 0.7
   const SPARKLE_CV: FxCurves = {
-    sT: [0, 1],
-    sV: [0.7, 0.7],
-    cT: [0, 0.5, 1.0],
+    sT: [0, 0.25, 1],
+    sV: [1.1, 1.45, 0.7],
+    cT: [0, 0.35, 1.0],
     cV: linRGBA([
-      [0.24, 0.961, 0.532, 0],
-      [0.255, 1.0, 0.532, 1],
+      [0.32, 1.0, 0.62, 0.65],
+      [0.45, 1.0, 0.72, 1.0],
       [0.255, 1.0, 0.532, 0],
     ]),
   };
   const sparklePool = makeFxPool(fGroup, 'lilstar.png', 4, 2, 140, 11);
   const spawnSparkle = (charge: number) => {
-    const a = timerHeadAngle(charge);
-    const r = 8.5 * rnd(0.85, 1.1);
+    const a = timerHeadAngle(charge) + rnd(-0.08, 0.08);
+    const r = 8.9 * rnd(0.92, 1.06);
     const ca = Math.cos(a);
     const sa = Math.sin(a);
     const vt = -0.05 * Math.random(); // 原版 birthVelocity.x = -5（切向微漂）
@@ -983,7 +984,7 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
       dy: 0,
       dz: 0,
       ay: 0,
-      size: 1.0 * rnd(0.7, 1.0),
+      size: 1.05 * rnd(0.75, 1.0),
       frame: Math.floor(Math.random() * 8),
       cv: SPARKLE_CV,
     });
@@ -1077,9 +1078,11 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
   const NOVA_WAVE_ALPHA_V = [0, 1.0, 0.839, 0.412, 0];
   const NOVA_WAVE_SCROLL_T = [0, 0.066, 0.092, 0.277, 0.441, 0.69, 1.0];
   const NOVA_WAVE_SCROLL_V = [1.0, 1.0, 1.0, 0.521, 0.213, 0.061, 0]; // × rate（blend 3.0 / blend1 1.0）
+  // fountain_wave.json 原始顶点半径 maxR = 46.33，叠加 novaGroup ×1.75 后：
+  // sxz=0.175 → 扩散半径 ~14.2 m（贴合外围广场内缘不穿墙）；sxz=0.135 → 扩散半径 ~10.9 m
   const novaWaves = [
-    { life: 0.7, sxz: 0.8, s0: 0.0, rate: 3.0 },
-    { life: 2.0, sxz: 0.4, s0: 0.15, rate: 1.0 },
+    { life: 0.7, sxz: 0.175, s0: 0.08, rate: 3.0 },
+    { life: 2.0, sxz: 0.135, s0: 0.18, rate: 1.0 },
   ].map((cfg) => {
     const w = makeWaveMat(0.6 * 0.7, [0.033, 0.997, 0.386]);
     const mesh = loadScbMesh('./assets/map1/vfx/fountain_wave.json', w.mat);
@@ -1091,28 +1094,28 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
   });
 
   // Gold（hex_plus 2×2，绿）/ Gold1（lilStar 4×2，金）：单次爆发（isSingleParticle，rate = 数量）
-  //    y = 1.0 m、半径 1 m × U(0.5, 1) 环上生成；(30, 10, 30) m/s 随机外抛，阻尼 (5, 3, 5)；寿命 2 s × 概率表(0.2, 0.5, 1.5)
-  const GOLD_SCALE_T = [0, 0.1, 0.2, 0.3, 1.0];
-  const GOLD_SCALE_V = [0, 0, 2.0, 2.0, 0];
+  //    y = 1.0 m、半径 1 m × U(0.5, 1) 环上生成；外抛阻尼 (5, 3, 5)；寿命 2 s × 概率表(0.2, 0.5, 1.5)
+  const GOLD_SCALE_T = [0, 0.04, 0.2, 0.55, 1.0];
+  const GOLD_SCALE_V = [0.5, 1.9, 2.2, 1.4, 0];
   const GOLD_CV: FxCurves = {
     sT: GOLD_SCALE_T,
     sV: GOLD_SCALE_V,
-    cT: [0, 0.1, 0.3, 0.5, 1.0],
+    cT: [0, 0.1, 0.3, 0.6, 1.0],
     cV: linRGBA([
-      [0.041, 0.204, 0.106, 1],
+      [0.2, 1.0, 0.522, 0.9],
+      [0.25, 1.0, 0.58, 1],
       [0.2, 1.0, 0.522, 1],
-      [0.2, 1.0, 0.522, 1],
-      [0.2, 1.0, 0.522, 1],
-      [0.0, 0.02, 0.078, 1],
+      [0.2, 1.0, 0.522, 0.85],
+      [0.0, 0.02, 0.078, 0],
     ]),
   };
   const GOLD1_CV: FxCurves = {
     sT: GOLD_SCALE_T,
     sV: GOLD_SCALE_V,
-    cT: [0, 0.5, 1.0],
+    cT: [0, 0.35, 1.0],
     cV: linRGBA([
-      [0.941, 0.686, 0.255, 0],
-      [1.0, 0.714, 0.255, 1],
+      [1.0, 0.85, 0.32, 0.85],
+      [1.0, 0.82, 0.28, 1.0],
       [1.0, 0.714, 0.255, 0],
     ]),
   };
@@ -1124,21 +1127,21 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
       const c = Math.cos(th);
       const s = Math.sin(th);
       const off = 1.0 * rnd(0.5, 1.0);
-      const vx0 = 30 * rnd(0.2, 1.0);
-      const vy0 = 10 * rnd(0.1, 1.0);
-      const vz0 = 30 * rnd(0.2, 1.0);
+      const vx0 = 18 * rnd(0.3, 1.0);
+      const vy0 = 9 * rnd(0.2, 1.0);
+      const vz0 = 18 * rnd(0.3, 1.0);
       pool.spawn({
         age: 0,
-        life: 2.0 * prob([0, 0.5, 1.0], [0.2, 0.5, 1.5]),
+        life: 2.0 * prob([0, 0.5, 1.0], [0.25, 0.6, 1.4]),
         x: c * off,
         y: 1.0,
         z: -s * off,
         vx: vx0 * c + vz0 * s,
         vy: vy0,
         vz: -vx0 * s + vz0 * c,
-        dx: 5,
+        dx: 4.5,
         dy: 3,
-        dz: 5,
+        dz: 4.5,
         ay: 0.1,
         size: sizeFn(),
         frame: Math.floor(Math.random() * frames),
@@ -1147,8 +1150,8 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
     }
   };
   const triggerNovaBursts = (fx: number) => {
-    burstGold(goldPool, Math.round(100 * rnd(0.5, 1.0) * fx), () => 0.2 * rnd(0.4, 1.0), 4, GOLD_CV);
-    burstGold(gold1Pool, Math.round(50 * fx), () => 0.4, 8, GOLD1_CV);
+    burstGold(goldPool, Math.round(100 * rnd(0.6, 1.0) * fx), () => 0.55 * rnd(0.55, 1.0), 4, GOLD_CV);
+    burstGold(gold1Pool, Math.round(55 * fx), () => 0.9 * rnd(0.7, 1.0), 8, GOLD1_CV);
   };
 
   // 地面低矮地标光环（首领竞技场 & 首领出生点）
@@ -1335,10 +1338,10 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
         const kg = e / 0.3;
         novaGlow.visible = kg < 1;
         if (novaGlow.visible) {
-          novaGlow.scale.setScalar(Math.max(0.001, curve1([0, 0.6, 1.0], [2.0, 1.0, 0], kg)));
+          novaGlow.scale.setScalar(Math.max(0.001, curve1([0, 0.6, 1.0], [1.25, 0.72, 0], kg)));
           curve4([0, 0.3, 0.634, 1.0], NOVA_GLOW_C, kg, fxTmp4);
           novaGlowMat.color.setRGB(0.18 * fxTmp4[0], 1.0 * fxTmp4[1], 0.63 * fxTmp4[2], THREE.SRGBColorSpace);
-          novaGlowMat.opacity = 0.6 * fxTmp4[3];
+          novaGlowMat.opacity = 0.42 * fxTmp4[3];
         }
 
         // STAR（0.16 s）
