@@ -1,7 +1,7 @@
 # Antigravity（开发 AI）交接文档（handover/antigravity/HANDOVER.md）
 
 > **本文档由 Antigravity（主线开发 AI）编写和维护。**
-> 最后更新：2026-11-23 03:21 CST · 改动编号已排到 **AG-07**
+> 最后更新：2026-11-23 03:40 CST · 改动编号已排到 **AG-08**
 > 交接总入口：[`handover/README.md`](../README.md) · 协作规范：[`COLLAB.md`](../../COLLAB.md)
 
 ---
@@ -16,7 +16,8 @@
 | AG-04 | 11-23 01:09 | `[Antigravity AG-04]` (`7f8cf6d`) | `handover/quick/HANDOVER.md`（仅更新 Q-13 状态列）、`handover/antigravity/HANDOVER.md`、`handover/README.md` | **验收并合并 PR #2（Quick AI Q-13 金克丝 14.14 重建，`c92c5d5`）**：`build`（1.25s）+ `playtest` 4/4 全胜（0 承伤，无需改回非原版数值）+ 7 组 `1280×800` 截图独立视觉审计 CLEAN PASS（被动光环与 R 13.6m 地面投影均比例合适、E 9 发 90° 齐射与爆炸正常、R 命中首个普通小怪即爆精准 500 伤），评论 PASS 并合并，增量同步全部 8 个文件至 KV | ✅ **CLEAN PASS** | ✅ 已部署（见 AG-05） | 已同步 |
 | AG-05 | 11-23 01:46 | `[Antigravity AG-05]` (`68b7844`) | `public/assets/heroes/jinx/vfx/`（新增 6 张原版 14.14 `.webp` 贴图，共 140.1 KB）、`src/render/jinx_vfx.ts`、`src/render/assets.ts`、`docs/audit/jinx_14.14.md`、`handover/antigravity/HANDOVER.md`、`handover/README.md` | **补齐金克丝 14.14 全部缺失特效层并上线 Cloudflare**：从 CommunityDragon 14.14 拉取并转换 `sand_streaks`/`r_rocks_2x2`/`cloud_face_flipbook`/`particles_1_9`/`r_ground_smoke02`/`speed_impact` 6 张 `.webp`；补齐 E 爆炸 `SandBurst`、R 飞行 `Left/Right Wind` + `Dark/Add Smoke` + `Spots` 猫脸点 + `LittleStar` + `Mid PixelCast` + 3D `Speed_impact`（`r_castring.json`）+ 3D `R_Swirl` 青黄尾环（`r_swirl.json`）、R 爆炸 `CloudFace4` 2×2 翻页云脸动画 + `fast` 碎石 + `Dark Smoke` 黑烟 + `SolidBeams` 径向光束；并将 AG-03 + Q-13 + AG-05 合集部署上线至 `tideline-swarm`（`deployment_id: 701860ffe5144dd7936c3be4b0c2e05b`） | ✅ **CLEAN PASS**（`build` 1.21s + 4 张 `1280×800` 截图 0 报错独立视觉审计通过 + 线上全端点验收 PASS） | ✅ 已上线 | 已同步 |
 | AG-06 | 11-23 03:15 | 分支 `asset/14.14-unpacked-assets-20261123` (`4b1b5f7`)；文档 `[Antigravity AG-06]` (`52fc77f`) | **816 个解包专属资产文件**（分支 `asset/14.14-unpacked-assets-20261123`）：`public/assets/audio/{jinx,global,music}/*.ogg` + `events.json`（736 条 `.ogg` 共 46.42 MB，305 个事件映射）、`public/assets/enemies/reksai.glb`（42 段全动作，3.05 MB）、`reference/14.14/reksai_submeshes.json`（`[Body,Fin,Scale,Wrap,Plane]`）、`public/assets/enemies/reksai_vfx/*.json`（55 个 3D 网格）、`public/assets/heroes/jinx/vfx/jinx_{sk,vfxmeshes_02,offset_quad_01}.json`、`public/assets/enemies/*.glb`（16 个第一关补充小怪与隧道压缩模型，6.16 MB）、`reference/14.14/UNPACKED_ASSETS_MANIFEST.md` | **将本机已解包的 14.14 专属资产（网上不解包就找不到的音效、3D 模型、动画、`.scb` 网格）全部转为网页开放格式并推送独立分支**：实测 Chromium `decodeAudioData()` 解码 `.ogg` 通过、`npm.cmd run build` `1.76s` PASS、全部分支文件 `< 25 MiB`、零 `.wad.client` 与未压缩 `.glb` | ✅ 分支构建与解码校验 PASS（待按需合并进 `main`） | —（分支资产库） | 已同步 |
-| AG-07 | 11-23 03:21 | `[Antigravity AG-07]` | `COLLAB.md`、`handover/README.md`、`handover/antigravity/HANDOVER.md` | 按用户指示在 `COLLAB.md` 第 1 节与 `handover/README.md` 第 1 节补充协作原则：**Quick AI 为临时审查/辅助角色，项目决策以用户为准，任何具备能力的 AI 均可按用户决定自主完成开发、资产转换与验收，无需被动等待 Quick AI** | ✅ 文档规范更新 | — | 已同步 |
+| AG-07 | 11-23 03:21 | `[Antigravity AG-07]` (`02300ef`) | `COLLAB.md`、`handover/README.md`、`handover/antigravity/HANDOVER.md` | 按用户指示在 `COLLAB.md` 第 1 节与 `handover/README.md` 第 1 节补充协作原则：**Quick AI 为临时审查/辅助角色，项目决策以用户为准，任何具备能力的 AI 均可按用户决定自主完成开发、资产转换与验收，无需被动等待 Quick AI** | ✅ 文档规范更新 | — | 已同步 |
+| AG-08 | 11-23 03:40 | `[Antigravity AG-08]` | `public/assets/audio/{jinx,global,music}/*.ogg` + `jinx/events.json`（从 `asset/14.14-unpacked-assets-20261123` 精选合入 93 条 `.ogg`，共 9.08 MB）、`src/audio/audio.ts`（+351 行重构）、`src/main.ts`（+3 行）、`handover/antigravity/HANDOVER.md`、`handover/README.md`、`COLLAB.md` | **接入 Patch 14.14 原版音效与 BGM（完成用户两步任务第 1 步）**：按 `mus_map33_events.bnk` 与向下 HIRC 事件表将 93 条原版 `.ogg` 接入 `AudioFX`（金克丝 Q/E/R/命中/被动/换枪、击杀/受击/经验/治疗/升级、中央喷泉治疗与就绪、副武器地雷/脉冲、敌人蓄力/射击、波次警报、雷克塞警报/怒吼/砸地/横扫/二阶段，以及仓库区开场序曲 `307974760.ogg` → 主循环 `854037489.ogg` → 雷克塞 Boss 主题 `71063538.ogg` 跨淡 → 胜/负横幅曲 `91455257.ogg` / `632537467.ogg`），带核心 SFX 预热解码与零延迟程序化合成回退 | ✅ **PASS**（`build` 1.47s + Playwright Headless Edge 实机解码测试：60 条原版 `.ogg` 解码 0 失败、`main→boss→victory/defeat` 切换 0 报错、`0` 4xx/5xx 请求） | ⏳ 待与下一步一并部署 | 已同步 |
 
 ---
 
@@ -38,6 +39,9 @@
 
 ---
 
-## 4. 下一步建议
+## 4. 下一步计划（连续执行中）
 
-1. **等待用户确认后开启 M5**：低/中/高三档画质验收 + `weapon_vfx.ts` 补齐 `teammateVfxScale` + `game.ts` 预留 `players[]` + 清理未使用的 `lan.ts` 与 `compress_assets.mjs` 绝对路径。
+1. **正在紧接着执行（AG-09，若本轮中断可由任意 AI 顺延接手）**：
+   - 验收并合并 [PR #3](https://github.com/cianasa222/swarm-remake/pull/3)（Quick AI Q-15：A 类 14.14 数值对齐，`build` + `playtest`）；
+   - 从分支 `asset/14.14-unpacked-assets-20261123` 合入 `public/assets/enemies/reksai.glb`（42 动作）与 `reference/14.14/reksai_submeshes.json`，修复 `src/render/boss_reksai.ts` 隐藏 `[3] Wrap`（1250 顶点）与 `[4] Plane`（122 顶点）子网格并接入原版动作，实机截图视觉验收后一并推送并部署上线。
+2. **后续**：等待用户确认后开启 M5（低/中/高三档画质验收 + `weapon_vfx.ts` 补齐 `teammateVfxScale` + `game.ts` 预留 `players[]` + 清理未使用的 `lan.ts` 与 `compress_assets.mjs` 绝对路径）。

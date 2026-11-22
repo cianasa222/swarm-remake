@@ -153,6 +153,7 @@ $('btn-pause-restart').addEventListener('click', () => { audio.click(); closePau
 $('btn-start').addEventListener('click', () => {
   audio.unlock();
   audio.click();
+  audio.startBgm('main');
   started = true;
   startModal.classList.add('hidden');
   hud.classList.remove('hidden');
@@ -177,6 +178,7 @@ function restartMatch() {
   input.clear();
   input.enabled = true;
   audio.resume();
+  audio.startBgm('main');
   showBanner('仓库区防线已部署，守住前 15 分钟！', 2.6);
 }
 
@@ -305,14 +307,14 @@ function handleAudioAndBanner() {
     } else if (ev.type === 'enemyCharge') audio.enemyCharge(ev.kind);
     else if (ev.type === 'enemyShoot') audio.enemyShoot();
     else if (ev.type === 'bossWarn') { audio.alarm(); showBanner('警告！「深海魔鲨 · 雷克塞」即将登堤！', 4.0); }
-    else if (ev.type === 'bossEnter') { audio.roar(); showBanner('深海魔鲨 · 雷克塞登场！', 3.2); }
+    else if (ev.type === 'bossEnter') { audio.roar(); audio.startBgm('boss'); showBanner('深海魔鲨 · 雷克塞登场！', 3.2); }
     else if (ev.type === 'bossLand') audio.slam();
     else if (ev.type === 'bossAttack') {
       if (ev.move === 'sweep') audio.whoosh();
       else audio.telegraph();
     } else if (ev.type === 'bossPhase') { audio.phase(); showBanner('雷克塞进入狂暴二阶段！', 3.0); }
-    else if (ev.type === 'fountainHeal') { audio.levelUp(); showBanner(`治愈喷泉已激活！恢复 ${ev.heal} 生命`, 2.6); }
-    else if (ev.type === 'fountainReady') { audio.swap('mg'); showBanner('中央治愈喷泉已重新就绪', 2.2); }
+    else if (ev.type === 'fountainHeal') { audio.fountainHeal(); showBanner(`治愈喷泉已激活！恢复 ${ev.heal} 生命`, 2.6); }
+    else if (ev.type === 'fountainReady') { audio.fountainReady(); showBanner('中央治愈喷泉已重新就绪', 2.2); }
     else if (ev.type === 'boxBreak') audio.pick();
     else if (ev.type === 'victory') audio.victory();
     else if (ev.type === 'defeat') audio.defeat();
@@ -718,5 +720,6 @@ requestAnimationFrame(frame);
   game,
   quality,
   renderer,
+  audio,
   assets: { getStats: getAssetStats, assetUrl },
 };

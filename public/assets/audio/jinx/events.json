@@ -1,0 +1,99 @@
+{
+  "bank": "jinx",
+  "tracks": 34,
+  "failed": 0,
+  "totalBytes": 711685,
+  "events": {
+    "Play_sfx_Strawberry_Jinx_JinxLockDirection_OnBuffCast": [
+      "354688762",
+      "882790590",
+      "926940097"
+    ],
+    "Play_sfx_Strawberry_Jinx_JinxR_OnCast": [
+      "148352341",
+      "200261631",
+      "838897672"
+    ],
+    "Play_sfx_Strawberry_Jinx_JinxBasicAttack_OnMissileLaunch": [
+      "1043413444",
+      "130431412",
+      "411020415"
+    ],
+    "Play_sfx_Strawberry_Jinx_JinxR_boosterlaunch": [
+      "180615743"
+    ],
+    "Play_sfx_Strawberry_Jinx_JinxAutoAttack_Missile_OnMissileLaunch": [
+      "307280542",
+      "440425711",
+      "562132371"
+    ],
+    "Play_sfx_Strawberry_Jinx_JinxQAttack_OnMissileLaunch": [
+      "307280542",
+      "440425711",
+      "562132371"
+    ],
+    "Play_sfx_Strawberry_Jinx_JinxQAttack2_OnCast": [
+      "526696285",
+      "587825863",
+      "591246802"
+    ],
+    "Play_sfx_Strawberry_Jinx_JinxQAttack2_OnMissileLaunch": [
+      "307280542",
+      "440425711",
+      "562132371"
+    ],
+    "Play_sfx_Strawberry_Jinx_JinxBasicAttackEvolve_OnMissileLaunch": [
+      "1043413444",
+      "130431412",
+      "411020415"
+    ],
+    "Play_sfx_Strawberry_Jinx_JinxQAttack_hit": [
+      "104918442",
+      "670846690",
+      "995389952"
+    ],
+    "Play_sfx_Strawberry_Jinx_JinxR_hit": [
+      "203216632",
+      "568985478",
+      "792144673"
+    ],
+    "Play_sfx_Strawberry_Jinx_JinxR_OnMissileCast": [
+      "420269635",
+      "500577553",
+      "853769689"
+    ],
+    "Play_sfx_Strawberry_Jinx_JinxPassiveKill_buffactivate": [
+      "363924523",
+      "913671917"
+    ],
+    "Play_sfx_Strawberry_Jinx_JinxQAttack_OnCast": [
+      "526696285",
+      "587825863",
+      "591246802"
+    ],
+    "Play_sfx_Strawberry_Jinx_JinxR_missilelaunch": [
+      "11902419"
+    ],
+    "Play_sfx_Strawberry_Jinx_JinxAutoAttack_Missile_OnMissileCast": [
+      "526696285",
+      "587825863",
+      "591246802"
+    ],
+    "Play_sfx_Strawberry_Jinx_JinxBasicAttackEvolve_OnHit": [
+      "614751743",
+      "866203971",
+      "960743660"
+    ],
+    "Play_sfx_Strawberry_Jinx_JinxR_boosteractivate": [
+      "1014318435",
+      "492769556",
+      "95373962"
+    ],
+    "Play_sfx_Strawberry_Jinx_JinxBasicAttack_OnHit": [
+      "614751743",
+      "866203971",
+      "960743660"
+    ]
+  },
+  "unnamedEvents": {}
+}

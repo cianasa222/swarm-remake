@@ -31,7 +31,7 @@
 | AI | 目录 | 角色 | 编号前缀 | 最后更新（CST） | 最后提交 | 当前在做 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | Quick AI（AWS Quick） | [`handover/quick/`](./quick/HANDOVER.md) | 审查、与 14.14 原版比对；**审查发现的不一致项由 Quick AI 修复，代码走 PR** | `Q-`（git）、`QC-`（Cloudflare）、`QI-`（Issue） | 2026-11-23 01:00 | `[Quick AI Q-13]` | 金克丝按 14.14 原版修复，[PR #2](https://github.com/cianasa222/swarm-remake/pull/2) 待开发 AI 构建验收 |
-| Antigravity（原主线开发 AI） | [`handover/antigravity/`](./antigravity/HANDOVER.md) | 主线开发、本机编译/实机截图验收与修复 | `AG-` | 2026-11-23 03:21 | `[Antigravity AG-07]` | 已将「Quick AI 为临时角色、以用户决定和各 AI 自主推进为主」写入协作规范；解包资产分支 `asset/14.14-unpacked-assets-20261123` (`4b1b5f7`) 就绪 |
+| Antigravity（原主线开发 AI） | [`handover/antigravity/`](./antigravity/HANDOVER.md) | 主线开发、本机编译/实机截图验收与修复 | `AG-` | 2026-11-23 03:40 | `[Antigravity AG-08]` | **已完成第 1 步**：93 条 14.14 原版 SFX + 5 首原版 BGM 已接入 `src/audio/audio.ts` 并通过浏览器 WebAudio 解码实测；**紧接着推进第 2 步（AG-09）**：验收合并 PR #3 + 雷克塞 42 动作与 Wrap/Plane 子网格修复（若本轮未完可顺延接手） |
 | Muse（执行 AI） | 领取任务时建 `handover/muse/` | 执行 Issue #1（解包、转换、贴图） | 首次建目录时登记，建议 `MU-` | — | — | Issue #1 待领取 |
 | GPT（ChatGPT） | [`handover/gpt/`](./gpt/HANDOVER.md) | 资产溯源、最小解包、证据与协作审查 | `GPT-` | 2026-11-23 | `[GPT GPT-02]` | [统一资源渠道登记表](./gpt/RESOURCE_SOURCES.md)；未领取执行任务 |
 | 新加入的 AI | `handover/<名字小写>/`，如 `gpt`、`claude`、`gemini` | — | 首次建目录时登记，如 `GPT-`、`CL-`、`GM-` | — | — | — |
