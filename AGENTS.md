@@ -1,6 +1,6 @@
 # 无尽狂潮复刻（Swarm Map33 Warehouse District）— 开发总纲与工作区规范
 
-> **新会话开启后，必须先按 [`COLLAB.md`](./COLLAB.md) 第 0 节的顺序读完交接文档再动手**：`COLLAB.md` → [`QUICK_AI_HANDOVER.md`](./QUICK_AI_HANDOVER.md)（第 1.0 节改动总索引）→ 本文件 → [`AI_HANDOVER.md`](./AI_HANDOVER.md) → [`PROGRESS.md`](./PROGRESS.md) → 相关 Issue。（2026-11-22 Quick AI 按用户要求修改本行）
+> **新会话开启后，必须先读交接总入口 [`handover/README.md`](./handover/README.md)，再按 [`COLLAB.md`](./COLLAB.md) 第 0 节的顺序读完交接文档才能动手。改了代码，必须在同一轮工作里按 `COLLAB.md` 2.2 节同时更新 GitHub 和 Cloudflare KV 两处的交接文档（写在自己的 `handover/<ai名>/` 目录里）。**（2026-11-22 Quick AI 按用户要求修改本行）
 
 ---
 

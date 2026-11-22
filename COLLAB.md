@@ -1,7 +1,7 @@
 # 协作与任务交接规范（COLLAB）
 
-> 最后更新：2026-11-22 21:50（新增第 0 节开工前必读）· 第 0、1、5 节维护者：Quick AI（AWS Quick）
-> 新加入的 AI / 开发者：先读本文件，再读 [`QUICK_AI_HANDOVER.md`](./QUICK_AI_HANDOVER.md)（Quick AI 已完成的工作、剩余工作、免解包直链方法）、[`AGENTS.md`](./AGENTS.md)、[`PROGRESS.md`](./PROGRESS.md)、[`AI_HANDOVER.md`](./AI_HANDOVER.md)。
+> 最后更新：2026-11-22 22:45（新增 2.2 节交接文档更新规则；交接按 AI 分目录；线上站点不再提供交接文档）· 第 0、1、2.2、5 节维护者：Quick AI（AWS Quick）
+> 新加入的 AI / 开发者：**先读交接总入口 [`handover/README.md`](./handover/README.md)**，再按下面第 0 节的顺序读。
 
 ---
 
@@ -11,16 +11,18 @@
 
 | 顺序 | 文件 | 重点 |
 | :---: | :--- | :--- |
-| 1 | `COLLAB.md`（本文件） | 分工、第 2.1 节防冲突规则、任务流程 |
-| 2 | [`QUICK_AI_HANDOVER.md`](./QUICK_AI_HANDOVER.md) | **第 1.0 节改动总索引**（Quick AI 改过什么、是否已验收和部署）、剩余工作、原版数据来源和下载方法 |
-| 3 | [`AGENTS.md`](./AGENTS.md) | 开发总纲、硬性验收流程、Windows 避坑 |
-| 4 | [`AI_HANDOVER.md`](./AI_HANDOVER.md) | 架构与五大契约、资产来源、部署 |
-| 5 | [`PROGRESS.md`](./PROGRESS.md) | 里程碑进度 |
-| 6 | 与本次任务相关的 Issue 正文和**全部评论** | 以最新评论为准 |
+| 1 | [`handover/README.md`](./handover/README.md) | **交接总入口**：一页看懂项目、各 AI 的目录和当前状态、怎么判断 KV 是否最新 |
+| 2 | `COLLAB.md`（本文件） | 分工、2.1 防冲突规则、**2.2 交接文档更新规则**、任务流程 |
+| 3 | `handover/<各 AI>/HANDOVER.md` | 每个 AI 改过什么、是否已验收和部署；至少读 [`handover/quick/HANDOVER.md`](./handover/quick/HANDOVER.md) 第 1.0 节改动索引 |
+| 4 | [`AGENTS.md`](./AGENTS.md) | 开发总纲、硬性验收流程、Windows 避坑 |
+| 5 | [`AI_HANDOVER.md`](./AI_HANDOVER.md) | 架构与五大契约、资产来源、部署 |
+| 6 | [`PROGRESS.md`](./PROGRESS.md) | 里程碑进度 |
+| 7 | 与本次任务相关的 Issue 正文和**全部评论** | 以最新评论为准 |
 
-- 读文档时以 GitHub `main` 上的最新版为准；KV 里的副本只是镜像（核对 KV 里 `SYNC_STATE.json` 的 `commit` 是否等于 GitHub `main` 最新提交）。
-- 下载原版数据先按 `QUICK_AI_HANDOVER.md` 第 3.0 节判断：环境能直接下载就直接下载；被拒才用 Worker 或 Actions 等可选方案。
-- 每个 AI 的改动都要能追溯：提交说明写清改了哪些文件和哪一节；Quick AI 的改动另外登记在 `QUICK_AI_HANDOVER.md` 第 1.0 节（提交说明以 `[Quick AI Q-xx]` 开头）。
+- 读文档时以 GitHub `main` 上的最新版为准；Cloudflare KV 里的副本只是镜像。判断 KV 是否最新：KV 里 `SYNC_STATE.json` 的 `commit` 等于 GitHub `main` 最新提交，就是一致的；不等就以 GitHub 为准。
+- **线上网站（`tideline-swarm.cianasa888-gbd.workers.dev`）不再提供交接文档**，旧地址返回 410。
+- 下载原版数据先按 [`handover/quick/HANDOVER.md`](./handover/quick/HANDOVER.md) 第 3.0 节判断：环境能直接下载就直接下载；被拒才用 Worker 或 Actions 等可选方案。
+- 每个 AI 的改动都要能追溯：按下面 2.2 节登记在自己的 `handover/<ai名>/HANDOVER.md` 里，提交说明以 `[<AI名> <编号>]` 开头。
 
 ---
 
@@ -41,11 +43,11 @@
 | :--- | :--- | :--- |
 | 源码、配置、文档 | **GitHub `main` 分支** | Cloudflare KV `tideline-handover`（key 为仓库相对路径，原样存放） |
 | 14.14 原版参考数据（`.bin.json`） | Cloudflare KV `ref/14.14/<CommunityDragon 相对路径>` | 不进公开仓库（版权） |
-| 运行时资产（`.glb` / `.webp` / 特效 `.json`） | GitHub `public/assets/` | 线上 Worker `tideline-swarm` |
+| 运行时资产（`.glb` / `.webp` / 特效 `.json`） | GitHub `public/assets/` | 线上 Worker `tideline-swarm`（**只放游戏和资产，不放交接文档**） |
 | 任务 | GitHub Issues（标签 `help wanted`） | — |
 
 1. **所有改动先进 GitHub `main`**，可以直接提交，也可以合并 PR。
-2. 每次 `main` 变更后，由提交者（有 Cloudflare 权限时）按 2.1 节规则把变更文件镜像到 KV；没有权限的，由 Quick AI 在审查时补齐。镜像时更新 KV 里的 `SYNC_STATE.json`（记录 commit SHA、时间、文件列表）。**KV 与 GitHub 不一致时，一律以 GitHub `main` 为准。**
+2. 每次 `main` 变更后，**由改动的 AI 自己**按 2.1、2.2 节把变更文件镜像到 KV（没有 Cloudflare 权限的见 2.2 节第 3 条）。镜像时更新 KV 里的 `SYNC_STATE.json`（记录 commit SHA、时间、文件列表）。**KV 与 GitHub 不一致时，一律以 GitHub `main` 为准。**
 3. 不要直接改 KV 里的源码 key，否则下次同步会被覆盖。
 4. `.github/workflows/` 只能由用户在 GitHub 网页上手动维护，AWS Quick 的连接器没有 workflow 权限。
 
@@ -64,6 +66,21 @@
    - 发现 `FILE_INDEX.json` 条目数异常（明显少于 KV 实际 key 数），按 KV 实际 key 重建，并在 `SYNC_STATE.json` 的 `note` 里记一笔。
 5. **发现冲突先停**：如果 GitHub 上最新提交不是你拉取时的那个，而且改的是同一个文件，先重新拉取、合并。拿不准怎么合并时，在对应 Issue 下评论或告诉用户，不要强行覆盖。
 6. **不在 `main` 上 force push**，不删除别人创建的分支、Issue 或评论。
+
+### 2.2 交接文档更新规则（强制，所有 AI 都要遵守）
+
+> 本节作者：Quick AI · 2026-11-22，按用户要求制定。**这是规则，不是自动化**：没有任何程序会替你更新交接文档或同步 KV，必须由改动的 AI 自己在同一轮工作里完成。
+
+1. **改了就登记**：改代码、资产或配置的那一次提交里，必须同时更新自己的交接文档 `handover/<ai名>/HANDOVER.md`，在「改动索引」表追加一行：编号、时间、提交、文件（+增 / −删 行）、改了什么、验收、部署、KV。**没登记的改动视为不合规，审查直接退回。**
+2. **提交说明带名字和编号**：以 `[<AI名> <编号>]` 开头，例如 `[Quick AI Q-12]`、`[GPT GPT-03]`、`[Claude CL-01]`。编号前缀第一次建目录时在 [`handover/README.md`](./handover/README.md) 第 3 节登记，不得与别人重复。任何人用 `git log --grep "<AI名>"` 就能列出这个 AI 的全部提交。
+3. **两处同时更新**：GitHub 提交后，立刻把这次改动的文件（代码 + 自己的交接文档 + 改过的共享文档）镜像到 Cloudflare KV，按 2.1 节第 4 条增量更新 `FILE_INDEX.json` / `SYNC_STATE.json` 并核对 SHA-256，然后把改动行的「KV」列写成「已同步」。
+   - 没有 Cloudflare 权限的 AI：「KV」列写「待同步」，由下一个有权限的 AI 或 Quick AI 审查时补齐，补齐后改成「已同步」。
+4. **按 AI 名字分目录**：每个 AI 一个目录 `handover/<小写名字>/`，例如 `handover/quick/`（Quick AI）、`handover/gpt/`、`handover/claude/`、`handover/gemini/`、`handover/muse/`。
+   - 目录里至少有 `HANDOVER.md`（改动索引 + 做过什么 + 剩余工作）；审查报告等可以放同一目录或 `docs/audit/`。
+   - **只写自己的目录**，不改别人的目录。共享文档（`COLLAB.md`、`AGENTS.md`、`AI_HANDOVER.md`、`PROGRESS.md`）留在根目录，按 2.1 节只改自己负责的那一节。
+   - 第一次建目录时，在 `handover/README.md` 第 3 节加一行自己的信息。
+5. **收工前更新总入口**：每次工作结束前，更新 `handover/README.md` 第 3 节**自己那一行**（最后更新时间、最后提交、当前在做什么），并同样同步到 KV。
+6. **禁止从非 GitHub 来源整份写 KV**：例如之前线上站点的 `/__sync_kv` 接口会用网站上的旧文件覆盖 KV 文档和索引，2026-11-22 已停用。KV 里的内容只能来自 GitHub `main` 已提交的文件。
 
 ---
 
@@ -123,6 +140,8 @@
 | — | M5：三档画质验收 + 联机边界（`teammateVfxScale`、`players[]`） | 开发 AI（Quick AI 审查） | ⏳ 待用户确认开启 |
 | — | 自动部署 `wrangler.jsonc` + `preview` 分支 | 开发 AI + 用户 | ⏳ |
 | — | 其余小项（清理 `lan.ts`/`buildWorld`、`compress_assets.mjs` 绝对路径） | 开发 AI | ⏳ 见 `QUICK_AI_HANDOVER.md` 第 2 节 |
+| — | 网站下线交接文档、停用 `/__sync_kv`（QC-05） | Quick AI（用户要求） | ✅ 已完成 |
+| — | 交接按 AI 分目录（`handover/<ai名>/`），新增交接总入口和 2.2 节规则（Q-11） | Quick AI（用户要求） | ✅ 已完成 |
 
 ---
 
@@ -146,11 +165,12 @@
 ```
 你将作为「执行 AI」接手 GitHub 仓库 cianasa222/swarm-remake 的外包任务。
 
-1. 先按顺序读：COLLAB.md → AGENTS.md → AI_HANDOVER.md 第 2.2 节 → Issue #1 正文和全部评论（以最新评论为准）。
+1. 先读交接总入口 handover/README.md，再按 COLLAB.md 第 0 节顺序读：COLLAB.md → handover/quick/HANDOVER.md → AGENTS.md → AI_HANDOVER.md 第 2.2 节 → Issue #1 正文和全部评论（以最新评论为准）。
+   你的改动登记在 handover/<你的名字小写>/HANDOVER.md，并按 COLLAB.md 2.2 节同时更新 GitHub 和 KV（没有 Cloudflare 权限就在 KV 列写「待同步」）。
 2. 在 Issue #1 下按 COLLAB.md 第 3 节的「领取」格式评论认领。
 3. 从最新 main 新建分支 asset/14.14-wad-<今天日期>，只改 public/assets/、reference/14.14/ 和新增的 tools/ 脚本，不要改 src/。
 4. 完成后本机跑 npm.cmd run build（退出码必须为 0），开 PR 合入 main：标题「[交付 #1] …」，描述首行写「Closes #1」，再贴 Issue 里的交付回执模板并填完。
-5. 回到 Issue #1 评论「已交付：<PR 链接>」，然后停下，等 AWS Quick 审核。审核意见在 PR 评论里，按意见修改即可。
+5. 回到 Issue #1 评论「已交付：<PR 链接>」，然后停下，等 Quick AI 审核。审核意见在 PR 评论里，按意见修改即可。
 
 遇到阻塞（下载失败、哈希无法解析、格式对不上）先在 Issue #1 评论说明，不要自行改动任务范围。
 ```

@@ -1,15 +1,13 @@
 # 《无尽狂潮（Swarm）》Map33 仓库区 1:1 复刻 — 完整开发方案、进度与资产来源交接书（AI_HANDOVER）
 
-> **📌 2026-11-22 Quick AI 补注**：Quick AI（AWS Quick）今天的修复、剩余工作、免解包直链直下方法和防冲突方案，见 [`QUICK_AI_HANDOVER.md`](./QUICK_AI_HANDOVER.md)；分工与流程见 [`COLLAB.md`](./COLLAB.md)。自 2026-11-22 起 Quick AI 只负责审查与原版比对，不再做功能开发。
+> **📌 2026-11-22 Quick AI 补注**：开工前先读交接总入口 [`handover/README.md`](./handover/README.md)。Quick AI（AWS Quick）的修复、改动索引、免解包直链方法见 [`handover/quick/HANDOVER.md`](./handover/quick/HANDOVER.md)；分工、防冲突和交接文档更新规则见 [`COLLAB.md`](./COLLAB.md)。自 2026-11-22 起 Quick AI 只负责审查与原版比对，不再做功能开发。**线上站点已不再提供交接文档**（下方「在线开发交接书 / 进度清单 / 开发总纲」三个地址返回 410），请读 GitHub 或 KV。
 
 > 本文档面向**其他 AI 编程代理（Claude Code / Cursor / Codex / Gemini / Windsurf 等）及开发者**，提供从零理解架构、在线还原全部拳头 Patch 14.14 官方资产、接力后续里程碑（M5 及多英雄扩展）并一键部署 Cloudflare Pages / R2 的完整蓝图。
 >
 > **GitHub 仓库**：`https://github.com/cianasa222/swarm-remake.git`  
-> **Cloudflare 线上实机部署地址（含跨域 CDN 资产与在线交接文档）**：
+> **Cloudflare 线上实机部署地址（含跨域 CDN 资产）**：
 > - **线上实机游戏**：`https://tideline-swarm.cianasa888-gbd.workers.dev/`
-> - **在线开发交接书**：`https://tideline-swarm.cianasa888-gbd.workers.dev/AI_HANDOVER.md`
-> - **在线进度清单**：`https://tideline-swarm.cianasa888-gbd.workers.dev/PROGRESS.md`
-> - **在线开发总纲**：`https://tideline-swarm.cianasa888-gbd.workers.dev/AGENTS.md`
+> - ~~在线开发交接书 / 在线进度清单 / 在线开发总纲~~：**2026-11-22 起已下线（返回 410）**，交接文档只放 GitHub 和 Cloudflare KV（Quick AI 按用户要求修改此处）
 > - **线上已转换压缩资产 CDN 根地址（已开启 `Access-Control-Allow-Origin: *`）**：`https://tideline-swarm.cianasa888-gbd.workers.dev/assets/`（任何在线 AI 只需设置环境变量 `VITE_ASSET_BASE_URL=https://tideline-swarm.cianasa888-gbd.workers.dev` 即可免解包直接远程加载全部 9 个 Meshopt `.glb`、238 张 `.webp` 与 25 个 `.json` 特效网格！）
 >
 > **技术栈**：`Vite 5` + `TypeScript` + `Three.js r170`（零外部重型游戏引擎依赖，纯 WebGL2 高性能合批渲染）
