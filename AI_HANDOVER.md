@@ -1,5 +1,7 @@
 # 《无尽狂潮（Swarm）》Map33 仓库区 1:1 复刻 — 完整开发方案、进度与资产来源交接书（AI_HANDOVER）
 
+> **📌 2026-11-22 Quick AI 补注**：Quick AI（AWS Quick）今天的修复、剩余工作、免解包直链直下方法和防冲突方案，见 [`QUICK_AI_HANDOVER.md`](./QUICK_AI_HANDOVER.md)；分工与流程见 [`COLLAB.md`](./COLLAB.md)。自 2026-11-22 起 Quick AI 只负责审查与原版比对，不再做功能开发。
+
 > 本文档面向**其他 AI 编程代理（Claude Code / Cursor / Codex / Gemini / Windsurf 等）及开发者**，提供从零理解架构、在线还原全部拳头 Patch 14.14 官方资产、接力后续里程碑（M5 及多英雄扩展）并一键部署 Cloudflare Pages / R2 的完整蓝图。
 >
 > **GitHub 仓库**：`https://github.com/cianasa222/swarm-remake.git`  

@@ -1,0 +1,84 @@
+# Fetch Patch 14.14 reference data from CommunityDragon into the `reference-14.14` branch.
+# Smoke test scope: map33.bin.json only.
+# The result (success or failure) is always written to FETCH_STATUS.txt on that branch,
+# so it can be checked without opening the Actions log.
+name: Fetch Patch 14.14 reference
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fetch-14.14-reference.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fetch-14.14-reference
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout (for push credentials)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Download map33.bin.json
+        run: |
+          set -u
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36"
+          REL="data/maps/shipping/map33/map33.bin.json"
+          URL="https://raw.communitydragon.org/14.14/game/${REL}"
+          OUT="${RUNNER_TEMP}/out"
+          DEST="${OUT}/${REL}"
+          mkdir -p "$(dirname "$DEST")"
+
+          CODE=$(curl -sSL --retry 3 --retry-delay 5 -A "$UA" -o "$DEST" -w '%{http_code}' "$URL" || echo "000")
+          SIZE=$(stat -c %s "$DEST" 2>/dev/null || echo 0)
+          if python3 -c "import json,sys; json.load(open(sys.argv[1], encoding='utf-8'))" "$DEST" 2>/dev/null; then
+            VALID=yes
+            SHA=$(sha256sum "$DEST" | cut -d' ' -f1)
+          else
+            VALID=no
+            SHA=-
+            head -c 4000 "$DEST" > "${OUT}/ERROR_BODY.txt" 2>/dev/null || true
+            rm -f "$DEST"
+          fi
+
+          {
+            echo "run_id: ${GITHUB_RUN_ID}"
+            echo "utc: $(date -u +%FT%TZ)"
+            echo "runner_ip: $(curl -s --max-time 10 https://api.ipify.org || echo unknown)"
+            echo "url: ${URL}"
+            echo "http_code: ${CODE}"
+            echo "bytes: ${SIZE}"
+            echo "valid_json: ${VALID}"
+            echo "sha256: ${SHA}"
+          } > "${OUT}/FETCH_STATUS.txt"
+          cat "${OUT}/FETCH_STATUS.txt"
+
+          printf '%s\n' \
+            '# reference-14.14' \
+            '' \
+            'Riot Games League of Legends Patch 14.14 original data, fetched by the' \
+            '`Fetch Patch 14.14 reference` workflow from CommunityDragon.' \
+            'For non-commercial development reference only. All rights belong to Riot Games.' \
+            'This branch is regenerated (force-pushed) on every workflow run.' \
+            > "${OUT}/README.md"
+
+      - name: Commit to reference-14.14 branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan reference-14.14
+          git rm -rf --quiet . || true
+          git clean -fdx --quiet
+          cp -a "${RUNNER_TEMP}/out/." .
+          git add -A
+          git commit -qm "ref(14.14): fetch map33.bin.json (run ${GITHUB_RUN_ID})"
+          git push -f origin reference-14.14

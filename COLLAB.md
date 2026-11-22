@@ -1,7 +1,7 @@
 # 协作与任务交接规范（COLLAB）
 
-> 最后更新：2026-11-22（晚，补充第 2.1 节防冲突规则）· 维护者：AWS Quick（主线开发）
-> 新加入的 AI / 开发者：先读本文件，再读 [`AGENTS.md`](./AGENTS.md)、[`PROGRESS.md`](./PROGRESS.md)、[`AI_HANDOVER.md`](./AI_HANDOVER.md)。
+> 最后更新：2026-11-22 21:40（角色变更：Quick AI 改为只做审查）· 第 1、5 节维护者：Quick AI（AWS Quick）
+> 新加入的 AI / 开发者：先读本文件，再读 [`QUICK_AI_HANDOVER.md`](./QUICK_AI_HANDOVER.md)（Quick AI 已完成的工作、剩余工作、免解包直链方法）、[`AGENTS.md`](./AGENTS.md)、[`PROGRESS.md`](./PROGRESS.md)、[`AI_HANDOVER.md`](./AI_HANDOVER.md)。
 
 ---
 
@@ -9,8 +9,9 @@
 
 | 角色 | 负责 | 不负责 |
 | :--- | :--- | :--- |
-| **AWS Quick（主线）** | `src/` 代码开发（M5 及以后）、从 CommunityDragon 拉取并核对 14.14 配置 JSON、维护文档、GitHub → KV 同步、发布任务 Issue、审核 PR | 本机构建/截图、`.wad.client` 下载、lol2gltf 转换 |
-| **执行 AI / 开发者（任务领取方）** | 领取带 `help wanted` 标签的 Issue：`.wad.client` 下载解包、`.scb` / lol2gltf 转换、本机 `build` / `playtest` / 截图验收 | 修改 `src/`（除非 Issue 明确允许） |
+| **Quick AI（AWS Quick，审查）** | 审查其他 AI 提交的代码和 PR：对照 Patch 14.14 原版数据逐项比对、检查架构契约、给出 `PASS` / `需修改` 和优化建议；审查报告写到 `docs/audit/`；核对 GitHub ↔ KV 是否一致并补齐镜像 | **功能开发**、直接向 `main` 推送代码改动、本机构建/截图、`.wad.client` 下载、lol2gltf 转换、部署 |
+| **开发 AI（主线开发）** | `src/` 功能开发：喷泉第二批、M5、新英雄等；本机 `build` / `playtest` / 截图；修复审查意见 | — |
+| **执行 AI / 开发者（任务领取方，如 Muse）** | 领取带 `help wanted` 标签的 Issue：`.wad.client` 下载解包、`.scb` / lol2gltf 转换、贴图下载转换 | 修改 `src/`（除非 Issue 明确允许） |
 | **用户（项目负责人）** | 确认里程碑、合并 PR、部署 Cloudflare | — |
 
 ---
@@ -25,7 +26,7 @@
 | 任务 | GitHub Issues（标签 `help wanted`） | — |
 
 1. **所有改动先进 GitHub `main`**，可以直接提交，也可以合并 PR。
-2. 每次 `main` 变更后，AWS Quick 把变更文件镜像到 KV，并更新 KV 里的 `SYNC_STATE.json`（记录 commit SHA、时间、文件列表）。**KV 与 GitHub 不一致时，一律以 GitHub `main` 为准。**
+2. 每次 `main` 变更后，由提交者（有 Cloudflare 权限时）按 2.1 节规则把变更文件镜像到 KV；没有权限的，由 Quick AI 在审查时补齐。镜像时更新 KV 里的 `SYNC_STATE.json`（记录 commit SHA、时间、文件列表）。**KV 与 GitHub 不一致时，一律以 GitHub `main` 为准。**
 3. 不要直接改 KV 里的源码 key，否则下次同步会被覆盖。
 4. `.github/workflows/` 只能由用户在 GitHub 网页上手动维护，AWS Quick 的连接器没有 workflow 权限。
 
@@ -95,11 +96,14 @@
 
 | 编号 | 任务 | 执行者 | 状态 |
 | :--- | :--- | :--- | :--- |
-| [#1](../../issues/1) | 14.14 `.wad.client` 下载解包（**用 Windows 清单**，见 Issue 21:30 订正）+ 5 个 Nova 网格转 JSON + 15 张贴图（T4）+ 4 种小怪 `skin0.bin.json` | Muse（待领取） | 🟡 待领取 |
-| — | 喷泉精修第一批：9 项不需要新资产的修复（`c63e871`） | AWS Quick | 🧪 已提交，待用户本机 build + 截图验收 |
-| — | 小怪只剩影子：量化蒙皮模型烘焙修复（`46362d7`） | AWS Quick | 🧪 已提交，待用户本机验收 |
-| — | 喷泉精修第二批：叠加贴图 + 剩余 Nova 层 | AWS Quick | ⏳ 等 #1 交付 |
-| — | M5：低/中/高三档画质验收 + 联机边界（`teammateVfxScale`、`players[]`） | AWS Quick | ⏳ 待用户确认开启 |
+| [#1](../../issues/1) | 14.14 `.wad.client` 下载解包（**用 Windows 清单**，见 Issue 21:30 订正）+ 5 个 Nova 网格转 JSON + 15 张贴图（T4）+ 4 种小怪 `skin0.bin.json` | 执行 AI（Muse，待领取） | 🟡 待领取 |
+| — | 验收并修正喷泉第一批（`c63e871`，Quick AI 已提交） | 开发 AI + 用户 | 🧪 待本机 build + 截图 |
+| — | 验收并修正小怪模型修复（`46362d7`，Quick AI 已提交） | 开发 AI + 用户 | 🧪 待本机验收 |
+| — | 重新部署线上（今天的改动都还没上线） | 用户 | ⏳ |
+| — | 喷泉第二批：叠加贴图 + 剩余 Nova 层（清单见 `docs/audit/fountain_emitters_14.14.md` 4.3 节） | 开发 AI（Quick AI 审查） | ⏳ 等 #1 交付 |
+| — | M5：三档画质验收 + 联机边界（`teammateVfxScale`、`players[]`） | 开发 AI（Quick AI 审查） | ⏳ 待用户确认开启 |
+| — | 自动部署 `wrangler.jsonc` + `preview` 分支 | 开发 AI + 用户 | ⏳ |
+| — | 其余小项（清理 `lan.ts`/`buildWorld`、`compress_assets.mjs` 绝对路径） | 开发 AI | ⏳ 见 `QUICK_AI_HANDOVER.md` 第 2 节 |
 
 ---
 
