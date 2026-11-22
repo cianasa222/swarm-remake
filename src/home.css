@@ -12,7 +12,7 @@
 .home-brand { color:#d7f5f3; font-weight:750; }
 .home-content { margin:auto 0; display:grid; grid-template-columns:1fr minmax(280px,390px); align-items:center; gap:5vw; padding:32px 0; }
 .home-kicker { font-size:11px; font-weight:800; letter-spacing:.23em; color:#8be7de; }
-.home-copy h1 { font-size:clamp(64px,12vw,152px); line-height:.83; letter-spacing:-.085em; margin:24px 0; text-shadow:0 12px 50px #030d18; }
+.home-copy h1 { font-size:clamp(64px,12vw,152px); line-height:.98; letter-spacing:-.055em; margin:24px 0; text-shadow:0 12px 50px #030d18; }
 .home-copy h1 span { color:#a4fce1; }
 .home-copy p,.home-glass p { color:#abc5cf; line-height:1.65; }
 .home-glass { padding:clamp(23px,4vw,38px); border:1px solid #d6fff32e; border-radius:32px; background:linear-gradient(145deg,#c5f9ff14,#0a1e2bd9); backdrop-filter:blur(22px); box-shadow:0 28px 90px #020b1470,inset 0 1px #ffffff24; animation:home-rise .65s cubic-bezier(.2,.8,.2,1) both; }
@@ -23,6 +23,12 @@
 .home-secondary { color:#e1f4f4; border:1px solid #b8ffff38; background:#b1efff0c; }
 .home-glass button:active,.home-secondary:active { transform:scale(.97); }
 .home-glass small { display:block; margin-top:16px; color:#9dbbc5; font-size:11px; line-height:1.6; }
+#login-home [hidden] { display:none!important; }
+#home-login-form { display:grid; gap:8px; margin-top:16px; }
+#home-login-form label { font-size:12px; color:#a9c7d0; }
+#home-login-form input { appearance:none; width:100%; color:#eafaff; background:#091c29b3; border:1px solid #b8ffff38; border-radius:12px; padding:12px; font-size:16px; user-select:text; touch-action:auto; }
+#home-login-form input:focus { outline:2px solid #8be7de; outline-offset:1px; }
+.home-register { color:#9be7db; font-size:12px; padding:8px 0; }
 #home-status { margin:12px 0 0; }
 @keyframes home-rise { from { opacity:0; transform:translateY(16px) scale(.97); } to { opacity:1; transform:none; } }
 @keyframes home-sweep { from { transform:rotate(-12deg); } to { transform:rotate(12deg); } }

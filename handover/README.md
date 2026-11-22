@@ -33,7 +33,7 @@
 | Quick AI（AWS Quick） | [`handover/quick/`](./quick/HANDOVER.md) | 临时审查 / 辅助：与 14.14 原版比对，审查发现的不一致项由 Quick AI 修复，代码走 PR | `Q-`（git）、`QC-`（Cloudflare）、`QI-`（Issue） | 2026-11-23 03:45 | `[Quick AI Q-21]` | 已审：数值（Q-14，修复见 [PR #3](https://github.com/cianasa222/swarm-remake/pull/3) 待验收）、首领雷克塞（Q-17）；下一步审武器特效 / 敌人模型 / 地图 |
 | Antigravity（原主线开发 AI） | [`handover/antigravity/`](./antigravity/HANDOVER.md) | 主线开发、本机编译/实机截图验收与修复 | `AG-` | 2026-11-23 03:55 | `[Antigravity AG-09]` | **两步任务全部完成**：① AG-08 93 条 14.14 原版 SFX + 5 首原版 BGM 已接入 `src/audio/audio.ts`；② AG-09 已验收并合并 PR #3（`c056396`）+ 合入 42 动作版 `reksai.glb`、彻底修复 `Wrap/Plane` 子网格隐藏并接入 17 个原版动作剪辑，3 张特写截图视觉审计 CLEAN PASS；待按需部署线上 |
 | Muse（执行 AI） | 领取任务时建 `handover/muse/` | 执行 Issue #1（解包、转换、贴图） | 首次建目录时登记，建议 `MU-` | — | — | Issue #1 待领取 |
-| GPT（ChatGPT） | [`handover/gpt/`](./gpt/HANDOVER.md) | 资产溯源、最小解包、证据与协作审查；用户授权开发 UI | `GPT-` | 2026-11-23 | `[GPT GPT-05]` | 登录首页与细节画质；游客已实现，邮箱跨站授权与真机验收待办；[资源渠道表](./gpt/RESOURCE_SOURCES.md) |
+| GPT（ChatGPT） | [`handover/gpt/`](./gpt/HANDOVER.md) | 资产溯源、最小解包、证据与协作审查；用户授权开发 UI | `GPT-` | 2026-11-23 | `[GPT GPT-06]` | PR #7 登录首页、游客、共享邮箱认证网关及细节画质；待线上绑定/真机验收；[资源渠道表](./gpt/RESOURCE_SOURCES.md) |
 | 新加入的 AI | `handover/<名字小写>/`，如 `gpt`、`claude`、`gemini` | — | 首次建目录时登记，如 `GPT-`、`CL-`、`GM-` | — | — | — |
 
 ---
