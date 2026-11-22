@@ -449,54 +449,162 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
   sharpCircleMesh.renderOrder = 6;
   fGroup.add(sharpCircleMesh);
 
-  const crecents1 = [
-    mkDecalPlane(7.6, 0.90, 'timer_outline.png', 0x2ef88a, 0.0, true, 8),
-    mkDecalPlane(7.6, 0.91, 'timer_outline.png', 0x2ef88a, 0.0, true, 8),
-  ];
-  const crecents2 = [
-    mkDecalPlane(10.0, 0.89, 'glow_ring.png', 0x03ff6e, 0.0, true, 7),
-    mkDecalPlane(10.0, 0.895, 'glow_ring.png', 0x03ff6e, 0.0, true, 7),
-  ];
-  const outerGraphic1 = [
-    mkDecalPlane(10.0, 0.92, 'glow_ring.png', 0x05ff85, 0.0, true, 8),
-    mkDecalPlane(10.0, 0.925, 'glow_ring.png', 0x05ff85, 0.0, true, 8),
-  ];
+  const dotsTex = vfxTex('dots.png');
+  const scanLinesTex = vfxTex('healingstation_scan_lines.webp');
+  const glowHardEdgeTex = vfxTex('healingstation_glow_hardedge.webp');
+  const baseGlowTex = vfxTex('base_glow.png');
 
-  // 3. 喷泉底座光边（Edge10: 官方 bS=3.2）+ outer_graphic（官方 bS=1400）
-  const baseEdgeTex = vfxTex('hollow_decal.png').clone();
-  baseEdgeTex.needsUpdate = true;
-  baseEdgeTex.wrapS = THREE.RepeatWrapping;
-  baseEdgeTex.wrapT = THREE.RepeatWrapping;
-  baseEdgeTex.repeat.set(9, 1);
-  const baseEdges = [0, 0.5].map((phase, idx) => {
-    const mat = new THREE.MeshBasicMaterial({
-      map: baseEdgeTex,
-      color: 0x00ff6b,
+  // 带 textureMult 叠加的地面贴图环工厂（补齐原版 7 个常驻层的点阵/光晕/硬边细节）
+  const mkMultDecalPlane = (
+    size: number,
+    y: number,
+    texName: string,
+    multTex: THREE.Texture,
+    multScale: number,
+    hex: number,
+    opacity: number,
+    order = 8,
+  ) => {
+    const col = new THREE.Color(hex);
+    const u = {
+      uTex: { value: vfxTex(texName) },
+      uMult: { value: multTex },
+      uMultScale: { value: multScale },
+      uColor: { value: col },
+      uOpacity: { value: opacity },
+      uTime: { value: 0 },
+    };
+    const mat = new THREE.ShaderMaterial({
+      uniforms: u,
       transparent: true,
-      opacity: 0.42,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
       side: THREE.DoubleSide,
+      vertexShader: /* glsl */ `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: /* glsl */ `
+        uniform sampler2D uTex;
+        uniform sampler2D uMult;
+        uniform float uMultScale;
+        uniform vec3 uColor;
+        uniform float uOpacity;
+        uniform float uTime;
+        varying vec2 vUv;
+        void main() {
+          vec4 base = texture2D(uTex, vUv);
+          vec4 mult = texture2D(uMult, vUv * uMultScale + vec2(uTime * 0.04, -uTime * 0.03));
+          float bm = max(base.a, max(base.r, base.g));
+          float mm = mix(0.45, 1.25, max(mult.a, max(mult.r, mult.g)));
+          float a = bm * mm * uOpacity;
+          if (a < 0.004) discard;
+          gl_FragColor = vec4(uColor * (0.85 + 0.35 * mult.rgb), a);
+          #include <colorspace_fragment>
+        }
+      `,
+    });
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(size, size), mat);
+    m.rotation.x = -Math.PI / 2;
+    m.position.y = y;
+    m.renderOrder = order;
+    fGroup.add(m);
+    return {
+      mesh: m,
+      u,
+      mat: {
+        get opacity() { return u.uOpacity.value; },
+        set opacity(v: number) { u.uOpacity.value = v; },
+        color: col,
+      },
+    };
+  };
+
+  const crecents1 = [
+    mkMultDecalPlane(7.6, 0.90, 'timer_outline.png', baseGlowTex, 1.0, 0x2ef88a, 0.0, 8),
+    mkMultDecalPlane(7.6, 0.91, 'timer_outline.png', baseGlowTex, 1.0, 0x2ef88a, 0.0, 8),
+  ];
+  const crecents2 = [
+    mkMultDecalPlane(10.0, 0.89, 'glow_ring.png', glowHardEdgeTex, 1.0, 0x03ff6e, 0.0, 7),
+    mkMultDecalPlane(10.0, 0.895, 'glow_ring.png', glowHardEdgeTex, 1.0, 0x03ff6e, 0.0, 7),
+  ];
+  const outerGraphic1 = [
+    mkMultDecalPlane(10.0, 0.92, 'glow_ring.png', dotsTex, 6.0, 0x05ff85, 0.0, 8),
+    mkMultDecalPlane(10.0, 0.925, 'glow_ring.png', dotsTex, 6.0, 0x05ff85, 0.0, 8),
+  ];
+
+  // 3. 喷泉底座光边（Edge10: 官方 bS=3.2 + 叠加 scan_lines 下滚）+ outer_graphic（官方 bS=1400 + 叠加 dots）
+  const baseEdgeTex = vfxTex('hollow_decal.png');
+  const baseEdges = [0, 0.5].map((phase, idx) => {
+    const u = {
+      uTex: { value: baseEdgeTex },
+      uScan: { value: scanLinesTex },
+      uOpacity: { value: 0.42 },
+      uTime: { value: 0 },
+    };
+    const mat = new THREE.ShaderMaterial({
+      uniforms: u,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+      vertexShader: /* glsl */ `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: /* glsl */ `
+        uniform sampler2D uTex;
+        uniform sampler2D uScan;
+        uniform float uOpacity;
+        uniform float uTime;
+        varying vec2 vUv;
+        void main() {
+          vec4 base = texture2D(uTex, vec2(vUv.x * 9.0, vUv.y));
+          vec4 scan = texture2D(uScan, vec2(vUv.x * 18.0, vUv.y * 2.0 - uTime * 0.45));
+          float bm = max(base.a, max(base.r, base.g));
+          float sm = mix(0.50, 1.25, max(scan.a, scan.r));
+          float a = bm * sm * uOpacity;
+          if (a < 0.004) discard;
+          gl_FragColor = vec4(vec3(0.0, 1.0, 0.42) * (0.85 + 0.30 * scan.r), a);
+          #include <colorspace_fragment>
+        }
+      `,
     });
     const mesh = loadScbMesh('./assets/map1/vfx/fountain_baseedge.json', mat);
     mesh.scale.setScalar(0.032);
     mesh.position.y = 0.14 + idx * 0.01;
     mesh.renderOrder = 5;
     fGroup.add(mesh);
-    return { mesh, mat, phase };
+    return {
+      mesh,
+      u,
+      mat: {
+        get opacity() { return u.uOpacity.value; },
+        set opacity(v: number) { u.uOpacity.value = v; },
+      },
+      phase,
+    };
   });
 
-  const outerGraphic = mkDecalPlane(28.0, 0.10, 'glowring_outer.png', 0x00ff60, 0.08, true, 4);
+  const outerGraphic = mkMultDecalPlane(28.0, 0.10, 'glowring_outer.png', dotsTex, 8.0, 0x00ff60, 0.08, 4);
 
-  // 4. 3D 脉冲波浪罩（Shockwave_blend）：Glow 常驻层与 Nova 两层共用材质工厂
+  // 4. 3D 脉冲波浪罩（Shockwave_blend）：Glow 常驻层与 Nova 两层共用材质工厂（支持 dots 叠加）
   //    v = uv.y * uVScale + uVOffset（texDiv / uvScale / birthUVOffset / UV 滚动折算）
-  const makeWaveMat = (vScale: number, rgb: [number, number, number]) => {
+  const makeWaveMat = (vScale: number, rgb: [number, number, number], useDots = false) => {
     const u = {
       uVScale: { value: vScale },
       uVOffset: { value: -0.8 },
       uOpacity: { value: 0 },
       uColor: { value: new THREE.Vector3(rgb[0], rgb[1], rgb[2]) },
       uTex: { value: vfxTex('shockwave.png') },
+      uDots: { value: dotsTex },
+      uUseDots: { value: useDots ? 1.0 : 0.0 },
     };
     const mat = new THREE.ShaderMaterial({
       uniforms: u,
@@ -520,6 +628,8 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
         uniform float uOpacity;
         uniform vec3 uColor;
         uniform sampler2D uTex;
+        uniform sampler2D uDots;
+        uniform float uUseDots;
         varying vec2 vUv;
         varying float vAlpha;
         void main() {
@@ -527,6 +637,10 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
           if (v < 0.0 || v > 1.0) discard;
           vec4 tex = texture2D(uTex, vec2(vUv.x, v));
           float m = max(tex.a, max(tex.r, tex.g));
+          if (uUseDots > 0.5) {
+            vec4 d = texture2D(uDots, vec2(vUv.x * 16.0, v * 4.0));
+            m *= mix(0.55, 1.35, max(d.a, d.r));
+          }
           float a = m * vAlpha * uOpacity;
           if (a < 0.004) discard;
           gl_FragColor = vec4(uColor, a);
@@ -536,8 +650,8 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
     });
     return { mat, u };
   };
-  // Glow/Shockwave_blend：scale = (0.25, 0.08, 0.25)，2 s 一次，α 0 → 0.5 → 0.5 → 0
-  const glowWave = makeWaveMat(0.6, [0.0, 1.0, 0.45]);
+  // Glow/Shockwave_blend：scale = (0.25, 0.08, 0.25)，2 s 一次，α 0 → 0.5 → 0.5 → 0，叠加 dots
+  const glowWave = makeWaveMat(0.6, [0.0, 1.0, 0.45], true);
   const waveUniforms = glowWave.u;
   const waveMesh = loadScbMesh('./assets/map1/vfx/fountain_wave.json', glowWave.mat);
   waveMesh.scale.set(0.25, 0.08, 0.25);
@@ -787,11 +901,15 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
   const timerUniforms = {
     uProgress: { value: 0 },
     uTime: { value: 0 },
-    uDots: { value: vfxTex('dots.png') },
+    uDots: { value: dotsTex },
     uEdge08: { value: vfxTex('edge_08.png') },
     uEdge09: { value: vfxTex('edge_09.png') },
     uEdge06: { value: vfxTex('edge_06.png') },
     uNoise: { value: noiseTex },
+    uMult06: { value: vfxTex('base_timer_mult_06.webp') },
+    uMult07: { value: vfxTex('base_timer_mult_07.webp') },
+    uMult08: { value: vfxTex('base_timer_mult_08.webp') },
+    uMult09: { value: vfxTex('base_timer_mult_09.webp') },
   };
   const timerBgMat = new THREE.ShaderMaterial({
     uniforms: timerUniforms,
@@ -809,15 +927,21 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
     fragmentShader: /* glsl */ `
       uniform float uProgress;
       uniform sampler2D uDots;
+      uniform sampler2D uMult06;
+      uniform sampler2D uMult09;
       varying vec2 vUv;
       void main() {
-        if (uProgress <= 0.005 || vUv.x > uProgress) discard;
+        if (uProgress <= 0.005 || vUv.x > uProgress + 0.015) discard;
+        vec2 mUv = vec2(clamp(vUv.x - uProgress + 1.0, 0.0, 1.0), vUv.y);
+        float m6 = texture2D(uMult06, mUv).r;
+        float m9 = texture2D(uMult09, mUv).r;
+        float clipMask = smoothstep(uProgress + 0.012, uProgress - 0.004, vUv.x) * mix(0.65, 1.0, m6);
         vec4 d = texture2D(uDots, vUv * vec2(120.0, 4.0));
-        float dotMask = max(d.a, d.r);
+        float dotMask = max(d.a, d.r) * mix(0.55, 1.0, m9);
         vec3 bgCol = vec3(0.0, 0.34, 0.20);
         vec3 dotCol = vec3(0.28, 0.92, 0.80);
-        vec3 col = mix(bgCol, dotCol, dotMask * 0.38);
-        gl_FragColor = vec4(col, 0.56);
+        vec3 col = mix(bgCol, dotCol, dotMask * 0.44);
+        gl_FragColor = vec4(col, 0.60 * clipMask);
         #include <colorspace_fragment>
       }
     `,
@@ -891,18 +1015,25 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
       uniform sampler2D uEdge09;
       uniform sampler2D uEdge06;
       uniform sampler2D uNoise;
+      uniform sampler2D uMult06;
+      uniform sampler2D uMult07;
+      uniform sampler2D uMult08;
       varying vec2 vUv;
       void main() {
-        if (uProgress <= 0.005 || vUv.x > uProgress) discard;
-        float e8 = texture2D(uEdge08, vUv * vec2(14.0, 1.0)).r;
+        if (uProgress <= 0.005 || vUv.x > uProgress + 0.015) discard;
+        vec2 mUv = vec2(clamp(vUv.x - uProgress + 1.0, 0.0, 1.0), vUv.y);
+        float m6 = mix(0.60, 1.0, texture2D(uMult06, mUv).r);
+        float m7 = texture2D(uMult07, mUv).r;
+        float m8 = mix(0.55, 1.15, texture2D(uMult08, mUv).r);
+        float e8 = texture2D(uEdge08, vUv * vec2(14.0, 1.0) + vec2(-uTime * 0.07, 0.0)).r;
         float e9 = texture2D(uEdge09, vUv * vec2(4.0, 1.0)).r;
         float e6 = texture2D(uEdge06, vUv * vec2(16.0, 1.0) + vec2(0.5, 0.0)).r;
         float nz = texture2D(uNoise, vUv * vec2(8.0, 1.0) + vec2(-uTime * 0.15, 0.0)).r;
-        float head = smoothstep(0.022, 0.0, uProgress - vUv.x);
+        float head = max(smoothstep(0.025, 0.0, abs(uProgress - vUv.x)), m7 * smoothstep(0.08, 0.0, abs(uProgress - vUv.x)));
         vec3 baseTint = vec3(0.28, 0.92, 0.96); // 原版 Timer_Charge 11 层均为青绿色系，无暖色过渡
-        float energy = e8 * 0.34 + e9 * 0.44 + e6 * 0.34 + nz * 0.18 + head * 0.65;
-        vec3 col = baseTint * energy + vec3(0.20, 0.95, 0.65) * head * 0.55;
-        float alpha = clamp(energy * 0.62, 0.0, 0.82);
+        float energy = (e8 * 0.34 + e9 * 0.44 + e6 * 0.34 * m8 + nz * 0.18) * m6 + head * 0.72;
+        vec3 col = baseTint * energy + vec3(0.45, 1.0, 0.85) * head * 0.65;
+        float alpha = clamp(energy * 0.64, 0.0, 0.86) * smoothstep(uProgress + 0.012, uProgress - 0.004, vUv.x);
         gl_FragColor = vec4(col, alpha);
         #include <colorspace_fragment>
       }
@@ -1154,6 +1285,183 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
     burstGold(gold1Pool, Math.round(55 * fx), () => 0.9 * rnd(0.7, 1.0), 8, GOLD1_CV);
   };
 
+  // ── 喷泉 Nova 第二批（补齐剩余 10 层原版发射器，均置于 novaGroup ×1.75，严格按顶点 maxR 校准防穿墙） ──
+  // A. flashBlend：PointStarAdd 12 m Billboard，y = 2.0，0.15 s 瞬闪
+  const novaFlashMat = new THREE.SpriteMaterial({
+    map: vfxTex('healingstation_pointstaradd.webp'),
+    color: new THREE.Color().setRGB(1.0, 0.96, 0.78, THREE.SRGBColorSpace),
+    transparent: true,
+    opacity: 0,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  });
+  const novaFlash = new THREE.Sprite(novaFlashMat);
+  novaFlash.position.y = 2.0;
+  novaFlash.visible = false;
+  novaFlash.renderOrder = 15;
+  novaGroup.add(novaFlash);
+
+  // B. Beamdown / Beamdown1：Base_GlowStar_02 10×14 m 交叉竖直下射光柱，0.22 s
+  const novaBeamdowns = [0, Math.PI / 2].map((rotY, idx) => {
+    const mat = new THREE.MeshBasicMaterial({
+      map: vfxTex('healingstation_base_glowstar_02.webp'),
+      color: new THREE.Color().setRGB(idx === 0 ? 0.25 : 0.95, 1.0, idx === 0 ? 0.75 : 0.52, THREE.SRGBColorSpace),
+      transparent: true,
+      opacity: 0,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+    });
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(10, 14), mat);
+    m.rotation.y = rotY;
+    m.position.y = 5.2;
+    m.visible = false;
+    m.renderOrder = 14;
+    novaGroup.add(m);
+    return { mesh: m, mat };
+  });
+
+  // C. Ground_Light_mesh1：LightCylinder ×(1.2, 1.5, 1.2) + 叠加 Scan_Lines 向上滚动，0.55 s
+  const beamScanUniforms = {
+    uTex: { value: vfxTex('decal_light_01.png') },
+    uScan: { value: scanLinesTex },
+    uOpacity: { value: 0 },
+    uTime: { value: 0 },
+  };
+  const beamScanMat = new THREE.ShaderMaterial({
+    uniforms: beamScanUniforms,
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+    vertexShader: /* glsl */ `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: /* glsl */ `
+      uniform sampler2D uTex;
+      uniform sampler2D uScan;
+      uniform float uOpacity;
+      uniform float uTime;
+      varying vec2 vUv;
+      void main() {
+        float vFade = smoothstep(0.0, 0.22, vUv.y) * smoothstep(1.0, 0.28, vUv.y);
+        if (vFade < 0.005) discard;
+        vec4 tex = texture2D(uTex, vUv);
+        vec4 scan = texture2D(uScan, vec2(vUv.x * 6.0, vUv.y * 4.0 - uTime * 2.2));
+        float m = max(tex.a, max(tex.r, tex.g)) * mix(0.45, 1.35, max(scan.a, scan.r));
+        gl_FragColor = vec4(vec3(0.28, 1.0, 0.85) * (0.7 + 0.5 * scan.r), m * vFade * uOpacity);
+        #include <colorspace_fragment>
+      }
+    `,
+  });
+  const beamScanMesh = loadScbMesh('./assets/map1/vfx/fountain_beam.json', beamScanMat);
+  beamScanMesh.rotation.y = (109 * Math.PI) / 180;
+  beamScanMesh.visible = false;
+  beamScanMesh.renderOrder = 13;
+  novaGroup.add(beamScanMesh);
+
+  // D. 通用滚动 3D 网格着色器工厂（供 InhaleFire×3 / Ring / ShapeAround / teamring_circle1 共用）
+  const makeScrollMeshMat = (texName: string, rgb: [number, number, number], uvScale: [number, number], scroll: [number, number]) => {
+    const u = {
+      uTex: { value: vfxTex(texName) },
+      uNoise: { value: noiseTex },
+      uColor: { value: new THREE.Vector3(rgb[0], rgb[1], rgb[2]) },
+      uUvScale: { value: new THREE.Vector2(uvScale[0], uvScale[1]) },
+      uScroll: { value: new THREE.Vector2(scroll[0], scroll[1]) },
+      uOpacity: { value: 0 },
+      uTime: { value: 0 },
+    };
+    const mat = new THREE.ShaderMaterial({
+      uniforms: u,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+      vertexShader: /* glsl */ `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: /* glsl */ `
+        uniform sampler2D uTex;
+        uniform sampler2D uNoise;
+        uniform vec3 uColor;
+        uniform vec2 uUvScale;
+        uniform vec2 uScroll;
+        uniform float uOpacity;
+        uniform float uTime;
+        varying vec2 vUv;
+        void main() {
+          vec4 tex = texture2D(uTex, vUv * uUvScale + uScroll * uTime);
+          float nz = texture2D(uNoise, vUv * 2.0 + vec2(uTime * 0.15, -uTime * 0.25)).r;
+          float m = max(tex.a, max(tex.r, tex.g)) * mix(0.65, 1.15, nz);
+          float a = m * uOpacity;
+          if (a < 0.004) discard;
+          gl_FragColor = vec4(uColor * (0.75 + 0.45 * tex.rgb), a);
+          #include <colorspace_fragment>
+        }
+      `,
+    });
+    return { mat, u };
+  };
+
+  // InhaleFire（FlameMesh, maxR=11.32 → scale 0.48×1.75 ≈ 9.5 m，3.8 s）
+  const inhaleFire1 = makeScrollMeshMat('healingstation_meshmult.webp', [0.08, 1.0, 0.56], [2.0, 1.0], [0.15, -0.55]);
+  const inhaleFire1Mesh = loadScbMesh('./assets/map1/vfx/fountain_nova_flame.json', inhaleFire1.mat);
+  inhaleFire1Mesh.position.y = 0.06;
+  inhaleFire1Mesh.visible = false;
+  inhaleFire1Mesh.renderOrder = 10;
+  novaGroup.add(inhaleFire1Mesh);
+
+  // InhaleFire2（Brand_Base_Ring, maxR=10.0 → scale 0.52×1.75 ≈ 9.1 m，2.0 s）
+  const inhaleFire2 = makeScrollMeshMat('healingstation_shockwave_trail.webp', [0.22, 1.0, 0.72], [3.0, 1.0], [-0.45, 0.0]);
+  const inhaleFire2Mesh = loadScbMesh('./assets/map1/vfx/fountain_nova_ring.json', inhaleFire2.mat);
+  inhaleFire2Mesh.position.y = 0.08;
+  inhaleFire2Mesh.visible = false;
+  inhaleFire2Mesh.renderOrder = 10;
+  novaGroup.add(inhaleFire2Mesh);
+
+  // InhaleFire3（Brand_Base_Ring + Trail_Silk_01, maxR=10.0 → scale 0.44×1.75 ≈ 7.7 m，2.0 s）
+  const inhaleFire3 = makeScrollMeshMat('healingstation_trail_silk_01.webp', [0.65, 1.0, 0.48], [2.0, 1.0], [0.55, 0.0]);
+  const inhaleFire3Mesh = loadScbMesh('./assets/map1/vfx/fountain_nova_ring.json', inhaleFire3.mat);
+  inhaleFire3Mesh.position.y = 0.10;
+  inhaleFire3Mesh.visible = false;
+  inhaleFire3Mesh.renderOrder = 11;
+  novaGroup.add(inhaleFire3Mesh);
+
+  // Ring（HealingStation_Swirl, maxR=91.64 → scale 0.055×1.75 ≈ 8.8 m，2.2 s，双层交错旋涡）
+  const novaRings = [0, Math.PI].map((rot0) => {
+    const r = makeScrollMeshMat('healingstation_circle_mis.webp', [0.12, 1.0, 0.68], [2.0, 1.0], [0.85, 0.0]);
+    const mesh = loadScbMesh('./assets/map1/vfx/fountain_nova_swirl.json', r.mat);
+    mesh.position.y = 1.1;
+    mesh.visible = false;
+    mesh.renderOrder = 12;
+    novaGroup.add(mesh);
+    return { mesh, u: r.u, rot0 };
+  });
+
+  // ShapeAround（HealingStation_Shape_Music, maxR=32.52 → scale 0.14×1.75 ≈ 8.0 m，1.6 s）
+  const novaShape = makeScrollMeshMat('music_aura.webp', [0.38, 1.0, 0.85], [2.0, 1.0], [0.35, -0.45]);
+  const novaShapeMesh = loadScbMesh('./assets/map1/vfx/fountain_nova_shape.json', novaShape.mat);
+  novaShapeMesh.position.y = 0.15;
+  novaShapeMesh.visible = false;
+  novaShapeMesh.renderOrder = 11;
+  novaGroup.add(novaShapeMesh);
+
+  // teamring_circle1（HealingStation_Indicator, maxR=30.55 → scale 0.21×1.75 ≈ 11.2 m 贴合站圈，4.2 s）
+  const novaTeamRing = makeScrollMeshMat('healingstation__infernal_smoke_trail.webp', [0.10, 0.96, 0.62], [4.0, 1.0], [0.22, 0.0]);
+  const novaTeamRingMesh = loadScbMesh('./assets/map1/vfx/fountain_nova_indicator.json', novaTeamRing.mat);
+  novaTeamRingMesh.position.y = 0.09;
+  novaTeamRingMesh.visible = false;
+  novaTeamRingMesh.renderOrder = 9;
+  novaGroup.add(novaTeamRingMesh);
+
   // 地面低矮地标光环（首领竞技场 & 首领出生点）
   const mkBeaconRing = (x: number, z: number, rIn: number, rOut: number, hex: number, opacity: number) => {
     const g = new THREE.RingGeometry(rIn, rOut, 48);
@@ -1232,6 +1540,7 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
         const k = (t + i * 0.5) % 1;
         const c = crecents1[i];
         c.mesh.visible = !onCd;
+        c.u.uTime.value = t;
         c.mesh.scale.setScalar(1.3 - k * 0.8);
         c.mesh.rotation.z = t * 0.35 + i * 1.57;
         const a = k < 0.4 ? k / 0.4 : (1 - k) / 0.6;
@@ -1245,6 +1554,7 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
         const k = (t + i * 0.5) % 1;
         const c = crecents2[i];
         c.mesh.visible = !onCd;
+        c.u.uTime.value = t;
         const sc = k < 0.8 ? 0.7 + (0.45 * k) / 0.8 : 1.15 + (0.1 * (k - 0.8)) / 0.2;
         c.mesh.scale.setScalar(sc);
         c.mesh.rotation.z = -t * 0.28 + i * 1.57;
@@ -1256,6 +1566,7 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
         const k = (t * 0.5 + i * 0.5) % 1;
         const c = outerGraphic1[i];
         c.mesh.visible = !onCd;
+        c.u.uTime.value = t;
         c.mesh.scale.setScalar(1.0 - k);
         c.mesh.rotation.z = t * 0.2 + i * 2.1;
         const a = k < 0.4 ? k / 0.4 : (1 - k) / 0.6;
@@ -1265,16 +1576,18 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
         c.mat.color.copy(cTmp);
       }
 
-      // 外沿底座光边（Edge10 双层交错呼吸）
+      // 外沿底座光边（Edge10 双层交错呼吸 + scan_lines 下滚）
       for (const b of baseEdges) {
         b.mesh.visible = !onCd;
         if (!onCd) {
           const k = (t * 0.25 + b.phase) % 1;
           const fade = k < 0.5 ? k * 2 : (1 - k) * 2;
+          b.u.uTime.value = t;
           b.mat.opacity = fade * (charging ? 0.55 : 0.42);
           b.mesh.rotation.y = t * 0.052 + b.phase * Math.PI;
         }
       }
+      outerGraphic.u.uTime.value = t;
       outerGraphic.mat.opacity = onCd ? 0.02 : charging ? 0.15 : 0.08;
 
       // 3D 脉冲波浪罩（Shockwave_blend 2s UV 径向滚动）
@@ -1363,12 +1676,115 @@ export function buildWarehouseWorld(scene: THREE.Scene, gl: THREE.WebGLRenderer)
           w.u.uOpacity.value = curve1(NOVA_WAVE_ALPHA_T, NOVA_WAVE_ALPHA_V, k);
         }
 
-        if (e > 2.0) novaElapsed = -1;
+        // flashBlend（0.15 s 瞬闪）
+        const kf = e / 0.15;
+        novaFlash.visible = kf < 1;
+        if (novaFlash.visible) {
+          novaFlash.scale.setScalar(12.0 * curve1([0, 0.25, 1.0], [0.4, 1.15, 0.1], kf));
+          novaFlashMat.opacity = 0.72 * curve1([0, 0.2, 1.0], [0.3, 1.0, 0], kf);
+        }
+
+        // Beamdown / Beamdown1（0.22 s 下射光柱）
+        const kbd = e / 0.22;
+        for (let i = 0; i < novaBeamdowns.length; i++) {
+          const bd = novaBeamdowns[i];
+          bd.mesh.visible = kbd < 1;
+          if (bd.mesh.visible) {
+            const sy = curve1([0, 0.3, 1.0], [1.35, 1.0, 0.25], kbd);
+            bd.mesh.scale.set(curve1([0, 0.35, 1.0], [1.15, 0.85, 0.2], kbd), sy, 1);
+            bd.mat.opacity = (i === 0 ? 0.55 : 0.42) * curve1([0, 0.18, 1.0], [0.2, 1.0, 0], kbd);
+          }
+        }
+
+        // Ground_Light_mesh1（0.55 s 扫描线光柱）
+        const kbs = e / 0.55;
+        beamScanMesh.visible = kbs < 1;
+        if (beamScanMesh.visible) {
+          const ys = curve1([0.02, 0.55], [0, 1], kbs);
+          beamScanMesh.scale.set(0.012, 0.015 * Math.max(0.001, ys), 0.012);
+          beamScanUniforms.uTime.value = e;
+          beamScanUniforms.uOpacity.value = 0.36 * curve1([0, 0.1, 0.6, 1.0], [0, 1.0, 0.48, 0], kbs);
+        }
+
+        // InhaleFire（FlameMesh，3.8 s 贴地火焰慢收尾）
+        const kif1 = e / 3.8;
+        inhaleFire1Mesh.visible = kif1 < 1;
+        if (inhaleFire1Mesh.visible) {
+          const sc = 0.48 * curve1([0, 0.15, 0.75, 1.0], [0.55, 1.0, 0.92, 0.75], kif1);
+          inhaleFire1Mesh.scale.set(sc, 0.75 * curve1([0, 0.2, 1.0], [0.4, 1.0, 0.3], kif1), sc);
+          inhaleFire1Mesh.rotation.y = e * 0.42;
+          inhaleFire1.u.uTime.value = e;
+          inhaleFire1.u.uOpacity.value = 0.44 * curve1([0, 0.08, 0.55, 1.0], [0, 1.0, 0.55, 0], kif1);
+        }
+
+        // InhaleFire2 & InhaleFire3（Brand_Base_Ring，2.0 s 双层旋转丝带）
+        const kif2 = e / 2.0;
+        inhaleFire2Mesh.visible = kif2 < 1;
+        inhaleFire3Mesh.visible = kif2 < 1;
+        if (kif2 < 1) {
+          const sc2 = 0.52 * curve1([0, 0.25, 1.0], [0.7, 1.02, 0.82], kif2);
+          inhaleFire2Mesh.scale.set(sc2, 1, sc2);
+          inhaleFire2Mesh.rotation.y = -e * 0.85;
+          inhaleFire2.u.uTime.value = e;
+          inhaleFire2.u.uOpacity.value = 0.48 * curve1([0, 0.12, 0.6, 1.0], [0, 1.0, 0.5, 0], kif2);
+
+          const sc3 = 0.44 * curve1([0, 0.25, 1.0], [0.6, 1.0, 0.76], kif2);
+          inhaleFire3Mesh.scale.set(sc3, 1, sc3);
+          inhaleFire3Mesh.rotation.y = e * 1.05;
+          inhaleFire3.u.uTime.value = e;
+          inhaleFire3.u.uOpacity.value = 0.42 * curve1([0, 0.12, 0.6, 1.0], [0, 1.0, 0.45, 0], kif2);
+        }
+
+        // Ring（HealingStation_Swirl，2.2 s 双层交错旋涡）
+        const kr = e / 2.2;
+        for (let i = 0; i < novaRings.length; i++) {
+          const nr = novaRings[i];
+          nr.mesh.visible = kr < 1;
+          if (!nr.mesh.visible) continue;
+          const sc = 0.055 * curve1([0, 0.25, 1.0], [0.45, 1.0, 0.85], kr);
+          nr.mesh.scale.setScalar(sc);
+          nr.mesh.rotation.y = nr.rot0 + (i === 0 ? 1 : -1) * e * 1.45;
+          nr.u.uTime.value = e;
+          nr.u.uOpacity.value = 0.46 * curve1([0, 0.12, 0.6, 1.0], [0, 1.0, 0.45, 0], kr);
+        }
+
+        // ShapeAround（HealingStation_Shape_Music，1.6 s 上升光环）
+        const ksh = e / 1.6;
+        novaShapeMesh.visible = ksh < 1;
+        if (novaShapeMesh.visible) {
+          const sc = 0.14 * curve1([0, 0.2, 1.0], [0.55, 1.0, 1.08], ksh);
+          novaShapeMesh.scale.set(sc, sc * 0.9, sc);
+          novaShapeMesh.rotation.y = e * 0.9;
+          novaShape.u.uTime.value = e;
+          novaShape.u.uOpacity.value = 0.40 * curve1([0, 0.15, 0.65, 1.0], [0, 1.0, 0.45, 0], ksh);
+        }
+
+        // teamring_circle1（HealingStation_Indicator，4.2 s 站圈余韵）
+        const ktr = e / 4.2;
+        novaTeamRingMesh.visible = ktr < 1;
+        if (novaTeamRingMesh.visible) {
+          const sc = 0.21 * curve1([0, 0.12, 1.0], [0.88, 1.0, 1.0], ktr);
+          novaTeamRingMesh.scale.set(sc, 1, sc);
+          novaTeamRingMesh.rotation.y = e * 0.25;
+          novaTeamRing.u.uTime.value = e;
+          novaTeamRing.u.uOpacity.value = 0.42 * curve1([0, 0.08, 0.65, 1.0], [0, 1.0, 0.55, 0], ktr);
+        }
+
+        if (e > 4.2) novaElapsed = -1;
       }
       if (novaElapsed < 0) {
         beamMesh.visible = false;
         novaGlow.visible = false;
         novaStar.visible = false;
+        novaFlash.visible = false;
+        for (const bd of novaBeamdowns) bd.mesh.visible = false;
+        beamScanMesh.visible = false;
+        inhaleFire1Mesh.visible = false;
+        inhaleFire2Mesh.visible = false;
+        inhaleFire3Mesh.visible = false;
+        for (const nr of novaRings) nr.mesh.visible = false;
+        novaShapeMesh.visible = false;
+        novaTeamRingMesh.visible = false;
         for (const w of novaWaves) w.mesh.visible = false;
       }
 

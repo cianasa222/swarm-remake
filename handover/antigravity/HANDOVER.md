@@ -1,7 +1,7 @@
 # Antigravity（开发 AI）交接文档（handover/antigravity/HANDOVER.md）
 
 > **本文档由 Antigravity（主线开发 AI）编写和维护。**
-> 最后更新：2026-11-22 23:52 CST · 改动编号已排到 **AG-02**
+> 最后更新：2026-11-23 00:20 CST · 改动编号已排到 **AG-03**
 > 交接总入口：[`handover/README.md`](../README.md) · 协作规范：[`COLLAB.md`](../../COLLAB.md)
 
 ---
@@ -11,7 +11,8 @@
 | 编号 | 时间（CST） | 提交 | 文件（+增 / −删 行） | 改了什么 | 验收 | 部署 | KV |
 | :--- | :--- | :--- | :--- | :--- | :---: | :---: | :---: |
 | AG-01 | 11-22 23:32 | `[Antigravity AG-01]` (`a84d57a`) | `src/render/map_warehouse.ts`（+29 / −26）、`handover/antigravity/HANDOVER.md`（新增）、`handover/README.md`（+1 / −1） | 验收 Quick AI 的 Q-04（`c63e871`）与 Q-05（`46362d7`）：Q-05 小怪 4 模型全部 **PASS**；修复 Q-04 喷泉 3 处实机视觉缺陷——修正 `novaWaves` 缩放（`fountain_wave.json` 顶点 `maxR=46.33`，`novaGroup ×1.75` 下由 `0.8/0.4` 修正为 `0.175/0.135`，消除 64.9m 穿墙与低面数折线）、修复 `makeFxPool` 亮度与 `healspark` / `sparklies1` / `Gold` / `Gold1` 粒子尺寸和起始缩放曲线（消除 10% 零缩放延迟） | ✅ **CLEAN PASS**（`build` + `playtest` 4/4 + 5 张 `1280×800` 实机截图独立审计通过） | ✅ 已部署（见 AG-02） | 已同步 |
-| AG-02 | 11-22 23:52 | `[Antigravity AG-02]` | `handover/antigravity/HANDOVER.md`、`handover/README.md`（+1 / −1） | 发布 `a84d57a` 最新构建（276 个静态文件，`index-BKy7dgh5.js` + `index-BNns1gdj.css` + M4 压缩资产，不含任何交接文档）至 Cloudflare Worker `tideline-swarm`（`deployment_id: 54a77c68c50947ad81ab9cda3a0a0e78`），保留 v7 410 文档拦截、`public/_headers` CORS 与零 KV 绑定，线上全端点验收通过 | ✅ 线上实测 PASS（`/`、`index-BKy7dgh5.js`、`index-BNns1gdj.css`、`warehouse_map1.glb`、`enemy_dasher.glb` 均 `200` + `ACAO: *`；4 交接文档与 `/__sync_kv` 均 `410`） | ✅ 已上线 | 已同步 |
+| AG-02 | 11-22 23:52 | `[Antigravity AG-02]` (`457e56d`) | `handover/antigravity/HANDOVER.md`、`handover/README.md`（+1 / −1） | 发布 `a84d57a` 最新构建至 Cloudflare Worker `tideline-swarm`（并补齐全部静态文件 MIME 类型，最终 `deployment_id: ecc07343780a483c958c5acc8a018209`），保留 v7 410 文档拦截、`public/_headers` CORS 与零 KV 绑定，线上全端点验收通过 | ✅ 线上实测 PASS（`/`、`index-BKy7dgh5.js`、`index-BNns1gdj.css`、`warehouse_map1.glb`、`enemy_dasher.glb` 均 `200` + 正确 `Content-Type` + `ACAO: *`；4 交接文档与 `/__sync_kv` 均 `410`） | ✅ 已上线 | 已同步 |
+| AG-03 | 11-23 00:20 | `[Antigravity AG-03]` | `public/assets/map1/vfx/`（新增 5 个 Nova `.scb` 网格 JSON + 15 张 T4 `.webp` 贴图，合计 145 KB）、`src/render/map_warehouse.ts`、`src/render/assets.ts`、`handover/antigravity/HANDOVER.md`、`handover/README.md` | **补全中央喷泉第二批（43/43 发射器 100% 对齐 Patch 14.14）**：从本机 `Map33` 解包目录转换 `fountain_nova_flame/ring/swirl/shape/indicator.json` 并下载转换 15 张 T4 `.webp`；接入 7 个常驻层 `textureMult`（`scan_lines`/`dots`/`base_glow`/`glow_hardedge`）、Timer 原版 `Base_Timer_Mult_06–09` 进度遮罩、Nova 剩余 10 层（`flashBlend`/`Beamdown`×2/`Ground_Light_mesh1`/`InhaleFire`×3/`Ring`×2/`ShapeAround`/`teamring_circle1`，按顶点 `maxR` 校准防穿墙，4.2 s 两段式收尾），全部纳入 Stage 1 预载 | ✅ **CLEAN PASS**（`build` 1.20s + `playtest` 4/4 + 5 张 `1280×800` 实机截图 0 报错且独立审计通过） | ⏳ 待部署 | 已同步 |
 
 ---
 
