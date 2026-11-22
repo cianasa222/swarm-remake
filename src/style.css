@@ -383,3 +383,17 @@ html, body {
   font-size: 11px; padding: 4px 7px; border-radius: 6px; border: 1px solid #fff;
   background: rgba(15,30,45,0.75); color: #fff; cursor: pointer;
 }
+
+@media (pointer: coarse), (max-width: 680px) {
+  .modal .panel { box-sizing: border-box; max-height: 100%; overflow-y: auto; touch-action: pan-y; }
+  .lvl-panel.swarm-modal { width: min(620px, 100%); padding: 12px; }
+  .lvl-panel h2 { font-size: 16px; margin-bottom: 8px; }
+  .lvl-panel .cards { gap: 6px; }
+  .lvl-panel .card { padding: 8px; gap: 4px; min-height: 44px; }
+  .lvl-panel .card-icon { width: 34px; height: 34px; }
+  .lvl-panel .card-key { display: none; }
+  .lvl-panel .card-footer:not(:has(.card-hint img, .card-hint span:not(:empty))) { display: none; }
+}
+@media (pointer: coarse) and (orientation: landscape) and (min-width: 480px) {
+  .lvl-panel .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
