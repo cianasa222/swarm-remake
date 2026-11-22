@@ -208,7 +208,8 @@ export class WeaponVfxRenderer {
     const shieldTex = loadTex('./assets/weapons/vfx/frost_shield.webp');
     this.iceShieldMesh = new THREE.Mesh(
       new THREE.SphereGeometry(1.05, 18, 14),
-      mkAdd(shieldTex, 0x7ef2ff, 0.58),
+      // Q-25：原版 FrostNova_EvolveShield「Bubble8」(0.09, 0.54, 0.95, 0.55) 深蓝（旧值浅青 0x7ef2ff α 0.58）
+      mkAdd(shieldTex, 0x178af2, 0.55),
     );
     this.iceShieldMesh.visible = false;
     this.iceShieldMesh.renderOrder = 12;
@@ -230,7 +231,8 @@ export class WeaponVfxRenderer {
 
     // 6. 战兔巨爆地面准星（star_target.webp）& 电刀雷暴圆形电环（circle_mis.webp）
     const starTargetTex = loadTex('./assets/weapons/vfx/star_target.webp');
-    this.starTargets = mkInst(this.root, mkFlatGeo(2.0, 2.0), mkAdd(starTargetTex, 0x72f8ff, 0.9), 24, 6);
+    // Q-25：原版 Nuke_Indicator_Base「Nuke_Center_Base」birthColor (0.979, 0.982, 0.996, 0.749) ≈ 白色（旧值青色 0x72f8ff）
+    this.starTargets = mkInst(this.root, mkFlatGeo(2.0, 2.0), mkAdd(starTargetTex, 0xfafbfe, 0.749), 24, 6);
 
     const stormTex = loadTex('./assets/heroes/jinx/vfx/circle_mis.webp');
     this.stormRings = mkInst(this.root, mkFlatGeo(1.0, 1.0), mkAdd(stormTex, 0x45f2ff, 0.58), 24, 6);
@@ -240,8 +242,11 @@ export class WeaponVfxRenderer {
     const beamCenterTex = loadTex('./assets/weapons/vfx/star_beam_center.webp');
     const bPlane = new THREE.PlaneGeometry(1.8, 14.0);
     bPlane.translate(0, 7.0, 0);
-    const bMat1 = mkAdd(beamCoreTex, 0x8ef9ff, 0.95);
-    const bMat2 = mkAdd(beamCenterTex, 0xffe485, 0.9);
+    // Q-25：原版 Nuke_Sky_Laser「Nuke_Laser_Beam_Core」无 birthColor（白色，颜色来自贴图）；
+    // 「StarS_SkyBeam_Center」(0.97, 0.25, 0.37, 0.71) 粉红。旧值青色 0x8ef9ff / 黄色 0xffe485。
+    // 进化版（Nuke_Sky_Laser_Evo_2）中心为橙金 (0.998, 0.623, 0.252)，需要爆炸事件带进化标记，暂未区分。
+    const bMat1 = mkAdd(beamCoreTex, 0xffffff, 0.95);
+    const bMat2 = mkAdd(beamCenterTex, 0xf74060, 0.71);
     for (let i = 0; i < 12; i++) {
       const g = new THREE.Group();
       const pA = new THREE.Mesh(bPlane, bMat1);
@@ -256,7 +261,7 @@ export class WeaponVfxRenderer {
       g.visible = false;
       g.renderOrder = 16;
       this.root.add(g);
-      this.skyBeams.push({ group: g, age: 0, life: 0.42, active: false });
+      this.skyBeams.push({ group: g, age: 0, life: 0.8, active: false });
     }
 
     // 8. 通用炸裂贴花 / 3D SCB 池（星爆裂纹、冰爆环等）
@@ -315,18 +320,22 @@ export class WeaponVfxRenderer {
     if (b) {
       b.active = true;
       b.age = 0;
-      b.life = 0.42;
+      b.life = 0.8; // Q-25：原版 StarS_SkyBeam_Center / Beam_Gradient / Laser_Base 寿命 0.8 s（旧值 0.42 s）
       b.group.visible = true;
       b.group.position.set(x, 0, z);
       b.group.scale.set(radius * 0.68, 1, radius * 0.68);
     }
-    this.allocBurst(this.geoStarBurst, x, 0.1, z, this.texStarInner, 0x8ef9ff, radius * 0.004, radius / 104.7, 0.36, 0.9, true, 12);
-    this.allocBurst(this.unitFlatGeo, x, 0.03, z, this.texStarCrack, 0xb8f8ff, radius * 0.72, radius * 1.0, 0.75, 0.34, false, 3);
+    // Q-25：原版 Nuke_Explosion「Nuke_Explosion_Ring_Add」(0.992, 0.268, 0.822) 品红、寿命 1 s；
+    // 「Nuke_Explosion_Crater_Light」无 birthColor（白色）、寿命 0.7 s。旧值青色 0x8ef9ff / 0xb8f8ff、0.36 s / 0.75 s。
+    this.allocBurst(this.geoStarBurst, x, 0.1, z, this.texStarInner, 0xfd44d2, radius * 0.004, radius / 104.7, 1.0, 1.0, true, 12);
+    this.allocBurst(this.unitFlatGeo, x, 0.03, z, this.texStarCrack, 0xffffff, radius * 0.72, radius * 1.0, 0.7, 0.34, false, 3);
   }
 
   spawnIceBlast(x: number, z: number, radius: number) {
-    this.allocBurst(this.geoFrostRing, x, 0.08, z, this.texFrostTile, 0x8ef9ff, radius * 0.002, radius / 167.75, 0.48, 0.88, true, 11);
-    this.allocBurst(this.unitFlatGeo, x, 0.04, z, this.texFrostCrack, 0xa8f8ff, radius * 0.45, radius * 0.65, 1.0, 0.72, true, 4);
+    // Q-25：原版 FrostNova「Wind」(Frostwraith_RoundMesh) 无 birthColor（白色）α 0.72、寿命 1.5 s；
+    // 「AABasic」(Frostwraith_CrackDecal) 白色 α 0.6、寿命 1.75 s。旧值青色 0x8ef9ff / 0xa8f8ff、0.48 s / 1.0 s。
+    this.allocBurst(this.geoFrostRing, x, 0.08, z, this.texFrostTile, 0xffffff, radius * 0.002, radius / 167.75, 1.5, 0.72, true, 11);
+    this.allocBurst(this.unitFlatGeo, x, 0.04, z, this.texFrostCrack, 0xffffff, radius * 0.45, radius * 0.65, 1.75, 0.6, true, 4);
   }
 
   update(g: Game, dt: number) {
