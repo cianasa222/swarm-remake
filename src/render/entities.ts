@@ -3,7 +3,7 @@ import { BUDGET, ENEMY_SCALES, XP } from '../config';
 import type { Enemy, Game } from '../sim/game';
 import { getTexture, loadGLB } from './assets';
 import { RekSaiRig } from './boss_reksai';
-import { EliteBruiserPool, InstancedEnemyModel } from './enemy_models';
+import { EliteBruiserPool, InstancedEnemyModel, type VatClipKey } from './enemy_models';
 import { type HeroRig, JinxRig } from './hero_jinx';
 import { JinxVfxSystem } from './jinx_vfx';
 import { WeaponVfxRenderer } from './weapon_vfx';
@@ -100,6 +100,8 @@ export class EntityRenderer {
   readonly reksaiRig: RekSaiRig;
   private elitePool: EliteBruiserPool;
   private eliteBuf: Enemy[] = [];
+  /** Q-22：记录每只小怪进入当前状态的时刻，用于攻击动作从头播放 */
+  private attackClock = new WeakMap<Enemy, number>();
 
   // 原版小怪合批
   private pixPool: InstancedEnemyModel;
@@ -278,6 +280,21 @@ export class EntityRenderer {
     return this.heroRig instanceof JinxRig ? this.heroRig.ready : Promise.resolve();
   }
 
+  /** 返回该敌人进入当前 state 的时刻（渲染侧记录，不改模拟） */
+  private clipTime(e: Enemy, animated: boolean, attack: boolean, now: number): number {
+    if (!animated) return 0;
+    if (!attack) {
+      this.attackClock.delete(e);
+      return now + e.id * 0.137;
+    }
+    let start = this.attackClock.get(e);
+    if (start === undefined) {
+      start = now;
+      this.attackClock.set(e, start);
+    }
+    return now - start;
+  }
+
   update(g: Game, dt = 1 / 60) {
     const t = g.clock;
 
@@ -307,33 +324,53 @@ export class EntityRenderer {
       if (shi < this.shadows.instanceMatrix.count) this.shadows.setMatrixAt(shi++, D.matrix);
 
       const col = e.flash > 0.25 ? FLASH : e.bindT > 0 ? BIND : WHITE;
+      // Q-22：模型带原版动作时播 VAT 动作（攻击类状态 → attack，其余 → run），
+      // 并去掉为「静止模型」补的正弦起伏 / 前倾；没有动作时保持旧效果不变。
+      const atk = e.state === 'windup' || e.state === 'attack' || e.state === 'dash';
+      const clip: VatClipKey = atk ? 'attack' : 'run';
       if (e.kind === 'crawler') {
         const isPix = e.variant === 'pix';
+        const pool = isPix ? this.pixPool : this.ghoulPool;
         const baseScale = isPix ? ENEMY_SCALES.pix : ENEMY_SCALES.ghoul;
-        const bob = isPix ? 0.35 + Math.sin(t * 7 + e.id) * 0.08 : Math.abs(Math.sin(t * 14 + e.id)) * 0.04;
-        const wob = Math.sin(t * 14 + e.id) * 0.06;
-        D.position.set(e.x, bob, e.z);
-        D.rotation.set(0, e.face, wob);
+        if (pool.animated) {
+          D.position.set(e.x, isPix ? 0.35 : 0, e.z);
+          D.rotation.set(0, e.face, 0);
+        } else {
+          const bob = isPix ? 0.35 + Math.sin(t * 7 + e.id) * 0.08 : Math.abs(Math.sin(t * 14 + e.id)) * 0.04;
+          const wob = Math.sin(t * 14 + e.id) * 0.06;
+          D.position.set(e.x, bob, e.z);
+          D.rotation.set(0, e.face, wob);
+        }
         D.scale.setScalar(baseScale * emerge);
         D.updateMatrix();
-        if (isPix) this.pixPool.push(D.matrix, col);
-        else this.ghoulPool.push(D.matrix, col);
+        pool.push(D.matrix, col, clip, this.clipTime(e, pool.animated, atk, t));
       } else if (e.kind === 'spitter') {
         const wind = e.state === 'windup';
-        D.position.set(e.x, Math.sin(t * 6 + e.id) * 0.03, e.z);
-        D.rotation.set(wind ? -0.18 : 0, e.face, 0);
+        if (this.hunterPool.animated) {
+          D.position.set(e.x, 0, e.z);
+          D.rotation.set(0, e.face, 0);
+        } else {
+          D.position.set(e.x, Math.sin(t * 6 + e.id) * 0.03, e.z);
+          D.rotation.set(wind ? -0.18 : 0, e.face, 0);
+        }
         D.scale.setScalar(ENEMY_SCALES.hunter * emerge);
         D.updateMatrix();
-        this.hunterPool.push(D.matrix, col);
+        this.hunterPool.push(D.matrix, col, clip, this.clipTime(e, this.hunterPool.animated, atk, t));
       } else {
         const wind = e.state === 'windup';
         const dash = e.state === 'dash';
-        D.position.set(e.x, 0.04 + Math.sin(t * 10 + e.id) * 0.03, e.z);
-        D.rotation.set(wind ? 0.38 : dash ? 0.24 : Math.sin(t * 8 + e.id) * 0.04, e.face, wind ? Math.sin(t * 36) * 0.05 : 0);
         const s = ENEMY_SCALES.dasher * emerge;
-        D.scale.set(s, s * (wind ? 0.88 : 1), s);
+        if (this.dasherPool.animated) {
+          D.position.set(e.x, 0.04, e.z);
+          D.rotation.set(0, e.face, 0);
+          D.scale.setScalar(s);
+        } else {
+          D.position.set(e.x, 0.04 + Math.sin(t * 10 + e.id) * 0.03, e.z);
+          D.rotation.set(wind ? 0.38 : dash ? 0.24 : Math.sin(t * 8 + e.id) * 0.04, e.face, wind ? Math.sin(t * 36) * 0.05 : 0);
+          D.scale.set(s, s * (wind ? 0.88 : 1), s);
+        }
         D.updateMatrix();
-        this.dasherPool.push(D.matrix, col);
+        this.dasherPool.push(D.matrix, col, clip, this.clipTime(e, this.dasherPool.animated, atk, t));
       }
     }
     this.pixPool.end();

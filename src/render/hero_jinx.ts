@@ -68,7 +68,7 @@ export class JinxRig implements HeroRig {
 
     this.root.add(this.auraRing, this.aimTri, this.modelHolder);
 
-    const loadTex = (url: string) => getTexture(url, { flipY: false });
+    const loadTex = (url: string) => getTexture(url, { flipY: false, anisotropy: 4 }); // Q-22：斜俯视角下贴图更清晰
     const bodyTex = loadTex('./assets/heroes/jinx/body.webp');
     const weaponTex = loadTex('./assets/heroes/jinx/weapon.webp');
 

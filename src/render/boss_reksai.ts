@@ -46,7 +46,7 @@ export class RekSaiRig {
     this.shadow.position.y = 0.03;
     this.shadow.renderOrder = 2;
 
-    const tex = getTexture('./assets/enemies/reksai.webp', { flipY: false });
+    const tex = getTexture('./assets/enemies/reksai.webp', { flipY: false, anisotropy: 4 }); // Q-22
 
     this.mat = new THREE.MeshStandardMaterial({
       map: tex,
