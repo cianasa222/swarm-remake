@@ -1,6 +1,6 @@
 # 待补原版资源清单（14.14）—— 交给能解包 / 能编译的 AI 执行
 
-> 由 Quick AI 生成（Q-18，2026-11-23）。Quick AI 的环境下载不了 CommunityDragon 的二进制文件，也不能编译，所以这些事交给 **Antigravity**（本机已有 `Map33` 解包目录，AG-03 做过同类转换）。
+> 由 Quick AI 生成（Q-18，2026-11-23）。Quick AI 的环境下载不了二进制文件，也不能编译。**任何能做的 AI 都可以直接做**（按 `COLLAB.md` 2.2 节第 9 条：在 Issue #4 评论领取、做完登记即可，不指定人）。
 > 执行方式：`.dds` / `.tex` 从 CommunityDragon 下载 `.png`（路径规则：全部小写，扩展名改成 `.png`，见下表「下载地址」）后转 `.webp`；`.scb` 网格转 JSON，格式与现有 `public/assets/map1/vfx/fountain_*.json` 一致；`.anm` 动画合并进对应 `.glb`，再按 `tools/compress_assets.mjs` 压缩。
 > **特效参数不用推断，直接照抄原版**：每层的尺寸、颜色、时长、曲线都在 KV `ref/14.14/data/characters/<角色>/skins/skin0.bin.json` 里（按下表「用在哪」的系统名 / 发射器名查找），换算规则：平面全宽 = 2 × birthScale.x / 100 m；网格 = birthScale / 100 × 系统 transform。
 
@@ -393,7 +393,7 @@
 
 ## 补充说明（2026-11-23）
 
-- **B1 动作文件不在 CommunityDragon 上**（`skins/base/` 下没有 `animations/` 目录，也没有骨架 `.skl`），但线上 `reksai.glb` 已有 8 段，说明你本机的 wad 里有，请从本机解。
+- **B1 动作文件不在 CommunityDragon 上**（`skins/base/` 下没有 `animations/` 目录，也没有骨架 `.skl`），但线上 `reksai.glb` 已有 8 段，说明本机的 wad 里有，从本机解即可。
 - **B2 子网格顺序（推断，待确认）**：CommunityDragon 有原版拆好的 5 个 `.obj`，按文件大小对线上 `.glb` 的顶点数：序号 0 = `Body`（6518）、1 = `Fin`（344）、2 = `Scale`（365）、3 = `Wrap`（1250）、4 = `Plane`（122）。即**隐藏序号 3、4**，序号 1 用背鳍泛光材质，序号 2 用鳞片血纹材质。请截图确认。
 - **B3 特效贴图在 CommunityDragon 上有**（`assets/characters/strawberry_boss_reksai/skins/base/particles/`，约 240 个文件，已核对目录），可以按表里的地址直接下载；网格 `.scb` 若站上没有，从本机 wad 解。
 
@@ -433,4 +433,15 @@ ManifestDownloader.exe https://lol.secure.dyn.riotcdn.net/channels/public/releas
    - `.scb` → JSON，用现有 `map33_tools`，格式与 `fountain_*.json` 一致。
 5. 语音语言：`zh_CN` 是国服中文配音，`en_US` 是英文配音，用哪个由用户决定；音效（sfx）和语言无关。
 
-> Quick AI 自己做不了这一步：执行环境连不上拳头 CDN；清单和数据块是 zstd 压缩的；`Map33.wad.client` 有几百 MB，超过 KV 单值 25 MiB 的上限。所以按 `COLLAB.md` 2.2 节第 9 条交给 Antigravity。
+> Quick AI 自己做不了这一步：执行环境连不上拳头 CDN；清单和数据块是 zstd 压缩的；`Map33.wad.client` 有几百 MB，超过 KV 单值 25 MiB 的上限。所以按 `COLLAB.md` 2.2 节第 9 条留给任意能做的 AI。
+
+## F. 有没有现成直链（2026-11-23 Quick AI 核对）
+
+| 文件 | 有没有直链 | 说明 |
+| :--- | :--- | :--- |
+| 贴图 `.png`、数据 `.bin.json`、子网格 `.obj`、皮肤 `.skn` | ✅ 有 | CommunityDragon，见 A / B3 节地址 |
+| 动作 `.anm`、骨架 `.skl` | ❌ 没有 | CommunityDragon **任何角色都不导出动作**：14.14 的雷克塞、金克丝，以及最新版的阿狸，`skins/base/` 下都没有 `animations/` 目录 |
+| 音效、语音 | ❌ 没有 | CommunityDragon 整个 `assets/` 下没有 `sounds/` 目录（14.14 和最新版都是）；LoL Wiki 的 Swarm 分类只有 2 个音乐文件，没有音效 |
+| 背景音乐 | ✅ 有 2 个 | LoL Wiki：[Strawberry background music.ogg](https://wiki.leagueoflegends.com/en-us/File:Strawberry_background_music.ogg)（2 分 9 秒，对局内）、[Strawberry lobby music.mp3](https://wiki.leagueoflegends.com/en-us/File:Strawberry_lobby_music.mp3)（大厅）。可以直接用，但 Wiki 文件一般是转码过的，最好还是以 wad 里的原文件为准 |
+
+结论：**动作和音效只能用 E 节的方法**（ManifestDownloader 按 `lol-game-client` 清单下载 wad，再解包转换）。
