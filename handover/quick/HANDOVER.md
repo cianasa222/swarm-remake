@@ -1,7 +1,7 @@
 # Quick AI 交接文档（handover/quick/HANDOVER.md）
 
 > **本文档由 Quick AI（AWS Quick）编写和维护。**
-> 最后更新：2026-11-22 22:45 CST（迁移到按 AI 分目录；线上站点下线交接文档并停用 `/__sync_kv`）· 改动编号已排到 **Q-11 / QC-06**，见第 1.0 节
+> 最后更新：2026-11-23 00:35 CST（Q-12 金克丝与 14.14 原版比对报告；Q-04 / Q-05 状态改为已由 Antigravity 验收上线）· 改动编号已排到 **Q-12 / QC-06**，见第 1.0 节
 > 原路径 `QUICK_AI_HANDOVER.md` 只保留跳转说明，不再更新。交接总入口：[`handover/README.md`](../README.md)
 > 仓库：`https://github.com/cianasa222/swarm-remake` · Cloudflare KV 镜像：`tideline-handover`（`7bbc331619b04fc8b5b5323abba5eef0`）
 > 配套阅读：[`COLLAB.md`](../../COLLAB.md)（分工、流程、防冲突）→ [`AGENTS.md`](../../AGENTS.md) → [`AI_HANDOVER.md`](../../AI_HANDOVER.md) → [`PROGRESS.md`](../../PROGRESS.md)
@@ -39,17 +39,18 @@
 
 | 编号 | 时间（CST） | 提交 | 文件（+增 / −删 行） | 改了什么 | 验收 | 部署 | KV |
 | :--- | :--- | :--- | :--- | :--- | :---: | :---: | :---: |
-| Q-01 | 11-22 09:04 | [`05a1ef1`](https://github.com/cianasa222/swarm-remake/commit/05a1ef170b672d4c1196b6cfd8b78812cce8caff) | `public/_headers`（+2，新增） | 静态资源统一加 `Access-Control-Allow-Origin: *` | — | ⏳ 未部署 | 已同步 |
+| Q-01 | 11-22 09:04 | [`05a1ef1`](https://github.com/cianasa222/swarm-remake/commit/05a1ef170b672d4c1196b6cfd8b78812cce8caff) | `public/_headers`（+2，新增） | 静态资源统一加 `Access-Control-Allow-Origin: *` | — | ✅ 随 AG-02 上线 | 已同步 |
 | Q-02 | 11-22 09:48 | [`a6dfb65`](https://github.com/cianasa222/swarm-remake/commit/a6dfb65bbf9f799914e8b7f58a35e5ba10e72261) | `COLLAB.md`（+115，新增） | 分工、GitHub ↔ KV 同步、任务流程、看板 | 文档 | — | 已同步 |
 | Q-03 | 11-22 20:40 | [`834ca30`](https://github.com/cianasa222/swarm-remake/commit/834ca3059a88e8274ad343bbe47e75e264eb0305) | `docs/audit/fountain_emitters_14.14.md`（+120，新增） | 喷泉 43 个发射器与代码逐项比对报告 | 文档 | — | 已同步 |
-| Q-04 | 11-22 21:05 | [`c63e871`](https://github.com/cianasa222/swarm-remake/commit/c63e871b57276799c51b90611c7fd463041d708f) | `src/render/map_warehouse.ts`（+552 / −188）、`PROGRESS.md`（+20 / −1）、审查报告（+10 / −10） | **喷泉精修第一批 9 项**：新增 `makeWaveMat`、`makeFxPool`、`curve1/curve4/curveIntegral`、`fitTimerHead`、`novaGroup`（×1.75）；healspark、sparklies1 改为原版发射式；补 Nova 两层冲击波、Gold/Gold1、Timer `Decal_Start2`；修正 Basic4 / Edge12 / Edge17 / 波浪峰值；去掉计时圈暖黄；删除旧的 `hexPts/hex2Pts/chargePts/novaT` | 🧪 **未编译、未实测** | ⏳ 未部署 | 已同步 |
-| Q-05 | 11-22 21:11 | [`46362d7`](https://github.com/cianasa222/swarm-remake/commit/46362d7a170fae55135e1f6a128317a266c1b70e) | `src/render/enemy_models.ts`（+46 / −12） | **修复小怪只剩影子**：新增 `bakeStaticGeometry()`，量化蒙皮 GLB 在合批前按骨骼烘焙；`InstancedEnemyModel.ensureLoaded()` 改用它 | 🧪 **未编译、未实测** | ⏳ 未部署 | 已同步 |
+| Q-04 | 11-22 21:05 | [`c63e871`](https://github.com/cianasa222/swarm-remake/commit/c63e871b57276799c51b90611c7fd463041d708f) | `src/render/map_warehouse.ts`（+552 / −188）、`PROGRESS.md`（+20 / −1）、审查报告（+10 / −10） | **喷泉精修第一批 9 项**：新增 `makeWaveMat`、`makeFxPool`、`curve1/curve4/curveIntegral`、`fitTimerHead`、`novaGroup`（×1.75）；healspark、sparklies1 改为原版发射式；补 Nova 两层冲击波、Gold/Gold1、Timer `Decal_Start2`；修正 Basic4 / Edge12 / Edge17 / 波浪峰值；去掉计时圈暖黄；删除旧的 `hexPts/hex2Pts/chargePts/novaT` | ✅ Antigravity AG-01 验收，修正 3 处后 CLEAN PASS | ✅ AG-02 已上线（`54a77c68`） | 已同步 |
+| Q-05 | 11-22 21:11 | [`46362d7`](https://github.com/cianasa222/swarm-remake/commit/46362d7a170fae55135e1f6a128317a266c1b70e) | `src/render/enemy_models.ts`（+46 / −12） | **修复小怪只剩影子**：新增 `bakeStaticGeometry()`，量化蒙皮 GLB 在合批前按骨骼烘焙；`InstancedEnemyModel.ensureLoaded()` 改用它 | ✅ Antigravity AG-01 验收 PASS（8/8 小怪正常） | ✅ AG-02 已上线（`54a77c68`） | 已同步 |
 | Q-06 | 11-22 21:29 | [`7ce4bd1`](https://github.com/cianasa222/swarm-remake/commit/7ce4bd126c2151439e1f6e0a1c1b6afc900d5880) | `AI_HANDOVER.md`（+14） | 2.2 节补 14.14 Windows 客户端 7 个官方清单地址 | 文档 | — | 已同步 |
 | Q-07 | 11-22 21:30 | [`bdd38ad`](https://github.com/cianasa222/swarm-remake/commit/bdd38ad073a19a6c264e9b10b1bfa75cb05b0b9c) | `COLLAB.md`（+21 / −3） | 新增 2.1 节防冲突规则，刷新看板 | 文档 | — | 已同步 |
 | Q-08 | 11-22 21:39 | [`06ed484`](https://github.com/cianasa222/swarm-remake/commit/06ed484aefc57a44d6e073a69c6666ff017b09ed) | `QUICK_AI_HANDOVER.md`（+196，新增）、`COLLAB.md`（+14 / −10）、`PROGRESS.md`（+5 / −2）、`AI_HANDOVER.md`（+2）、`docs/ci/fetch-14.14-reference.yml`（+84，新增） | 角色变更为只做审查；本交接文档；Actions 下载工作流（放在 `docs/ci/`，需手动复制到 `.github/workflows/`） | 文档 | — | 已同步 |
 | Q-09 | 11-22 21:50 | 提交说明 `[Quick AI Q-09] …`（`git log --grep "Q-09"`） | `QUICK_AI_HANDOVER.md`、`COLLAB.md`、`AGENTS.md` | 新增本改动总索引；「开工前必读交接文档」写成规则（`COLLAB.md` 第 0 节，`AGENTS.md` 开头指向它）；下载方法改为「先直接下载，被拒才用 Worker」 | 文档 | — | 已同步 |
 | Q-10 | 11-22 21:58 | 提交说明 `[Quick AI Q-10] …`（`git log --grep "Q-10"`） | `QUICK_AI_HANDOVER.md` | 登记**用户决定**：M4 压缩后的运行时资产保留在公开仓库（新增第 1.6 节） | 文档 | — | 已同步 |
 | Q-11 | 11-22 22:45 | 提交说明 `[Quick AI Q-11] …`（`git log --grep "Q-11"`） | `handover/README.md`（新增）、`handover/quick/HANDOVER.md`（由 `QUICK_AI_HANDOVER.md` 迁移）、`QUICK_AI_HANDOVER.md`（改为跳转）、`COLLAB.md`、`AGENTS.md`、`AI_HANDOVER.md` | 新增交接总入口；按 AI 名字分目录；`COLLAB.md` 新增 2.2 节「交接文档更新规则（强制）」；去掉线上站点的交接文档链接；修复 Q-10 插入时弄断的表格 | 文档 | — | 已同步 |
+| Q-12 | 11-23 00:35 | 提交说明 `[Quick AI Q-12] …`（`git log --grep "Q-12"`） | `docs/audit/jinx_14.14.md`（新增）、`handover/quick/HANDOVER.md`、`handover/README.md`（第 3 节自己一行 + 第 5 节） | **审查**：金克丝移速、Q/E/R/被动数值、28 套特效与 14.14 原版逐项比对（审查对象 `457e56d`）；结论 E 伤害、R 伤害、被动移速 ❌，特效尺寸换算规则全项目不统一 ⚠️；修改建议交开发 AI | 审查报告 | — | 已同步 |
 
 **审查 Q-04 / Q-05 时重点看**：
 - Q-04：`npm.cmd run build` 能否通过（新增 TS 类型 `FxCurves`、`FxParticle`、`FxPool`）；`?spot=hub` 下 Nova 放大 1.75 倍后光柱会不会穿出建筑；healspark 0.4 m 是否过小；sparklies1 生成点是否在进度圈前端（取决于 `fitTimerHead()` 的拟合结果）。
@@ -103,7 +104,7 @@
 | :--- | :--- | :--- |
 | KV `tideline-handover` | 使用中 | 源码和文档镜像（47 条，见 `FILE_INDEX.json`）+ `SYNC_STATE.json`（最后同步的提交号和每个文件的 SHA-256）+ `ref/14.14/` 原版参考数据 |
 | Worker `tideline-ref-fetcher` | **已停用**（定时任务已清空，公开网址已关闭；最后一次用于 QC-06 站点探测） | 从 CommunityDragon 抓取原版文件写入 KV 的临时工具，代码见第 3.3 节；需要时重新设定时任务即可复用 |
-| Worker `tideline-swarm` | 第 7 版（QC-05） | 静态资源来自 11-22 20:33 的 wrangler 部署（早于 Q-04 / Q-05，**这两项都还没上线**）；网站不再提供交接文档（返回 410），`/__sync_kv` 已停用 |
+| Worker `tideline-swarm` | Antigravity AG-02 部署（`54a77c68`，11-22 23:52） | 包含 Q-04 / AG-01 / Q-05；保留 QC-05 的 410 文档拦截和 `/__sync_kv` 停用 |
 
 ### 1.5 排查过、已有结论的问题
 

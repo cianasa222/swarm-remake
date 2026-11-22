@@ -29,7 +29,7 @@
 
 | AI | 目录 | 角色 | 编号前缀 | 最后更新（CST） | 最后提交 | 当前在做 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Quick AI（AWS Quick） | [`handover/quick/`](./quick/HANDOVER.md) | 审查、与 14.14 原版比对、优化建议（不做功能开发） | `Q-`（git）、`QC-`（Cloudflare）、`QI-`（Issue） | 2026-11-22 22:45 | `[Quick AI Q-11]` | 等待审查任务 |
+| Quick AI（AWS Quick） | [`handover/quick/`](./quick/HANDOVER.md) | 审查、与 14.14 原版比对、优化建议（不做功能开发） | `Q-`（git）、`QC-`（Cloudflare）、`QI-`（Issue） | 2026-11-23 00:35 | `[Quick AI Q-12]` | 完成金克丝与 14.14 原版比对（[`docs/audit/jinx_14.14.md`](../docs/audit/jinx_14.14.md)），P0 修改建议待开发 AI 处理 |
 | Antigravity（原主线开发 AI） | [`handover/antigravity/`](./antigravity/HANDOVER.md) | 主线开发、本机编译/实机截图验收与修复 | `AG-` | 2026-11-22 23:52 | `[Antigravity AG-02]` | 已完成 Q-04/Q-05 验收修复并上线 Cloudflare（`54a77c68`），待用户确认开启 M5 |
 | Muse（执行 AI） | 领取任务时建 `handover/muse/` | 执行 Issue #1（解包、转换、贴图） | 首次建目录时登记，建议 `MU-` | — | — | Issue #1 待领取 |
 | 新加入的 AI | `handover/<名字小写>/`，如 `gpt`、`claude`、`gemini` | — | 首次建目录时登记，如 `GPT-`、`CL-`、`GM-` | — | — | — |
@@ -51,14 +51,15 @@
 
 ---
 
-## 5. 当前状态速览（2026-11-22 22:45，由 Quick AI 填写）
+## 5. 当前状态速览（2026-11-23 00:35，由 Quick AI 填写）
 
 | 事项 | 状态 |
 | :--- | :--- |
 | 里程碑 | M0–M4 已完成；M5 待用户确认开启 |
-| Q-04 喷泉精修第一批（`c63e871`） | 🧪 已提交，**未编译、未实测、未上线** |
-| Q-05 小怪只剩影子修复（`46362d7`） | 🧪 已提交，**未编译、未实测、未上线** |
-| 线上网站 | Worker `tideline-swarm` 第 7 版：静态资源来自 11-22 20:33 的部署（不含 Q-04 / Q-05）；交接文档地址返回 410，`/__sync_kv` 已停用 |
+| Q-04 喷泉精修第一批 + AG-01 修正 | ✅ Antigravity 验收 CLEAN PASS，已上线 |
+| Q-05 小怪只剩影子修复 | ✅ Antigravity 验收 PASS，已上线 |
+| 线上网站 | Antigravity AG-02 部署（`54a77c68`）：含 Q-04 / AG-01 / Q-05；交接文档地址返回 410，`/__sync_kv` 已停用 |
+| **最新审查** | [`docs/audit/jinx_14.14.md`](../docs/audit/jinx_14.14.md)（Q-12）：移速、Q、E/R 基本参数 ✅；**E 伤害、R 伤害、被动移速 ❌**；特效尺寸换算规则全项目不统一 ⚠️。P0 建议待开发 AI 修改，改完交 Quick AI 复核 |
 | [Issue #1](https://github.com/cianasa222/swarm-remake/issues/1) | 待领取（以最新评论为准，清单要用 Windows 版） |
 | 用户决定 | M4 压缩后的资产保留在公开仓库（见 `handover/quick/HANDOVER.md` 1.6 节） |
 
