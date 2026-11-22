@@ -1,0 +1,1347 @@
+{
+  "bank": "global",
+  "tracks": 656,
+  "failed": 0,
+  "totalBytes": 18887092,
+  "events": {
+    "Play_sfx_Strawberry_Spire_Freeze_idle_loop": [
+      "150053860"
+    ],
+    "Play_sfx_Strawberry_Spire_Challenge_Tiny_buffactivate": [
+      "518794664"
+    ],
+    "Play_sfx_augment_weapon_scatterarrowsmis_OnMissileCast": [
+      "352190091"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_MissileGrid_cast": [
+      "597172201"
+    ],
+    "Play_sfx_Strawberry_POI_MapD_Turret_activate": [
+      "1072518531"
+    ],
+    "Play_sfx_Strawberry_Spire_Quest_Vase_break": [
+      "1047076201",
+      "227925621",
+      "532641710"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_Revive_buffactivate": [
+      "510950656"
+    ],
+    "Play_sfx_Strawberry_Miniboss_Dasher_Dash_OnHit": [
+      "928833039"
+    ],
+    "Play_sfx_augment_weapon_pierceshotevolve_cast": [
+      "119146350",
+      "262911115"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_Landing_AoE_buffactivate": [
+      "434265804"
+    ],
+    "Play_sfx_Strawberry_Revive_self_buffactivate": [
+      "308377750"
+    ],
+    "Play_sfx_augment_weapon_frostnova_detonate_buffactivate": [
+      "1047584240",
+      "134674567",
+      "204643640",
+      "230159816",
+      "304376004",
+      "324589268",
+      "367172209",
+      "735394503"
+    ],
+    "Play_sfx_Strawberry_NPC_MissFortune_Ultimate_missilelaunch_loop": [
+      "1069603933",
+      "10800916",
+      "310411333",
+      "43939957",
+      "495245543",
+      "613430435",
+      "795310230"
+    ],
+    "Play_sfx_Strawberry_Environment_MapB_ambience_loop": [
+      "517275786"
+    ],
+    "Play_sfx_Strawberry_POI_MapD_Turret_fire": [
+      "294415503"
+    ],
+    "Play_sfx_Strawberry_Spire_Quest_CardboardBox_enter": [
+      "20793104"
+    ],
+    "Play_sfx_Strawberry_Spire_Challenge_DarknessHasCome_buffdeactivate": [
+      "345596185"
+    ],
+    "Play_sfx_Strawberry_POI_MapB_Turret_AoE_explosion": [
+      "161105673",
+      "95129841"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_LineRift_slam_sides": [
+      "229574053",
+      "58057866",
+      "695226707"
+    ],
+    "Play_sfx_Strawberry_Boss_Briar_BasicAttack_hit": [
+      "601334451",
+      "685221152",
+      "831216392"
+    ],
+    "Play_sfx_augment_weapon_mine_buffactivate": [
+      "1067684107",
+      "196758714",
+      "33989928",
+      "706547561"
+    ],
+    "Play_sfx_Strawberry_Spire_Quest_announcement_failed": [
+      "206179287"
+    ],
+    "Play_sfx_augment_weapon_scatterarrowmis_wall_hit": [
+      "27850350",
+      "394197548",
+      "463894984",
+      "912249676"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethE_cast": [
+      "401629829"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethBasicAttack_cast_slow": [
+      "348175129",
+      "377715546",
+      "566193057",
+      "931460848"
+    ],
+    "Play_sfx_Strawberry_POI_MapD_Turret_missilelaunch": [
+      "226184111"
+    ],
+    "Play_sfx_Strawberry_Elite_Generic_glow_buffactivate": [
+      "81409317"
+    ],
+    "Play_sfx_Strawberry_Spire_Challenge_ExplodingSpire_warning": [
+      "555678401"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_ChainPlayer_pillar_destroy": [
+      "683149733"
+    ],
+    "Play_sfx_augment_weapon_dianaqoutermissile_OnHit": [
+      "51468030",
+      "728024574",
+      "816859463",
+      "846688666"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethBasicAttack_cast_fast": [
+      "1053962668",
+      "250854223",
+      "298079279",
+      "911593988"
+    ],
+    "Play_sfx_Strawberry_Spire_Challenge_MeteorShower_warning": [
+      "226587008",
+      "493320771",
+      "777749916"
+    ],
+    "Play_sfx_Strawberry_Drop_Vacuum_orb_activation": [
+      "933882447"
+    ],
+    "Play_sfx_augment_weapon_twinshadows_death": [
+      "413995254"
+    ],
+    "Play_sfx_Strawberry_Environment_MapC_ambience_loop": [
+      "1070673087"
+    ],
+    "Play_sfx_Strawberry_Enemy_Shield_Death": [
+      "280684415",
+      "367418066",
+      "518757272",
+      "681330609",
+      "97350998"
+    ],
+    "Play_sfx_Strawberry_spire_reward_flamebreath_OnBuffDeactivate": [
+      "163618390"
+    ],
+    "Play_sfx_Strawberry_Miniboss_Charger_knockup": [
+      "796298528"
+    ],
+    "Play_sfx_Strawberry_Gameplay_HUD_UI_bark_generic": [
+      "710361285",
+      "824606359",
+      "996906659"
+    ],
+    "Play_sfx_Strawberry_Boss_Reksai_ReksaiR_roar": [
+      "1034657497"
+    ],
+    "Play_sfx_augment_weapon_frostnova_ready_buffactivate": [
+      "606260377"
+    ],
+    "Play_sfx_Strawberry_Boss_Reksai_ReksaiW_buffactivate": [
+      "119365228"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_ChainPlayer_chained_pull": [
+      "166568818"
+    ],
+    "Play_sfx_Strawberry_Destructible_Barrell_break_buffactivate": [
+      "382785855",
+      "910166186",
+      "973490012"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethQ_hit": [
+      "479661085",
+      "791421208"
+    ],
+    "Play_sfx_Strawberry_spire_reward_invulnurability_buffactivate": [
+      "264778116",
+      "493146644"
+    ],
+    "Play_sfx_Strawberry_Spire_Freeze_success_buffactivate": [
+      "179617065"
+    ],
+    "Play_sfx_augment_weapon_boomerangevolvemissile_OnHit": [
+      "427504408",
+      "583413365",
+      "826982021"
+    ],
+    "Play_sfx_Strawberry_Rebuild_drop_gold_missile_OnHit": [
+      "120178910",
+      "365957618",
+      "442822305",
+      "526553543",
+      "892577156"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_Spikes_mega_buffactivate": [
+      "1015607559",
+      "1035753848",
+      "116454010",
+      "168994184",
+      "686974392",
+      "937070394"
+    ],
+    "Play_sfx_Strawberry_Boss_Briar_spawn_buffactivate": [
+      "850854261"
+    ],
+    "Play_sfx_augment_weapon_nuke_explosion": [
+      "164331754"
+    ],
+    "Play_sfx_strawberry_tibbersbasicattack_OnHit": [
+      "420343732",
+      "516830621",
+      "808558245",
+      "888445359"
+    ],
+    "Play_sfx_Strawberry_Enemy_Fast_Death": [
+      "228002481",
+      "297449171",
+      "438614923",
+      "64111912",
+      "669823219"
+    ],
+    "Play_sfx_Strawberry_Boss_Briar_push_hit": [
+      "956471168"
+    ],
+    "Play_sfx_augment_weapon_boomerangreturnmissile_OnMissileLaunch": [
+      "648459546",
+      "707729322"
+    ],
+    "Play_sfx_augment_weapon_scatterarrowsmis_cast": [
+      "1065080604"
+    ],
+    "Play_sfx_augment_weapon_tibbersburnaura_OnBuffDeactivate": [
+      "2456923",
+      "397929711",
+      "599510332"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_NamiWave_missilelaunch": [
+      "226363829",
+      "417587600"
+    ],
+    "Play_sfx_Strawberry_Spire_Evil_announcement_spawn": [
+      "896158488"
+    ],
+    "Play_sfx_Strawberry_Spire_Good_success_buffactivate": [
+      "229712330"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethBasicAttack_hit_double": [
+      "1067816651",
+      "22062556",
+      "327705375",
+      "765071549"
+    ],
+    "Play_sfx_Strawberry_Enemy_Hunter_Death": [
+      "122258074",
+      "515733205",
+      "516305754",
+      "787374365",
+      "880966256",
+      "8963142"
+    ],
+    "Play_sfx_Strawberry_Spire_Quest_Laser_buffactivate": [
+      "1008351203",
+      "15101667",
+      "297737015",
+      "422818449"
+    ],
+    "Play_sfx_augment_weapon_hollowradiance_hit": [
+      "1027519524",
+      "206975371",
+      "40795437",
+      "522537690",
+      "639156319",
+      "854285640"
+    ],
+    "Play_sfx_Strawberry_POI_MapB_FuelCell_fail": [
+      "251754045"
+    ],
+    "Play_sfx_augment_weapon_starstrike_explode": [
+      "994089705"
+    ],
+    "Play_sfx_Strawberry_Gameplay_HUD_game_start": [
+      "283255304"
+    ],
+    "Play_sfx_Strawberry_Fountain_idle_loop": [
+      "150053860"
+    ],
+    "Play_sfx_Strawberry_Boss_Reksai_ReksaiW_buffdeactivate": [
+      "1034657497",
+      "526214975"
+    ],
+    "Play_sfx_Strawberry_Gameplay_HUD_Boon_hover": [
+      "133870223"
+    ],
+    "Play_sfx_Strawberry_Boss_Reksai_ReksaiQAttack_cast": [
+      "41839647"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethR_tether": [
+      "473476903",
+      "861546692"
+    ],
+    "Play_sfx_Strawberry_Spire_Good_timer_buffactivate": [
+      "291246731",
+      "305218806"
+    ],
+    "Play_sfx_Strawberry_Boss_Reksai_spawn_buffactivate": [
+      "260961399"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_AatroxBasicAttack_hit": [
+      "25466663",
+      "912631323",
+      "981007849"
+    ],
+    "Play_sfx_Strawberry_Spire_Challenge_DarknessHasCome_buffactivate": [
+      "241995909",
+      "252571897",
+      "437515008",
+      "587273956"
+    ],
+    "Stop_sfx_Strawberry_Spire_Quest_idle_appear": [
+      "781824783"
+    ],
+    "Play_sfx_Strawberry_spire_reward_invulnurability_buffdeactivate": [
+      "609011523"
+    ],
+    "Play_sfx_augment_weapon_twinshadows_hit": [
+      "292244938",
+      "575810578",
+      "897591369",
+      "984101706"
+    ],
+    "Play_sfx_augment_weapon_dianaqinnermissileleft_OnHit": [
+      "51468030",
+      "728024574",
+      "816859463",
+      "846688666"
+    ],
+    "Play_sfx_augment_weapon_scatterarrowsmis_OnHit": [
+      "279072723",
+      "300697499",
+      "955941407"
+    ],
+    "Play_sfx_augment_weapon_rapidshotmis_OnHit": [
+      "22552172",
+      "399931293",
+      "934021077",
+      "976226001"
+    ],
+    "Play_sfx_Strawberry_Boss_Briar_push_cast": [
+      "109041024",
+      "816553906"
+    ],
+    "Play_sfx_Strawberry_Enemy_Healer_Death": [
+      "1024922898",
+      "314187846",
+      "589761748"
+    ],
+    "Play_sfx_augment_weapon_dianaqoutermissileleft_OnHit": [
+      "51468030",
+      "728024574",
+      "816859463",
+      "846688666"
+    ],
+    "Play_sfx_augment_weapon_rapidshotmis_OnMissileLaunch": [
+      "275484393",
+      "352030796",
+      "967786192",
+      "978149693"
+    ],
+    "Play_sfx_Strawberry_Boss_Briar_MissileGrid_cast": [
+      "746395259"
+    ],
+    "Play_sfx_Strawberry_Spire_Quest_checkpoint_buffactivate": [
+      "10731784",
+      "199208802",
+      "988709247"
+    ],
+    "Play_sfx_augment_weapon_trainmissile_OnMissileLaunch": [
+      "772065610",
+      "856180226"
+    ],
+    "Play_sfx_Strawberry_MiniBoss_Artillery_Death": [
+      "112523393",
+      "263103438",
+      "466618297",
+      "641064586",
+      "645808889",
+      "751177836",
+      "763925730",
+      "858521949"
+    ],
+    "Play_sfx_augment_weapon_rapidshot_evolvemis_OnMissileLaunch": [
+      "275484393",
+      "352030796",
+      "967786192",
+      "978149693"
+    ],
+    "Play_sfx_augment_weapon_tibbersburnaura_OnBuffCast": [
+      "35739587",
+      "669097026",
+      "736256166",
+      "812121466",
+      "876121965"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethQ_charge_buffactivate": [
+      "321443095",
+      "595687810"
+    ],
+    "Play_sfx_augment_weapon_mine_explosion": [
+      "486528941",
+      "525412726",
+      "598270482"
+    ],
+    "Play_sfx_Strawberry_spire_reward_flamebreath_missile_OnMissileCast": [
+      "207695472",
+      "37618824",
+      "980131350"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_Laugh3D_buffactivate": [
+      "922670780"
+    ],
+    "Play_sfx_strawberry_tibbersbasicattack2_OnCast": [
+      "1072962786",
+      "112226871",
+      "309630463",
+      "389224292",
+      "519026939",
+      "764820140",
+      "798514412",
+      "94261676"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_LineRift_slam": [
+      "1010524843",
+      "1041098873",
+      "58766826"
+    ],
+    "Play_sfx_Strawberry_Enemy_BasicMelee_Death": [
+      "181571615",
+      "321846344",
+      "79180957"
+    ],
+    "Play_sfx_Strawberry_Spire_Quest_success_buffactivate": [
+      "275190685"
+    ],
+    "Play_sfx_Strawberry_Fountain_respawn_buffactivate": [
+      "805610242"
+    ],
+    "Play_sfx_Strawberry_Boss_Briar_player_targeted_buffactivate": [
+      "535931334"
+    ],
+    "Play_sfx_Strawberry_Drop_XP_Orb_Missile_hit": [
+      "227501606",
+      "866368322",
+      "950925974",
+      "993022386"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_AatroxQ2_cast": [
+      "601432294",
+      "886576970"
+    ],
+    "Play_sfx_Strawberry_Gameplay_HUD_Boss_Aatrox_VictoryBanner_fakeout": [
+      "1016194014"
+    ],
+    "Play_sfx_Strawberry_Drop_Card_loop": [
+      "143146373",
+      "199249034"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_fallingdebris_explode": [
+      "229612046",
+      "302872498",
+      "372214098",
+      "382636816",
+      "913867061"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethE_slice_cast": [
+      "816255552",
+      "977995527"
+    ],
+    "Play_sfx_Strawberry_POI_MapB_Turret_fire": [
+      "1064551272",
+      "819983940"
+    ],
+    "Play_sfx_Strawberry_MiniBoss_Artillery_AoE_hit": [
+      "1008061752",
+      "425563189",
+      "502408990",
+      "609044462"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_Spikes_buffactivate": [
+      "1015607559",
+      "1035753848",
+      "116454010",
+      "168994184",
+      "686974392",
+      "937070394"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_NamiWave_hit": [
+      "931589688"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_AatroxBasicAttack_cast": [
+      "1021153972",
+      "324085992",
+      "48443722"
+    ],
+    "Play_sfx_Strawberry_Spire_Evil_success_buffactivate": [
+      "490832727"
+    ],
+    "Play_sfx_augment_weapon_holybauble_hit": [
+      "1060287372",
+      "198194112",
+      "984900610"
+    ],
+    "Play_sfx_Strawberry_Drop_Vacuum_orb_appear": [
+      "143146373",
+      "199249034"
+    ],
+    "Play_sfx_Strawberry_Elite_Zone_buffactivate": [
+      "416056436"
+    ],
+    "Play_sfx_Strawberry_Boss_Reksai_ReksaiQBurrowedMis_hit": [
+      "65220711"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_Taunt3D_buffactivate_loop": [
+      "1041151034"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_AatroxQ2_hit_ground": [
+      "572033611"
+    ],
+    "Play_sfx_augment_weapon_holybauble_buffactivate": [
+      "172068817",
+      "869815710"
+    ],
+    "Play_sfx_augment_weapon_dianaqinnermissile_OnHit": [
+      "51468030",
+      "728024574",
+      "816859463",
+      "846688666"
+    ],
+    "Play_sfx_augment_weapon_holybauble_buffdeactivate": [
+      "869815710"
+    ],
+    "Play_sfx_Strawberry_Drop_Calamity_activation": [
+      "280879147"
+    ],
+    "Play_sfx_Strawberry_Miniboss_Dasher_Dash_OnCast": [
+      "484170410",
+      "86287900"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_LineRift_cast": [
+      "40372125",
+      "448256410"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_MissileGrid_sword_hit": [
+      "851656680"
+    ],
+    "Play_sfx_Strawberry_Enemy_MiniDasher_Death": [
+      "1053037764",
+      "166078121",
+      "54523712",
+      "732831246",
+      "862646226"
+    ],
+    "Play_sfx_Strawberry_POI_MapD_Turret_AoE_explosion": [
+      "275041839",
+      "391940835",
+      "830998225"
+    ],
+    "Play_sfx_Strawberry_Enemy_Exploder_Death": [
+      "763099844",
+      "828732401"
+    ],
+    "Play_sfx_augment_weapon_circleshotmis_OnHit": [
+      "1071518114"
+    ],
+    "Play_sfx_augment_weapon_trainmissile_OnHit": [
+      "407024690",
+      "421650556",
+      "47903863",
+      "698193755"
+    ],
+    "Play_sfx_Strawberry_Revive_other_buffactivate": [
+      "217420395"
+    ],
+    "Play_sfx_augment_weapon_corkiecast_OnBuffCast": [
+      "178597057"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_AatroxQ1_cast": [
+      "327908998",
+      "797402023"
+    ],
+    "Play_sfx_Strawberry_POI_MapB_Turret_deactivate": [
+      "307202648"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_ChainPlayer_buffdeactivate": [
+      "587093324"
+    ],
+    "Play_sfx_Strawberry_Environment_MapA_ambience_loop": [
+      "307974760"
+    ],
+    "Play_sfx_Strawberry_Gameplay_HUD_Boss_Belveth_announcement": [
+      "136656518",
+      "54025913"
+    ],
+    "Play_sfx_augment_weapon_boomerangevolvemissile_OnMissileLaunch": [
+      "862399986",
+      "905460843"
+    ],
+    "Play_sfx_Strawberry_Spire_Challenge_Chained_buffdeactivate": [
+      "108157320"
+    ],
+    "Play_sfx_augment_weapon_boomerangevolvereturnmissile_OnHit": [
+      "427504408",
+      "583413365",
+      "826982021"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_ChainPlayer_buffactivate": [
+      "102678767"
+    ],
+    "Play_sfx_augment_weapon_starstrike_warning": [
+      "559644877"
+    ],
+    "Play_sfx_Strawberry_Boss_Reksai_ReksaiW_movement_trail": [
+      "971816591"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_LightningStrike_explode": [
+      "460677437",
+      "881067997"
+    ],
+    "Play_sfx_augment_weapon_corkiecast_hit": [
+      "320186646",
+      "332244060",
+      "512843486",
+      "554014674"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethR_OnCast": [
+      "1029752231"
+    ],
+    "Play_sfx_Strawberry_spire_reward_flamebreath_OnBuffActivate": [
+      "154148884",
+      "224986326",
+      "293470028",
+      "533538304",
+      "604855073"
+    ],
+    "Play_sfx_Strawberry_POI_MapB_FuelCell_deposit": [
+      "597469014"
+    ],
+    "Play_sfx_augment_weapon_dianaq_evolve_buffactivate": [
+      "624211298",
+      "866101706"
+    ],
+    "Play_sfx_Strawberry_MiniBoss_Shooter_shot_missile_OnHit": [
+      "177163223"
+    ],
+    "Play_sfx_Strawberry_Spire_Good_idle_appear": [
+      "147969477",
+      "492498531"
+    ],
+    "Play_sfx_Strawberry_POI_MapB_Turret_charge": [
+      "210259490"
+    ],
+    "Play_sfx_Strawberry_Spire_Quest_timer_buffactivate": [
+      "590464014",
+      "801847434"
+    ],
+    "Play_sfx_augment_weapon_dianaq_evolve_detonate": [
+      "431819719",
+      "99051466"
+    ],
+    "Play_sfx_Strawberry_Spire_Quest_BeachBall_pop": [
+      "685158107"
+    ],
+    "Play_sfx_Strawberry_Drop_Healthpack_loop": [
+      "143146373",
+      "199249034"
+    ],
+    "Play_sfx_Strawberry_Drop_Calamity_loop": [
+      "199249034",
+      "706851927"
+    ],
+    "Play_sfx_Strawberry_NPC_MissFortune_BasicAttack_cast": [
+      "195662703",
+      "272476645",
+      "662006921",
+      "855936131"
+    ],
+    "Play_sfx_Strawberry_Boss_Briar_BasicAttack_cast": [
+      "400531675",
+      "574210817",
+      "64317126"
+    ],
+    "Play_sfx_Strawberry_POI_MapB_Turret_activate": [
+      "1072518531"
+    ],
+    "Play_sfx_Strawberry_Spire_Quest_completion_buffactivate": [
+      "591055047"
+    ],
+    "Play_sfx_Strawberry_Spire_Challenge_MeteorShower_explosion": [
+      "498128438",
+      "844774648",
+      "962974858",
+      "963731696"
+    ],
+    "Play_sfx_Strawberry_Spire_Challenge_Bombardment_AoE_warning": [
+      "365163676",
+      "710549916",
+      "76498168"
+    ],
+    "Play_sfx_Strawberry_Spire_Quest_GatherTheOrbs_dropoff": [
+      "597469014"
+    ],
+    "Play_sfx_Strawberry_Boss_Reksai_ReksaiQBurrowedMis_missilecast": [
+      "19790674",
+      "312389454",
+      "611199792",
+      "701711674"
+    ],
+    "Play_sfx_augment_weapon_statikkshiv_hit": [
+      "234909725",
+      "384584966",
+      "412730289",
+      "642870227"
+    ],
+    "Play_sfx_Strawberry_Boss_Reksai_ReksaiR_footstep": [
+      "1048330600",
+      "1053819346",
+      "598664982",
+      "681679289",
+      "797771111"
+    ],
+    "Play_sfx_augment_weapon_dianaqinnermissile_OnMissileLaunch": [
+      "221873282",
+      "406908860"
+    ],
+    "Play_sfx_augment_weapon_firebombmissile_OnHitLocation": [
+      "245386522",
+      "285510215",
+      "477786021",
+      "586040067"
+    ],
+    "Play_sfx_augment_weapon_rapidshot_evolvemis_OnHit": [
+      "22552172",
+      "399931293",
+      "934021077",
+      "976226001"
+    ],
+    "Play_sfx_augment_weapon_boomerangevolvereturnmissile_OnMissileLaunch": [
+      "199453683",
+      "236701451"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_AatroxR_buffactivate": [
+      "751225767"
+    ],
+    "Play_sfx_Strawberry_Enemy_Lancer_Death": [
+      "1038720905",
+      "122427196",
+      "540909656",
+      "707623693",
+      "75682438",
+      "780421818"
+    ],
+    "Play_sfx_Strawberry_POI_MapB_Turret_turn": [
+      "666079921"
+    ],
+    "Play_sfx_Strawberry_Spire_Quest_idle_appear": [
+      "133781101",
+      "959869148"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethRSteroid_cast": [
+      "589104027",
+      "944421003"
+    ],
+    "Play_sfx_Strawberry_Gameplay_HUD_Boss_Briar_announcement": [
+      "445053370",
+      "732686087"
+    ],
+    "Play_sfx_Strawberry_Boss_Briar_MissileGrid_hit": [
+      "456438979"
+    ],
+    "Play_sfx_Strawberry_Boss_Reksai_ReksaiQBurrowed_cast": [
+      "952647774"
+    ],
+    "Play_sfx_Strawberry_Enemy_Poisonous_Death": [
+      "1056233717",
+      "335335733",
+      "613483997",
+      "70360792",
+      "889381431"
+    ],
+    "Play_sfx_augment_weapon_boomerangevolveminimissile_OnMissileLaunch": [
+      "1063282412",
+      "116442316",
+      "182117459",
+      "299712216",
+      "5618198"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_AatroxQ1_hit_ground": [
+      "234266900"
+    ],
+    "Play_sfx_Strawberry_NPC_MissFortune_BasicAttack_hit": [
+      "211288201",
+      "948320503",
+      "954127287",
+      "95864739"
+    ],
+    "Play_sfx_Strawberry_Spire_Freeze_timer_buffactivate": [
+      "103145401",
+      "574726057"
+    ],
+    "Play_sfx_Strawberry_Enemy_Cannon_Death": [
+      "1034517020",
+      "355755547",
+      "449016226",
+      "865077539",
+      "869114796"
+    ],
+    "Play_sfx_augment_weapon_boomerangmissile_OnHit": [
+      "427504408",
+      "583413365",
+      "826982021"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_AatroxQ3_cast": [
+      "202781614",
+      "83558332"
+    ],
+    "Play_sfx_Strawberry_Boss_Reksai_mini_spawn": [
+      "210041199",
+      "679770575",
+      "932433323",
+      "98792389"
+    ],
+    "Play_sfx_Strawberry_Gameplay_take_damage_buffactivate": [
+      "1045511568",
+      "523526625",
+      "727309357",
+      "882966462"
+    ],
+    "Play_sfx_Strawberry_Enemy_Swarmer_Death": [
+      "312358440",
+      "733017318",
+      "763919579",
+      "824381090",
+      "840945668"
+    ],
+    "Play_sfx_Strawberry_Spire_Quest_FootBall_kick": [
+      "387132776"
+    ],
+    "Play_sfx_augment_weapon_nuke_warning": [
+      "1008939446"
+    ],
+    "Play_sfx_augment_weapon_boomerangevolveminimissile_OnHit": [
+      "1026393134",
+      "12552275",
+      "415045480",
+      "828498344"
+    ],
+    "Play_sfx_Strawberry_Enemy_Bruiser_Death": [
+      "238729373",
+      "285886244",
+      "298438811",
+      "834380146"
+    ],
+    "Play_sfx_Strawberry_Enemy_BasicMelee4_RED_Death": [
+      "208938507",
+      "2178469",
+      "219206995",
+      "338439115",
+      "634747327"
+    ],
+    "Play_sfx_Strawberry_Spire_Quest_announcement_spawn": [
+      "635871007"
+    ],
+    "Play_sfx_Strawberry_Environment_MapD_ambience_loop": [
+      "440273395"
+    ],
+    "Play_sfx_augment_weapon_boomerangreturnmissile_OnHit": [
+      "427504408",
+      "583413365",
+      "826982021"
+    ],
+    "Play_sfx_augment_weapon_boomerangmissile_OnMissileLaunch": [
+      "862399986",
+      "905460843"
+    ],
+    "Play_sfx_Strawberry_MiniBoss_Shooter_cast": [
+      "882813145"
+    ],
+    "Play_sfx_augment_weapon_mine_OnMissileCast": [
+      "1025051443",
+      "31114098",
+      "624203928"
+    ],
+    "Play_sfx_Strawberry_NPC_MissFortune_BasicAttack_missilelaunch": [
+      "346447950",
+      "626936167",
+      "728032658"
+    ],
+    "Play_sfx_augment_weapon_firestrikezone_explode": [
+      "1054622599",
+      "39976051",
+      "712968876",
+      "743637206",
+      "941357470",
+      "997960492"
+    ],
+    "Play_sfx_Strawberry_MiniBoss_Dasher_Death": [
+      "1033508734",
+      "342171107",
+      "350033945",
+      "944734753"
+    ],
+    "Play_sfx_augment_weapon_twinshadows_spawn": [
+      "128873897",
+      "515860485"
+    ],
+    "Play_sfx_Strawberry_Spire_Evil_timer_buffactivate": [
+      "645501352",
+      "716894960"
+    ],
+    "Play_sfx_augment_weapon_pierceshotmis_OnMissileCast": [
+      "569613682",
+      "597238142",
+      "75538993",
+      "8902771"
+    ],
+    "Play_sfx_Strawberry_Spire_Challenge_ExplodingSpire_buffactivate": [
+      "131318647",
+      "800747060"
+    ],
+    "Play_sfx_augment_weapon_circleshot_evolve_mis_OnHit": [
+      "1071518114"
+    ],
+    "Play_sfx_Strawberry_Spire_Quest_GatherTheOrbs_pickup": [
+      "1045116557",
+      "1062221560",
+      "320582617"
+    ],
+    "Play_sfx_Strawberry_Spire_Challenge_Tiny_buffdeactivate": [
+      "464325511"
+    ],
+    "Play_sfx_Strawberry_Boss_Briar_push_scream": [
+      "310914299",
+      "745630694",
+      "849024739",
+      "977312876"
+    ],
+    "Play_sfx_Strawberry_Enemy_Exploder_warning_buffactivate": [
+      "580298395",
+      "648844949"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_Taunt3D_buffactivate_into": [
+      "1041151034",
+      "201387696"
+    ],
+    "Play_sfx_Strawberry_Spire_Freeze_respawn_buffactivate": [
+      "805610242"
+    ],
+    "Play_sfx_augment_weapon_circleshotmis_OnMissileLaunch": [
+      "1025478670",
+      "154670370",
+      "214508869",
+      "375142827"
+    ],
+    "Play_sfx_augment_weapon_corkiecast_OnBuffActivate": [
+      "799258991"
+    ],
+    "Play_sfx_Strawberry_POI_MapB_FuelCell_grab": [
+      "1045116557",
+      "1062221560",
+      "320582617"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethE_slice_cast_fast": [
+      "159959966",
+      "225265521",
+      "709242021",
+      "789476695"
+    ],
+    "Stop_sfx_Strawberry_NPC_MissFortune_Ultimate_missilelaunch_loop": [
+      "1069603933",
+      "10800916",
+      "310411333",
+      "43939957",
+      "495245543",
+      "613430435",
+      "795310230"
+    ],
+    "Play_sfx_Strawberry_Enemy_ShacoClone_Death": [
+      "422541475",
+      "478221433",
+      "922138406"
+    ],
+    "Play_sfx_Strawberry_Boss_Reksai_ReksaiE_burrowed_tunnel_destroyed": [
+      "140490813"
+    ],
+    "Play_sfx_augment_weapon_pierceshotmis_OnHit": [
+      "37590940",
+      "438421375",
+      "458691703",
+      "631083431",
+      "654137121",
+      "680540083",
+      "760749351",
+      "907566307"
+    ],
+    "Play_sfx_Strawberry_Miniboss_Dasher_Dash_missilelaunch": [
+      "320696414",
+      "494860658"
+    ],
+    "Play_sfx_Strawberry_Gameplay_HUD_Boon_select": [
+      "1038993611",
+      "131529366",
+      "173296999",
+      "278566204",
+      "764622943"
+    ],
+    "Play_sfx_Strawberry_player_death": [
+      "159370304"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_FallingSword_missile_land": [
+      "112044592",
+      "384244521",
+      "434153057"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethR_orb_oba": [
+      "861546692",
+      "983047793"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethQ_cast": [
+      "577870484",
+      "659530052"
+    ],
+    "Stop_sfx_Strawberry_Boss_Belveth_BelvethR_orb_oba": [
+      "1016839643",
+      "191971785",
+      "289265500",
+      "843438329"
+    ],
+    "Play_sfx_Strawberry_Enemy_Hound_Death": [
+      "132238155",
+      "17629576",
+      "303552994",
+      "606232610",
+      "694176108"
+    ],
+    "Play_sfx_Strawberry_NPC_MissFortune_Ultimate_cast": [
+      "886639502"
+    ],
+    "Play_sfx_Strawberry_Fountain_timer_buffactivate": [
+      "245165071",
+      "390990735"
+    ],
+    "Play_sfx_Strawberry_Spire_Quest_BeachBall_bounce": [
+      "1069881417",
+      "201121743",
+      "652130380",
+      "896508827"
+    ],
+    "Play_sfx_Strawberry_Boss_Reksai_ReksaiQAttack_hit": [
+      "264971678",
+      "424351318",
+      "728430471"
+    ],
+    "Play_sfx_Strawberry_Enemy_BasicMelee3_Fuemigo_Death": [
+      "154808718",
+      "759211085",
+      "881993485",
+      "902962644",
+      "925024207"
+    ],
+    "Play_sfx_Strawberry_spire_reward_flamebreath_missile_OnHit": [
+      "392222770",
+      "433621599",
+      "549090744",
+      "741549966",
+      "944239089"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethE_OnCast": [
+      "946483283"
+    ],
+    "Play_sfx_Strawberry_Gameplay_HUD_Boon_appear": [
+      "135038824",
+      "136386747",
+      "296762072",
+      "482463883",
+      "842203833"
+    ],
+    "Play_sfx_augment_weapon_statikkshiv_beam_buffactivate": [
+      "1001858887",
+      "204325424",
+      "320642320",
+      "57467479",
+      "604361299",
+      "832552480"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_ChainPillar_loop": [
+      "81409317"
+    ],
+    "Play_sfx_augment_weapon_pierceshotmis_OnMissileLaunch": [
+      "218077601",
+      "334370000",
+      "417761800"
+    ],
+    "Play_sfx_Strawberry_MiniBoss_Bruiser_slam_cast": [
+      "320343260",
+      "530863552",
+      "693591703"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethR_hit": [
+      "93409591"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethR_transform": [
+      "734169178",
+      "819911501"
+    ],
+    "Stop_sfx_Strawberry_Spire_Good_idle_appear": [
+      "69417205"
+    ],
+    "Play_sfx_Strawberry_Spire_Challenge_Chained_buffactivate": [
+      "570031563"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_AatroxQ3_hit_ground": [
+      "965459946"
+    ],
+    "Play_sfx_Strawberry_Enemy_MechaMinion_Death": [
+      "125526622",
+      "663508087",
+      "74418112",
+      "756912785"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethR_hit_scream_shared": [
+      "934579991"
+    ],
+    "Play_sfx_Strawberry_MiniBoss_Artillery_AoE_fall": [
+      "164454528",
+      "399342252",
+      "418123865"
+    ],
+    "Play_sfx_Strawberry_Enemy_Ram_Death": [
+      "294970358",
+      "468872478",
+      "580089207"
+    ],
+    "Play_sfx_Strawberry_Fountain_success_buffactivate": [
+      "521950721"
+    ],
+    "Play_sfx_Strawberry_Elite_SlowMissile_missilelaunch": [
+      "1026839985"
+    ],
+    "Play_sfx_Strawberry_Boss_Aatrox_FallingSword_missilelaunch": [
+      "525584974",
+      "550969352",
+      "88194082"
+    ],
+    "Play_sfx_Strawberry_Enemy_Divider_Death": [
+      "1035436999",
+      "486883634",
+      "53009639",
+      "931125542"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethR_buffactivate_other": [
+      "360755860",
+      "934579991"
+    ],
+    "Play_sfx_Strawberry_MiniBoss_Bruiser_Death": [
+      "308623664",
+      "348804465",
+      "879856989"
+    ],
+    "Play_sfx_Strawberry_Boss_Briar_MissileGrid_loop": [
+      "718530210"
+    ],
+    "Play_sfx_Strawberry_Gameplay_HUD_Boss_RekSai_announcement": [
+      "321788570"
+    ],
+    "Play_sfx_strawberry_tibbersbasicattack2_OnHit": [
+      "420343732",
+      "516830621",
+      "808558245",
+      "888445359"
+    ],
+    "Play_sfx_augment_weapon_firebombmissile_OnMissileCast": [
+      "123305723",
+      "628308658"
+    ],
+    "Play_sfx_strawberry_tibbersbasicattack_OnCast": [
+      "1072962786",
+      "112226871",
+      "309630463",
+      "389224292",
+      "519026939",
+      "764820140",
+      "798514412",
+      "94261676"
+    ],
+    "Play_sfx_Strawberry_MiniBoss_Bruiser_footstep": [
+      "171394437",
+      "232936445",
+      "362031307"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethBasicAttack_hit": [
+      "168105150",
+      "311110107",
+      "478651943",
+      "787117062",
+      "847053458",
+      "872271917"
+    ],
+    "Play_sfx_Strawberry_Boss_Reksai_ReksaiW_hit": [
+      "909457680"
+    ],
+    "Play_sfx_Strawberry_Spire_Evil_announcement_failed": [
+      "1042087189"
+    ],
+    "Play_sfx_Strawberry_Enemy_Pix_Death": [
+      "312848139",
+      "371025373",
+      "577766980",
+      "623690970",
+      "794114414",
+      "920899933"
+    ],
+    "Play_sfx_Strawberry_Spire_Evil_idle_appear": [
+      "1047396060",
+      "35540041"
+    ],
+    "Play_sfx_augment_weapon_pierceshotmisevolve_OnHit": [
+      "37590940",
+      "438421375",
+      "458691703",
+      "631083431",
+      "654137121",
+      "680540083",
+      "760749351",
+      "907566307"
+    ],
+    "Play_sfx_Strawberry_Spire_Challenge_Bombardment_AoE_explosion": [
+      "213759250",
+      "323603336",
+      "635821679"
+    ],
+    "Play_sfx_Strawberry_Boss_Belveth_BelvethE_hit": [
+      "1015607559",
+      "1035753848",
+      "116454010",
+      "168994184",
+      "686974392",
+      "937070394"
+    ],
+    "Stop_sfx_Strawberry_Gameplay_HUD_Boon_appear": [
+      "645238806",
+      "825922496",
+      "934533244"
+    ],
+    "Play_sfx_Strawberry_Boss_Reksai_fallingdebris_explode": [
+      "229612046",
+      "302872498",
+      "372214098",
+      "382636816",
+      "913867061"
+    ],
+    "Play_sfx_Strawberry_MiniBoss_Bruiser_slam_aoe": [
+      "1061981599",
+      "20272620",
+      "530072340"
+    ],
+    "Play_sfx_Strawberry_Enemy_Shy_Death": [
+      "256779848",
+      "522386974",
+      "529836062",
+      "764143749",
+      "892045084"
+    ],
+    "Play_sfx_Strawberry_Gameplay_HUD_Boss_Aatrox_announcement": [
+      "801728006"
+    ]
+  },
+  "unnamedEvents": {
+    "418442350": [
+      "205139577",
+      "543217281",
+      "636665297",
+      "843108514"
+    ],
+    "1194391571": [
+      "177163223"
+    ],
+    "1207075302": [
+      "118260342",
+      "80611896",
+      "943965956"
+    ],
+    "1377091951": [
+      "143007167"
+    ],
+    "2000065078": [
+      "198203991",
+      "438051334",
+      "575516399"
+    ],
+    "2341814577": [
+      "1046025084",
+      "347454562",
+      "412706568",
+      "468564713",
+      "813654621",
+      "991883410"
+    ],
+    "2562010153": [
+      "306587163",
+      "398901371",
+      "674935458",
+      "778700685"
+    ],
+    "2602298934": [
+      "1043365989",
+      "788898659",
+      "795173623"
+    ],
+    "3189747316": [
+      "795900667"
+    ],
+    "3221282950": [
+      "216220641",
+      "390632085",
+      "554294659"
+    ],
+    "3586202817": [
+      "177163223"
+    ],
+    "4137142653": [
+      "296762072",
+      "799438086"
+    ]
+  }
+}

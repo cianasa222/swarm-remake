@@ -1,0 +1,46 @@
+{
+  "source": "ASSETS/Characters/Strawberry_Boss_RekSai/Skins/Base/RekSai_Skin26.StrawberryRebuild.skn",
+  "format": "SKN v4.1",
+  "submeshes": [
+    {
+      "index": 0,
+      "name": "Body",
+      "startVertex": 0,
+      "numVertices": 6518,
+      "startIndex": 0,
+      "numIndices": 29430
+    },
+    {
+      "index": 1,
+      "name": "Fin",
+      "startVertex": 6518,
+      "numVertices": 344,
+      "startIndex": 29430,
+      "numIndices": 1578
+    },
+    {
+      "index": 2,
+      "name": "Scale",
+      "startVertex": 6862,
+      "numVertices": 365,
+      "startIndex": 31008,
+      "numIndices": 1878
+    },
+    {
+      "index": 3,
+      "name": "Wrap",
+      "startVertex": 7227,
+      "numVertices": 1250,
+      "startIndex": 32886,
+      "numIndices": 7056
+    },
+    {
+      "index": 4,
+      "name": "Plane",
+      "startVertex": 8477,
+      "numVertices": 122,
+      "startIndex": 39942,
+      "numIndices": 360
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "bank": "music",
+  "tracks": 46,
+  "failed": 0,
+  "totalBytes": 29072821,
+  "events": {
+    "Play_sfx_Evn_SRUAP_Defeat_Banner": [
+      "632537467"
+    ],
+    "Play_sfx_Env_SRUAP_Victory_Banner": [
+      "91455257"
+    ],
+    "Play_mus_map33_game_start_MapD": [
+      "440273395"
+    ],
+    "Play_mus_map33_game_start_MapC": [
+      "1070673087"
+    ],
+    "Play_mus_map33_game_start_MapB": [
+      "517275786"
+    ],
+    "Play_mus_map33_game_start_MapA": [
+      "307974760"
+    ]
+  },
+  "unnamedEvents": {}
+}
