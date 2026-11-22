@@ -141,14 +141,15 @@
 | [#1](../../issues/1) | 14.14 `.wad.client` 下载解包（**用 Windows 清单**，见 Issue 21:30 订正）+ 5 个 Nova 网格转 JSON + 15 张贴图（T4）+ 4 种小怪 `skin0.bin.json` | 执行 AI（Muse，待领取） | 🟡 待领取 |
 | — | 验收并修正喷泉第一批（`c63e871`，Quick AI 已提交） | 开发 AI + 用户 | 🧪 待本机 build + 截图 |
 | — | 验收并修正小怪模型修复（`46362d7`，Quick AI 已提交） | 开发 AI + 用户 | 🧪 待本机验收 |
-| — | 重新部署线上（今天的改动都还没上线） | 用户 | ⏳ |
+| — | 重新部署线上（线上仍是 `ecc07343`；PR #2 已合并未部署，PR #3 合并后一起部署） | 用户 | ⏳ |
 | — | 喷泉第二批：叠加贴图 + 剩余 Nova 层（清单见 `docs/audit/fountain_emitters_14.14.md` 4.3 节） | 开发 AI（Quick AI 审查） | ⏳ 等 #1 交付 |
 | — | M5：三档画质验收 + 联机边界（`teammateVfxScale`、`players[]`） | 开发 AI（Quick AI 审查） | ⏳ 待用户确认开启 |
 | — | 自动部署 `wrangler.jsonc` + `preview` 分支 | 开发 AI + 用户 | ⏳ |
 | — | 其余小项（清理 `lan.ts`/`buildWorld`、`compress_assets.mjs` 绝对路径） | 开发 AI | ⏳ 见 `QUICK_AI_HANDOVER.md` 第 2 节 |
 | — | 网站下线交接文档、停用 `/__sync_kv`（QC-05） | Quick AI（用户要求） | ✅ 已完成 |
 | — | 交接按 AI 分目录（`handover/<ai名>/`），新增交接总入口和 2.2 节规则（Q-11） | Quick AI（用户要求） | ✅ 已完成 |
-| [PR #2](https://github.com/cianasa222/swarm-remake/pull/2) | 金克丝数值与特效按 14.14 原版重建（Q-13） | Quick AI 提交 → 开发 AI 验收 | ⏳ 待构建验收 |
+| [PR #2](https://github.com/cianasa222/swarm-remake/pull/2) | 金克丝数值与特效按 14.14 原版重建（Q-13） | Quick AI 提交 → 开发 AI 验收 | ✅ 已验收合并（AG-04，`c92c5d5`），待部署 |
+| [PR #3](https://github.com/cianasa222/swarm-remake/pull/3) | A 类数值对齐 14.14：武器射程、旋风切割器、耀光、首领 900 s、99 级经验表、补给箱、传送环（Q-15） | Quick AI 提交 → 开发 AI 验收 | ⏳ 待构建验收 |
 
 ---
 
