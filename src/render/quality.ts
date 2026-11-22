@@ -2,6 +2,8 @@ import type { Platform } from '../platform/platform';
 
 export type QualitySetting = 'auto' | 'low' | 'medium' | 'high';
 export type QualityTier = 'low' | 'medium' | 'high';
+export type DetailKey = 'shadows' | 'fx' | 'resolution' | 'teammates';
+export type DetailValue = 'auto' | 'off' | 'low' | 'high';
 
 export interface QualitySpec {
   tier: QualityTier;
@@ -31,6 +33,7 @@ export class QualityManager {
   setting: QualitySetting = 'auto';
   active: QualityTier = 'medium';
   recommended: QualityTier;
+  details: Record<DetailKey, DetailValue> = { shadows: 'auto', fx: 'auto', resolution: 'auto', teammates: 'auto' };
   private emaMs = 16.6;
   private lastSwitchAt = -10;
   private badSec = 0;
@@ -49,10 +52,27 @@ export class QualityManager {
       this.setting = saved;
     }
     this.active = this.setting === 'auto' ? this.recommended : this.setting;
+    try {
+      const savedDetails = JSON.parse(platform.load('tideline_quality_details') || '{}');
+      for (const key of Object.keys(this.details) as DetailKey[]) {
+        if (['auto', 'low', 'high'].includes(savedDetails[key]) || (key === 'shadows' && savedDetails[key] === 'off')) this.details[key] = savedDetails[key];
+      }
+    } catch { /* old or invalid settings */ }
   }
 
   get spec(): QualitySpec {
-    return QUALITY_SPECS[this.active];
+    const base = QUALITY_SPECS[this.active];
+    const d = this.details;
+    return { ...base, shadows: d.shadows === 'auto' ? base.shadows : d.shadows !== 'off',
+      fxScale: d.fx === 'auto' ? base.fxScale : d.fx === 'low' ? .45 : 1,
+      particleBudget: d.fx === 'auto' ? base.particleBudget : d.fx === 'low' ? 180 : 800,
+      resScale: d.resolution === 'auto' ? base.resScale : d.resolution === 'low' ? .78 : 1,
+      maxDpr: d.resolution === 'auto' ? base.maxDpr : d.resolution === 'low' ? 1.25 : 2 };
+  }
+
+  setDetail(key: DetailKey, value: DetailValue) {
+    this.details[key] = value;
+    this.platform.save('tideline_quality_details', JSON.stringify(this.details));
   }
 
   setSetting(s: QualitySetting, nowSec: number) {

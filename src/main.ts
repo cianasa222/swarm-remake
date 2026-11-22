@@ -4,7 +4,7 @@ import { AudioFX } from './audio/audio';
 import { InputManager } from './input/input';
 import { webPlatform } from './platform/platform';
 import { assetUrl, getAssetStats, hasCustomAssetBase, preloadStage1, preloadStage2, uiIconUrl } from './render/assets';
-import { QualityManager, QualitySetting } from './render/quality';
+import { QualityManager, QualitySetting, DetailKey, DetailValue } from './render/quality';
 import { Renderer } from './render/renderer';
 import { Game, SimInput } from './sim/game';
 import {
@@ -71,9 +71,26 @@ let bannerTimer = 0;
 
 // ── 选项同步（画质 / 减弱闪光 / 关闭震屏 / 静音） ──
 const TIER_LABEL = { low: '低', medium: '中', high: '高' } as const;
+const detailLabels: Record<DetailKey, string> = { shadows: '实时阴影', fx: '特效粒子强度', resolution: '渲染分辨率', teammates: '队友装饰特效（预留）' };
+for (const id of ['start-details', 'pause-details']) {
+  const panel = $(id);
+  panel.className = 'detail-settings';
+  for (const key of Object.keys(detailLabels) as DetailKey[]) {
+    const label = document.createElement('label');
+    label.textContent = detailLabels[key];
+    const select = document.createElement('select');
+    select.dataset.detail = key;
+    const choices = key === 'shadows' ? [['auto','跟随画质'],['off','关闭'],['low','低'],['high','高']] : key === 'teammates' ? [['auto','正常'],['low','减轻']] : [['auto','跟随画质'],['low','低'],['high','高']];
+    for (const [value, title] of choices) select.add(new Option(title, value));
+    select.addEventListener('change', () => { quality.setDetail(key, select.value as DetailValue); renderer.applyQuality(); syncOptionUI(); });
+    label.append(select);
+    panel.append(label);
+  }
+}
 $('q-rec').textContent = `（设备推荐：${TIER_LABEL[quality.recommended]}）`;
 
 function syncOptionUI() {
+  document.querySelectorAll<HTMLSelectElement>('select[data-detail]').forEach(s => { s.value = quality.details[s.dataset.detail as DetailKey]; });
   for (const group of ['start-quality', 'pause-quality']) {
     $(group).querySelectorAll('button').forEach((b) => {
       b.classList.toggle('active', b.dataset.q === quality.setting);

@@ -90,6 +90,14 @@ export class Renderer {
     this.gl.setSize(this.w, this.h, false);
     this.gl.shadowMap.enabled = s.shadows;
     this.world.setShadows(s.shadows);
+    const size = this.quality.details.shadows === 'low' ? 1024 : 2048;
+    const shadow = this.world.sun.shadow;
+    if (shadow.mapSize.x !== size) {
+      shadow.map?.dispose();
+      shadow.map = null;
+      shadow.mapSize.set(size, size);
+    }
+    this.vfx.jinxVfx.teammateVfxScale = this.quality.details.teammates === 'low' ? .3 : 1;
   }
 
   resize(w: number, h: number) {
