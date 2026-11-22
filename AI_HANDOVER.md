@@ -183,6 +183,20 @@ CommunityDragon 不直接托管转换好的 `.glb`，本项目中的 **9 个 `.g
 
 1. **所需开源工具**：
    - **ManifestDownloader**：从拳头 CDN 按 Patch `14.14` 清单拉取 `Map33.wad.client` 及 `Strawberry_*.wad.client`。
+   - **Patch 14.14 官方 Windows 客户端清单**（`lol-game-client`，北美服 NA1；来源：社区归档 [`Morilli/riot-manifests`](https://github.com/Morilli/riot-manifests) 的 `LoL/NA1/windows/lol-game-client/14.14.*.txt`。**不要用 `macos` 目录下的清单**）：
+
+     | 小版本 | 清单地址 |
+     | :--- | :--- |
+     | 14.14.6006279 | `https://lol.secure.dyn.riotcdn.net/channels/public/releases/69208A6971BED964.manifest` |
+     | 14.14.6010337 | `https://lol.secure.dyn.riotcdn.net/channels/public/releases/5457A277B523BA27.manifest` |
+     | 14.14.6012857 | `https://lol.secure.dyn.riotcdn.net/channels/public/releases/063C354094B25E5E.manifest` |
+     | 14.14.6017634 | `https://lol.secure.dyn.riotcdn.net/channels/public/releases/4CED80BEFD5B9DB5.manifest` |
+     | 14.14.6023371 | `https://lol.secure.dyn.riotcdn.net/channels/public/releases/FE54459B86D6C677.manifest` |
+     | 14.14.6027801 | `https://lol.secure.dyn.riotcdn.net/channels/public/releases/EB533F60A7299698.manifest` |
+     | **14.14.6034237（14.14 最后一版）** | `https://lol.secure.dyn.riotcdn.net/channels/public/releases/17A8CACF07883D41.manifest` |
+
+     - 选版本：优先与本机 `map33_tools/14_14.manifest` 同一个小版本（现有资产即由它解包）；无法确认时用 `6034237`。
+     - 清单本身只记录文件名与数据块索引，必须用 ManifestDownloader 按清单从同一 CDN 下载并拼出 `.wad.client`。
    - **CommunityDragon 路径哈希表**：`https://raw.communitydragon.org/data/hashes/lol/hashes.game.txt`
    - **lol2gltf**（`https://github.com/LeagueToolkit/lol2gltf`）：
      - 地图转换：`lol2gltf mapgeo -m strawberry_animasquad_map1.mapgeo -o warehouse_map1.glb`
