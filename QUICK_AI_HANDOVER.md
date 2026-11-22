@@ -1,7 +1,7 @@
 # Quick AI 交接文档（QUICK_AI_HANDOVER）
 
 > **本文档由 Quick AI（AWS Quick）编写和维护。**
-> 最后更新：2026-11-22 21:50 CST（新增第 1.0 节改动总索引）· 改动编号已排到 **Q-09**，见第 1.0 节
+> 最后更新：2026-11-22 21:58 CST（登记用户决定：压缩资产保留在公开仓库）· 改动编号已排到 **Q-10**，见第 1.0 节
 > 仓库：`https://github.com/cianasa222/swarm-remake` · Cloudflare KV 镜像：`tideline-handover`（`7bbc331619b04fc8b5b5323abba5eef0`）
 > 配套阅读：[`COLLAB.md`](./COLLAB.md)（分工、流程、防冲突）→ [`AGENTS.md`](./AGENTS.md) → [`AI_HANDOVER.md`](./AI_HANDOVER.md) → [`PROGRESS.md`](./PROGRESS.md)
 
@@ -48,6 +48,7 @@
 | Q-08 | 11-22 21:39 | [`06ed484`](https://github.com/cianasa222/swarm-remake/commit/06ed484aefc57a44d6e073a69c6666ff017b09ed) | `QUICK_AI_HANDOVER.md`（+196，新增）、`COLLAB.md`（+14 / −10）、`PROGRESS.md`（+5 / −2）、`AI_HANDOVER.md`（+2）、`docs/ci/fetch-14.14-reference.yml`（+84，新增） | 角色变更为只做审查；本交接文档；Actions 下载工作流（放在 `docs/ci/`，需手动复制到 `.github/workflows/`） | 文档 | — |
 | Q-09 | 11-22 21:50 | 提交说明 `[Quick AI Q-09] …`（`git log --grep "Q-09"`） | `QUICK_AI_HANDOVER.md`、`COLLAB.md`、`AGENTS.md` | 新增本改动总索引；「开工前必读交接文档」写成规则（`COLLAB.md` 第 0 节，`AGENTS.md` 开头指向它）；下载方法改为「先直接下载，被拒才用 Worker」 | 文档 | — |
 
+| Q-10 | 11-22 21:58 | 提交说明 `[Quick AI Q-10] …`（`git log --grep "Q-10"`） | `QUICK_AI_HANDOVER.md` | 登记**用户决定**：M4 压缩后的运行时资产保留在公开仓库（新增第 1.6 节） | 文档 | — |
 **审查 Q-04 / Q-05 时重点看**：
 - Q-04：`npm.cmd run build` 能否通过（新增 TS 类型 `FxCurves`、`FxParticle`、`FxPool`）；`?spot=hub` 下 Nova 放大 1.75 倍后光柱会不会穿出建筑；healspark 0.4 m 是否过小；sparklies1 生成点是否在进度圈前端（取决于 `fitTimerHead()` 的拟合结果）。
 - Q-05：第一波小怪模型是否出现，大小、朝向、姿势是否正确；精英怪、雷克塞不经过这段代码，不受影响。
@@ -109,6 +110,12 @@
 | GitHub 连接器一度读写都失败（OAuth 异常） | 用户撤销授权后重连解决 |
 | KV `FILE_INDEX.json` 被整份覆盖成 5 条 | 已按 KV 实际 key 重建为 47 条；为此新增 COLLAB 2.1 防冲突规则 |
 | `worker.js` 里加的 CORS 头对静态资源不生效 | 静态资源默认不经过 Worker 代码；已改用 `public/_headers` |
+
+### 1.6 用户决定（其他 AI 请照此执行，不要擅自改动）
+
+| 日期 | 决定 | 说明 |
+| :--- | :--- | :--- |
+| 2026-11-22 21:55 | **M4 压缩后的运行时资产（`public/assets/`，273 个文件、约 38.5 MB）保留在公开 GitHub 仓库，仓库保持公开** | 好处：Cloudflare 自动部署和其他 AI 拉下仓库即可直接构建。**不要**把仓库改成私有、不要把资产移出仓库或加进 `.gitignore`，除非用户另有指示。未压缩原始资产（`_assets_raw_backup`）、解包目录（`资产包/`）、`.wad.client`、解包工具仍只留在用户本机，**不得提交**。风险备忘：这些是 Riot Games 的版权资源；如收到 GitHub DMCA 下架通知，应急方案是把仓库改为私有，或把资产迁到 Cloudflare R2 并在构建时设置 `VITE_ASSET_BASE_URL`（`src/render/assets.ts` 已支持），具体由用户决定。 |
 
 ---
 
