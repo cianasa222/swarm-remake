@@ -374,3 +374,25 @@
 | `RekSai_Skin26_TX_CM_Mask.StrawberryRebuild.dds` | 材质 UVScrolling | https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_boss_reksai/skins/base/reksai_skin26_tx_cm_mask.strawberryrebuild.png |
 | `Strawberry_Boss_RekSai_IridescentGradient_TX_CM.StrawberryRebuild.tex` | 材质 UVScrolling | https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_boss_reksai/skins/base/strawberry_boss_reksai_iridescentgradient_tx_cm.strawberryrebuild.png |
 | `black.dds` | 材质 UVScrolling | https://raw.communitydragon.org/14.14/game/assets/shared/materials/black.png |
+
+## C. 音效（全游戏，0 个原版文件）
+
+线上 `src/audio/audio.ts` **全部是程序合成的声音**（振荡器 + 噪声），仓库里没有任何原版音频文件。原版有，但不在 CommunityDragon 上（音频目录取不到），要从本机游戏客户端的 wad 里解：
+
+- 位置：Swarm 的音效在 `Map33` 和各角色的 wad 里，格式是 Wwise 的 `.bnk`（事件表）+ `.wpk` / `.wem`（音频）。
+- 转换：`.wem` → `.ogg`（用 vgmstream 或 ww2ogg + revorb），放到 `public/assets/audio/<角色或地图>/`，单文件 < 25 MiB。
+- 接入：`audio.ts` 改成按原版事件名播放文件（保留现有节流），找不到文件时退回合成音。
+- 原版事件名已经能从 `map33.bin.json` 读出来。首领雷克塞的 15 个：`ReksaiE_burrowed_tunnel_destroyed`, `ReksaiQAttack_cast`, `ReksaiQAttack_hit`, `ReksaiQBurrowedMis_hit`, `ReksaiQBurrowedMis_missilecast`, `ReksaiQBurrowed_cast`, `ReksaiR_footstep`, `ReksaiR_roar`, `ReksaiW_buffactivate`, `ReksaiW_buffdeactivate`, `ReksaiW_hit`, `ReksaiW_movement_trail`, `fallingdebris_explode`, `mini_spawn`, `spawn_buffactivate`。金克丝、小怪、喷泉、界面的事件名同样在 `map33.bin.json` 和各角色 bin 里（搜 `Play_sfx_` / `Play_vo_`）。
+- 建议顺序：首领 → 金克丝 → 小怪 → 喷泉 / 补给箱 → 界面 / 升级 → 背景音乐。
+
+## D. 首领出场动画
+
+- 原版出场由服务器脚本控制，播的是哪段动作原版数据里没写。动画图里能对上的候选：潜行 `run_burrowed`、`idle01_burrowed`，破土 `Spell2_unburrow`、`Spell4_emerge`，跃起 `Spell4_airtime` → `Spell4_hit`，以及 `Idle_In1`。线上只用了 `run_burrowed` + `Spell2_unburrow`。
+- 出场特效原版全有（参数照抄 `skin0.bin.json`）：`Z_Spawn_AOE_Warning`（17 层，预警圈 7.25 m，背鳍绕圈）→ `Z_Spawn_AOE_Explosion`（26 层）+ `Z_Spawn_Crater` + `Spawn_KnockUpPlayersTowardArena`（把玩家击飞进竞技场）+ `Spawn_ArenaWall`（岩墙）+ `Spawn_MapWide_Spikes`（全图地刺）。
+- 请补导出上面所有候选动作（已含在 B1），**并对照原版录像确认出场用哪几段**，写进 PR。
+
+## 补充说明（2026-11-23）
+
+- **B1 动作文件不在 CommunityDragon 上**（`skins/base/` 下没有 `animations/` 目录，也没有骨架 `.skl`），但线上 `reksai.glb` 已有 8 段，说明你本机的 wad 里有，请从本机解。
+- **B2 子网格顺序（推断，待确认）**：CommunityDragon 有原版拆好的 5 个 `.obj`，按文件大小对线上 `.glb` 的顶点数：序号 0 = `Body`（6518）、1 = `Fin`（344）、2 = `Scale`（365）、3 = `Wrap`（1250）、4 = `Plane`（122）。即**隐藏序号 3、4**，序号 1 用背鳍泛光材质，序号 2 用鳞片血纹材质。请截图确认。
+- **B3 特效贴图在 CommunityDragon 上有**（`assets/characters/strawberry_boss_reksai/skins/base/particles/`，约 240 个文件，已核对目录），可以按表里的地址直接下载；网格 `.scb` 若站上没有，从本机 wad 解。
