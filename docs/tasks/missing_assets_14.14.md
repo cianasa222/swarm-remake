@@ -396,3 +396,41 @@
 - **B1 动作文件不在 CommunityDragon 上**（`skins/base/` 下没有 `animations/` 目录，也没有骨架 `.skl`），但线上 `reksai.glb` 已有 8 段，说明你本机的 wad 里有，请从本机解。
 - **B2 子网格顺序（推断，待确认）**：CommunityDragon 有原版拆好的 5 个 `.obj`，按文件大小对线上 `.glb` 的顶点数：序号 0 = `Body`（6518）、1 = `Fin`（344）、2 = `Scale`（365）、3 = `Wrap`（1250）、4 = `Plane`（122）。即**隐藏序号 3、4**，序号 1 用背鳍泛光材质，序号 2 用鳞片血纹材质。请截图确认。
 - **B3 特效贴图在 CommunityDragon 上有**（`assets/characters/strawberry_boss_reksai/skins/base/particles/`，约 240 个文件，已核对目录），可以按表里的地址直接下载；网格 `.scb` 若站上没有，从本机 wad 解。
+
+## E. 不在 CommunityDragon 上的文件怎么拿（动作 `.anm`、音效 `.bnk` / `.wpk`、部分网格 `.scb`）
+
+来源（用户提供，Quick AI 已核对，2026-11-23）：
+
+| 用途 | 地址 |
+| :--- | :--- |
+| 清单归档 | [Morilli/riot-manifests](https://github.com/Morilli/riot-manifests) |
+| 下载工具 | [Morilli/ManifestDownloader 发行版](https://github.com/Morilli/ManifestDownloader/releases) |
+| 已解包资源（贴图 `.png`、`.bin.json`、子网格 `.obj`） | [raw.communitydragon.org/14.14](https://raw.communitydragon.org/14.14/) |
+
+⚠️ **选对清单目录**：游戏本体（地图、角色、特效、音效）在 **`lol-game-client`**。`lol-standalone-client-content` 是**客户端界面（大厅）**的清单（14.14.6034237 = `3DEB3068504FBF69.manifest`），里面没有 `Map33`，不要用。
+
+14.14 最后一版 `lol-game-client` 清单，欧服和北美服是**同一个文件**：
+`https://lol.secure.dyn.riotcdn.net/channels/public/releases/17A8CACF07883D41.manifest`
+（与 `AI_HANDOVER.md` 2.2 节一致；如果本机 `map33_tools/14_14.manifest` 是别的小版本，以本机那个为准，保证与现有资产同一版本。）
+
+**步骤（Windows，在本机执行）**：
+
+```bat
+:: 1. 先列出清单里的文件，找到要下的 wad 的确切路径
+ManifestDownloader.exe https://lol.secure.dyn.riotcdn.net/channels/public/releases/17A8CACF07883D41.manifest --print-manifest 14_14_files.txt
+
+:: 2. 只下载需要的 wad（-f 是正则，按文件路径过滤；-l 指定语音语言；--skip-existing 断点续传）
+ManifestDownloader.exe https://lol.secure.dyn.riotcdn.net/channels/public/releases/17A8CACF07883D41.manifest ^
+  -o C:\七星\游戏\tideline\14.14 ^
+  -f "Map33|Strawberry_" ^
+  -l zh_CN en_US -t 8 --skip-existing
+```
+
+3. 解包 wad：用 Obsidian / LtMAO / wadtools，配 CommunityDragon 的哈希表（`hashes.game.txt`）还原文件名。
+4. 转换：
+   - `.anm` → 和 `.skn` / `.skl` 一起导出成 `.glb`（lol2gltf 或 LtMAO），再过 `tools/compress_assets.mjs`；
+   - `.bnk` / `.wpk` → 先解出 `.wem`（Wwiser / bnkextr），再用 `vgmstream-cli` 转 `.ogg`；用 `.bnk` 里的事件表对上原版事件名（`Play_sfx_…`）；
+   - `.scb` → JSON，用现有 `map33_tools`，格式与 `fountain_*.json` 一致。
+5. 语音语言：`zh_CN` 是国服中文配音，`en_US` 是英文配音，用哪个由用户决定；音效（sfx）和语言无关。
+
+> Quick AI 自己做不了这一步：执行环境连不上拳头 CDN；清单和数据块是 zstd 压缩的；`Map33.wad.client` 有几百 MB，超过 KV 单值 25 MiB 的上限。所以按 `COLLAB.md` 2.2 节第 9 条交给 Antigravity。
