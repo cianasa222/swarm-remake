@@ -7,6 +7,50 @@ import { getTexture, loadGLB } from './assets';
 import { blobShadowTex } from './style';
 
 /**
+ * 把（可能经 M4 量化压缩的）蒙皮网格烘焙成静态 Float32 几何体，供 InstancedMesh 合批使用。
+ *
+ * M4 的 `quantize` 把 POSITION 存成 Int16 归一化（取值 −1…1）。蒙皮网格的节点变换不生效，
+ * 反量化缩放被写进了骨骼的 inverseBindMatrices。如果只读原始顶点、丢掉蒙皮属性，
+ * 小怪会只有 1 个单位大小，再乘 ENEMY_SCALES（约 0.01）就只剩 1–2 cm，画面上只看得见阴影。
+ * 这里在静止姿态下逐顶点执行一次骨骼变换（applyBoneTransform），把反量化和绑定矩阵一并烘焙进去。
+ */
+function bakeStaticGeometry(obj: THREE.Mesh): THREE.BufferGeometry | null {
+  const src = obj.geometry;
+  const pos = src.getAttribute('position');
+  if (!pos) return null;
+  const uvAttr = src.getAttribute('uv');
+  const n = pos.count;
+  const skinned =
+    obj instanceof THREE.SkinnedMesh && !!obj.skeleton && !!src.getAttribute('skinIndex') && !!src.getAttribute('skinWeight');
+
+  const outPos = new Float32Array(n * 3);
+  const outUv = new Float32Array(n * 2);
+  const v = new THREE.Vector3();
+  for (let i = 0; i < n; i++) {
+    v.fromBufferAttribute(pos, i); // 自动按 normalized 反量化
+    if (skinned) (obj as THREE.SkinnedMesh).applyBoneTransform(i, v);
+    v.applyMatrix4(obj.matrixWorld);
+    outPos[i * 3] = v.x;
+    outPos[i * 3 + 1] = v.y;
+    outPos[i * 3 + 2] = v.z;
+    if (uvAttr) {
+      outUv[i * 2] = uvAttr.getX(i);
+      outUv[i * 2 + 1] = uvAttr.getY(i);
+    }
+  }
+
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(outPos, 3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(outUv, 2));
+  if (src.index) g.setIndex(Array.from(src.index.array as ArrayLike<number>));
+  g.computeVertexNormals(); // 量化法线也会被骨骼变换改变朝向，统一在烘焙后重算
+  if (!g.index) return g;
+  const nonIdx = g.toNonIndexed();
+  g.dispose();
+  return nonIdx;
+}
+
+/**
  * 单 DrawCall 合批 3D 小怪渲染器（基于官方 .glb 几何体 + 官方贴图）。
  * 支持受击闪白与束缚染色，零额外 GC。
  */
@@ -45,18 +89,8 @@ export class InstancedEnemyModel {
         gltf.scene.updateMatrixWorld(true);
         gltf.scene.traverse((obj) => {
           if (!(obj instanceof THREE.Mesh) || !obj.visible) return;
-          const g = obj.geometry.clone();
-          g.applyMatrix4(obj.matrixWorld);
-          if (!g.attributes.normal) g.computeVertexNormals();
-          // 统一属性集，防止 mergeGeometries 因额外皮肤属性失败
-          for (const key of Object.keys(g.attributes)) {
-            if (key !== 'position' && key !== 'normal' && key !== 'uv') {
-              g.deleteAttribute(key);
-            }
-          }
-          const nonIdx = g.index ? g.toNonIndexed() : g;
-          if (g.index) g.dispose();
-          geos.push(nonIdx);
+          const g = bakeStaticGeometry(obj);
+          if (g) geos.push(g);
         });
         if (!geos.length) return;
         const merged = geos.length === 1 ? geos[0] : mergeGeometries(geos, false);
