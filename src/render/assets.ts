@@ -393,7 +393,7 @@ const STAGE1_IMAGES = [
   'map1/vfx/box_glow.webp',
   'enemies/enemy_pix.webp',
   'enemies/enemy_ghoul.webp',
-  ...Array.from({ length: 22 }, (_, i) => `map1/lightmaps/${i + 1}.webp`),
+  ...Array.from({ length: 22 }, (_, i) => `map1/lightmaps/${i}.webp`),
   'heroes/jinx/vfx/props_tx.webp',
   'heroes/jinx/vfx/project_bolts.webp',
   'heroes/jinx/vfx/muzzle_flash.webp',

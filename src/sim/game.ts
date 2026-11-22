@@ -345,6 +345,8 @@ export class Game {
       charge: 0,
       cooldownLeft: 0,
     };
+    // 注：原版数据中 31/32 号箱定位器同坐标 (-44.7, 31.5)，32 号已在 map1_data.json
+    // 中沿 +x 挪 1.5m 至 (-43.2, 31.5)（可走格内），避免两箱完全重叠。
     this.boxes = this.map.boxSpawns.map((s, idx) => ({
       id: idx + 1,
       x: s.wx,
@@ -1700,7 +1702,7 @@ export class Game {
       if (this.rand() < SUPPLY_BOX.ultChance) {
         const p = this.player;
         const before = p.rCd;
-        p.rCd = Math.max(0, p.rCd - 5);
+        p.rCd = Math.max(0, p.rCd - SUPPLY_BOX.ultGain);
         if (before > 0 && p.rCd <= 0 && !p.rReadyAnnounced) {
           p.rReadyAnnounced = true;
           this.events.push({ type: 'ultReady' });

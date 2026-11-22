@@ -272,7 +272,6 @@ export const UPGRADES = {
 export const FOUNTAIN = {
   x: -0.45,
   z: -2.40,
-  innerRadius: 8.1,
   zoneRadius: 11.4,
   chargeTime: 10.0,
   decayRate: 0.35,

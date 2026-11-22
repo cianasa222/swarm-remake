@@ -41,7 +41,7 @@
 
 - **`PLAYER`**：`maxHp: 1000`、`speed: 3.5`、`radius: 0.35`
 - **`MATCH`**：`bossTime: 897`（`14:57` 首领登场）
-- **`FOUNTAIN`**：`x: -0.45`、`z: -2.40`、`innerRadius: 8.1`、`zoneRadius: 11.4`、`chargeTime: 10.0`、`decayRate: 0.35`、`healFraction: 0.60`、`cooldown: 75.0`
+- **`FOUNTAIN`**：`x: -0.45`、`z: -2.40`、`zoneRadius: 11.4`、`chargeTime: 10.0`、`decayRate: 0.35`、`healFraction: 0.60`、`cooldown: 75.0`
 - **`SUPPLY_BOX`**：`hp: 60`、`radius: 0.68`、`respawnTime: 90`、`xpDrops: 2`、`xpValue: 22`、`healChance: 0.30`、`ultChance: 0.25`、`ultGain: 8`
 
 ---
