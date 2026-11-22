@@ -167,6 +167,7 @@ export interface SupplyBox {
 export interface WaveWarn { entrance: string; t: number; until: number; tag?: string }
 
 export type GameEvent =
+  | { type: 'weaponAudio'; cue: 'uwuCast' | 'crossbowCast' | 'crossbowEvoCast' | 'boomerangCast' | 'radiantHit' | 'cyclonicCast' | 'statikkCast' | 'starWarning' | 'mineCast' }
   | { type: 'shoot'; weapon: 'mg' | 'cn' | 'ult'; x: number; z: number; ang: number; tier: number; ownerId?: number }
   | { type: 'hit'; x: number; z: number; kind: string; crit?: boolean; ownerId?: number }
   | { type: 'explode'; x: number; z: number; r: number; kind: 'cn' | 'ult' | 'mine' | 'pulse' | 'shard' | 'rocket_e' | 'ult_r' | 'radiant' | 'iceblast' | 'orbital'; ownerId?: number }
@@ -1220,10 +1221,13 @@ export class Game {
           const rad = def.radius[lv - 1] * this.areaMul;
           // 原版 HollowRadiance Damage = BaseDamage + 0.035 × 最大生命（mStat 11）
           const base = def.dmg[lv - 1] + this.maxHpTotal * 0.035;
+          let contact = false;
           this.forEnemiesInCircle(p.x, p.z, rad, (e) => {
             const { dmg } = this.rollDmg(base);
             this.damageEnemy(e, dmg, 'radiant');
+            contact = true;
           });
+          if (contact) this.events.push({ type: 'weaponAudio', cue: 'radiantHit' });
           this.damageBoxesInCircle(p.x, p.z, rad, base * 0.5);
         }
         continue;
@@ -1263,6 +1267,7 @@ export class Game {
         const tx = near ? near.x : target?.x;
         const tz = near ? near.z : target?.z;
         if (tx == null || tz == null) continue;
+        this.events.push({ type: 'weaponAudio', cue: 'uwuCast' });
         p.weaponCds[wId] = def.cd[lv - 1] * this.cdMul;
         const a0 = Math.atan2(tz - p.z, tx - p.x);
         const n = def.count[lv - 1] + this.bonusProjectiles;
@@ -1283,6 +1288,7 @@ export class Game {
           .filter((e) => e.alive && (e.kind !== 'boss' || e.state !== 'enter') && len(e.x - p.x, e.z - p.z) <= def.radius[lv - 1])
           .sort((a, b) => b.hp - a.hp);
         if (!cands.length) continue;
+        this.events.push({ type: 'weaponAudio', cue: 'statikkCast' });
         p.weaponCds[wId] = def.cd[lv - 1] * this.cdMul;
         const chainN = Math.min(cands.length, def.count[lv - 1] + this.bonusProjectiles);
         let px = p.x, pz = p.z;
@@ -1291,7 +1297,8 @@ export class Game {
           const { dmg, isCrit } = this.rollDmg(def.dmg[lv - 1]);
           this.damageEnemy(e, dmg, 'statikk');
           this.events.push({ type: 'hit', x: e.x, z: e.z, kind: 'statikk', crit: isCrit });
-          this.lightningArcs.push({ x0: px, z0: pz, x1: e.x, z1: e.z, age: 0, life: 0.24 });
+          // Q-28：原版 StatikkShiv_Beam LightningBase 寿命 0.4 s，进化 StatikkShiv_Beam_Evo 0.2 s（旧值 0.24 s）。只影响闪电显示时长
+          this.lightningArcs.push({ x0: px, z0: pz, x1: e.x, z1: e.z, age: 0, life: evolved ? 0.2 : 0.4 });
           px = e.x; pz = e.z;
           if (evolved) {
             this.weaponZones.push({
@@ -1303,6 +1310,7 @@ export class Game {
       } else if (wId === 'crossbow') {
         const near = this.findNearestEnemy(def.radius[lv - 1]);
         if (!near && !target) continue;
+        this.events.push({ type: 'weaponAudio', cue: evolved ? 'crossbowEvoCast' : 'crossbowCast' });
         p.weaponCds[wId] = def.cd[lv - 1] * this.cdMul;
         const baseA = this.rand() * Math.PI * 2;
         const aimA = near ? Math.atan2(near.z - p.z, near.x - p.x) : baseA;
@@ -1324,6 +1332,7 @@ export class Game {
       } else if (wId === 'boomerang') {
         const near = this.findNearestEnemy(def.radius[lv - 1]);
         if (!near && !target) continue;
+        this.events.push({ type: 'weaponAudio', cue: 'boomerangCast' });
         p.weaponCds[wId] = def.cd[lv - 1] * this.cdMul;
         const aimA = near ? Math.atan2(near.z - p.z, near.x - p.x) : ang;
         const n = def.count[lv - 1] + this.bonusProjectiles;
@@ -1342,6 +1351,7 @@ export class Game {
       } else if (wId === 'bunnymega') {
         const cands = this.enemies.filter((e) => e.alive && (e.kind !== 'boss' || e.state !== 'enter') && len(e.x - p.x, e.z - p.z) <= 8); // 原版 StarStrike TargetingRange 800
         if (!cands.length) continue;
+        this.events.push({ type: 'weaponAudio', cue: 'starWarning' });
         p.weaponCds[wId] = def.cd[lv - 1] * this.cdMul;
         const n = def.count[lv - 1] + this.bonusProjectiles;
         const bCrit = def.bonusCrit ? def.bonusCrit[lv - 1] : 0;
@@ -1362,6 +1372,7 @@ export class Game {
           });
         }
       } else if (wId === 'mines') {
+        this.events.push({ type: 'weaponAudio', cue: 'mineCast' });
         p.weaponCds[wId] = def.cd[lv - 1] * this.cdMul;
         const n = def.count[lv - 1] + this.bonusProjectiles;
         const rad = def.radius[lv - 1] * this.areaMul;
@@ -1382,6 +1393,7 @@ export class Game {
   }
 
   private spawnOrbitals(count: number, rad: number, dmg: number, evolved: boolean) {
+    this.events.push({ type: 'weaponAudio', cue: 'cyclonicCast' });
     this.orbitals.length = 0;
     const r = rad * this.areaMul;
     for (let i = 0; i < count; i++) {

@@ -100,6 +100,7 @@ export class EntityRenderer {
   readonly reksaiRig: RekSaiRig;
   private elitePool: EliteBruiserPool;
   private eliteBuf: Enemy[] = [];
+  private lastPlayer: Game['player'] | null = null;
   /** Q-22：记录每只小怪进入当前状态的时刻，用于攻击动作从头播放 */
   private attackClock = new WeakMap<Enemy, number>();
 
@@ -297,6 +298,12 @@ export class EntityRenderer {
 
   update(g: Game, dt = 1 / 60) {
     const t = g.clock;
+    // Game.reset creates a new player object, even if no frame at clock zero was rendered.
+    if (this.lastPlayer !== g.player) {
+      this.elitePool.reset();
+      this.attackClock = new WeakMap();
+      this.lastPlayer = g.player;
+    }
 
     // ═════════ 玩家角色 ═════════
     this.heroRig.update(g, dt);

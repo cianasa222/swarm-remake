@@ -537,11 +537,17 @@ interface EliteSlot {
   mixer: THREE.AnimationMixer;
   actions: Record<string, THREE.AnimationAction>;
   curKey: string;
+  /** Q-28：脚下红圈（死亡时隐藏） */
+  ring: THREE.Mesh;
+  /** Q-28：死亡动作剩余时间（秒），> 0 表示正在播放死亡动作 */
+  dyingT: number;
 }
 
 /**
  * 第一关重装精英（Strawberry_MiniBoss_Bruiser）骨骼动画对象池：
  * 同屏精英数量极少（<=6），使用真实骨骼动画展现奔跑与重击姿态。
+ * Q-28：槽位按敌人 id 固定（原来按数组下标，前一只死掉后后面的精英会「换槽」跳动作）；
+ * 精英从存活列表消失时原地播放原版 `bw_ironback_death`（约 1.63 s），播完再隐藏。只改渲染，不改模拟。
  */
 export class EliteBruiserPool {
   private slots: EliteSlot[] = [];
@@ -549,6 +555,9 @@ export class EliteBruiserPool {
   private clips: THREE.AnimationClip[] = [];
   private baseTex: THREE.Texture | null = null;
   private loadStarted = false;
+  /** Q-28：敌人 id → 槽位下标 */
+  private byId = new Map<number, number>();
+  private tracked = new Map<number, Enemy>();
 
   constructor(private parent: THREE.Group, private maxSlots = 6, defer = false) {
     if (!defer) this.ensureLoaded();
@@ -616,20 +625,108 @@ export class EliteBruiserPool {
     bind('run', /bruiser_run/i);
     bind('attack', /attack1/i);
     bind('idle', /idle1/i);
+    bind('death', /death/i); // Q-28：原版 bw_ironback_death（以前导出了但没用）
     if (actions.run) actions.run.play();
 
-    return { root, model, mat, mixer, actions, curKey: actions.run ? 'run' : '' };
+    return { root, model, mat, mixer, actions, curKey: actions.run ? 'run' : '', ring, dyingT: 0 };
+  }
+
+  /** Q-28：槽位分给新精英时恢复到奔跑状态 */
+  private resetSlot(slot: EliteSlot) {
+    slot.mixer.stopAllAction();
+    slot.dyingT = 0;
+    slot.ring.visible = true;
+    slot.mat.emissive.setHex(0x000000);
+    if (slot.actions.run) {
+      slot.actions.run.reset().play();
+      slot.curKey = 'run';
+    } else {
+      slot.curKey = '';
+    }
+  }
+
+  /** Q-28：原地播放死亡动作；模型没有 death 时直接隐藏（旧行为） */
+  private startDeath(slot: EliteSlot) {
+    const death = slot.actions.death;
+    if (!slot.root.visible || !death) {
+      slot.root.visible = false;
+      slot.dyingT = 0;
+      return;
+    }
+    if (slot.curKey && slot.curKey !== 'death') slot.actions[slot.curKey]?.fadeOut(0.1);
+    death.reset();
+    death.setLoop(THREE.LoopOnce, 1);
+    death.clampWhenFinished = true;
+    death.fadeIn(0.1).play();
+    slot.curKey = 'death';
+    slot.mat.emissive.setHex(0x000000);
+    slot.ring.visible = false;
+    slot.dyingT = death.getClip().duration + 0.25;
+  }
+
+  reset() {
+    this.byId.clear();
+    this.tracked.clear();
+    for (const slot of this.slots) {
+      slot.mixer.stopAllAction();
+      slot.dyingT = 0;
+      slot.root.visible = false;
+      slot.curKey = '';
+    }
   }
 
   update(elites: Enemy[], dt: number) {
     if (elites.length > 0 && !this.loadStarted) this.ensureLoaded();
-    for (let i = 0; i < this.slots.length; i++) {
-      const slot = this.slots[i];
-      const e = elites[i];
-      if (!e) {
+    if (!this.slots.length) return;
+
+    // 1) 仅真正耗尽 HP 的精英播放死亡动画；Boss 清场等移除直接隐藏。
+    const alive = new Set<number>();
+    for (const e of elites) alive.add(e.id);
+    for (const [id, si] of [...this.byId]) {
+      if (alive.has(id)) continue;
+      this.byId.delete(id);
+      const e = this.tracked.get(id);
+      this.tracked.delete(id);
+      const slot = this.slots[si];
+      if (e && e.hp <= 0) this.startDeath(slot);
+      else {
+        slot.mixer.stopAllAction();
         slot.root.visible = false;
-        continue;
+        slot.dyingT = 0;
       }
+    }
+
+    // 2) 新出现的精英分配槽位（优先空闲槽，其次抢正在播死亡动作的槽）
+    const used = new Set<number>(this.byId.values());
+    for (const e of elites) {
+      if (this.byId.has(e.id)) continue;
+      let si = this.slots.findIndex((s, i) => !used.has(i) && s.dyingT <= 0);
+      if (si < 0) si = this.slots.findIndex((_, i) => !used.has(i));
+      if (si < 0) continue; // 超过槽位数：与旧逻辑一致，多出的不显示
+      this.byId.set(e.id, si);
+      used.add(si);
+      this.resetSlot(this.slots[si]);
+    }
+
+    // 3) 正在死亡 / 空闲的槽
+    for (let i = 0; i < this.slots.length; i++) {
+      if (used.has(i)) continue;
+      const slot = this.slots[i];
+      if (slot.dyingT > 0) {
+        slot.dyingT -= dt;
+        slot.mixer.update(dt);
+        if (slot.dyingT <= 0) slot.root.visible = false;
+      } else {
+        slot.root.visible = false;
+      }
+    }
+
+    // 4) 存活精英（逻辑与原来相同）
+    for (const e of elites) {
+      const si = this.byId.get(e.id);
+      if (si === undefined) continue;
+      const slot = this.slots[si];
+      this.tracked.set(e.id, e);
       slot.root.visible = true;
       const emerge = Math.min(1, e.age / 0.35);
       slot.root.position.set(e.x, 0, e.z);

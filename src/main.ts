@@ -302,10 +302,24 @@ function handleAudioAndBanner() {
       if (ev.weapon === 'mg') audio.mg(ev.tier);
       else if (ev.weapon === 'cn') audio.cannon();
       else audio.ult();
-    } else if (ev.type === 'hit') audio.hit();
+    } else if (ev.type === 'weaponAudio') audio.weaponCue(ev.cue);
+    else if (ev.type === 'hit') {
+      switch (ev.kind) {
+        case 'uwu': audio.weaponCue('uwuHit'); break;
+        case 'crossbow': audio.weaponCue('crossbowHit'); break;
+        case 'boomerang': audio.weaponCue('boomerangHit'); break;
+        case 'boomerang_mini': audio.weaponCue('boomerangMiniHit'); break;
+        case 'cyclonic': audio.weaponCue('cyclonicHit'); break;
+        case 'statikk': audio.weaponCue('statikkHit'); break;
+        default: audio.hit();
+      }
+    }
     else if (ev.type === 'explode') {
-      if (ev.kind === 'mine') audio.mineBurst();
+      if (ev.kind === 'mine') audio.weaponCue('mineExplode');
       else if (ev.kind === 'pulse') audio.pulse();
+      else if (ev.kind === 'iceblast') audio.weaponCue('iceblast');
+      else if (ev.kind === 'orbital') audio.weaponCue('starExplode');
+      else if (ev.kind === 'radiant') audio.weaponCue('radiantHit');
       else audio.explode(ev.kind === 'ult');
     } else if (ev.type === 'kill') audio.kill();
     else if (ev.type === 'playerHurt') { audio.hurt(); webPlatform.vibrate(35); }
