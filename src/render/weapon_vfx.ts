@@ -98,6 +98,8 @@ export class WeaponVfxRenderer {
   private hrGroup = new THREE.Group();
   private hrOutlineMesh: THREE.Mesh | null = null;
   private hrFireMesh: THREE.Mesh | null = null;
+  private hrOutlineBlendMesh: THREE.Mesh | null = null;
+  private hrFireBlendMesh: THREE.Mesh | null = null;
   private hrNoiseTex: THREE.Texture;
   private hrGlowTex: THREE.Texture;
 
@@ -191,24 +193,35 @@ export class WeaponVfxRenderer {
     this.hrGroup.visible = false;
     this.root.add(this.hrGroup);
 
+    // Q-28: HollowRadiance_AoeCircle 四层；两个 WebP 都有真实 alpha，不重复乘绿色通道。
+    const mkBlend = (map: THREE.Texture, color: number, opacity: number) => new THREE.MeshBasicMaterial({
+      map, color, opacity, transparent: true, side: THREE.DoubleSide, depthWrite: false,
+    });
     loadScbGeo('./assets/weapons/vfx/hr_outline.json').then((geo) => {
-      this.hrOutlineMesh = new THREE.Mesh(geo, mkAdd(this.hrGlowTex, 0x55ff70, 0.72));
-      this.hrOutlineMesh.position.y = 0.05;
-      this.hrOutlineMesh.renderOrder = 6;
-      this.hrGroup.add(this.hrOutlineMesh);
+      this.hrOutlineBlendMesh = new THREE.Mesh(geo, mkBlend(this.hrGlowTex, 0x69ff80, 0.45));
+      this.hrOutlineBlendMesh.position.y = 0.05;
+      this.hrOutlineBlendMesh.renderOrder = 6;
+      this.hrOutlineMesh = new THREE.Mesh(geo, mkAdd(this.hrGlowTex, 0x73ff6e, 0.15));
+      this.hrOutlineMesh.position.y = 0.055;
+      this.hrOutlineMesh.renderOrder = 7;
+      this.hrGroup.add(this.hrOutlineBlendMesh, this.hrOutlineMesh);
     }).catch(() => {});
     loadScbGeo('./assets/weapons/vfx/hr_fire.json').then((geo) => {
-      this.hrFireMesh = new THREE.Mesh(geo, mkAdd(this.hrNoiseTex, 0x22cc44, 0.48));
+      this.hrFireBlendMesh = new THREE.Mesh(geo, mkBlend(this.hrNoiseTex, 0xff7a08, 0.4));
+      this.hrFireBlendMesh.position.y = 0.035;
+      this.hrFireBlendMesh.renderOrder = 4;
+      this.hrFireMesh = new THREE.Mesh(geo, mkAdd(this.hrNoiseTex, 0x05ff00, 0.25));
       this.hrFireMesh.position.y = 0.04;
       this.hrFireMesh.renderOrder = 5;
-      this.hrGroup.add(this.hrFireMesh);
+      this.hrGroup.add(this.hrFireBlendMesh, this.hrFireMesh);
     }).catch(() => {});
 
     // 4. 进化冰盾球罩
     const shieldTex = loadTex('./assets/weapons/vfx/frost_shield.webp');
     this.iceShieldMesh = new THREE.Mesh(
       new THREE.SphereGeometry(1.05, 18, 14),
-      mkAdd(shieldTex, 0x7ef2ff, 0.58),
+      // Q-25：原版 FrostNova_EvolveShield「Bubble8」(0.09, 0.54, 0.95, 0.55) 深蓝（旧值浅青 0x7ef2ff α 0.58）
+      mkAdd(shieldTex, 0x178af2, 0.55),
     );
     this.iceShieldMesh.visible = false;
     this.iceShieldMesh.renderOrder = 12;
@@ -230,6 +243,7 @@ export class WeaponVfxRenderer {
 
     // 6. 战兔巨爆地面准星（star_target.webp）& 电刀雷暴圆形电环（circle_mis.webp）
     const starTargetTex = loadTex('./assets/weapons/vfx/star_target.webp');
+    // QC-15: 战兔巨爆 = StarStrike，非 Nuke；保留原有视觉基线，待独立逐层重建。
     this.starTargets = mkInst(this.root, mkFlatGeo(2.0, 2.0), mkAdd(starTargetTex, 0x72f8ff, 0.9), 24, 6);
 
     const stormTex = loadTex('./assets/heroes/jinx/vfx/circle_mis.webp');
@@ -325,8 +339,10 @@ export class WeaponVfxRenderer {
   }
 
   spawnIceBlast(x: number, z: number, radius: number) {
-    this.allocBurst(this.geoFrostRing, x, 0.08, z, this.texFrostTile, 0x8ef9ff, radius * 0.002, radius / 167.75, 0.48, 0.88, true, 11);
-    this.allocBurst(this.unitFlatGeo, x, 0.04, z, this.texFrostCrack, 0xa8f8ff, radius * 0.45, radius * 0.65, 1.0, 0.72, true, 4);
+    // Q-25：原版 FrostNova「Wind」(Frostwraith_RoundMesh) 无 birthColor（白色）α 0.72、寿命 1.5 s；
+    // 「AABasic」(Frostwraith_CrackDecal) 白色 α 0.6、寿命 1.75 s。旧值青色 0x8ef9ff / 0xa8f8ff、0.48 s / 1.0 s。
+    this.allocBurst(this.geoFrostRing, x, 0.08, z, this.texFrostTile, 0xffffff, radius * 0.002, radius / 167.75, 1.5, 0.72, true, 11);
+    this.allocBurst(this.unitFlatGeo, x, 0.04, z, this.texFrostCrack, 0xffffff, radius * 0.45, radius * 0.65, 1.75, 0.6, true, 4);
   }
 
   update(g: Game, dt: number) {
@@ -427,14 +443,17 @@ export class WeaponVfxRenderer {
       this.hrGroup.position.set(g.player.x, 0, g.player.z);
       this.hrGroup.scale.setScalar(rad / 102.0);
       this.hrNoiseTex.offset.y = (t * 0.45) % 1;
-      if (this.hrOutlineMesh) {
-        this.hrOutlineMesh.rotation.y = t * 0.4;
-        (this.hrOutlineMesh.material as THREE.MeshBasicMaterial).color.setHex(evo ? 0xff7a38 : 0x55ff70);
-      }
-      if (this.hrFireMesh) {
-        this.hrFireMesh.rotation.y = -t * 0.65;
-        (this.hrFireMesh.material as THREE.MeshBasicMaterial).color.setHex(evo ? 0xff3b9a : 0x22cc44);
-      }
+      const setL = (m: THREE.Mesh | null, rotY: number, hex: number, op: number) => {
+        if (!m) return;
+        m.rotation.y = rotY;
+        const mat = m.material as THREE.MeshBasicMaterial;
+        mat.color.setHex(hex);
+        mat.opacity = op;
+      };
+      setL(this.hrOutlineBlendMesh, t * 0.4, evo ? 0xffd93d : 0x69ff80, evo ? 0.4 : 0.45);
+      setL(this.hrOutlineMesh, t * 0.4, evo ? 0xff7a38 : 0x73ff6e, evo ? 0.5 : 0.15);
+      setL(this.hrFireBlendMesh, -t * 0.65, evo ? 0xff1fd9 : 0xff7a08, evo ? 0.5 : 0.4);
+      setL(this.hrFireMesh, -t * 0.65, evo ? 0xffb012 : 0x05ff00, evo ? 0.5 : 0.25);
     }
 
     // 4. 进化冰盾官方贴图球罩

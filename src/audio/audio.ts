@@ -60,6 +60,30 @@ const BGM = {
   defeat: 'music/632537467.ogg',
 } as const;
 
+// 14.14 Map33 global bank events.json, not filename guesses. Each group uses a
+// small subset of the decoded original variants; additional variants remain in AG-06.
+export const WEAPON_SFX = {
+  uwuCast: ['global/275484393.ogg', 'global/352030796.ogg'],
+  uwuHit: ['global/22552172.ogg', 'global/399931293.ogg'],
+  crossbowCast: ['global/218077601.ogg', 'global/334370000.ogg'],
+  crossbowEvoCast: ['global/119146350.ogg', 'global/262911115.ogg'],
+  crossbowHit: ['global/37590940.ogg', 'global/438421375.ogg'],
+  boomerangCast: ['global/862399986.ogg', 'global/905460843.ogg'],
+  boomerangHit: ['global/427504408.ogg', 'global/583413365.ogg'],
+  boomerangMiniHit: ['global/1026393134.ogg', 'global/12552275.ogg'],
+  radiantHit: ['global/1027519524.ogg', 'global/206975371.ogg'],
+  cyclonicCast: ['global/172068817.ogg'],
+  cyclonicHit: ['global/1060287372.ogg', 'global/198194112.ogg'],
+  statikkCast: ['global/1001858887.ogg', 'global/204325424.ogg'],
+  statikkHit: ['global/234909725.ogg', 'global/384584966.ogg'],
+  starWarning: ['global/559644877.ogg'],
+  starExplode: ['global/994089705.ogg'],
+  iceblast: SFX.pulse,
+  mineCast: SFX.mine,
+  mineExplode: SFX.mineBurst,
+} as const;
+export type WeaponAudioCue = keyof typeof WEAPON_SFX;
+
 const CORE_PRELOAD: readonly string[] = [
   ...SFX.mg,
   ...SFX.hit,
@@ -81,6 +105,7 @@ const CORE_PRELOAD: readonly string[] = [
   ...SFX.mineBurst.slice(0, 2),
   ...SFX.pulse.slice(0, 2),
   ...SFX.waveWarn,
+  ...Object.values(WEAPON_SFX).map((samples) => samples[0]),
 ];
 
 interface ActiveBgmNode {
@@ -389,6 +414,13 @@ export class AudioFX {
   }
 
   // ── 武器 ──
+  weaponCue(cue: WeaponAudioCue) {
+    const isHit = cue.endsWith('Hit');
+    if (!this.gate(`weapon:${cue}`, isHit ? 0.075 : 0.12)) return;
+    if (this.playSample(WEAPON_SFX[cue], isHit ? 0.30 : 0.48, 0.025)) return;
+    // Keep a quiet fallback while the original clip is loading / unsupported.
+    this.tone('triangle', isHit ? 900 : 450, isHit ? 500 : 260, 0.065, 0.055);
+  }
   mg(tier: number) {
     if (!this.gate('mg', 0.055)) return;
     if (this.playSample(SFX.mg, tier >= 1 ? 0.44 : 0.36, 0.05, tier >= 1 ? 1.07 : 1.0, 'mg')) return;
