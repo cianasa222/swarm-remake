@@ -83,3 +83,15 @@ test('QC-19 gold and AnimaSquad card stay disabled in the present game', () => {
  for(const id of ['Strawberry_Rebuild_Drop_Gold','Strawberry_Rebuild_Drop_Gold_Missile','Strawberry_Rebuild_Drop_Gold_Pickup','Strawberry_AnimaSquad_Card'])
   assert.equal(classifyMap33('Maps/Shipping/Map33/Particles/Default/'+id).gameRefs.inGame,false);
 });
+
+test('QC-19 newly imported attachedMesh layers are indexed but not auto-bound', () => {
+  const map = require('../../src/render-babylon/vfx/data/14.14/asset_map.json');
+  const expected = [['Strawberry_Spawner_SpawnVFX',3],['Strawberry_Spawner_SpawnVFX_Eye',2],['Strawberry_Spawner_SpawnVFX_Eye',3],['Strawberry_MapBoss_Enraged',0],['Strawberry_MapBoss_Enraged',1]];
+  assert.equal(map.summary.attachedMeshEntityBindings, map.attachedMeshBindings.length);
+  for (const [id, index] of expected) {
+    const record = map.attachedMeshBindings.find(r => r.systemId === id && r.index === index);
+    assert.ok(record, `${id}[${index}] is missing`);
+    assert.equal(record.gameRefs.inGame, false);
+    assert.equal(record.bindingTarget, 'unverified_original_mesh');
+  }
+});

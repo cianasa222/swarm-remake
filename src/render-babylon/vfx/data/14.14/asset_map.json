@@ -25,7 +25,7 @@
    "missingUnpack": 42,
    "qc19Unverified": 2
   },
-  "attachedMeshEntityBindings": 21
+  "attachedMeshEntityBindings": 26
  },
  "textures": [
   {
@@ -11467,6 +11467,79 @@
    "submeshes": null,
    "lockToAttachment": true,
    "bindingTarget": "player_skinned_mesh"
+  },
+  {
+   "category": "enemy",
+   "systemId": "Strawberry_Spawner_SpawnVFX",
+   "layerName": "Avatar",
+   "index": 3,
+   "gameRefs": {
+    "enemy": true,
+    "role": "spawn",
+    "binding": "name",
+    "inGame": false
+   },
+   "submeshes": null,
+   "lockToAttachment": true,
+   "bindingTarget": "unverified_original_mesh"
+  },
+  {
+   "category": "enemy",
+   "systemId": "Strawberry_Spawner_SpawnVFX_Eye",
+   "layerName": "Avatar",
+   "index": 2,
+   "gameRefs": {
+    "enemy": true,
+    "role": "spawnEye",
+    "binding": "name",
+    "inGame": false
+   },
+   "submeshes": null,
+   "lockToAttachment": true,
+   "bindingTarget": "unverified_original_mesh"
+  },
+  {
+   "category": "enemy",
+   "systemId": "Strawberry_Spawner_SpawnVFX_Eye",
+   "layerName": "Avatar1",
+   "index": 3,
+   "gameRefs": {
+    "enemy": true,
+    "role": "spawnEye",
+    "binding": "name",
+    "inGame": false
+   },
+   "submeshes": null,
+   "lockToAttachment": true,
+   "bindingTarget": "unverified_original_mesh"
+  },
+  {
+   "category": "map",
+   "systemId": "Strawberry_MapBoss_Enraged",
+   "layerName": "Avatar",
+   "index": 0,
+   "gameRefs": {
+    "ui": "bossEnraged",
+    "binding": "name",
+    "inGame": false
+   },
+   "submeshes": null,
+   "lockToAttachment": true,
+   "bindingTarget": "unverified_original_mesh"
+  },
+  {
+   "category": "map",
+   "systemId": "Strawberry_MapBoss_Enraged",
+   "layerName": "Avatar1",
+   "index": 1,
+   "gameRefs": {
+    "ui": "bossEnraged",
+    "binding": "name",
+    "inGame": false
+   },
+   "submeshes": null,
+   "lockToAttachment": true,
+   "bindingTarget": "unverified_original_mesh"
   }
  ]
 }

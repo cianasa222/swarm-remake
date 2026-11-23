@@ -12,3 +12,10 @@
 ## CI 发现并修复的主线构建配置缺陷
 
 首次 CI `npm ci` 通过，`npm run build` 在旧 `tsconfig.json` 上因 `tools/q28-regression.test.ts` 引用 `node:assert/strict`、`node:fs` 且未安装 Node 类型报 TS2591。构建仅需检查浏览器运行时代码，调整 `tsconfig.json.include` 为 `src`；工具的行为检查改由专门 Node/tsx 单测覆盖。此改动不影响游戏玩法、脚本运行或部署。
+
+## GPT-18 · QC-19 附着网格映射补漏（2026-11-23）
+
+- 二次交叉审查 PR #10 最新 157 系统/903 层数据后发现，原资产映射只登记 21 个 `attachedMesh`，未包含新导入的 5 个图层。
+- 现已逐层补齐 Spawner SpawnVFX 1 项、SpawnVFX Eye 2 项、MapBoss Enraged 2 项，合计 26 项。
+- 新增项全部 `inGame:false` 且 `bindingTarget:'unverified_original_mesh'`，不会当成已可渲染或已验证的骨骼绑定。
+- 增加 Node 回归检查，确认 5 项及总索引一致。现有 9 张增量纹理/2 个增量网格仍需资源核对，CI 与真机结果必须基于此新提交重验。
