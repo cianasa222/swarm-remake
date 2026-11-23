@@ -23,6 +23,8 @@ jobs:
         run: npx tsx tools/render-quality.test.ts
       - name: Elite death and 14.14 audio cues
         run: npx tsx tools/q28-regression.test.ts
+      - name: Gemini GM-09 B4 pure logic regressions
+        run: npx tsx --test tools/bab/b4_core.test.ts
       - name: VFX data tests
         run: |
           if [ -f tools/bab/extract_vfx_14_14.test.cjs ]; then node --test tools/bab/extract_vfx_14_14.test.cjs; fi
