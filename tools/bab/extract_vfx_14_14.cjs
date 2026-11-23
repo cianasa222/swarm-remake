@@ -89,7 +89,7 @@ function classifyMap33(key) {
       category: 'map',
       gameRefs: {
         pickup: 'card',
-        inGame: !/AnimaSquad_Card/i.test(last), // Unverified original effect: do not auto-bind
+        ...(/AnimaSquad_Card/i.test(last) ? { inGame: false } : {}), // Only unverified effect is disabled; real card pickup unchanged
         simEvent: /Pickup/i.test(last) ? 'pickup' : 'dropIdle',
       },
     };
