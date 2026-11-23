@@ -6,6 +6,8 @@
 
 ## 1. 项目定位与开发总纲
 
+> **GPT-11 · 用户指示 2026-11-23**：每次 GitHub 提交后立即同步代码与交接至 KV，不等 PR 合并；未合并分支使用独立 `pending/github/` 快照及 `SYNC_STATE.json.pending_github_commits`，不覆盖主线及 Quick 独有资料。合并后再同步主线，部署另行授权。开工前同时查主线、分支快照及待同步记录。详见 [COLLAB 2.3](COLLAB.md#23-每次提交双端交接gpt-11--用户指示-2026-11-23优先于旧规则中只同步-main的表述)。
+
 > **GPT-09 · 2026-11-23 用户新决策**：批准全面迁移至 Babylon.js（WebGPU + WebGL2 fallback，共用一套渲染架构）。以下 Three.js 及 M0–M4 为已完成旧版基线，不再是新渲染开发目标。执行顺序、模块、资产复用、验收和上线门禁见 [BAB-01 全面迁移操作手册](handover/gpt/BABYLON_MIGRATION.md)。保留 sim、登录、音频、原版资产及线上版本；迁移完成前不得删除旧基线或直接切换生产。原有协作、证据和验收规则继续生效。
 
 本项目（`tideline`）旨在 **1:1 复刻《英雄联盟：无尽狂潮（Swarm）》第一关「仓库区（Map33）」**，采用 **Vite + TypeScript + Three.js** 构建，使用拳头 Patch 14.14 官方解包 3D 模型、贴图、骨骼动画与特效网格还原高档实机画面。

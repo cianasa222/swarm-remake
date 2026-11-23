@@ -44,12 +44,13 @@
 | 内容 | 权威来源 | 镜像 |
 | :--- | :--- | :--- |
 | 源码、配置、文档 | **GitHub `main` 分支** | Cloudflare KV `tideline-handover`（key 为仓库相对路径，原样存放） |
+| 未合并提交（源码、配置、交接文档） | GitHub 对应分支的固定 commit SHA | KV `pending/github/<ai>/<任务>/<commit>/<仓库相对路径>`；独立清单，不是主线 |
 | 14.14 原版参考数据（`.bin.json`） | Cloudflare KV `ref/14.14/<CommunityDragon 相对路径>` | 不进公开仓库（版权） |
 | 运行时资产（`.glb` / `.webp` / 特效 `.json`） | GitHub `public/assets/` | 线上 Worker `tideline-swarm`（**只放游戏和资产，不放交接文档**） |
 | 任务 | GitHub Issues（标签 `help wanted`） | — |
 
-1. **所有改动先进 GitHub `main`**，可以直接提交，也可以合并 PR。
-2. 每次 `main` 变更后，**由改动的 AI 自己**按 2.1、2.2 节把变更文件镜像到 KV（没有 Cloudflare 权限的见 2.2 节第 3 条）。镜像时更新 KV 里的 `SYNC_STATE.json`（记录 commit SHA、时间、文件列表）。**KV 与 GitHub 不一致时，一律以 GitHub `main` 为准。**
+1. **每次开发提交先上传 GitHub**（独立分支或按授权直接提交 `main`），立即同步 KV；不得等到合并才交接。PR 是验收与集成步骤，不是双端交接的前置条件。
+2. 每次提交和每次合并后，**由改动的 AI 自己**按 2.1、2.2 节把变更文件镜像到 KV（没有 Cloudflare 权限的见 2.2 节第 3 条）。镜像时更新 `SYNC_STATE.json` 相应条目；分支独立记录，主线全量一致才可推进全局 `commit`。**GitHub `main` 仍是唯一正式主线，部署另行授权。**
 3. 不要直接改 KV 里的源码 key，否则下次同步会被覆盖。
 4. `.github/workflows/` 只能由用户在 GitHub 网页上手动维护，AWS Quick 的连接器没有 workflow 权限。
 
@@ -63,7 +64,7 @@
    - 不要整份重写别人写的内容。确实需要改别人的节时，在提交说明里写清原因。
 3. **一次提交只做一件事**：提交说明写清改了哪些文件、哪一节。文档和代码可以放在同一次提交里，但不要顺手改无关的文件。
 4. **KV 只做镜像，且只做增量**：
-   - 只把 GitHub `main` 上**已经提交**的内容写进 KV：先从 GitHub 读回文件再写入，写完核对 SHA-256。
+   - 只把 GitHub **已经提交**的内容写进对应镜像：按固定 commit SHA 从 GitHub 读回文件，主线使用原 key，分支使用 2.3 节独立前缀；写完核对 SHA-256。Quick 的原有 KV-only 例外和保护规则继续有效。
    - `FILE_INDEX.json` 和 `SYNC_STATE.json` 必须「读取 → 只改对应条目 → 写回」，**禁止整份替换**。
    - 发现 `FILE_INDEX.json` 条目数异常（明显少于 KV 实际 key 数），按 KV 实际 key 重建，并在 `SYNC_STATE.json` 的 `note` 里记一笔。
 5. **发现冲突先停**：如果 GitHub 上最新提交不是你拉取时的那个，而且改的是同一个文件，先重新拉取、合并。拿不准怎么合并时，在对应 Issue 下评论或告诉用户，不要强行覆盖。
@@ -75,19 +76,19 @@
 
 1. **改了就登记**：改代码、资产或配置的那一次提交里，必须同时更新自己的交接文档 `handover/<ai名>/HANDOVER.md`，在「改动索引」表追加一行：编号、时间、提交、文件（+增 / −删 行）、改了什么、验收、部署、KV。**没登记的改动视为不合规，审查直接退回。**
 2. **提交说明带名字和编号**：以 `[<AI名> <编号>]` 开头，例如 `[Quick AI Q-12]`、`[GPT GPT-03]`、`[Claude CL-01]`。编号前缀第一次建目录时在 [`handover/README.md`](./handover/README.md) 第 3 节登记，不得与别人重复。任何人用 `git log --grep "<AI名>"` 就能列出这个 AI 的全部提交。
-3. **两处同时更新**：GitHub 提交后，立刻把这次改动的文件（代码 + 自己的交接文档 + 改过的共享文档）镜像到 Cloudflare KV，按 2.1 节第 4 条增量更新 `FILE_INDEX.json` / `SYNC_STATE.json` 并核对 SHA-256，然后把改动行的「KV」列写成「已同步」。
+3. **两处同时更新（每次提交，不等合并）**：GitHub 提交后，立刻把这次改动的文件（代码 + 自己的交接文档 + 改过的共享文档）镜像到 Cloudflare KV，按 2.1 节第 4 条及 2.3 节增量更新 `FILE_INDEX.json` / `SYNC_STATE.json` 并核对 SHA-256。分支写「分支已同步」；主线写「主线已同步」；不得把未合并内容当主线。验收、合并、部署各自标记。
    - 没有 Cloudflare 权限的 AI：「KV」列写「待同步」，由下一个有权限的 AI 或 Quick AI 审查时补齐，补齐后改成「已同步」。
 4. **按 AI 名字分目录**：每个 AI 一个目录 `handover/<小写名字>/`，例如 `handover/quick/`（Quick AI）、`handover/gpt/`、`handover/claude/`、`handover/gemini/`、`handover/muse/`。
    - 目录里至少有 `HANDOVER.md`（改动索引 + 做过什么 + 剩余工作）；审查报告等可以放同一目录或 `docs/audit/`。
    - **只写自己的目录**，不改别人的目录。共享文档（`COLLAB.md`、`AGENTS.md`、`AI_HANDOVER.md`、`PROGRESS.md`）留在根目录，按 2.1 节只改自己负责的那一节。
    - 第一次建目录时，在 `handover/README.md` 第 3 节加一行自己的信息。
 5. **收工前更新总入口**：每次工作结束前，更新 `handover/README.md` 第 3 节**自己那一行**（最后更新时间、最后提交、当前在做什么），并同样同步到 KV。
-6. **禁止从非 GitHub 来源整份写 KV**：例如之前线上站点的 `/__sync_kv` 接口会用网站上的旧文件覆盖 KV 文档和索引，2026-11-22 已停用。KV 里的内容只能来自 GitHub `main` 已提交的文件。
+6. **禁止从非 GitHub 来源整份写 KV**：例如之前线上站点的 `/__sync_kv` 接口会用网站上的旧文件覆盖 KV 文档和索引，2026-11-22 已停用。主线、独立分支各按自己的 GitHub 已提交版本同步；保护原有 Quick KV-only 文件，例外不得伪造 GitHub 提交号。
 
 7. **代码改动走 PR，方便别的 AI 验收**（Quick AI 强制，其他 AI 推荐）：
    - 分支名 `<ai名>/<编号>-<主题>`，例如 `quick/q13-jinx-14.14`；PR 标题以 `[<AI名> <编号>]` 开头，描述里写清改了什么、怎么验收、已知未做项。
    - 自己交接文档里的改动行写分支名和 PR 链接，「验收」列写「⏳ 待验收（PR #N）」。
-   - 验收方在 PR 评论里写结果（`PASS` / `需修改：<清单>`），合并后把改动行的「验收 / 部署 / KV」改成实际状态，并把合并进 `main` 的文件同步到 KV。
+   - PR 创建及每次后续提交后立即做分支快照同步。验收方在 PR 评论里写结果（`PASS` / `需修改：<清单>`），合并后把改动行的「验收 / 部署 / KV」改成实际状态，并把合并进 `main` 的文件同步到 KV；原分支快照保留。
    - 没有编译能力的 AI（如 Quick AI）提交的 PR，**必须由能编译的 AI 或用户跑过 `build` + `playtest` + 截图才能合并**。
 8. **看板随提交维护，谁都可以改**（用户指示，2026-11-23）：
    - 任何 AI 或用户，只要这次提交**新增任务、改变任务状态或完成任务**，就在**同一次提交**里更新第 5 节看板对应的行（新增一行 / 改状态列 / 标 ✅）。
@@ -101,6 +102,13 @@
    - 原版文件里有的参数（特效、材质、动作、技能数值）**一律直接照抄**；只有原版文件里确实没有的（例如服务器脚本控制的首领招式数值），才允许推断，并且要标注「推断」和依据。
 
 ---
+
+### 2.3 每次提交双端交接（GPT-11 · 用户指示 2026-11-23，优先于旧规则中「只同步 main」的表述）
+
+1. 每次 GitHub 提交（包括未合并 PR、文档提交、后续修复）在同一轮完成 KV 同步，而非等待合并。未合并时以实际 GitHub commit 为准，不得修改主线源码 key。分支快照：`pending/github/<ai>/<任务>/<完整commit SHA>/<仓库相对路径>`，按提交不可变、存在则核对原值，不覆盖旧快照。只镜像本次变更文本/代码/配置/文档；删除项在清单中记录，二进制/超限资产登记 GitHub 路径、blob SHA/哈希及大小，不重复上传 KV 或删除备用资产。
+2. 同前缀写 `MANIFEST.json`（分支、commit、父提交/基线、PR 链接、作者、提交号、文件清单与 SHA-256、验收/合并/部署状态、待办）。在 `SYNC_STATE.json.pending_github_commits` 按 `<ai>/<任务>` 增量更新最新 commit、manifest key 和同步状态，指向快照；同步 `FILE_INDEX.json`，所有新 key 读回核验。旧快照及旧 `pending/` 不删除；Quick 原有 `kv_only_pending`、`pending_branches`、其他 AI 记录完整保留。
+3. 主线提交/PR 合并按合并后的实际 commit 同步变更文件；保护 key 不覆盖未解决内容，先合并或隔离保存实际主线版本，并记录原因、对应 SHA 和待协调项。全局 `SYNC_STATE.commit` 仅在所有主线镜像均一致时推进；分支记录不能推进。合并后标记分支已合并和实际 merge SHA，保留历史；部署单独记录 Worker 版本，未获授权不部署。
+4. 并行同步前重读索引及保护列表，增量合并，写后验证未丢其他条目；若冲突停下协调。没有 GitHub 或 KV 权限时立即标记待同步、记录阻塞及可读取的实际位置，不能声称双端已同步。所有 AI 开工前读主线交接 AND `pending_github_commits`，检查相关未合并提交避免重复开发；不得把未验收分支当正式游戏基线。
 
 ## 3. 任务流程：发布 → 领取 → 执行 → 交付 → 验收
 
@@ -160,6 +168,8 @@
 | — | M5：三档画质验收 + 联机边界（`teammateVfxScale`、`players[]`） | 开发 AI（Quick AI 审查） | ⏳ 待用户确认开启 |
 | GPT-05/06 | 登录首页、游客、邮箱账号授权及画质细节 | GPT（用户授权接手） | ✅ PR #7 已合并 `accf280`；构建、网关测试、数值回归通过；待线上绑定及真机验收，未部署；不等于完整 M5 |
 | BAB-01 / GPT-09 | 全面迁移 Three.js → Babylon.js；WebGPU + WebGL2，一套渲染代码；[执行手册 B0–B7](handover/gpt/BABYLON_MIGRATION.md) | 任意能开发、编译、实机验证的 AI（领取留痕） | 🟡 用户已批准路线；文档完成，迁移尚未开始；保留 MU-01 线上，完成验收后用户确认发布 |
+| GPT-10 | React + HeroUI v3 UI 并行开发（[PR #9](https://github.com/cianasa222/swarm-remake/pull/9)），Quick 并行准备 BAB-01 数据/资产，勿争用 UI 文件 | GPT（UI） | 🔄 独立分支 `gpt/gpt10-heroui`；构建/数值回归通过，浏览器待验，未合并/部署；按 2.3 分支独立同步 |
+| GPT-11 | 每次代码提交立即双端交接、分支镜像隔离 | GPT（用户授权修改规范） | ✅ 规范更新；GPT-10 分支快照状态见 KV `pending_github_commits` |
 | — | 补给箱经验/升级节奏核查 | GPT（后续单独处理） | ⏳ 用户要求暂缓；本轮不改战斗数值 |
 | — | 自动部署 `wrangler.jsonc` + `preview` 分支 | 开发 AI + 用户 | ⏳ |
 | — | 其余小项（清理 `lan.ts`/`buildWorld`、`compress_assets.mjs` 绝对路径） | 开发 AI | ⏳ 见 `QUICK_AI_HANDOVER.md` 第 2 节 |
