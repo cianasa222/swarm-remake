@@ -8,3 +8,7 @@
 - MapA 环境 19 项与 AnimaSquad_Card 用途，按 QC-19 用户决定交由录像验收方定；此次不虚构结论、不激活。
 - 转换器直接从 BIN 再生成 JSON 时不含 GM-03 的 `project` 路径回填，比较须同时复用资产映射；此行为属现有生成/二次映射流程。检验 `node --test tools/bab/extract_vfx_14_14.test.cjs`、`npm run build`，运行结果见 PR/CI。
 - **尚未完成**：Babylon B1 引擎、B4 VFX 运行器、纹理及网格全部验证、WebGPU/WebGL2 实机与 iPhone 对照、部署；不得将数据通过称作上线通过。
+
+## CI 发现并修复的主线构建配置缺陷
+
+首次 CI `npm ci` 通过，`npm run build` 在旧 `tsconfig.json` 上因 `tools/q28-regression.test.ts` 引用 `node:assert/strict`、`node:fs` 且未安装 Node 类型报 TS2591。构建仅需检查浏览器运行时代码，调整 `tsconfig.json.include` 为 `src`；工具的行为检查改由专门 Node/tsx 单测覆盖。此改动不影响游戏玩法、脚本运行或部署。
