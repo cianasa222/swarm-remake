@@ -6,6 +6,12 @@
 
 ---
 
+- **开发节奏（GM-10 · 用户 2026-11-23 20:25 指示）**：**实机测试先不做，优先把代码跑通**（`tsc` / `build` / 单测 / CI 优先，不因真机验收阻塞代码集成与迁移推进；正式切流上线仍待代码跑通后统一验收）。详见 `COLLAB.md` 2.6 节。
+
+- **KV 临时中转箱（GM-08 · 用户指示）**：无 GitHub 权限的 AI（Quick / Gemini）需要读取 GitHub 资产/清单时，可列清单让有权 AI 传至独立前缀 `inbox/<接收AI>/<任务>/` 并备注；接收方读取采用并登记交接后可逐 key 精确删除（独立于 2.4 代码清理门禁，不碰 `pending/`）。详见 `COLLAB.md` 2.5 节。
+
+> **GPT-22 最新开发进度（2026-11-23 21:02 CST）**：用户决定先完成代码整合、构建和单测，iPhone 实机后置（COLLAB 2.6）。新 GM-11 B1/B2/B3 纯 TS 底座与 GM-10 UIA 音频仍仅在 KV 待代传；GM-09 B4 核心已在草稿 PR #17。最关键缺口是**真正启动 Babylon 场景并让 B4 特效实际可绘制**。GM-12 列出 44 缺失网格：P0 15/P1 8/P2 10/P3 11；详见 [GPT-22 迁移差距报告](./gpt/BABYLON_GAP_REVIEW_GPT22.md)。PR #14/#15 均为候选整合快照，不直接合并或部署。
+
 ## 1. 一句话看懂
 
 - **项目**：1:1 复刻《英雄联盟：无尽狂潮（Swarm）》第一关「仓库区（Map33）」，Vite + TypeScript + Three.js，资产全部来自拳头 Patch 14.14 原版。
@@ -41,7 +47,7 @@
 | Antigravity（原主线开发 AI） | [`handover/antigravity/`](./antigravity/HANDOVER.md) | 主线开发、本机编译/实机截图验收与修复 | `AG-` | 2026-11-23 03:55 | `[Antigravity AG-09]` | **两步任务全部完成**：① AG-08 93 条 14.14 原版 SFX + 5 首原版 BGM 已接入 `src/audio/audio.ts`；② AG-09 已验收并合并 PR #3（`c056396`）+ 合入 42 动作版 `reksai.glb`、彻底修复 `Wrap/Plane` 子网格隐藏并接入 17 个原版动作剪辑，3 张特写截图视觉审计 CLEAN PASS；待按需部署线上 |
 | Muse（执行 AI） | [`handover/muse/`](./muse/HANDOVER.md) | 执行 Issue #1（解包、转换、贴图）；生产部署 | `MU-` | 2026-11-23 06:40 | `[Muse MU-01]` | GPT-08（PR #8）已部署上线，版本 `5955ad9a`，deployment `f94499ee`，100% 流量；真机视听待验；Issue #1 待领取 |
 | GPT（ChatGPT） | [`handover/gpt/`](./gpt/HANDOVER.md) | 资产溯源、最小解包、审查修复、用户授权开发与发布 | `GPT-` | 2026-11-23 | `[GPT-21]`（KV 批量操作规范）；GPT-10 [PR #9](https://github.com/cianasa222/swarm-remake/pull/9) | [KV 批量操作规则](../COLLAB.md#23-每次提交双端交接gpt-11--用户指示-2026-11-23优先于旧规则中只同步-main的表述)，不部署；[BAB-01 迁移](./gpt/BABYLON_MIGRATION.md)；UI 独立分支已开发，构建/回归通过，实机待验、未合并/部署；[UI 交接](https://github.com/cianasa222/swarm-remake/blob/gpt/gpt10-heroui/handover/gpt/UI_GPT10.md)。每次提交双端同步；代上传及上线验收后清理见 COLLAB 2.2/2.4；[BAB-Q01 缺口与验收](./gpt/BAB_Q01_ACCEPTANCE_GPT13.md)（数据通过，集成未通过）；保留 MU-01 线上与备用资产；[PR #10](https://github.com/cianasa222/swarm-remake/pull/10) CI PASS、[PR #11](https://github.com/cianasa222/swarm-remake/pull/11) 14/14 贴图 CI PASS，均为草稿未部署 |
-| Gemini | [`handover/gemini/`](./gemini/HANDOVER.md) | **与 Quick AI 相同，角色由用户随时指定；仅可访问 Cloudflare（不连 GitHub），只更新 KV 代码与交接，由其他 AI 代提交 GitHub** | `GM-` | 2026-11-23 11:12 | `GM-03`（仅 KV，`pending/bab01-gemini/`） | 已完成 BAB-Q01 的 **Q01-01 / Q01-02 / Q01-03** 修复：152 系统 / 883 层、555 贴图实测 100% 真 PNG（主线已回填 95）、133 网格逐路径表（主线 29 + 备用 62 + 缺口 42）与 21 层 `attachedMesh` 绑定，待有 GitHub 权限 AI 代上传验收 |
+| Gemini | [`handover/gemini/`](./gemini/HANDOVER.md) | **与 Quick AI 相同，角色由用户随时指定；仅可访问 Cloudflare（不连 GitHub），只更新 KV 代码与交接，由其他 AI 代提交 GitHub** | `GM-` | 2026-11-23 20:48 | `GM-12`（仅 KV，`MISSING_MESHES_PRIORITY_GM12.md`） | 已写入 2.6 节「先跑通代码」规则、交付 **GM-10 UIA 音频映射（3/3 单测）** 并清理中转箱、交付 **GM-11 B1/B2/B3 底座（4/4 单测）**，最新交付 **GM-12 44 缺口网格 P0–P3 解包优先级清单** |
 | 新加入的 AI | `handover/<名字小写>/`，如 `gpt`、`claude`、`gemini` | — | 首次建目录时登记，如 `GPT-`、`CL-`、`GM-` | — | — | — |
 
 ---

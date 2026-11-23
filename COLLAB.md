@@ -142,6 +142,18 @@
 
 满足门禁后，清理方先登记逐 key 清单、GitHub 固定 commit/PR、部署版本、验收结果、时间、操作者和可恢复位置；仅删除明确已冗余的临时源码/补丁副本，禁止整前缀盲删、禁止删除 GitHub 历史/分支或备用资产。随后核验 key 状态，增量更新 `FILE_INDEX.json`、`SYNC_STATE.json` 对应记录（标记「已清理可恢复」并保留原 SHA、manifest/回执、其余待处理任务；不整份删除 `kv_only_pending`）。交接文档、审查报告、原版参考/备用资产、清单和部署/回滚记录长期保留。发现冲突立即停止。此节优先于旧规则中「上传后即删除」或「永久不清理临时代码」的表述。
 
+### 2.5 KV 临时中转箱规则（`inbox/<接收AI>/<任务>/`，Gemini GM-08 · 用户指示 2026-11-23）
+
+1. **用途**：当无 GitHub 权限的 AI（如 Quick AI、Gemini）需要读取 GitHub 主线或备用分支中未同步到 KV 的参考文件（例如 `events.json`、清单、配置或源码片段）时，可在自己的交接文档或任务单里列出所需清单与目标 key。
+2. **目录隔离**：临时中转文件统一写入 `inbox/<接收AI>/<任务>/<文件名>`（例如 `inbox/gemini/audio-fix/global_events.json`），**与 `pending/`、`ref/14.14/`、`mirrors/`、`handover/` 严格隔离**。
+3. **上传与备注**：有 GitHub 权限的 AI 按清单上传后，在 `SYNC_STATE.json.kv_inbox`（或同目录 `META.json`）登记来源分支/commit、上传者、接收方，并备注「**临时中转，接收方读取采用并登记后可精确删除**」。
+4. **采用后精确清理（独立于 2.4 代码门禁）**：`inbox/` 仅存放 GitHub 上已有源文件的临时只读副本，不属于 2.4 节保护的待上传临时代码。接收方读取并把结论写入交接文档后，**可逐 key 精确删除本次 `inbox/<接收AI>/<任务>/` 下的文件**，并在 `FILE_INDEX.json` 与 `SYNC_STATE.json.kv_inbox` 将该项标为 `consumed_and_deleted`（严禁整前缀盲删或误删其他任务的 `inbox/` 及任何 `pending/` key）。
+
+### 2.6 开发优先级规则：先跑通代码，暂缓实机测试（GM-10 · 用户指示 2026-11-23 20:25 CST）
+
+1. **代码跑通优先**：当前阶段**暂不做真机/iPhone 实机视觉与音频验收**，各 AI 优先把多分支代码合通，确保 `tsc`、`npm run build`、单元测试与 GitHub Actions CI 全部跑通。
+2. **不以实机测试阻塞开发推进**：只要代码、类型、构建与自动化测试通过即可继续往下游集成推进（如 B1–B4 引擎迁移、音频与 UI 合入）；待整体代码可完整运行后，再由用户统筹安排集中实机测试与正式切流上线（上线前仍遵守 2.4 节临时代码保留门禁）。
+
 ## 3. 任务流程：发布 → 领取 → 执行 → 交付 → 验收
 
 ```
@@ -218,6 +230,9 @@
 | QC-19（比对 GM-02/03） | Quick AI 对 Gemini 修复版的比对意见：建议补 技能哈希键解析、金币 `inGame:false`、精英 / 首领血条与首领狂暴、敌人出生特效；MapA 环境 19 个与 `AnimaSquad_Card` 用途**用户 18:16 决定交给验收方对照原版录像定**。见 `handover/quick/QC19_GM02_REVIEW.md` | Quick AI（仅 KV）→ Gemini 或代上传方决定是否合入 | ✅ 哈希关联、金币/卡片非实装、首领/精英血条和出生 VFX 5 套补录已由 GPT-16 在草稿 PR #10 修正；MapA 19 项与卡片用途仍由原版录像验收方确定 |
 | Q-30 | **战兔巨爆按原版 StarStrike 逐层重做**（4 个系统 21 层：普通 / 进化 / 进化红橙大落点各 4 层 + 爆炸 9 层）。撤回 Q-25 / Q-28 错误改色已由 GPT-07 在 PR #8 完成；十字弩（PierceShot）、旋风切割器（HolyBauble）的更正见 `handover/quick/HANDOVER.md` 1.7 节 | Quick AI 写（仅 KV）→ 任意能写 GitHub 的 AI 上传、编译、截图验收 | ✅ 已代传 [PR #11](https://github.com/cianasa222/swarm-remake/pull/11)，14 张贴图与 SHA256SUMS 已入库，CI 2/2 PASS；SCB 网格/原版录像/iPhone GPU 未验，草稿未合并/部署 |
 | GM-02 / GM-03（Q01-01～03 修复） | 修复 BAB-Q01 的 **Q01-01**（回旋刃进化 +3）、**Q01-02**（精英光环 +2、补给箱/拾取/玩家反馈 +25，合计 152/883）与 **Q01-03**（555 贴图实测 100% 真 PNG + 回填 95 张主线路径、133 网格逐路径表含主线 29/备用 62/缺口 42、21 层 `attachedMesh` 绑定） | Gemini（仅 KV）→ 任意有权 AI 代上传 | ✅ Gemini 原 152/883 已由 GPT-16 合入草稿 PR #10 修复为 157/903，最新 CI 2/2 PASS，独有原件留 KV；资源/原版录像/实机待验 |
+| GM-12（44 缺口网格解包优先级清单） | 整合 GM-03（42）+ GM-04（2）全部 44 个 `missing_unpack` 网格，按 P0 核心副武器（15）→ P1 掉落/补给箱（8）→ P2 首领/精英（10）→ P3 暂缓（11）分级输出执行清单 | Gemini（仅 KV）→ 执行 AI 按批定向解包 | ✅ 已交付到 KV `handover/gemini/MISSING_MESHES_PRIORITY_GM12.md` |
+| GM-11（BAB-01 B1/B2/B3 纯 TS 底座） | 交付 B1 双后端初始化（WebGPU→WebGL2 安全回退 + 硬件缩放 + ContextLossGuard）、B2 仓库区光照/镜头规格（`computeCameraOffset`）及 B3 金克丝 12 态/雷克塞 17 剪辑与 `Wrap/Plane` 隐藏规则（`engine_boot.ts` + `scene_specs.ts` + 4/4 单测，`tsc --strict` PASS） | Gemini（仅 KV）→ 任意有权 AI 代上传并挂接 `@babylonjs/core` | ⏳ 已交付到 KV `pending/bab01-b1-b3-gemini/`（5 文件），待代上传分支 `gemini/bab01-b1-b3-gm11` |
+| GM-10（UIA-1/2/3 音频映射与新节奏规则） | 写入用户「先跑通代码、暂缓实机测试」规则（2.6 节）；消费 `inbox/gemini/audio-fix/` 补齐 9 把副武器剩余事件、23 组敌人按怪种死亡映射、补给箱破碎原版事件、BGM 核验与 `audio_uia_map.ts` + 3/3 单测（`tsc --strict` PASS），并按 2.5 节精确清理中转箱 | Gemini（仅 KV）→ 任意有权 AI 代上传 | ⏳ 已交付到 KV `pending/audio-uia-gemini/`（4 文件）+ 报告 `handover/gemini/UIA_AUDIO_MAPPING_GM10.md`，中转箱已清理 |
 | — | 补给箱经验/升级节奏核查 | GPT（后续单独处理） | ⏳ 用户要求暂缓；本轮不改战斗数值 |
 | — | 自动部署 `wrangler.jsonc` + `preview` 分支 | 开发 AI + 用户 | ⏳ |
 | — | 其余小项（清理 `lan.ts`/`buildWorld`、`compress_assets.mjs` 绝对路径） | 开发 AI | ⏳ 见 `handover/quick/HANDOVER.md` 第 2 节 |
