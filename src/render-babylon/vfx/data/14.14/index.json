@@ -1,0 +1,32 @@
+{
+ "schema": 1,
+ "generatedBy": "tools/bab/extract_vfx_14_14.cjs (Quick AI BAB-Q01)",
+ "patch": "14.14",
+ "files": {
+  "map33": "ref/14.14/data/maps/shipping/map33/map33.bin.json",
+  "jinx": "ref/14.14/data/characters/strawberry_jinx/skins/skin0.bin.json",
+  "reksai": "ref/14.14/data/characters/strawberry_boss_reksai/skins/skin0.bin.json"
+ },
+ "counts": {
+  "fountain": {
+   "systems": 4,
+   "layers": 52
+  },
+  "weapons": {
+   "systems": 38,
+   "layers": 144
+  },
+  "jinx": {
+   "systems": 28,
+   "layers": 94
+  },
+  "enemy": {
+   "systems": 11,
+   "layers": 101
+  },
+  "reksai": {
+   "systems": 41,
+   "layers": 351
+  }
+ }
+}
