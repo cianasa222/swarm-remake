@@ -13,6 +13,7 @@
   },
   "gameRefs": {
    "pickup": "card",
+   "inGame": false,
    "simEvent": "dropIdle"
   },
   "flags": 213,
@@ -17068,6 +17069,7 @@
   },
   "gameRefs": {
    "pickup": "gold",
+   "inGame": false,
    "simEvent": "dropIdle"
   },
   "flags": 197,
@@ -17192,6 +17194,7 @@
   },
   "gameRefs": {
    "pickup": "gold",
+   "inGame": false,
    "simEvent": "dropMissile"
   },
   "transform": null,
@@ -17318,6 +17321,7 @@
   },
   "gameRefs": {
    "pickup": "gold",
+   "inGame": false,
    "simEvent": "pickup"
   },
   "transform": null,

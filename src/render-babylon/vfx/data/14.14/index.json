@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "generatedBy": "tools/bab/extract_vfx_14_14.cjs (Quick AI BAB-Q01 + Gemini GM-02 Q01-01/Q01-02 fix)",
+ "generatedBy": "tools/bab/extract_vfx_14_14.cjs (Quick AI BAB-Q01 + Gemini GM-02/03 + GPT QC-19 follow-up)",
  "patch": "14.14",
  "files": {
   "map33": "ref/14.14/data/maps/shipping/map33/map33.bin.json",
@@ -21,12 +21,12 @@
    "layers": 94
   },
   "enemy": {
-   "systems": 13,
-   "layers": 108
+   "systems": 16,
+   "layers": 120
   },
   "reksai": {
-   "systems": 41,
-   "layers": 351
+   "systems": 43,
+   "layers": 359
   },
   "map": {
    "systems": 25,

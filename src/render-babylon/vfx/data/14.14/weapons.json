@@ -9651,7 +9651,13 @@
     "extra": {}
    }
   ],
-  "extra": {}
+  "extra": {},
+  "usedBySpells": [
+   {
+    "spell": "Augment_Weapon_RapidShotMis",
+    "field": "mSpell.mMissileEffectKey"
+   }
+  ]
  },
  {
   "schema": 1,
@@ -12078,7 +12084,13 @@
     "extra": {}
    }
   ],
-  "extra": {}
+  "extra": {},
+  "usedBySpells": [
+   {
+    "spell": "Augment_Weapon_BoomerangEvolveReturnMissile",
+    "field": "mSpell.mMissileEffectKey"
+   }
+  ]
  },
  {
   "schema": 1,
