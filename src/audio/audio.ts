@@ -2,10 +2,12 @@ import { assetUrl } from '../render/assets';
 
 /**
  * 14.14 无尽狂潮原版音效 + BGM（Web Audio 解码播放）与程序化回退层。
- * 玩家点击「开始任务」时 unlock()：
- *  - 优先播放 `public/assets/audio/` 下解包自 14.14 `Map33.wad.client` + `Strawberry_Jinx.wad.client` 的原版 .ogg 采样；
- *  - 尚未解码完成或离线异常时自动以零延迟程序化合成回退，确保永不静音或报错；
- *  - BGM 严格按 `mus_map33_events.bnk` 切换：仓库区开场序曲 → 主循环 → 雷克塞 Boss 战跨淡 → 胜/负横幅曲。
+ * GM-07（Gemini 2026-11-23）音频稳定性与抗破音/降延迟修复：
+ *  - 新增全局并发声道上限（MAX_ACTIVE_SFX = 10）+ 优先级让位，防止中后期多武器叠音硬削波；
+ *  - SFX 独立硬限幅器（Limiter）与 BGM 分离，避免 SFX 爆发把 BGM 压得忽大忽小；
+ *  - 所有 AudioNode 在 onended 自动 disconnect()，noise() 增加 4ms 淡入防直流爆音；
+ *  - CORE_PRELOAD 改为并发上限 4 的分批解码队列 + AudioContext({ latencyHint: 'interactive' })，消除开局卡顿延迟；
+ *  - 自动探测浏览器 Ogg 支持，iOS Safari 等不支持 Ogg 的环境自动优先请求同名 .m4a（需配合转码资产）。
  */
 
 const SFX = {
@@ -60,8 +62,6 @@ const BGM = {
   defeat: 'music/632537467.ogg',
 } as const;
 
-// 14.14 Map33 global bank events.json, not filename guesses. Each group uses a
-// small subset of the decoded original variants; additional variants remain in AG-06.
 export const WEAPON_SFX = {
   uwuCast: ['global/275484393.ogg', 'global/352030796.ogg'],
   uwuHit: ['global/22552172.ogg', 'global/399931293.ogg'],
@@ -85,22 +85,31 @@ export const WEAPON_SFX = {
 export type WeaponAudioCue = keyof typeof WEAPON_SFX;
 
 const CORE_PRELOAD: readonly string[] = [
-  ...SFX.mg,
-  ...SFX.hit,
-  ...SFX.cannon.slice(0, 3),
-  ...SFX.explodeSmall,
+  SFX.mg[0],
+  SFX.hit[0],
+  SFX.kill[0],
+  SFX.xp[0],
+  SFX.hurt[0],
+  SFX.cannon[0],
+  SFX.explodeSmall[0],
+  SFX.pick[0],
+  SFX.levelUp[0],
+  SFX.heal[0],
+  ...SFX.mg.slice(1),
+  ...SFX.hit.slice(1),
+  ...SFX.kill.slice(1),
+  ...SFX.xp.slice(1),
+  ...SFX.cannon.slice(1, 3),
+  ...SFX.explodeSmall.slice(1),
   ...SFX.ultLaunch.slice(0, 3),
   ...SFX.explodeBig,
   ...SFX.overloadOn,
   ...SFX.swap.slice(0, 2),
-  ...SFX.kill,
-  ...SFX.hurt,
-  ...SFX.xp,
-  ...SFX.heal.slice(0, 2),
-  ...SFX.levelUp.slice(0, 2),
+  ...SFX.heal.slice(1, 2),
+  ...SFX.levelUp.slice(1, 2),
   ...SFX.fountainHeal,
   ...SFX.fountainReady,
-  ...SFX.pick.slice(0, 2),
+  ...SFX.pick.slice(1, 2),
   ...SFX.mine.slice(0, 2),
   ...SFX.mineBurst.slice(0, 2),
   ...SFX.pulse.slice(0, 2),
@@ -108,15 +117,32 @@ const CORE_PRELOAD: readonly string[] = [
   ...Object.values(WEAPON_SFX).map((samples) => samples[0]),
 ];
 
+type SfxPriority = 'low' | 'normal' | 'high';
+
+const MAX_ACTIVE_SFX = 10;
+const MAX_LOW_PRIO_SFX = 5;
+const DECODE_CONCURRENCY = 4;
+
 interface ActiveBgmNode {
   src: AudioBufferSourceNode;
   gain: GainNode;
+}
+
+function detectOggSupport(): boolean {
+  if (typeof document === 'undefined') return true;
+  try {
+    const a = document.createElement('audio');
+    return typeof a.canPlayType === 'function' && a.canPlayType('audio/ogg; codecs="vorbis"') !== '';
+  } catch {
+    return true;
+  }
 }
 
 export class AudioFX {
   ctx: AudioContext | null = null;
   master: GainNode | null = null;
   private sfxGain: GainNode | null = null;
+  private sfxLimiter: DynamicsCompressorNode | null = null;
   private bgmGain: GainNode | null = null;
   private noiseBuf: AudioBuffer | null = null;
   private last: Record<string, number> = {};
@@ -124,6 +150,10 @@ export class AudioFX {
   readonly buffers = new Map<string, AudioBuffer>();
   private inflight = new Map<string, Promise<AudioBuffer | null>>();
   private failed = new Set<string>();
+  private decodeQueue: string[] = [];
+  private activeDecodes = 0;
+  private activeSfxVoices = 0;
+  private preferM4a = false;
   private preloaded = false;
   private bgmMode: 'none' | 'main' | 'boss' = 'none';
   private bgmGen = 0;
@@ -136,23 +166,39 @@ export class AudioFX {
     if (!this.ctx) {
       const AC = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       if (!AC) return;
-      this.ctx = new AC();
+      try {
+        this.ctx = new AC({ latencyHint: 'interactive' });
+      } catch {
+        this.ctx = new AC();
+      }
+      this.preferM4a = !detectOggSupport();
+
       this.master = this.ctx.createGain();
       this.master.gain.value = this.muted ? 0 : this.volume;
 
       this.sfxGain = this.ctx.createGain();
-      this.sfxGain.gain.value = 1.0;
+      this.sfxGain.gain.value = 0.78;
+
+      this.sfxLimiter = this.ctx.createDynamicsCompressor();
+      this.sfxLimiter.threshold.value = -8;
+      this.sfxLimiter.knee.value = 6;
+      this.sfxLimiter.ratio.value = 12;
+      this.sfxLimiter.attack.value = 0.001;
+      this.sfxLimiter.release.value = 0.12;
 
       this.bgmGain = this.ctx.createGain();
       this.bgmGain.gain.value = this.bgmVolume;
 
-      const comp = this.ctx.createDynamicsCompressor();
-      comp.threshold.value = -12;
-      comp.ratio.value = 5;
+      const masterLimiter = this.ctx.createDynamicsCompressor();
+      masterLimiter.threshold.value = -3;
+      masterLimiter.knee.value = 3;
+      masterLimiter.ratio.value = 20;
+      masterLimiter.attack.value = 0.001;
+      masterLimiter.release.value = 0.08;
 
-      this.sfxGain.connect(this.master);
+      this.sfxGain.connect(this.sfxLimiter).connect(this.master);
       this.bgmGain.connect(this.master);
-      this.master.connect(comp).connect(this.ctx.destination);
+      this.master.connect(masterLimiter).connect(this.ctx.destination);
 
       const len = Math.floor(this.ctx.sampleRate * 0.6);
       this.noiseBuf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
@@ -183,16 +229,56 @@ export class AudioFX {
       muted: this.muted,
       bgmMode: this.bgmMode,
       activeBgmNodes: this.bgmActive.length,
+      activeSfxVoices: this.activeSfxVoices,
+      preferM4a: this.preferM4a,
       decodedCount: this.buffers.size,
       inflightCount: this.inflight.size,
+      queuedDecodes: this.decodeQueue.length,
       failedCount: this.failed.size,
     };
   }
 
   private preloadCoreSfx() {
     for (const rel of CORE_PRELOAD) {
-      void this.loadBuffer(rel);
+      if (this.buffers.has(rel) || this.failed.has(rel) || this.inflight.has(rel)) continue;
+      if (!this.decodeQueue.includes(rel)) this.decodeQueue.push(rel);
     }
+    this.pumpDecodeQueue();
+  }
+
+  private pumpDecodeQueue() {
+    while (this.activeDecodes < DECODE_CONCURRENCY && this.decodeQueue.length > 0) {
+      const next = this.decodeQueue.shift()!;
+      if (this.buffers.has(next) || this.failed.has(next) || this.inflight.has(next)) continue;
+      this.activeDecodes++;
+      void this.loadBuffer(next).finally(() => {
+        this.activeDecodes = Math.max(0, this.activeDecodes - 1);
+        this.pumpDecodeQueue();
+      });
+    }
+  }
+
+  private candidateRels(rel: string): string[] {
+    if (this.preferM4a && rel.endsWith('.ogg')) {
+      return [rel.replace(/\.ogg$/i, '.m4a'), rel];
+    }
+    return [rel];
+  }
+
+  private async fetchAndDecode(ctx: AudioContext, rel: string): Promise<AudioBuffer> {
+    const candidates = this.candidateRels(rel);
+    let lastErr: unknown;
+    for (const cand of candidates) {
+      try {
+        const res = await fetch(assetUrl(`audio/${cand}`));
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const ab = await res.arrayBuffer();
+        return await ctx.decodeAudioData(ab);
+      } catch (err) {
+        lastErr = err;
+      }
+    }
+    throw lastErr ?? new Error(`Failed to decode ${rel}`);
   }
 
   private loadBuffer(rel: string): Promise<AudioBuffer | null> {
@@ -204,13 +290,7 @@ export class AudioFX {
     const ctx = this.ctx;
     if (!ctx) return Promise.resolve(null);
 
-    const url = assetUrl(`audio/${rel}`);
-    const p = fetch(url)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.arrayBuffer();
-      })
-      .then((ab) => ctx.decodeAudioData(ab))
+    const p = this.fetchAndDecode(ctx, rel)
       .then((buf) => {
         this.buffers.set(rel, buf);
         this.inflight.delete(rel);
@@ -225,16 +305,36 @@ export class AudioFX {
     return p;
   }
 
-  private playBuffer(buf: AudioBuffer, vol: number, pitchJitter = 0.04, rate = 1.0, dest?: AudioNode) {
+  private canStartVoice(priority: SfxPriority): boolean {
+    if (priority === 'low' && this.activeSfxVoices >= MAX_LOW_PRIO_SFX) return false;
+    if (priority === 'normal' && this.activeSfxVoices >= MAX_ACTIVE_SFX) return false;
+    if (priority === 'high' && this.activeSfxVoices >= MAX_ACTIVE_SFX + 2) return false;
+    return true;
+  }
+
+  private playBuffer(
+    buf: AudioBuffer,
+    vol: number,
+    pitchJitter = 0.04,
+    rate = 1.0,
+    dest?: AudioNode,
+    priority: SfxPriority = 'normal',
+  ) {
     const c = this.ctx;
-    if (!c) return;
+    if (!c || !this.canStartVoice(priority)) return;
     const s = c.createBufferSource();
     s.buffer = buf;
     const jitter = pitchJitter > 0 ? 1 + (Math.random() * 2 - 1) * pitchJitter : 1;
     s.playbackRate.value = Math.max(0.5, Math.min(2.0, rate * jitter));
     const g = c.createGain();
-    g.gain.value = vol;
+    const crowdScale = this.activeSfxVoices >= 5 ? 0.82 : 1.0;
+    g.gain.value = vol * crowdScale;
     s.connect(g).connect(dest ?? this.sfxGain ?? this.master!);
+    this.activeSfxVoices++;
+    s.onended = () => {
+      this.activeSfxVoices = Math.max(0, this.activeSfxVoices - 1);
+      try { s.disconnect(); g.disconnect(); } catch { /* ignore */ }
+    };
     s.start();
   }
 
@@ -244,8 +344,10 @@ export class AudioFX {
     pitchJitter = 0.04,
     rate = 1.0,
     key?: string,
+    priority: SfxPriority = 'normal',
   ): boolean {
     if (!this.ctx || paths.length === 0) return false;
+    if (!this.canStartVoice(priority)) return true;
     const k = key ?? paths[0];
     let idx = Math.floor(Math.random() * paths.length);
     if (paths.length > 1 && idx === this.lastPickIdx[k]) {
@@ -256,16 +358,18 @@ export class AudioFX {
     const chosen = paths[idx];
     const cached = this.buffers.get(chosen);
     if (cached) {
-      this.playBuffer(cached, vol, pitchJitter, rate);
+      this.playBuffer(cached, vol, pitchJitter, rate, undefined, priority);
       return true;
     }
 
-    // 触发后台解码，同时尝试复用同组已解码变体，避免等待
-    void this.loadBuffer(chosen);
+    if (!this.failed.has(chosen) && !this.inflight.has(chosen) && !this.decodeQueue.includes(chosen)) {
+      this.decodeQueue.unshift(chosen);
+      this.pumpDecodeQueue();
+    }
     for (const alt of paths) {
       const altBuf = this.buffers.get(alt);
       if (altBuf) {
-        this.playBuffer(altBuf, vol, pitchJitter, rate);
+        this.playBuffer(altBuf, vol, pitchJitter, rate, undefined, priority);
         return true;
       }
     }
@@ -276,17 +380,16 @@ export class AudioFX {
     if (!this.ctx) return;
     const cached = this.buffers.get(rel);
     if (cached) {
-      this.playBuffer(cached, vol, 0, 1.0, this.sfxGain ?? this.master!);
+      this.playBuffer(cached, vol, 0, 1.0, this.sfxGain ?? this.master!, 'high');
       return;
     }
     void this.loadBuffer(rel).then((buf) => {
       if (!this.ctx || this.muted) return;
-      if (buf) this.playBuffer(buf, vol, 0, 1.0, this.sfxGain ?? this.master!);
+      if (buf) this.playBuffer(buf, vol, 0, 1.0, this.sfxGain ?? this.master!, 'high');
       else fallback();
     });
   }
 
-  // ── BGM 控制器（14.14 Map33 原声带） ──
   startBgm(mode: 'main' | 'boss') {
     if (!this.ctx) this.unlock();
     if (!this.ctx || !this.bgmGain) return;
@@ -304,7 +407,6 @@ export class AudioFX {
       return;
     }
 
-    // 仓库区开场序曲（307974760.ogg）→ 无缝衔接主循环（854037489.ogg）
     const introP = this.loadBuffer(BGM.mainIntro);
     const loopP = this.loadBuffer(BGM.mainLoop);
     void introP.then((introBuf) => {
@@ -320,6 +422,7 @@ export class AudioFX {
       if (!node) return;
       node.src.onended = () => {
         this.bgmActive = this.bgmActive.filter((n) => n !== node);
+        try { node.src.disconnect(); node.gain.disconnect(); } catch { /* ignore */ }
         if (gen !== this.bgmGen || !this.ctx) return;
         void loopP.then((loopBuf) => {
           if (!loopBuf || gen !== this.bgmGen || !this.ctx) return;
@@ -359,7 +462,9 @@ export class AudioFX {
     const t = c.currentTime;
     const dur = Math.max(0.05, fadeSec);
     for (const item of list) {
-      item.src.onended = null;
+      item.src.onended = () => {
+        try { item.src.disconnect(); item.gain.disconnect(); } catch { /* ignore */ }
+      };
       try {
         item.gain.gain.cancelScheduledValues(t);
         item.gain.gain.setValueAtTime(Math.max(0.0001, item.gain.gain.value), t);
@@ -380,23 +485,31 @@ export class AudioFX {
   }
 
   private tone(type: OscillatorType, f0: number, f1: number, dur: number, vol: number, delay = 0) {
-    const c = this.ctx!;
+    const c = this.ctx;
+    if (!c || !this.canStartVoice('low')) return;
     const t = c.currentTime + delay;
     const o = c.createOscillator();
     const g = c.createGain();
-    o.type = type;
+    o.type = type === 'square' ? 'triangle' : type;
     o.frequency.setValueAtTime(f0, t);
     o.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t + dur);
+    const safeVol = Math.min(vol, 0.25);
     g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(vol, t + 0.006);
+    g.gain.exponentialRampToValueAtTime(Math.max(0.0002, safeVol), t + 0.006);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
     o.connect(g).connect(this.sfxGain ?? this.master!);
+    this.activeSfxVoices++;
+    o.onended = () => {
+      this.activeSfxVoices = Math.max(0, this.activeSfxVoices - 1);
+      try { o.disconnect(); g.disconnect(); } catch { /* ignore */ }
+    };
     o.start(t);
     o.stop(t + dur + 0.02);
   }
 
   private noise(dur: number, vol: number, freq: number, q = 1, type: BiquadFilterType = 'bandpass', delay = 0, f1?: number) {
-    const c = this.ctx!;
+    const c = this.ctx;
+    if (!c || !this.noiseBuf || !this.canStartVoice('low')) return;
     const t = c.currentTime + delay;
     const s = c.createBufferSource();
     s.buffer = this.noiseBuf;
@@ -406,228 +519,205 @@ export class AudioFX {
     if (f1) f.frequency.exponentialRampToValueAtTime(f1, t + dur);
     f.Q.value = q;
     const g = c.createGain();
-    g.gain.setValueAtTime(vol, t);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    const safeVol = Math.min(vol, 0.28);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(safeVol, t + 0.004);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + Math.max(0.01, dur));
     s.connect(f).connect(g).connect(this.sfxGain ?? this.master!);
+    this.activeSfxVoices++;
+    s.onended = () => {
+      this.activeSfxVoices = Math.max(0, this.activeSfxVoices - 1);
+      try { s.disconnect(); f.disconnect(); g.disconnect(); } catch { /* ignore */ }
+    };
     s.start(t, Math.random() * 0.3);
     s.stop(t + dur + 0.02);
   }
 
-  // ── 武器 ──
   weaponCue(cue: WeaponAudioCue) {
     const isHit = cue.endsWith('Hit');
-    if (!this.gate(`weapon:${cue}`, isHit ? 0.075 : 0.12)) return;
-    if (this.playSample(WEAPON_SFX[cue], isHit ? 0.30 : 0.48, 0.025)) return;
-    // Keep a quiet fallback while the original clip is loading / unsupported.
-    this.tone('triangle', isHit ? 900 : 450, isHit ? 500 : 260, 0.065, 0.055);
+    if (isHit && !this.gate('global:hit', 0.045)) return;
+    if (!this.gate(`weapon:${cue}`, isHit ? 0.085 : 0.14)) return;
+    const prio: SfxPriority = isHit ? 'low' : 'normal';
+    if (this.playSample(WEAPON_SFX[cue], isHit ? 0.28 : 0.46, 0.025, 1.0, `weapon:${cue}`, prio)) return;
+    this.tone('triangle', isHit ? 900 : 450, isHit ? 500 : 260, 0.06, 0.045);
   }
   mg(tier: number) {
-    if (!this.gate('mg', 0.055)) return;
-    if (this.playSample(SFX.mg, tier >= 1 ? 0.44 : 0.36, 0.05, tier >= 1 ? 1.07 : 1.0, 'mg')) return;
-    this.noise(0.05, 0.22, 3200 + tier * 600, 2);
-    this.tone('square', 1300 + tier * 150, 700, 0.04, 0.05);
+    if (!this.gate('mg', 0.065)) return;
+    if (this.playSample(SFX.mg, tier >= 1 ? 0.42 : 0.34, 0.05, tier >= 1 ? 1.07 : 1.0, 'mg', 'normal')) return;
+    this.noise(0.05, 0.16, 3200 + tier * 600, 2);
+    this.tone('triangle', 1300 + tier * 150, 700, 0.04, 0.04);
   }
   cannon() {
-    if (!this.gate('cn', 0.08)) return;
-    if (this.playSample(SFX.cannon, 0.68, 0.04, 1.0, 'cn')) return;
-    this.tone('sine', 140, 45, 0.28, 0.5);
-    this.noise(0.22, 0.35, 600, 0.8, 'lowpass', 0, 150);
+    if (!this.gate('cn', 0.09)) return;
+    if (this.playSample(SFX.cannon, 0.64, 0.04, 1.0, 'cn', 'normal')) return;
+    this.tone('sine', 140, 45, 0.28, 0.35);
+    this.noise(0.22, 0.24, 600, 0.8, 'lowpass', 0, 150);
   }
   explode(big: boolean) {
-    if (!this.gate(big ? 'exb' : 'ex', big ? 0.05 : 0.07)) return;
-    if (this.playSample(big ? SFX.explodeBig : SFX.explodeSmall, big ? 0.88 : 0.62, 0.04, 1.0, big ? 'exb' : 'ex')) return;
-    this.noise(big ? 0.7 : 0.28, big ? 0.6 : 0.25, big ? 900 : 1400, 0.7, 'lowpass', 0, 90);
-    this.tone('sine', big ? 90 : 120, 35, big ? 0.6 : 0.22, big ? 0.5 : 0.22);
+    if (!this.gate(big ? 'exb' : 'ex', big ? 0.06 : 0.08)) return;
+    if (this.playSample(big ? SFX.explodeBig : SFX.explodeSmall, big ? 0.82 : 0.56, 0.04, 1.0, big ? 'exb' : 'ex', big ? 'high' : 'normal')) return;
+    this.noise(big ? 0.6 : 0.25, big ? 0.28 : 0.18, big ? 900 : 1400, 0.7, 'lowpass', 0, 90);
+    this.tone('sine', big ? 90 : 120, 35, big ? 0.5 : 0.22, big ? 0.25 : 0.16);
   }
   hit() {
-    if (!this.gate('hit', 0.045)) return;
-    if (this.playSample(SFX.hit, 0.3, 0.06, 1.0, 'hit')) return;
-    this.tone('triangle', 900, 500, 0.03, 0.05);
+    if (!this.gate('global:hit', 0.045)) return;
+    if (!this.gate('hit', 0.055)) return;
+    if (this.playSample(SFX.hit, 0.28, 0.06, 1.0, 'hit', 'low')) return;
+    this.tone('triangle', 900, 500, 0.03, 0.04);
   }
   kill() {
-    if (!this.gate('kill', 0.06)) return;
-    if (this.playSample(SFX.kill, 0.42, 0.06, 1.0, 'kill')) return;
-    this.noise(0.09, 0.1, 2200, 3);
+    if (!this.gate('kill', 0.075)) return;
+    if (this.playSample(SFX.kill, 0.38, 0.06, 1.0, 'kill', 'low')) return;
+    this.noise(0.08, 0.08, 2200, 3);
   }
   swap(w: 'mg' | 'cn') {
     if (!this.gate('swap', 0.1)) return;
-    if (this.playSample(SFX.swap, 0.56, 0.03, w === 'cn' ? 0.96 : 1.04, 'swap')) return;
-    this.noise(0.06, 0.2, 4000, 4);
-    if (w === 'cn') { this.tone('sawtooth', 160, 90, 0.22, 0.12, 0.05); this.noise(0.1, 0.25, 900, 2, 'bandpass', 0.18); }
-    else { this.tone('square', 600, 1200, 0.12, 0.08, 0.05); this.noise(0.04, 0.18, 5000, 4, 'bandpass', 0.15); }
+    if (this.playSample(SFX.swap, 0.52, 0.03, w === 'cn' ? 0.96 : 1.04, 'swap', 'normal')) return;
+    this.noise(0.06, 0.14, 4000, 4);
   }
   swapReady() {
-    if (!this.gate('swr', 0.1)) return;
-    this.tone('triangle', 1400, 1400, 0.05, 0.06);
+    if (!this.gate('swr', 0.12)) return;
+    this.tone('triangle', 1400, 1400, 0.05, 0.05);
   }
   mine() {
-    if (!this.gate('mine', 0.1)) return;
-    if (this.playSample(SFX.mine, 0.52, 0.05, 1.0, 'mine')) return;
-    this.tone('square', 300, 520, 0.12, 0.08);
-    this.tone('square', 780, 780, 0.05, 0.05, 0.12);
+    if (!this.gate('mine', 0.12)) return;
+    if (this.playSample(SFX.mine, 0.48, 0.05, 1.0, 'mine', 'normal')) return;
+    this.tone('triangle', 300, 520, 0.12, 0.06);
   }
   mineBurst() {
-    if (!this.gate('mineb', 0.1)) return;
-    if (this.playSample(SFX.mineBurst, 0.62, 0.05, 1.0, 'mineb')) return;
-    this.tone('sawtooth', 220, 880, 0.18, 0.12);
-    this.tone('sine', 880, 220, 0.4, 0.1, 0.05);
+    if (!this.gate('mineb', 0.12)) return;
+    if (this.playSample(SFX.mineBurst, 0.58, 0.05, 1.0, 'mineb', 'normal')) return;
+    this.tone('sine', 220, 880, 0.18, 0.1);
   }
   pulse() {
-    if (!this.gate('pulse', 0.12)) return;
-    if (this.playSample(SFX.pulse, 0.54, 0.05, 1.0, 'pulse')) return;
-    this.tone('sine', 1200, 300, 0.25, 0.14);
+    if (!this.gate('pulse', 0.14)) return;
+    if (this.playSample(SFX.pulse, 0.50, 0.05, 1.0, 'pulse', 'normal')) return;
+    this.tone('sine', 1200, 300, 0.22, 0.1);
   }
   dash() {
-    if (!this.gate('dash', 0.1)) return;
-    this.noise(0.22, 0.3, 800, 1, 'bandpass', 0, 3000);
+    if (!this.gate('dash', 0.12)) return;
+    this.noise(0.20, 0.20, 800, 1, 'bandpass', 0, 3000);
   }
   overload(on: boolean) {
     if (!this.gate('ovl' + on, 0.3)) return;
     if (on) {
-      if (this.playSample(SFX.overloadOn, 0.72, 0.03, 1.0, 'ovl')) return;
-      this.tone('sawtooth', 220, 880, 0.35, 0.16);
-      this.tone('square', 440, 1760, 0.35, 0.06, 0.05);
-      this.tone('triangle', 1760, 1760, 0.15, 0.1, 0.4);
-    } else this.tone('triangle', 880, 330, 0.25, 0.08);
+      if (this.playSample(SFX.overloadOn, 0.68, 0.03, 1.0, 'ovl', 'high')) return;
+      this.tone('triangle', 220, 880, 0.35, 0.12);
+    } else this.tone('triangle', 880, 330, 0.25, 0.06);
   }
   ultReady() {
     if (!this.gate('ultr', 0.5)) return;
-    [660, 880, 1320].forEach((f, i) => this.tone('triangle', f, f, 0.12, 0.12, i * 0.08));
+    [660, 880, 1320].forEach((f, i) => this.tone('triangle', f, f, 0.12, 0.10, i * 0.08));
   }
   ult() {
     if (!this.gate('ult', 0.3)) return;
-    if (this.playSample(SFX.ultLaunch, 0.82, 0.03, 1.0, 'ult')) return;
-    this.tone('sawtooth', 90, 40, 0.5, 0.35);
-    this.noise(0.45, 0.45, 2000, 0.6, 'lowpass', 0, 200);
-    this.tone('sine', 1800, 300, 0.3, 0.12);
+    if (this.playSample(SFX.ultLaunch, 0.78, 0.03, 1.0, 'ult', 'high')) return;
+    this.tone('sine', 120, 45, 0.45, 0.22);
+    this.noise(0.40, 0.24, 1600, 0.6, 'lowpass', 0, 200);
   }
-  // ── 拾取 / 升级 / 喷泉 ──
   xp() {
-    if (!this.gate('xp', 0.04)) return;
-    if (this.playSample(SFX.xp, 0.32, 0.08, 1.0, 'xp')) return;
-    this.tone('sine', 1500 + Math.random() * 400, 2200, 0.05, 0.05);
+    if (!this.gate('xp', 0.06)) return;
+    if (this.playSample(SFX.xp, 0.28, 0.08, 1.0, 'xp', 'low')) return;
+    this.tone('sine', 1500 + Math.random() * 400, 2200, 0.05, 0.04);
   }
   heal() {
     if (!this.gate('heal', 0.2)) return;
-    if (this.playSample(SFX.heal, 0.58, 0.03, 1.0, 'heal')) return;
-    [523, 659, 784].forEach((f, i) => this.tone('sine', f, f, 0.14, 0.14, i * 0.06));
+    if (this.playSample(SFX.heal, 0.54, 0.03, 1.0, 'heal', 'normal')) return;
+    [523, 659, 784].forEach((f, i) => this.tone('sine', f, f, 0.14, 0.10, i * 0.06));
   }
   levelUp() {
-    if (!this.gate('lvl', 0.3)) return;
-    if (this.playSample(SFX.levelUp, 0.72, 0.02, 1.0, 'lvl')) return;
-    [523, 659, 784, 1046].forEach((f, i) => this.tone('triangle', f, f * 1.01, 0.18, 0.14, i * 0.07));
+    if (!this.gate('lvl', 0.35)) return;
+    if (this.playSample(SFX.levelUp, 0.68, 0.02, 1.0, 'lvl', 'high')) return;
+    [523, 659, 784, 1046].forEach((f, i) => this.tone('triangle', f, f * 1.01, 0.18, 0.12, i * 0.07));
   }
   fountainHeal() {
     if (!this.gate('fheal', 0.3)) return;
-    if (this.playSample(SFX.fountainHeal, 0.75, 0.02, 1.0, 'fheal')) return;
+    if (this.playSample(SFX.fountainHeal, 0.70, 0.02, 1.0, 'fheal', 'high')) return;
     this.heal();
   }
   fountainReady() {
     if (!this.gate('fready', 0.3)) return;
-    if (this.playSample(SFX.fountainReady, 0.62, 0.02, 1.0, 'fready')) return;
+    if (this.playSample(SFX.fountainReady, 0.58, 0.02, 1.0, 'fready', 'normal')) return;
     this.swapReady();
   }
   pick() {
     if (!this.gate('pick', 0.08)) return;
-    if (this.playSample(SFX.pick, 0.56, 0.03, 1.0, 'pick')) return;
-    this.tone('square', 880, 1320, 0.08, 0.08);
+    if (this.playSample(SFX.pick, 0.50, 0.03, 1.0, 'pick', 'normal')) return;
+    this.tone('triangle', 880, 1320, 0.08, 0.06);
   }
   hurt() {
-    if (!this.gate('hurt', 0.16)) return;
-    if (this.playSample(SFX.hurt, 0.65, 0.04, 1.0, 'hurt')) return;
-    this.tone('sawtooth', 220, 90, 0.18, 0.2);
-    this.noise(0.12, 0.2, 500, 1);
+    if (!this.gate('hurt', 0.18)) return;
+    if (this.playSample(SFX.hurt, 0.60, 0.04, 1.0, 'hurt', 'high')) return;
+    this.tone('triangle', 220, 90, 0.18, 0.14);
+    this.noise(0.12, 0.14, 500, 1);
   }
-  // ── 敌人 ──
   enemyCharge(kind: string) {
     if (!this.gate('ech' + kind, 0.25)) return;
-    if (this.playSample(SFX.enemyCharge, 0.42, 0.05, kind === 'spitter' ? 1.08 : 0.94, 'ech')) return;
-    if (kind === 'spitter') this.tone('sine', 300, 700, 0.5, 0.05);
-    else this.tone('sawtooth', 120, 260, 0.6, 0.06);
+    if (this.playSample(SFX.enemyCharge, 0.38, 0.05, kind === 'spitter' ? 1.08 : 0.94, 'ech', 'low')) return;
+    if (kind === 'spitter') this.tone('sine', 300, 700, 0.4, 0.04);
+    else this.tone('triangle', 120, 260, 0.4, 0.04);
   }
   enemyShoot() {
-    if (!this.gate('esh', 0.1)) return;
-    if (this.playSample(SFX.enemyShoot, 0.38, 0.06, 1.0, 'esh')) return;
-    this.tone('square', 520, 260, 0.1, 0.05);
+    if (!this.gate('esh', 0.12)) return;
+    if (this.playSample(SFX.enemyShoot, 0.34, 0.06, 1.0, 'esh', 'low')) return;
+    this.tone('triangle', 520, 260, 0.08, 0.04);
   }
   waveWarn(tag?: string) {
     if (!this.gate('wave', 0.6)) return;
-    if (this.playSample(SFX.waveWarn, 0.64, 0.02, tag === 'climax' ? 0.94 : 1.0, 'wave')) return;
+    if (this.playSample(SFX.waveWarn, 0.60, 0.02, tag === 'climax' ? 0.94 : 1.0, 'wave', 'high')) return;
     const f = tag === 'climax' || tag === 'elite' ? 440 : 660;
-    this.tone('triangle', f, f, 0.1, 0.07);
-    this.tone('triangle', f, f, 0.1, 0.07, 0.16);
+    this.tone('triangle', f, f, 0.1, 0.06);
+    this.tone('triangle', f, f, 0.1, 0.06, 0.16);
   }
-  // ── 首领（雷克塞） ──
   alarm() {
     if (!this.gate('alarm', 0.9)) return;
-    if (this.playSample(SFX.alarm, 0.78, 0, 1.0, 'alarm')) return;
+    if (this.playSample(SFX.alarm, 0.74, 0, 1.0, 'alarm', 'high')) return;
     for (let i = 0; i < 3; i++) {
-      this.tone('square', 740, 520, 0.35, 0.12, i * 0.45);
+      this.tone('triangle', 740, 520, 0.35, 0.10, i * 0.45);
     }
   }
   roar() {
     if (!this.gate('roar', 1)) return;
-    if (this.playSample(SFX.roar, 0.86, 0.02, 1.0, 'roar')) return;
-    const c = this.ctx!;
-    const t = c.currentTime;
-    const o = c.createOscillator();
-    const lfo = c.createOscillator();
-    const lg = c.createGain();
-    const g = c.createGain();
-    o.type = 'sawtooth';
-    o.frequency.setValueAtTime(70, t);
-    o.frequency.linearRampToValueAtTime(48, t + 1.4);
-    lfo.frequency.value = 18;
-    lg.gain.value = 14;
-    lfo.connect(lg).connect(o.frequency);
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(0.45, t + 0.15);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + 1.5);
-    const f = c.createBiquadFilter();
-    f.type = 'lowpass';
-    f.frequency.value = 700;
-    o.connect(f).connect(g).connect(this.sfxGain ?? this.master!);
-    o.start(t); lfo.start(t);
-    o.stop(t + 1.6); lfo.stop(t + 1.6);
-    this.noise(1.2, 0.3, 400, 0.6, 'lowpass', 0.05, 80);
+    if (this.playSample(SFX.roar, 0.80, 0.02, 1.0, 'roar', 'high')) return;
+    this.tone('sawtooth', 70, 48, 1.0, 0.18);
+    this.noise(0.9, 0.18, 400, 0.6, 'lowpass', 0.05, 80);
   }
   slam() {
-    if (!this.gate('slam', 0.12)) return;
-    if (this.playSample(SFX.slam, 0.82, 0.04, 1.0, 'slam')) return;
-    this.tone('sine', 80, 30, 0.45, 0.55);
-    this.noise(0.35, 0.4, 500, 0.6, 'lowpass', 0, 80);
+    if (!this.gate('slam', 0.14)) return;
+    if (this.playSample(SFX.slam, 0.76, 0.04, 1.0, 'slam', 'high')) return;
+    this.tone('sine', 80, 30, 0.45, 0.24);
+    this.noise(0.35, 0.20, 500, 0.6, 'lowpass', 0, 80);
   }
   whoosh() {
     if (!this.gate('whoosh', 0.3)) return;
-    if (this.playSample(SFX.whoosh, 0.72, 0.04, 1.0, 'whoosh')) return;
-    this.noise(0.5, 0.35, 300, 0.8, 'bandpass', 0, 1800);
+    if (this.playSample(SFX.whoosh, 0.68, 0.04, 1.0, 'whoosh', 'high')) return;
+    this.noise(0.45, 0.20, 300, 0.8, 'bandpass', 0, 1800);
   }
   telegraph() {
     if (!this.gate('tele', 0.2)) return;
-    if (this.playSample(SFX.telegraph, 0.62, 0.03, 1.0, 'tele')) return;
-    this.tone('triangle', 980, 980, 0.07, 0.06);
+    if (this.playSample(SFX.telegraph, 0.58, 0.03, 1.0, 'tele', 'high')) return;
+    this.tone('triangle', 980, 980, 0.07, 0.05);
   }
   phase() {
     if (!this.gate('phase', 1)) return;
-    if (this.playSample(SFX.phase, 0.88, 0, 1.0, 'phase')) return;
+    if (this.playSample(SFX.phase, 0.82, 0, 1.0, 'phase', 'high')) return;
     this.roar();
-    [392, 370, 349, 330].forEach((f, i) => this.tone('square', f, f, 0.25, 0.08, 0.3 + i * 0.22));
   }
   victory() {
     this.stopBgm(0.5);
-    this.playOneShotAsync(BGM.victory, 0.72, () => {
-      [523, 659, 784, 1046, 1318].forEach((f, i) => this.tone('triangle', f, f, 0.3, 0.16, i * 0.12));
+    this.playOneShotAsync(BGM.victory, 0.68, () => {
+      [523, 659, 784, 1046, 1318].forEach((f, i) => this.tone('triangle', f, f, 0.3, 0.12, i * 0.12));
     });
   }
   defeat() {
     this.stopBgm(0.5);
-    this.playOneShotAsync(BGM.defeat, 0.72, () => {
-      [392, 330, 262, 196].forEach((f, i) => this.tone('triangle', f, f * 0.98, 0.35, 0.14, i * 0.18));
+    this.playOneShotAsync(BGM.defeat, 0.68, () => {
+      [392, 330, 262, 196].forEach((f, i) => this.tone('triangle', f, f * 0.98, 0.35, 0.12, i * 0.18));
     });
   }
   click() {
     if (!this.gate('click', 0.05)) return;
-    if (this.playSample(SFX.pick, 0.42, 0.03, 1.06, 'click')) return;
-    this.tone('triangle', 1000, 800, 0.05, 0.08);
+    if (this.playSample(SFX.pick, 0.40, 0.03, 1.06, 'click', 'normal')) return;
+    this.tone('triangle', 1000, 800, 0.05, 0.06);
   }
 }

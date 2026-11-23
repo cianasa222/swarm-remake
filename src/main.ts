@@ -262,10 +262,10 @@ function handleAudioAndBanner() {
       else if (ev.kind === 'iceblast') audio.weaponCue('iceblast');
       else if (ev.kind === 'orbital') audio.weaponCue('starExplode');
       else if (ev.kind === 'radiant') audio.weaponCue('radiantHit');
-      else audio.explode(ev.kind === 'ult');
+      else audio.explode(ev.kind === 'ult' || ev.kind === 'ult_r');
     } else if (ev.type === 'kill') audio.kill();
     else if (ev.type === 'playerHurt') { audio.hurt(); webPlatform.vibrate(35); }
-    else if (ev.type === 'pickup') ev.kind === 'xp' ? audio.xp() : ev.kind === 'card' ? audio.levelUp() : audio.heal();
+    else if (ev.type === 'pickup') ev.kind === 'xp' ? audio.xp() : ev.kind === 'card' ? audio.pick() : audio.heal();
     else if (ev.type === 'levelUp') audio.levelUp();
     else if (ev.type === 'swap') { audio.swap(ev.weapon); showBanner(game.player.autoAim ? '已切换：自动瞄准' : '已切换：移动朝向瞄准', 1.4); }
     else if (ev.type === 'swapReady') audio.swapReady();
