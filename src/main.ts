@@ -6,6 +6,7 @@ import { webPlatform } from './platform/platform';
 import { assetUrl, getAssetStats, hasCustomAssetBase, preloadStage1, preloadStage2, uiIconUrl } from './render/assets';
 import { QualityManager, QualitySetting, DetailKey, DetailValue, FrameLimiter } from './render/quality';
 import { Renderer } from './render/renderer';
+import { mountSettings, mountUpgrade, type SettingsActions } from './ui/game-panels';
 import { Game, SimInput } from './sim/game';
 import {
   MAX_PASSIVE_SLOTS, MAX_WEAPON_SLOTS, PASSIVE_BY_ID, PassiveId, WEAPON_BY_ID, WEAPON_EVOLVED_LEVEL, WeaponId,
@@ -23,7 +24,10 @@ const pauseModal = $('screen-pause');
 const endModal = $('screen-end');
 
 const quality = new QualityManager(webPlatform);
-const renderer = new Renderer(canvas, quality);
+const renderer = new Renderer(canvas, quality, webPlatform.deviceInfo().mobile);
+const CAMERA_HEIGHT_LEVELS = [0.8, 0.9, 1, 1.15, 1.3];
+const savedCameraHeight = Number(webPlatform.load('tideline_camera_height') ?? 1);
+if (CAMERA_HEIGHT_LEVELS.includes(savedCameraHeight)) renderer.cameraHeight = savedCameraHeight;
 const audio = new AudioFX();
 const game = new Game();
 
@@ -70,65 +74,29 @@ let lastMs = webPlatform.now();
 let bannerTimer = 0;
 
 // ── 选项同步（画质 / 减弱闪光 / 关闭震屏 / 静音） ──
-const TIER_LABEL = { low: '低', medium: '中', high: '高' } as const;
-const detailLabels: Record<DetailKey, string> = { shadows: '实时阴影', fx: '特效粒子强度', resolution: '渲染分辨率', teammates: '队友装饰特效（预留）' };
-for (const id of ['start-details', 'pause-details']) {
-  const panel = $(id);
-  panel.className = 'detail-settings';
-  for (const key of Object.keys(detailLabels) as DetailKey[]) {
-    const label = document.createElement('label');
-    label.textContent = detailLabels[key];
-    const select = document.createElement('select');
-    select.dataset.detail = key;
-    const choices = key === 'shadows' ? [['auto','跟随画质'],['off','关闭'],['low','低'],['high','高']] : key === 'teammates' ? [['auto','正常'],['low','减轻']] : [['auto','跟随画质'],['low','低'],['high','高']];
-    for (const [value, title] of choices) select.add(new Option(title, value));
-    select.addEventListener('change', () => { quality.setDetail(key, select.value as DetailValue); renderer.applyQuality(); syncOptionUI(); });
-    label.append(select);
-    panel.append(label);
-  }
-}
-$('q-rec').textContent = `（设备推荐：${TIER_LABEL[quality.recommended]}）`;
-
-function syncOptionUI() {
-  document.querySelectorAll<HTMLSelectElement>('select[data-detail]').forEach(s => { s.value = quality.details[s.dataset.detail as DetailKey]; });
-  for (const group of ['start-quality', 'pause-quality']) {
-    $(group).querySelectorAll('button').forEach((b) => {
-      b.classList.toggle('active', b.dataset.q === quality.setting);
-    });
-  }
-  const rf = renderer.vfx.reduceFlash;
-  const ns = renderer.vfx.noShake;
-  const mu = audio.muted;
-  ($<HTMLInputElement>('opt-flash')).checked = rf;
-  ($<HTMLInputElement>('p-flash')).checked = rf;
-  ($<HTMLInputElement>('opt-shake')).checked = ns;
-  ($<HTMLInputElement>('p-shake')).checked = ns;
-  ($<HTMLInputElement>('opt-mute')).checked = mu;
-  ($<HTMLInputElement>('p-mute')).checked = mu;
-}
-
-for (const group of ['start-quality', 'pause-quality']) {
-  $(group).addEventListener('click', (e) => {
-    const btn = (e.target as HTMLElement).closest('button');
-    if (!btn?.dataset.q) return;
-    quality.setSetting(btn.dataset.q as QualitySetting, performance.now() / 1000);
-    renderer.applyQuality();
+const settingsViews = ['start-details', 'pause-details'].map(id => mountSettings($(id)));
+const settingsActions: SettingsActions = {
+  quality(value) { quality.setSetting(value, performance.now()/1000); renderer.applyQuality(); syncOptionUI(); audio.click(); },
+  detail(key,value) { quality.setDetail(key,value); renderer.applyQuality(); syncOptionUI(); },
+  frameCap(value) { quality.setFrameCap(value); syncOptionUI(); },
+  cameraHeight(value) {
+    if (!CAMERA_HEIGHT_LEVELS.includes(value)) return;
+    renderer.cameraHeight = value;
+    webPlatform.save('tideline_camera_height', String(value));
     syncOptionUI();
-    audio.click();
-  });
-}
-
-const bindToggle = (ids: string[], get: () => boolean, set: (v: boolean) => void) => {
-  for (const id of ids) {
-    $(id).addEventListener('change', (e) => {
-      set((e.target as HTMLInputElement).checked);
-      syncOptionUI();
-    });
-  }
+  },
+  toggle(key,value) {
+    if (key === 'muted') audio.setMuted(value);
+    else renderer.vfx[key] = value;
+    syncOptionUI();
+  },
 };
-bindToggle(['opt-flash', 'p-flash'], () => renderer.vfx.reduceFlash, (v) => { renderer.vfx.reduceFlash = v; });
-bindToggle(['opt-shake', 'p-shake'], () => renderer.vfx.noShake, (v) => { renderer.vfx.noShake = v; });
-bindToggle(['opt-mute', 'p-mute'], () => audio.muted, (v) => audio.setMuted(v));
+function syncOptionUI() {
+  const state = { setting:quality.setting, recommended:quality.recommended, active:quality.active,
+    details:{...quality.details}, frameCap:quality.frameCap, cameraHeight:renderer.cameraHeight, reduceFlash:renderer.vfx.reduceFlash,
+    noShake:renderer.vfx.noShake, muted:audio.muted };
+  for (const view of settingsViews) view(state,settingsActions);
+}
 syncOptionUI();
 
 // ── 横竖屏与安全区适配 ──
@@ -201,6 +169,7 @@ function restartMatch() {
 
 // ── 升级 / 访问卡三选一（含官方图标 + 5 星进度点 + 1/2/3 快捷键） ──
 let cardsShownKey = '';
+const renderUpgrade = mountUpgrade($('cards'));
 
 function pickOfferIndex(idx: number) {
   if (game.state !== 'levelup' || !game.offer[idx]) return;
@@ -231,34 +200,7 @@ function showLevelUp() {
   input.clear();
   input.enabled = false;
   $('levelup-title').textContent = game.levelUpIsCard ? '★ 精英访问卡 · 武器进化 / 强化' : `Lv.${game.player.level} 等级提升 · 选择强化`;
-  const wrap = $('cards');
-  wrap.innerHTML = '';
-  game.offer.forEach((o, idx) => {
-    const card = document.createElement('button');
-    card.className = `card${o.kind === 'evolve' ? ' evo-card' : ''}`;
-    const pips = o.kind === 'evolve'
-      ? '<span class="card-pip on"></span>'.repeat(5)
-      : Array.from({ length: 5 }, (_, i) => `<span class="card-pip${i < o.nextLevel ? ' on' : ''}"></span>`).join('');
-    const partnerImg = o.evolvePartnerIcon ? `<img src="${uiIconUrl(o.evolvePartnerIcon)}" alt="" />` : '';
-    card.innerHTML = `
-      <div class="card-top">
-        <img class="card-icon" src="${uiIconUrl(o.icon)}" alt="${o.name}" />
-        <div class="card-head">
-          <span class="card-tag ${o.kind}">${o.tag}</span>
-          <div class="card-name">${o.name}</div>
-          <div class="card-sub">${o.sub}</div>
-          <div class="card-pips">${pips}</div>
-        </div>
-      </div>
-      <div class="card-desc">${o.desc}</div>
-      <div class="card-footer">
-        <div class="card-hint${o.evolveReady ? ' ready' : ''}">${partnerImg}<span>${o.evolveHint ?? ''}</span></div>
-        <span class="card-key">按 ${idx + 1}</span>
-      </div>
-    `;
-    card.addEventListener('click', () => pickOfferIndex(idx));
-    wrap.appendChild(card);
-  });
+  renderUpgrade(game.offer, pickOfferIndex, uiIconUrl);
   levelupModal.classList.remove('hidden');
 }
 

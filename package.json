@@ -12,12 +12,21 @@
   "keywords": [],
   "type": "commonjs",
   "dependencies": {
+    "@heroui/react": "3.2.8",
+    "@heroui/styles": "3.2.8",
+    "@tailwindcss/vite": "4.3.5",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "tailwindcss": "4.3.5",
     "three": "^0.170.0"
   },
   "devDependencies": {
     "@gltf-transform/core": "^4.5.1",
     "@gltf-transform/extensions": "^4.5.1",
     "@gltf-transform/functions": "^4.5.1",
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
     "@types/three": "^0.170.0",
     "meshoptimizer": "^1.3.0",
     "playwright-core": "^1.65.1",

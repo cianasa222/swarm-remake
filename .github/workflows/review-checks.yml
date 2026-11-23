@@ -1,0 +1,26 @@
+name: Review checks
+on:
+  push:
+    branches: ["review/**", "quick/**", "gemini/**"]
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: VFX data tests
+        run: |
+          if [ -f tools/bab/extract_vfx_14_14.test.cjs ]; then node --test tools/bab/extract_vfx_14_14.test.cjs; fi
+      - name: StarStrike numerical tests
+        run: |
+          if [ -f tools/q30-starstrike.test.ts ]; then npx tsx tools/q30-starstrike.test.ts; fi
+      - name: Q30 release asset gate
+        run: |
+          if [ -f tools/q30/verify_assets.mjs ]; then node tools/q30/verify_assets.mjs; fi
