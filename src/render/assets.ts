@@ -29,7 +29,8 @@ export interface AssetStats {
   warmupMs: number;
 }
 
-const rawBase = (import.meta.env.VITE_ASSET_BASE_URL as string | undefined)?.trim() || '.';
+// Vite injects import.meta.env in the browser; raw Node regression tests do not.
+const rawBase = (import.meta.env?.VITE_ASSET_BASE_URL as string | undefined)?.trim() || '.';
 const ASSET_BASE = rawBase.replace(/\/+$/, '');
 
 export function hasCustomAssetBase(): boolean {
@@ -484,10 +485,21 @@ const STAGE2_IMAGES = [
   'weapons/vfx/hr_noise.webp',
   'weapons/vfx/frost_shield.webp',
   'weapons/vfx/statikk_bolt.webp',
-  'weapons/vfx/star_target.webp',
-  'weapons/vfx/star_beam_core.webp',
-  'weapons/vfx/star_beam_center.webp',
-  'weapons/vfx/star_crack.webp',
+  // Q-30：战兔巨爆原版 StarStrike 14 张贴图（tools/q30/fetch_starstrike_14_14.mjs 生成）
+  'weapons/vfx/starstrike/augment_orbitallaser_laser_corehardedge.webp',
+  'weapons/vfx/starstrike/aurelionsol_base_cata_sharpedges_gradientmask.webp',
+  'weapons/vfx/starstrike/aurelionsol_base_r_groundtrail_color-bellcurve.webp',
+  'weapons/vfx/starstrike/base_revive_ground_crack.webp',
+  'weapons/vfx/starstrike/belveth_base_basicgradient.webp',
+  'weapons/vfx/starstrike/cracks_light.webp',
+  'weapons/vfx/starstrike/leona_skin53_lensflare.webp',
+  'weapons/vfx/starstrike/strawberry_leona_base_erosionsphere02.webp',
+  'weapons/vfx/starstrike/strawberry_leona_skin10_beam_2.webp',
+  'weapons/vfx/starstrike/strawberry_poi_mapd_turret_base_smoke_trail.webp',
+  'weapons/vfx/starstrike/strawberry_weapon_starstrike_deca_xtarget.webp',
+  'weapons/vfx/starstrike/strawberry_weapon_starstrike_decal_outline_perf.webp',
+  'weapons/vfx/starstrike/strawberry_weapon_starstrike_decal_perf.webp',
+  'weapons/vfx/starstrike/sylas_skin24_shapes01.webp',
   'weapons/vfx/frost_crack.webp',
   'weapons/vfx/frost_tile.webp',
 ];
