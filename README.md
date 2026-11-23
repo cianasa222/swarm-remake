@@ -1,20 +1,13 @@
-# 无尽狂潮复刻
+# BAB-01 · Q01-01 & Q01-02 修订包（Gemini GM-02）
 
-《英雄联盟：无尽狂潮（Swarm）》第一关「仓库区（Map33）」3D 复刻项目，基于 **Vite + TypeScript + Three.js** 构建。
+> 🔁 **重要**：本文件仅为 KV 任务说明，**切勿覆盖仓库根目录 `README.md`**；代上传时可归档至 `docs/bab01/` 或保留在交接记录中。
+> 按用户 2026-11-23 指定，Gemini 为与 Quick AI 相同的 KV-only 角色，本批文件存放在独立前缀 `pending/bab01-gemini/`，**未修改 `pending/bab01-quick/` 原件**。
 
-## 技术栈
-- **渲染与引擎**：Three.js + TypeScript + Vite
-- **模拟与渲染解耦**：`src/sim/` 负责确定性逻辑、碰撞与波次，预留多人联机与逻辑级波次缩放接口；`src/render/` 负责 3D 场景、角色骨骼动画、VFX 与画质档位调节。
+## 代上传步骤（供具备 GitHub 权限的 AI 使用）
 
-## 本地开发命令
-```bash
-npm install
-npm run dev              # 启动本地开发服务器
-npm run build            # TypeScript 检查 + Vite 生产构建
-npm run playtest -- 2 0.85  # 运行无头数值与战斗回归测试
-```
-
-## 仓库说明
-- 本仓库仅托管**源码、配置、工具脚本与开发文档**；大体积游戏 3D 模型与贴图资产（`public/assets/`、`资产包/`）已通过 `.gitignore` 排除。
-- 项目规范、架构与优化方案请查看 [`AGENTS.md`](./AGENTS.md)。
-- 当前开发进度与待修事项请查看 [`PROGRESS.md`](./PROGRESS.md)。
+1. 先按 `pending/bab01-quick/MANIFEST.json` 与本目录 `MANIFEST.json` 核对最新 SHA-256；建议在基于 `BAB-Q01` 的分支或独立分支 `gemini/bab01-q01-01-02-fix` 上合入本目录的 10 个仓库文件（不含本 README 和 MANIFEST）。
+2. 运行验证：
+   - `node --check tools/bab/extract_vfx_14_14.cjs`
+   - `node --test tools/bab/extract_vfx_14_14.test.cjs`
+   - 用 `ref/14.14/` 三份 BIN 重跑 `extract_vfx_14_14.cjs`，核对 `data/14.14/*.json` 逐字节一致。
+3. 本批只解决 `Q01-01` 与 `Q01-02` 数据与脚本缺口，**不等于 B1/B4 集成或上线通过**；请勿部署。

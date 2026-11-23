@@ -68236,7 +68236,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Boss_RekSai/Skins/Base/Particles/Aura_Self.StrawberryRebuild.DDS",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_boss_reksai/skins/base/particles/aura_self.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/aura_self.webp"
      },
      "textureMult": null,
      "blend": "additive",

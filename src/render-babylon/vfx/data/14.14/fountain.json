@@ -229,7 +229,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Particles_Hex_Plus.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/particles_hex_plus.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/hex_plus.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -341,13 +341,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Augment_HollowRadiance_Decal.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_augment_hollowradiance_decal.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/hollow_decal.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Scan_Lines.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_scan_lines.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/healingstation_scan_lines.webp"
       },
       "params": {
        "uvScaleMult": {
@@ -448,13 +448,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/GlowRing.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/glowring.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/glowring_outer.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Dots.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_dots.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/dots.webp"
       },
       "params": {
        "uvScaleMult": {
@@ -629,13 +629,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Healing_Shockwave.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healing_shockwave.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/shockwave.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Dots.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_dots.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/dots.webp"
       },
       "params": {
        "uvScaleMult": {
@@ -798,13 +798,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Timer_Outline.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_timer_outline.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/timer_outline.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Base_Glow.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_base_glow.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/base_glow.webp"
       },
       "params": {
        "uvScaleMult": {
@@ -951,13 +951,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Glow_Ring.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_glow_ring.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/glow_ring.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Glow_HardEdge.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_glow_hardedge.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/healingstation_glow_hardedge.webp"
       },
       "params": {
        "texAddressModeMult": 2,
@@ -1097,13 +1097,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Glow_Ring.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_glow_ring.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/glow_ring.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Dots.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_dots.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/dots.webp"
       },
       "params": {
        "uvScaleMult": {
@@ -1219,7 +1219,7 @@
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_HexTile.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_hextile.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/hextile.webp"
       },
       "params": {
        "uvScaleMult": {
@@ -1335,7 +1335,7 @@
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_HexTile_Inverted.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_hextile_inverted.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/hextile_inv.webp"
       },
       "params": {
        "uvScaleMult": {
@@ -1592,7 +1592,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Glow_Ring.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_glow_ring.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/glow_ring.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -1654,13 +1654,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_trail_Dark.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_trail_dark.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/trail_dark.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/3026_Items_Noise_02.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/3026_items_noise_02.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/noise_02.webp"
       },
       "params": {
        "uvScaleMult": {
@@ -1809,7 +1809,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingFountain_SharpCircle.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_map1_healingfountain_sharpcircle.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/sharp_circle.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -1985,7 +1985,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Base_Glow.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_base_glow.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/base_glow.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -2418,7 +2418,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Particles_Hex_Plus.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/particles_hex_plus.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/hex_plus.webp"
      },
      "textureMult": null,
      "blend": "default",
@@ -2606,13 +2606,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_MeshMult.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_meshmult.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/healingstation_meshmult.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Shockwave_Trail.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_shockwave_trail.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/healingstation_shockwave_trail.webp"
       },
       "params": {
        "birthUvScrollRateMult": {
@@ -2817,7 +2817,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_MeshMult.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_meshmult.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/healingstation_meshmult.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -2995,13 +2995,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Trail_Silk_01.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_trail_silk_01.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/healingstation_trail_silk_01.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Trail_Silk_01.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_trail_silk_01.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/healingstation_trail_silk_01.webp"
       },
       "params": {
        "birthUvScrollRateMult": {
@@ -3428,7 +3428,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_lilStar_4x2.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_lilstar_4x2.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/lilstar.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -3561,13 +3561,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Healing_Shockwave.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healing_shockwave.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/shockwave.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Dots.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_dots.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/dots.webp"
       },
       "params": {
        "uvScaleMult": {
@@ -3791,7 +3791,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_DecalLight01.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_decallight01.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/decal_light_01.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -3924,13 +3924,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_DecalLight01.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_decallight01.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/decal_light_01.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Scan_Lines.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_scan_lines.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/healingstation_scan_lines.webp"
       },
       "params": {
        "ParticleIntegratedUvScrollMult": {
@@ -4136,13 +4136,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Healing_Shockwave.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healing_shockwave.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/shockwave.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Dots.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_dots.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/dots.webp"
       },
       "params": {
        "uvScaleMult": {
@@ -4384,13 +4384,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Base_GlowStar_02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_base_glowstar_02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/healingstation_base_glowstar_02.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Dots.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_dots.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/dots.webp"
       },
       "params": {
        "uvScaleMult": {
@@ -4579,7 +4579,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Base_GlowStar_02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_base_glowstar_02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/healingstation_base_glowstar_02.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -4769,13 +4769,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Circle_Mis.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_circle_mis.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/healingstation_circle_mis.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_trail_Dark.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_trail_dark.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/trail_dark.webp"
       },
       "params": {
        "uvScaleMult": {
@@ -5020,7 +5020,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Music_aura.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/music_aura.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/music_aura.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -5135,7 +5135,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_PointStarAdd.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_pointstaradd.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/healingstation_pointstaradd.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -5229,7 +5229,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Star_1.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_star_1.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/star1.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -5412,13 +5412,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation__Infernal_Smoke_Trail.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation__infernal_smoke_trail.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/healingstation__infernal_smoke_trail.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation__Infernal_Smoke_Trail.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation__infernal_smoke_trail.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/healingstation__infernal_smoke_trail.webp"
       },
       "params": {
        "birthUvScrollRateMult": {
@@ -5770,7 +5770,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_lilStar_4x2.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_lilstar_4x2.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/lilstar.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -5866,7 +5866,7 @@
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_06.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_06.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/base_timer_mult_06.webp"
       },
       "params": {
        "texAddressModeMult": 2,
@@ -5972,13 +5972,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/3026_Items_Noise_02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/3026_items_noise_02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/noise_02.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_06.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_06.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/base_timer_mult_06.webp"
       },
       "params": {
        "texAddressModeMult": 2,
@@ -6088,13 +6088,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Healing_Edge_08.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healing_edge_08.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/edge_08.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_06.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_06.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/base_timer_mult_06.webp"
       },
       "params": {
        "texAddressModeMult": 2,
@@ -6210,7 +6210,7 @@
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_07.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_07.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/base_timer_mult_07.webp"
       },
       "params": {
        "texAddressModeMult": 2,
@@ -6310,13 +6310,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Healing_Edge_06.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healing_edge_06.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/edge_06.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_08.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_08.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/base_timer_mult_08.webp"
       },
       "params": {
        "texAddressModeMult": 2,
@@ -6432,13 +6432,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Dots.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_dots.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/dots.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_09.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_09.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/base_timer_mult_09.webp"
       },
       "params": {
        "texAddressModeMult": 2,
@@ -6543,13 +6543,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Healing_Edge_09.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healing_edge_09.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/edge_09.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_06.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_06.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/base_timer_mult_06.webp"
       },
       "params": {
        "texAddressModeMult": 2,
@@ -6653,13 +6653,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Healing_Edge_06.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healing_edge_06.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/edge_06.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_06.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_06.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/base_timer_mult_06.webp"
       },
       "params": {
        "texAddressModeMult": 2,
@@ -6795,13 +6795,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Healing_Edge_Start_01.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healing_edge_start_01.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/edge_start_01.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_05.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_05.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/base_timer_mult_05.webp"
       },
       "params": {
        "texAddressModeMult": 2,
@@ -6919,13 +6919,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Healing_Edge_Start_01.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healing_edge_start_01.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/edge_start_01.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_05.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_05.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/base_timer_mult_05.webp"
       },
       "params": {
        "texAddressModeMult": 2,
@@ -7040,7 +7040,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingFountain_SharpCircle.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_map1_healingfountain_sharpcircle.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/sharp_circle.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -7116,7 +7116,7 @@
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_HexTile.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_hextile.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/hextile.webp"
       },
       "params": {
        "uvScaleMult": {
@@ -7210,7 +7210,7 @@
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_HexTile_Inverted.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_hextile_inverted.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/hextile_inv.webp"
       },
       "params": {
        "uvScaleMult": {
@@ -7455,7 +7455,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Glow_Ring.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_glow_ring.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/glow_ring.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -7531,7 +7531,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Base_Glow.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_base_glow.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/base_glow.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -7644,13 +7644,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Glow_Ring.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_glow_ring.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/glow_ring.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Dots.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_dots.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/dots.webp"
       },
       "params": {
        "uvScaleMult": {
@@ -7913,7 +7913,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Particles_Hex_Plus.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/particles_hex_plus.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/hex_plus.webp"
      },
      "textureMult": null,
      "blend": "additive",

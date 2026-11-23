@@ -12,7 +12,8 @@
    "patch": "14.14"
   },
   "gameRefs": {
-   "enemy": true
+   "enemy": true,
+   "elite": true
   },
   "flags": 213,
   "visibilityRadius": 2500,
@@ -2422,7 +2423,8 @@
    "patch": "14.14"
   },
   "gameRefs": {
-   "enemy": true
+   "enemy": true,
+   "elite": true
   },
   "flags": 197,
   "visibilityRadius": 2500,
@@ -4507,7 +4509,8 @@
    "patch": "14.14"
   },
   "gameRefs": {
-   "enemy": true
+   "enemy": true,
+   "elite": true
   },
   "flags": 197,
   "visibilityRadius": 2500,
@@ -6484,7 +6487,8 @@
    "patch": "14.14"
   },
   "gameRefs": {
-   "enemy": true
+   "enemy": true,
+   "elite": true
   },
   "flags": 213,
   "visibilityRadius": 2500,
@@ -10215,7 +10219,8 @@
    "patch": "14.14"
   },
   "gameRefs": {
-   "enemy": true
+   "enemy": true,
+   "elite": true
   },
   "transform": null,
   "soundOnCreate": null,
@@ -12175,6 +12180,662 @@
  },
  {
   "schema": 1,
+  "id": "Strawberry_Elite_Glow",
+  "category": "enemy",
+  "source": {
+   "file": "ref/14.14/data/maps/shipping/map33/map33.bin.json",
+   "key": "Maps/Shipping/Map33/Particles/Environment/Strawberry_Elite_Glow",
+   "particleName": "Strawberry_Elite_Glow",
+   "particlePath": "Maps/Shipping/Map33/Particles/Environment/Strawberry_Elite_Glow",
+   "sha256": "0061cc146ab8782085061e38f7acac27714f032c301af3b766d771082ef57848",
+   "patch": "14.14"
+  },
+  "gameRefs": {
+   "enemy": true,
+   "elite": true
+  },
+  "flags": 212,
+  "transform": null,
+  "soundOnCreate": null,
+  "soundPersistent": "Play_sfx_Strawberry_Elite_Generic_glow_buffactivate",
+  "layers": [
+   {
+    "name": "FireGlow",
+    "index": 0,
+    "emitterKind": "complex",
+    "primitive": "billboard",
+    "primitiveRaw": null,
+    "mesh": null,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "t": [
+      0
+     ],
+     "v": [
+      3
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.5,
+        1
+       ]
+      }
+     ]
+    },
+    "particleLinger": 0.5,
+    "emitterPosition": {
+     "c": [
+      0,
+      10,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      180,
+      300,
+      0
+     ]
+    },
+    "isUniformScale": true,
+    "bindWeight": {
+     "c": 1
+    },
+    "importance": 2,
+    "birthColor": {
+     "c": [
+      1,
+      0.4000000059604645,
+      0.20000000298023224,
+      0.4000000059604645
+     ]
+    },
+    "color": {
+     "t": [
+      0,
+      0.20000000298023224,
+      0.3499999940395355,
+      0.44999998807907104,
+      0.550000011920929,
+      0.6499999761581421,
+      0.800000011920929,
+      1
+     ],
+     "v": [
+      [
+       1,
+       1,
+       1,
+       0
+      ],
+      [
+       1,
+       1,
+       1,
+       0.550000011920929
+      ],
+      [
+       1,
+       1,
+       1,
+       0.8500000238418579
+      ],
+      [
+       1,
+       1,
+       1,
+       0.6000000238418579
+      ],
+      [
+       1,
+       1,
+       1,
+       0.6000000238418579
+      ],
+      [
+       1,
+       1,
+       1,
+       0.8500000238418579
+      ],
+      [
+       1,
+       1,
+       1,
+       0.550000011920929
+      ],
+      [
+       1,
+       1,
+       1,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/common_SRU_Tower_Explosion_Glow.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/common_sru_tower_explosion_glow.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "pass": 5,
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Avatar",
+    "index": 1,
+    "emitterKind": "complex",
+    "primitive": "attachedMesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mLockMeshToAttachment": true,
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveAttachedMesh"
+    },
+    "mesh": null,
+    "emitterLifetime": 0.10000000149011612,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "particleLinger": 3,
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      1.0019999742507935,
+      1,
+      1
+     ]
+    },
+    "isUniformScale": true,
+    "particleIsLocalOrientation": 1,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      1,
+      0.07058823853731155,
+      0.003921568859368563,
+      1
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/alphaslice_mesh.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/alphaslice_mesh.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/AlphaSlice_bubbles_02.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/alphaslice_bubbles_02.strawberryrebuild.png",
+       "project": null
+      },
+      "params": {
+       "birthUvScrollRateMult": {
+        "constantValue": [
+         0.25,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "depthBiasFactors": [
+      -1,
+      -5
+     ],
+     "disableBackfaceCull": true,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "numFrames": 4,
+     "isRandomStartFrame": 1,
+     "birthUvScrollRate": {
+      "c": [
+       0.4000000059604645,
+       0.20000000298023224
+      ]
+     }
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Fresnel",
+    "index": 2,
+    "emitterKind": "complex",
+    "primitive": "attachedMesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mLockMeshToAttachment": true,
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveAttachedMesh"
+    },
+    "mesh": null,
+    "emitterLifetime": 0.10000000149011612,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "particleLinger": 3,
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      1.0019999742507935,
+      1,
+      1
+     ]
+    },
+    "isUniformScale": true,
+    "particleIsLocalOrientation": 1,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      0,
+      0,
+      0,
+      1
+     ]
+    },
+    "color": {
+     "c": [
+      0,
+      0,
+      0,
+      1
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/alphaslice_mesh.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/alphaslice_mesh.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "pass": 1,
+     "depthBiasFactors": [
+      -1,
+      -5
+     ],
+     "disableBackfaceCull": true,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "numFrames": 4,
+     "isRandomStartFrame": 1,
+     "birthUvScrollRate": {
+      "c": [
+       0.4000000059604645,
+       0.20000000298023224
+      ]
+     }
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "reflectionDefinition"
+    ],
+    "extra": {
+     "reflectionDefinition": {
+      "fresnel": 0.10000000149011612,
+      "fresnelColor": [
+       1,
+       0.5843137502670288,
+       0.10980392247438431,
+       0
+      ],
+      "__type": "VfxReflectionDefinitionData"
+     }
+    }
+   },
+   {
+    "name": "statics_weapon",
+    "index": 3,
+    "emitterKind": "complex",
+    "primitive": "billboard",
+    "primitiveRaw": null,
+    "mesh": null,
+    "rate": {
+     "c": 5,
+     "t": [
+      0
+     ],
+     "v": [
+      5
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0,
+        3
+       ]
+      }
+     ]
+    },
+    "particleLifetime": {
+     "c": 0.25,
+     "t": [
+      0
+     ],
+     "v": [
+      0.25
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.15000000596046448,
+        0.25
+       ]
+      }
+     ]
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      100,
+      50
+     ]
+    },
+    "spawnShape": {
+     "flags": 1,
+     "radius": 40,
+     "__type": "VfxShapeSphere"
+    },
+    "birthVelocity": {
+     "c": [
+      5,
+      1,
+      0.5
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       5,
+       1,
+       0.5
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0,
+        100
+       ]
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        -500,
+        500
+       ]
+      }
+     ]
+    },
+    "birthScale": {
+     "c": [
+      40,
+      15,
+      15
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       40,
+       15,
+       15
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        1,
+        2.5
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      0.25,
+      1
+     ],
+     "v": [
+      [
+       2,
+       2,
+       2
+      ],
+      [
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       0,
+       1
+      ]
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      1,
+      0,
+      0
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       1,
+       0,
+       0
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0,
+        360
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "particleIsLocalOrientation": 1,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      1,
+      0.7215686440467834,
+      0.23529411852359772,
+      1
+     ]
+    },
+    "color": {
+     "t": [
+      0,
+      0.30000001192092896,
+      0.6000000238418579,
+      1
+     ],
+     "v": [
+      [
+       1,
+       1,
+       1,
+       0
+      ],
+      [
+       1,
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       1,
+       1,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Olaf_Base_BitsDissolve_01.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/olaf_base_bitsdissolve_01.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 95,
+     "pass": 6,
+     "depthBiasFactors": [
+      -1,
+      -1
+     ],
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "texDiv": [
+      2,
+      2
+     ],
+     "numFrames": 4,
+     "isRandomStartFrame": 1,
+     "frameRate": 4,
+     "birthFrameRate": {
+      "c": 3
+     }
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "FlexShapeDefinition"
+    ],
+    "extra": {
+     "FlexShapeDefinition": {
+      "scaleBirthScaleByBoundObjectSize": 0.003000000026077032,
+      "scaleEmitOffsetByBoundObjectSize": 0.004999999888241291,
+      "__type": "VfxFlexShapeDefinitionData"
+     }
+    }
+   }
+  ],
+  "extra": {}
+ },
+ {
+  "schema": 1,
   "id": "Strawberry_Elite_MissileFast_Glow",
   "category": "enemy",
   "source": {
@@ -12186,7 +12847,8 @@
    "patch": "14.14"
   },
   "gameRefs": {
-   "enemy": true
+   "enemy": true,
+   "elite": true
   },
   "flags": 213,
   "transform": null,
@@ -12697,7 +13359,8 @@
    "patch": "14.14"
   },
   "gameRefs": {
-   "enemy": true
+   "enemy": true,
+   "elite": true
   },
   "flags": 213,
   "transform": null,
@@ -13108,6 +13771,518 @@
       0.23529411852359772,
       0.7884336709976196,
       1,
+      1
+     ]
+    },
+    "color": {
+     "t": [
+      0,
+      0.30000001192092896,
+      0.6000000238418579,
+      1
+     ],
+     "v": [
+      [
+       1,
+       1,
+       1,
+       0
+      ],
+      [
+       1,
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       1,
+       1,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Olaf_Base_BitsDissolve_01.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/olaf_base_bitsdissolve_01.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 95,
+     "pass": 6,
+     "depthBiasFactors": [
+      -1,
+      -1
+     ],
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "texDiv": [
+      2,
+      2
+     ],
+     "numFrames": 4,
+     "isRandomStartFrame": 1,
+     "frameRate": 4,
+     "birthFrameRate": {
+      "c": 3
+     }
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "FlexShapeDefinition"
+    ],
+    "extra": {
+     "FlexShapeDefinition": {
+      "scaleBirthScaleByBoundObjectSize": 0.003000000026077032,
+      "scaleEmitOffsetByBoundObjectSize": 0.004999999888241291,
+      "__type": "VfxFlexShapeDefinitionData"
+     }
+    }
+   }
+  ],
+  "extra": {}
+ },
+ {
+  "schema": 1,
+  "id": "Strawberry_Elite_Zone_Glow",
+  "category": "enemy",
+  "source": {
+   "file": "ref/14.14/data/maps/shipping/map33/map33.bin.json",
+   "key": "Maps/Shipping/Map33/Particles/Environment/Strawberry_Elite_Zone_Glow",
+   "particleName": "Strawberry_Elite_Zone_Glow",
+   "particlePath": "Maps/Shipping/Map33/Particles/Environment/Strawberry_Elite_Zone_Glow",
+   "sha256": "5e2f216d369b01685c00e0f4b88257d7dfcbddc81f4d0878586e392a5192ef50",
+   "patch": "14.14"
+  },
+  "gameRefs": {
+   "enemy": true,
+   "elite": true
+  },
+  "flags": 197,
+  "transform": null,
+  "soundOnCreate": null,
+  "soundPersistent": null,
+  "layers": [
+   {
+    "name": "Avatar",
+    "index": 0,
+    "emitterKind": "complex",
+    "primitive": "attachedMesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mLockMeshToAttachment": true,
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveAttachedMesh"
+    },
+    "mesh": null,
+    "emitterLifetime": 0.10000000149011612,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "particleLinger": 3,
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      1.0019999742507935,
+      1,
+      1
+     ]
+    },
+    "isUniformScale": true,
+    "particleIsLocalOrientation": 1,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      1,
+      0.07058823853731155,
+      0.003921568859368563,
+      1
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/alphaslice_mesh.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/alphaslice_mesh.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/AlphaSlice_bubbles_02.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/alphaslice_bubbles_02.strawberryrebuild.png",
+       "project": null
+      },
+      "params": {
+       "birthUvScrollRateMult": {
+        "constantValue": [
+         0.25,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "depthBiasFactors": [
+      -1,
+      -5
+     ],
+     "disableBackfaceCull": true,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "numFrames": 4,
+     "isRandomStartFrame": 1,
+     "birthUvScrollRate": {
+      "c": [
+       0.4000000059604645,
+       0.20000000298023224
+      ]
+     }
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Fresnel",
+    "index": 1,
+    "emitterKind": "complex",
+    "primitive": "attachedMesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mLockMeshToAttachment": true,
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveAttachedMesh"
+    },
+    "mesh": null,
+    "emitterLifetime": 0.10000000149011612,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "particleLinger": 3,
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      1.0019999742507935,
+      1,
+      1
+     ]
+    },
+    "isUniformScale": true,
+    "particleIsLocalOrientation": 1,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      0,
+      0,
+      0,
+      1
+     ]
+    },
+    "color": {
+     "c": [
+      0,
+      0,
+      0,
+      1
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/alphaslice_mesh.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/alphaslice_mesh.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "pass": 1,
+     "depthBiasFactors": [
+      -1,
+      -5
+     ],
+     "disableBackfaceCull": true,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "numFrames": 4,
+     "isRandomStartFrame": 1,
+     "birthUvScrollRate": {
+      "c": [
+       0.4000000059604645,
+       0.20000000298023224
+      ]
+     }
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "reflectionDefinition"
+    ],
+    "extra": {
+     "reflectionDefinition": {
+      "fresnel": 0.10000000149011612,
+      "fresnelColor": [
+       1,
+       0.5843137502670288,
+       0.10980392247438431,
+       0
+      ],
+      "__type": "VfxReflectionDefinitionData"
+     }
+    }
+   },
+   {
+    "name": "statics_weapon",
+    "index": 2,
+    "emitterKind": "complex",
+    "primitive": "billboard",
+    "primitiveRaw": null,
+    "mesh": null,
+    "rate": {
+     "c": 5,
+     "t": [
+      0
+     ],
+     "v": [
+      5
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0,
+        3
+       ]
+      }
+     ]
+    },
+    "particleLifetime": {
+     "c": 0.25,
+     "t": [
+      0
+     ],
+     "v": [
+      0.25
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.15000000596046448,
+        0.25
+       ]
+      }
+     ]
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      100,
+      50
+     ]
+    },
+    "spawnShape": {
+     "flags": 1,
+     "radius": 40,
+     "__type": "VfxShapeSphere"
+    },
+    "birthVelocity": {
+     "c": [
+      5,
+      1,
+      0.5
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       5,
+       1,
+       0.5
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0,
+        100
+       ]
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        -500,
+        500
+       ]
+      }
+     ]
+    },
+    "birthScale": {
+     "c": [
+      40,
+      15,
+      15
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       40,
+       15,
+       15
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        1,
+        2.5
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      0.25,
+      1
+     ],
+     "v": [
+      [
+       2,
+       2,
+       2
+      ],
+      [
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       0,
+       1
+      ]
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      1,
+      0,
+      0
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       1,
+       0,
+       0
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0,
+        360
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "particleIsLocalOrientation": 1,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      1,
+      0,
+      0.13949798047542572,
       1
      ]
     },

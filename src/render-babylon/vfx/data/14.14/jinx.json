@@ -84,7 +84,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Aura_Self.StrawberryRebuild.DDS",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/aura_self.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/aura_self.webp"
      },
      "textureMult": {
       "texture": {
@@ -201,7 +201,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Aura_Self.StrawberryRebuild.DDS",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/aura_self.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/aura_self.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -288,7 +288,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Aura_Self.StrawberryRebuild.DDS",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/aura_self.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/aura_self.webp"
      },
      "textureMult": {
       "texture": {
@@ -403,7 +403,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Aura_Self.StrawberryRebuild.DDS",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/aura_self.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/aura_self.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -637,7 +637,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Hit_squares.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_hit_squares.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/hit_squares.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -760,7 +760,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Passive_GlowRing.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_passive_glowring.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/passive_ring.webp"
      },
      "textureMult": {
       "texture": {
@@ -962,7 +962,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_CatLogo_outline.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_catlogo_outline.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/catlogo_outline.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -1098,7 +1098,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Cat_Logo.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_cat_logo.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/cat_logo.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -1234,7 +1234,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Passive_GlowRing.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_passive_glowring.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/passive_ring.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -1490,7 +1490,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Circle_Mis.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_circle_mis.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/circle_mis.webp"
      },
      "textureMult": {
       "texture": {
@@ -1596,7 +1596,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Passive_GlowRing.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_passive_glowring.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/passive_ring.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -1738,7 +1738,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Aura_Self.StrawberryRebuild.DDS",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/aura_self.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/aura_self.webp"
      },
      "textureMult": {
       "texture": {
@@ -2002,7 +2002,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Strawberry_Jinx_Base_Props_TX_CM.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/strawberry_jinx_base_props_tx_cm.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/props_tx.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -2221,7 +2221,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_CatPaw.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_catpaw.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/catpaw.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -2571,7 +2571,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Aura_Self.StrawberryRebuild.DDS",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/aura_self.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/aura_self.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -2746,7 +2746,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Glow.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_glow.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/base_glow.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -3127,7 +3127,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_R_Buff_lilStar_4x2.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_r_buff_lilstar_4x2.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/lilstar_4x2.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -3228,7 +3228,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Glow.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_glow.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/base_glow.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -3388,7 +3388,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_R_Trail02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_r_trail02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/r_trail.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -3534,7 +3534,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Project_Bolts.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_project_bolts.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/project_bolts.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -3726,7 +3726,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Aura_Self.StrawberryRebuild.DDS",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/aura_self.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/aura_self.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -3872,7 +3872,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Glow.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_glow.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/base_glow.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -4010,7 +4010,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Glow.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_glow.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/base_glow.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -4421,7 +4421,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_R_Buff_lilStar_4x2.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_r_buff_lilstar_4x2.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/lilstar_4x2.webp"
      },
      "textureMult": {
       "texture": {
@@ -4599,7 +4599,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Q_Gun_Hit.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_q_gun_hit.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/gun_hit.webp"
      },
      "textureMult": {
       "texture": {
@@ -4779,7 +4779,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Q_Gun_Hit.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_q_gun_hit.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/gun_hit.webp"
      },
      "textureMult": {
       "texture": {
@@ -4906,7 +4906,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Glow.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_glow.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/base_glow.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -5074,7 +5074,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_R_Trail02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_r_trail02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/r_trail.webp"
      },
      "textureMult": {
       "texture": {
@@ -5253,7 +5253,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Project_Bolts.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_project_bolts.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/project_bolts.webp"
      },
      "textureMult": {
       "texture": {
@@ -5397,7 +5397,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Glow.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_glow.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/base_glow.webp"
      },
      "textureMult": {
       "texture": {
@@ -5989,7 +5989,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_R_Shapes01.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_r_shapes01.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/r_shapes01.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -6312,7 +6312,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Rocket_Hit.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_rocket_hit.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/rocket_hit.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -6589,7 +6589,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Aura_Self.StrawberryRebuild.DDS",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/aura_self.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/aura_self.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -6904,7 +6904,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Q_Shapes02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_q_shapes02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/q_shapes02.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -7281,7 +7281,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_R_Buff_lilStar_4x2.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_r_buff_lilstar_4x2.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/lilstar_4x2.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -7469,7 +7469,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Muzzle_Flash.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_muzzle_flash.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/muzzle_flash.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -7822,7 +7822,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Particles_1_9.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_particles_1_9.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/particles_1_9.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -8201,7 +8201,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Particles_1_9.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_particles_1_9.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/particles_1_9.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -8336,7 +8336,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Aura_Self.StrawberryRebuild.DDS",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/aura_self.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/aura_self.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -8970,7 +8970,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Particles_1_9.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_particles_1_9.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/particles_1_9.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -9342,7 +9342,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Particles_1_9.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_particles_1_9.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/particles_1_9.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -9522,7 +9522,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Glow.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_glow.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/base_glow.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -9899,7 +9899,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_R_Buff_lilStar_4x2.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_r_buff_lilstar_4x2.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/lilstar_4x2.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -10500,7 +10500,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Aura_Self.StrawberryRebuild.DDS",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/aura_self.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/aura_self.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -10682,7 +10682,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Crater_01.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_crater_01.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/crater_01.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -11152,7 +11152,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_SandStreaks.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_sandstreaks.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/sand_streaks.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -11319,7 +11319,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_E_Praxis.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_e_praxis.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/e_praxis.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -11521,7 +11521,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_E_ErosionSphere02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_e_erosionsphere02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/e_erosion.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -11766,7 +11766,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Pixel.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_pixel.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/base_pixel.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -11903,7 +11903,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Strawberry_Jinx_Base_Props_TX_CM.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/strawberry_jinx_base_props_tx_cm.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/props_tx.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -12115,7 +12115,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_R_Trail02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_r_trail02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/r_trail.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -12399,7 +12399,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Muzzle_Flash.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_muzzle_flash.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/muzzle_flash.webp"
      },
      "textureMult": null,
      "blend": "default",
@@ -12497,7 +12497,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Aura_Self.StrawberryRebuild.DDS",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/aura_self.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/aura_self.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -12617,7 +12617,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_R_Energy_01.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_r_energy_01.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/r_energy.webp"
      },
      "textureMult": {
       "texture": {
@@ -12717,7 +12717,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Aura_Self.StrawberryRebuild.DDS",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/aura_self.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/aura_self.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -12966,7 +12966,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Muzzle_Flash.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_muzzle_flash.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/muzzle_flash.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -13343,7 +13343,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Particles_1_9.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_particles_1_9.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/particles_1_9.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -13746,7 +13746,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Particles_1_9.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_particles_1_9.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/particles_1_9.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -14159,7 +14159,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Particles_1_9.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_particles_1_9.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/particles_1_9.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -14661,7 +14661,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Strawberry_Jinx_Base_Props_TX_CM.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/strawberry_jinx_base_props_tx_cm.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/props_tx.webp"
      },
      "textureMult": null,
      "blend": "mode3",
@@ -14744,7 +14744,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Aura_Self.StrawberryRebuild.DDS",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/aura_self.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/aura_self.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -14950,7 +14950,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_R_GroundSmoke02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_r_groundsmoke02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/r_ground_smoke02.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -15193,7 +15193,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_R_GroundSmoke02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_r_groundsmoke02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/r_ground_smoke02.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -15349,7 +15349,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_R_Shape.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_r_shape.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/r_shape.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -15489,7 +15489,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_R_ConeTexture_01.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_r_conetexture_01.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/r_conetexture.webp"
      },
      "textureMult": {
       "texture": {
@@ -15728,7 +15728,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Cat_Faces.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_cat_faces.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/cat_faces.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -16101,7 +16101,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Particles_1_9.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_particles_1_9.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/particles_1_9.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -16393,7 +16393,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_R_Buff_lilStar_4x2.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_r_buff_lilstar_4x2.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/lilstar_4x2.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -16607,7 +16607,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Pixel.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_pixel.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/base_pixel.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -16759,7 +16759,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_SpeedImpact.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_speedimpact.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/speed_impact.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -17134,7 +17134,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Particles_1_9.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_particles_1_9.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/particles_1_9.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -17363,7 +17363,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Circle_Mis.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_circle_mis.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/circle_mis.webp"
      },
      "textureMult": {
       "texture": {
@@ -17585,7 +17585,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Circle_Mis.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_circle_mis.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/circle_mis.webp"
      },
      "textureMult": {
       "texture": {
@@ -17790,7 +17790,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Strawberry_Jinx_Base_Props_TX_CM.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/strawberry_jinx_base_props_tx_cm.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/props_tx.webp"
      },
      "textureMult": null,
      "blend": "default",
@@ -18093,7 +18093,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_R_Trail02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_r_trail02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/r_trail.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -18412,7 +18412,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Aura_Self.StrawberryRebuild.DDS",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/aura_self.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/aura_self.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -18553,7 +18553,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_R_CraterObsi.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_r_craterobsi.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/r_craterobsi.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -18902,7 +18902,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_R_Rocks_2x2.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_r_rocks_2x2.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/r_rocks_2x2.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -19248,7 +19248,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Flipbook.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_flipbook.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/cloud_face_flipbook.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -19630,7 +19630,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Particles_1_9.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_particles_1_9.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/particles_1_9.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -19858,7 +19858,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_E_ErosionSphere02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_e_erosionsphere02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/e_erosion.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -20050,7 +20050,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_E_Praxis.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_e_praxis.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/e_praxis.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -20245,7 +20245,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Pixel.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_pixel.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/base_pixel.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -20553,7 +20553,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_R_Shapes01.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_r_shapes01.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/r_shapes01.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -20847,7 +20847,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_R_Buff_lilStar_4x2.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_r_buff_lilstar_4x2.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/lilstar_4x2.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -20975,7 +20975,7 @@
      "texture": {
       "path": "ASSETS/Characters/Strawberry_Jinx/Skins/Base/Particles/Strawberry_Jinx_Base_Glow2.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/characters/strawberry_jinx/skins/base/particles/strawberry_jinx_base_glow2.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/base_glow2.webp"
      },
      "textureMult": null,
      "blend": "default",

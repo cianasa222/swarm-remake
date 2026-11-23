@@ -76,7 +76,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Weapon_HolyBauble_Consolidated_B.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_weapon_holybauble_consolidated_b.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/bauble_blade.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -150,7 +150,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Jinx_Skin40_Cat_Faces.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/jinx_skin40_cat_faces.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/bauble_cat.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -230,7 +230,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Jinx_Skin40_Cat_Faces.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/jinx_skin40_cat_faces.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/bauble_cat.webp"
      },
      "textureMult": {
       "texture": {
@@ -541,7 +541,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Augment_CantTouchThis_Shield.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/augment_canttouchthis_shield.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/frost_shield.webp"
      },
      "textureMult": {
       "texture": null,
@@ -809,7 +809,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Augment_Frostwraith_Tile01.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/augment_frostwraith_tile01.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/frost_tile.webp"
      },
      "textureMult": {
       "texture": {
@@ -1388,7 +1388,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Glow_Ring.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_glow_ring.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/glow_ring.webp"
      },
      "textureMult": {
       "texture": {
@@ -1690,7 +1690,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Jinx_Skin40_Cat_Faces.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/jinx_skin40_cat_faces.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/bauble_cat.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -1771,7 +1771,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Jinx_Skin40_Cat_Faces.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/jinx_skin40_cat_faces.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/bauble_cat.webp"
      },
      "textureMult": {
       "texture": {
@@ -1860,7 +1860,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Jinx_Skin40_Cat_Faces.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/jinx_skin40_cat_faces.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/bauble_cat.webp"
      },
      "textureMult": {
       "texture": {
@@ -1964,7 +1964,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Weapon_HolyBauble_Evolve_Consolidated_C.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_weapon_holybauble_evolve_consolidated_c.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/bauble_blade_evo.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -2057,7 +2057,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Weapon_Mine.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_weapon_mine.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/mine_tex.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -2763,7 +2763,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Kennen_Base_E_Lightning03.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/kennen_base_e_lightning03.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/statikk_bolt.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -3638,7 +3638,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/3026_Items_Noise_02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/3026_items_noise_02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/noise_02.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -3758,7 +3758,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/3026_Items_Noise_02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/3026_items_noise_02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/noise_02.webp"
      },
      "textureMult": {
       "texture": {
@@ -4444,7 +4444,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/3026_Items_Noise_02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/3026_items_noise_02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/noise_02.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -4563,7 +4563,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/3026_Items_Noise_02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/3026_items_noise_02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/noise_02.webp"
      },
      "textureMult": {
       "texture": {
@@ -4786,7 +4786,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Jinx_Skin40_Cat_Faces.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/jinx_skin40_cat_faces.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/bauble_cat.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -4885,7 +4885,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Jinx_Skin40_Cat_Faces.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/jinx_skin40_cat_faces.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/bauble_cat.webp"
      },
      "textureMult": {
       "texture": {
@@ -6608,7 +6608,7 @@
      "texture": {
       "path": "ASSETS/Items/3087/Particles/Zeri_Base_R_RainbowGlow.Shiv_Particles.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/items/3087/particles/zeri_base_r_rainbowglow.shiv_particles.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/statikk_glow.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -7071,7 +7071,7 @@
      "texture": {
       "path": "ASSETS/Items/3087/Particles/Zeri_Base_R_RainbowGlow.Shiv_Particles.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/items/3087/particles/zeri_base_r_rainbowglow.shiv_particles.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/statikk_glow.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -7301,7 +7301,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Weapon_FanOfKnives_Bolt_New.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_weapon_fanofknives_bolt_new.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/crossbow_head.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -8091,7 +8091,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Weapon_FanOfKnives_Bolt.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_weapon_fanofknives_bolt.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/crossbow_bolt.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -9153,7 +9153,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Lulu_Skin06_Z_StarGrid_01.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/lulu_skin06_z_stargrid_01.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/uwu_star.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -9241,7 +9241,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Lulu_Skin06_ball32_02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/lulu_skin06_ball32_02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/uwu_ball.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -9544,7 +9544,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Lulu_Skin06_Z_StarGrid_01.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/lulu_skin06_z_stargrid_01.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/uwu_star.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -9632,7 +9632,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Lulu_Skin06_ball32_02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/lulu_skin06_ball32_02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/uwu_ball.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -10391,7 +10391,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Lulu_Skin06_Z_StarGrid_01.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/lulu_skin06_z_stargrid_01.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/uwu_star.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -10509,7 +10509,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Lulu_Skin06_ball32_02.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/lulu_skin06_ball32_02.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/uwu_ball.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -11055,7 +11055,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Lulu_Skin06_Z_StarGrid_01.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/lulu_skin06_z_stargrid_01.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/uwu_star.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -11207,7 +11207,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Weapon_Boomerangv2_Mis.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_weapon_boomerangv2_mis.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/boom_mis.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -11388,7 +11388,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Weapon_Boomerangv2_Mis.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_weapon_boomerangv2_mis.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/boom_mis.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -11494,6 +11494,591 @@
     "field": "mSpell.mMissileEffectKey"
    }
   ]
+ },
+ {
+  "schema": 1,
+  "id": "Strawberry_Weapon_BoomerangEvolve_Mini_Missile",
+  "category": "weapon",
+  "source": {
+   "file": "ref/14.14/data/maps/shipping/map33/map33.bin.json",
+   "key": "Maps/Shipping/Map33/Particles/Weapons/Strawberry_Weapon_BoomerangEvolve_Mini_Missile",
+   "particleName": "Strawberry_Weapon_BoomerangEvolve_Mini_Missile",
+   "particlePath": "Maps/Shipping/Map33/Particles/Weapons/Strawberry_Weapon_BoomerangEvolve_Mini_Missile",
+   "sha256": "c761121a0a66532c4fdecfb532e644589ddcc7b19591b7f3614b98ddc2f89ee7",
+   "patch": "14.14"
+  },
+  "gameRefs": {
+   "weapon": "boomerang",
+   "riot": "Boomerang"
+  },
+  "transform": null,
+  "soundOnCreate": null,
+  "soundPersistent": null,
+  "layers": [
+   {
+    "name": "BMG",
+    "index": 0,
+    "emitterKind": "complex",
+    "primitive": "quad",
+    "primitiveRaw": {
+     "__type": "VfxPrimitiveArbitraryQuad"
+    },
+    "mesh": null,
+    "emitterLifetime": 1.2999999523162842,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "spawnShape": {
+     "emitOffset": [
+      0,
+      -75,
+      0
+     ],
+     "__type": "{ee39916f}"
+    },
+    "birthScale": {
+     "c": [
+      85,
+      85,
+      85
+     ]
+    },
+    "scale": {
+     "c": [
+      0.75,
+      0.75,
+      0.75
+     ]
+    },
+    "birthRotationalVelocity": {
+     "c": [
+      0,
+      0,
+      800
+     ]
+    },
+    "bindWeight": {
+     "c": 1
+    },
+    "importance": 2,
+    "birthColor": {
+     "c": [
+      1,
+      1,
+      1,
+      0.6000000238418579
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Weapon_Boomerangv2_EvolvedMini_Mis.StrawberryRebuild.tex",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_weapon_boomerangv2_evolvedmini_mis.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": null,
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "pass": 30,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Bladetrail2",
+    "index": 1,
+    "emitterKind": "complex",
+    "primitive": "arbitraryTrail",
+    "primitiveRaw": {
+     "mTrail": {
+      "mMode": 1,
+      "mCutoff": 1500,
+      "mBirthTilingSize": {
+       "constantValue": [
+        400,
+        0,
+        0
+       ],
+       "__type": "ValueVector3"
+      },
+      "__type": "VfxTrailDefinitionData"
+     },
+     "__type": "VfxPrimitiveArbitraryTrail"
+    },
+    "mesh": null,
+    "rate": {
+     "c": 30
+    },
+    "particleLifetime": {
+     "c": 0.15000000596046448
+    },
+    "particleLinger": 10.300000190734863,
+    "emitterLinger": 1,
+    "spawnShape": {
+     "emitOffset": [
+      0,
+      -75,
+      0
+     ],
+     "__type": "{ee39916f}"
+    },
+    "birthScale": {
+     "c": [
+      100,
+      0,
+      0
+     ]
+    },
+    "scale": {
+     "c": [
+      0.75,
+      0.75,
+      0.75
+     ],
+     "t": [
+      0,
+      1
+     ],
+     "v": [
+      [
+       0.75,
+       0,
+       0
+      ],
+      [
+       0.5249999761581421,
+       0,
+       0
+      ]
+     ]
+    },
+    "importance": 2,
+    "birthColor": {
+     "c": [
+      0.20000000298023224,
+      0.8899977207183838,
+      0.4800030589103699,
+      0.20000000298023224
+     ]
+    },
+    "color": {
+     "t": [
+      0,
+      0.2709677517414093,
+      0.9580644965171814
+     ],
+     "v": [
+      [
+       1,
+       1,
+       1,
+       0
+      ],
+      [
+       1,
+       0.7290322780609131,
+       0.10000000149011612,
+       1
+      ],
+      [
+       0,
+       0,
+       1,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/TFT_PoolParty_RitoBeach_Mult_Reversed.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/tft_poolparty_ritobeach_mult_reversed.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   }
+  ],
+  "extra": {},
+  "usedBySpells": [
+   {
+    "spell": "Augment_Weapon_BoomerangEvolveMiniMissile",
+    "field": "mSpell.mMissileEffectKey"
+   }
+  ]
+ },
+ {
+  "schema": 1,
+  "id": "Strawberry_Weapon_BoomerangEvolve_Missile",
+  "category": "weapon",
+  "source": {
+   "file": "ref/14.14/data/maps/shipping/map33/map33.bin.json",
+   "key": "Maps/Shipping/Map33/Particles/Weapons/Strawberry_Weapon_BoomerangEvolve_Missile",
+   "particleName": "Strawberry_Weapon_BoomerangEvolve_Missile",
+   "particlePath": "Maps/Shipping/Map33/Particles/Weapons/Strawberry_Weapon_BoomerangEvolve_Missile",
+   "sha256": "5353f2f97881ce04a5e40c9f356e5e423154c0e0f60e30a5d7b6bfb7d7b59575",
+   "patch": "14.14"
+  },
+  "gameRefs": {
+   "weapon": "boomerang",
+   "riot": "Boomerang"
+  },
+  "transform": null,
+  "soundOnCreate": null,
+  "soundPersistent": null,
+  "layers": [
+   {
+    "name": "BMRG_E_Core",
+    "index": 0,
+    "emitterKind": "complex",
+    "primitive": "quad",
+    "primitiveRaw": {
+     "__type": "VfxPrimitiveArbitraryQuad"
+    },
+    "mesh": null,
+    "emitterLifetime": 1.2999999523162842,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "spawnShape": {
+     "__type": "{ee39916f}"
+    },
+    "birthScale": {
+     "c": [
+      85,
+      85,
+      85
+     ]
+    },
+    "scale": {
+     "c": [
+      1.5,
+      1.5,
+      1.5
+     ]
+    },
+    "birthRotationalVelocity": {
+     "c": [
+      0,
+      0,
+      -800
+     ]
+    },
+    "bindWeight": {
+     "c": 1
+    },
+    "importance": 2,
+    "birthColor": {
+     "c": [
+      1,
+      1,
+      1,
+      0.6000000238418579
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Weapon_Boomerangv2_Evolved_Mis.StrawberryRebuild.tex",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_weapon_boomerangv2_evolved_mis.strawberryrebuild.png",
+      "project": "public/assets/weapons/vfx/boom_mis_evo.webp"
+     },
+     "textureMult": null,
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "pass": 30,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "BMRG_E_Shadow",
+    "index": 1,
+    "emitterKind": "complex",
+    "primitive": "quad",
+    "primitiveRaw": {
+     "__type": "VfxPrimitiveArbitraryQuad"
+    },
+    "mesh": null,
+    "emitterLifetime": 1.2999999523162842,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "spawnShape": {
+     "emitOffset": [
+      0,
+      0,
+      -40
+     ],
+     "__type": "{ee39916f}"
+    },
+    "birthScale": {
+     "c": [
+      85,
+      85,
+      85
+     ]
+    },
+    "scale": {
+     "c": [
+      1.5,
+      1.5,
+      1.5
+     ]
+    },
+    "birthRotationalVelocity": {
+     "c": [
+      0,
+      0,
+      -800
+     ]
+    },
+    "isGroundLayer": 1,
+    "bindWeight": {
+     "c": 1
+    },
+    "importance": 2,
+    "birthColor": {
+     "c": [
+      1,
+      1,
+      1,
+      0.14999619126319885
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Sivir_Base_Q_Mis_Shadow.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/sivir_base_q_mis_shadow.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": null,
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "pass": -999,
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   }
+  ],
+  "extra": {},
+  "usedBySpells": [
+   {
+    "spell": "Augment_Weapon_BoomerangEvolveMissile",
+    "field": "mSpell.mMissileEffectKey"
+   }
+  ]
+ },
+ {
+  "schema": 1,
+  "id": "Strawberry_Weapon_BoomerangEvolve_Missile_Return",
+  "category": "weapon",
+  "source": {
+   "file": "ref/14.14/data/maps/shipping/map33/map33.bin.json",
+   "key": "Maps/Shipping/Map33/Particles/Weapons/Strawberry_Weapon_BoomerangEvolve_Missile_Return",
+   "particleName": "Strawberry_Weapon_BoomerangEvolve_Missile_Return",
+   "particlePath": "Maps/Shipping/Map33/Particles/Weapons/Strawberry_Weapon_BoomerangEvolve_Missile_Return",
+   "sha256": "d9f1dc142d62ed62217dc88eff6aaa124ae44f55d6eeeeb6b9d82051b92c6fac",
+   "patch": "14.14"
+  },
+  "gameRefs": {
+   "weapon": "boomerang",
+   "riot": "Boomerang"
+  },
+  "transform": null,
+  "soundOnCreate": null,
+  "soundPersistent": null,
+  "layers": [
+   {
+    "name": "BMRG_E_Core",
+    "index": 0,
+    "emitterKind": "complex",
+    "primitive": "quad",
+    "primitiveRaw": {
+     "__type": "VfxPrimitiveArbitraryQuad"
+    },
+    "mesh": null,
+    "emitterLifetime": 1.2999999523162842,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "spawnShape": {
+     "__type": "{ee39916f}"
+    },
+    "birthScale": {
+     "c": [
+      85,
+      85,
+      85
+     ]
+    },
+    "scale": {
+     "c": [
+      1.5,
+      1.5,
+      1.5
+     ]
+    },
+    "birthRotationalVelocity": {
+     "c": [
+      0,
+      0,
+      -800
+     ]
+    },
+    "bindWeight": {
+     "c": 1
+    },
+    "importance": 2,
+    "birthColor": {
+     "c": [
+      1,
+      1,
+      1,
+      0.6000000238418579
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Weapon_Boomerangv2_Evolved_Mis.StrawberryRebuild.tex",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_weapon_boomerangv2_evolved_mis.strawberryrebuild.png",
+      "project": "public/assets/weapons/vfx/boom_mis_evo.webp"
+     },
+     "textureMult": null,
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "pass": 30,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "BMRG_E_Shadow",
+    "index": 1,
+    "emitterKind": "complex",
+    "primitive": "quad",
+    "primitiveRaw": {
+     "__type": "VfxPrimitiveArbitraryQuad"
+    },
+    "mesh": null,
+    "emitterLifetime": 1.2999999523162842,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "spawnShape": {
+     "emitOffset": [
+      0,
+      0,
+      -40
+     ],
+     "__type": "{ee39916f}"
+    },
+    "birthScale": {
+     "c": [
+      85,
+      85,
+      85
+     ]
+    },
+    "scale": {
+     "c": [
+      1.5,
+      1.5,
+      1.5
+     ]
+    },
+    "birthRotationalVelocity": {
+     "c": [
+      0,
+      0,
+      -800
+     ]
+    },
+    "isGroundLayer": 1,
+    "bindWeight": {
+     "c": 1
+    },
+    "importance": 2,
+    "birthColor": {
+     "c": [
+      1,
+      1,
+      1,
+      0.10000763088464737
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Sivir_Base_Q_Mis_Shadow.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/sivir_base_q_mis_shadow.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": null,
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "pass": -999,
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   }
+  ],
+  "extra": {}
  },
  {
   "schema": 1,
@@ -11628,7 +12213,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Augment_Frostwraith_Tile01.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/augment_frostwraith_tile01.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/frost_tile.webp"
      },
      "textureMult": {
       "texture": {
@@ -11925,7 +12510,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Augment_Frostwraith_CrackDecal.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/augment_frostwraith_crackdecal.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/frost_crack.webp"
      },
      "textureMult": {
       "texture": {
@@ -14084,7 +14669,7 @@
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Augment_FrostNova_TechNoise.StrawberryRebuild.tex",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_augment_frostnova_technoise.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/weapons/vfx/hr_noise.webp"
       },
       "params": {
        "uvScaleMult": {
@@ -14668,7 +15253,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Augment_Frostwraith_CircleGlow.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/augment_frostwraith_circleglow.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/hr_glow.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -15415,7 +16000,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Glow_Ring.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_glow_ring.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/glow_ring.webp"
      },
      "textureMult": {
       "texture": {
@@ -17664,7 +18249,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Jinx_Base_Passive_GlowRing.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_jinx_base_passive_glowring.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/passive_ring.webp"
      },
      "textureMult": {
       "texture": {
@@ -18401,13 +18986,13 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation__Infernal_Smoke_Trail.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation__infernal_smoke_trail.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/map1/vfx/healingstation__infernal_smoke_trail.webp"
      },
      "textureMult": {
       "texture": {
        "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_MeshMult.StrawberryRebuild.dds",
        "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_meshmult.strawberryrebuild.png",
-       "project": null
+       "project": "public/assets/map1/vfx/healingstation_meshmult.webp"
       },
       "params": {
        "texAddressModeMult": 2,
@@ -18569,7 +19154,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Weapon_Mine.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_weapon_mine.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/mine_tex.webp"
      },
      "textureMult": null,
      "blend": "mode3",
@@ -19286,7 +19871,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Jinx_Base_Pixel.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_jinx_base_pixel.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/heroes/jinx/vfx/base_pixel.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -22067,7 +22652,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Weapon_Starstrike_Decal_Perf.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_weapon_starstrike_decal_perf.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/star_target.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -22581,7 +23166,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Weapon_Starstrike_Deca_XTarget.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_weapon_starstrike_deca_xtarget.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/star_xtarget.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -22941,7 +23526,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Weapon_Starstrike_Decal_Perf.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_weapon_starstrike_decal_perf.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/star_target.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -23447,7 +24032,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Weapon_Starstrike_Deca_XTarget.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_weapon_starstrike_deca_xtarget.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/star_xtarget.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -24079,7 +24664,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Leona_Skin10_Beam_2.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_leona_skin10_beam_2.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/star_beam_center.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -24299,7 +24884,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Augment_OrbitalLaser_Laser_CoreHardEdge.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/augment_orbitallaser_laser_corehardedge.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/star_beam_core.webp"
      },
      "textureMult": {
       "texture": {
@@ -24454,7 +25039,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Cracks_Light.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/cracks_light.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/star_crack.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -25553,7 +26138,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Leona_Skin10_Beam_2.StrawberryRebuild.dds",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_leona_skin10_beam_2.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/star_beam_center.webp"
      },
      "textureMult": null,
      "blend": "additive",
@@ -25776,7 +26361,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Weapon_Starstrike_Decal_Perf.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_weapon_starstrike_decal_perf.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/star_target.webp"
      },
      "textureMult": null,
      "blend": "alpha",
@@ -26282,7 +26867,7 @@
      "texture": {
       "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Weapon_Starstrike_Deca_XTarget.StrawberryRebuild.tex",
       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_weapon_starstrike_deca_xtarget.strawberryrebuild.png",
-      "project": null
+      "project": "public/assets/weapons/vfx/star_xtarget.webp"
      },
      "textureMult": null,
      "blend": "additive",

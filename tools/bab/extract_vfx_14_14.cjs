@@ -2,7 +2,8 @@
  * BAB-01 · B4：把 Patch 14.14 原版 VFX（VfxSystemDefinitionData）转换成引擎无关的 EffectDef JSON。
  * 结构定义见 src/render-babylon/vfx/effect_def.ts（SCHEMA_VERSION 必须一致）。
  *
- * Quick AI（AWS Quick）2026-11-23，编号 BAB-Q01。无第三方依赖，Node ≥ 18。
+ * 原作者：Quick AI（AWS Quick）2026-11-23（BAB-Q01）。
+ * 修订：Gemini（GM-02）2026-11-23 — 修复 GPT-13 验收缺陷 Q01-01（回旋刃 3 个进化系统）与 Q01-02（补给箱、掉落拾取、精英光环、玩家核心反馈），无第三方依赖，Node ≥ 18。
  *
  * 用法（原版 bin.json 不进公开仓库，从 Cloudflare KV `ref/14.14/` 或本机解包目录取）：
  *   node tools/bab/extract_vfx_14_14.cjs \
@@ -11,7 +12,7 @@
  *     --reksai <strawberry_boss_reksai/skins/skin0.bin.json> \
  *     --out    src/render-babylon/vfx/data/14.14
  *
- * 输出：fountain.json / weapons.json / jinx.json / enemy.json / reksai.json / index.json
+ * 输出：fountain.json / weapons.json / jinx.json / enemy.json / reksai.json / map.json / index.json
  * 数值保持原版单位；换算见 effect_def.ts 的 EFFECT_UNITS。
  */
 'use strict';
@@ -39,15 +40,83 @@ function classifyMap33(key) {
   const last = key.split('/').pop();
   if (/Fountain|Foutain/i.test(last)) return { category: 'fountain', gameRefs: { fountain: true } };
   if (/RekSai|Reksai|BossSpawn|FallingDebris/i.test(last)) return { category: 'reksai', gameRefs: { boss: 'reksai' } };
-  if (/^EliteSpell_|Elite_Missile|Strawberry_Enemy_|PoisonZone/i.test(last)) return { category: 'enemy', gameRefs: { enemy: true } };
+  // Q01-02：补齐 Strawberry_Elite_Glow / Strawberry_Elite_Zone_Glow（原正则仅匹配 Elite_Missile）
+  if (/^EliteSpell_|^Strawberry_Elite_|Elite_Missile|Strawberry_Enemy_|PoisonZone/i.test(last)) {
+    const isElite = /Elite/i.test(last);
+    return { category: 'enemy', gameRefs: isElite ? { enemy: true, elite: true } : { enemy: true } };
+  }
   if (/ItemToBuy/i.test(last)) return null; // 商店展示用，不是战斗特效
   if (/\/Particles\/Weapons\//.test(key) || /^Augment_/i.test(last)) {
     for (const w of WEAPONS) {
-      const re = new RegExp(`(^|_)${w.riot}(_|$)`, 'i');
-      if (re.test(last) || (w.riot === 'StarStrike' && /Starstrike/i.test(last))) return { category: 'weapon', gameRefs: { weapon: w.weapon, riot: w.riot } };
+      // Q01-01：允许词尾紧接 Evolve（如 Strawberry_Weapon_BoomerangEvolve_Missile / _Return / _Mini_Missile）
+      const re = new RegExp(`(^|_)${w.riot}(Evolve)?(_|$)`, 'i');
+      if (re.test(last) || (w.riot === 'StarStrike' && /Starstrike/i.test(last))) {
+        return { category: 'weapon', gameRefs: { weapon: w.weapon, riot: w.riot } };
+      }
     }
     return null; // 第一关没有实装的其他武器（Nuke、ScatterArrows、Tibbers…）不导出
   }
+  // Q01-02：当前第一关已实装玩法对应的补给箱、掉落拾取与核心玩家反馈（对照 src/sim/game.ts 事件）
+  if (/^Strawberry_Destructible_MetalBox_(Idle_01|Explosion|Spawn)$/i.test(last)) {
+    return {
+      category: 'map',
+      gameRefs: {
+        destructible: 'metalbox',
+        simEvent: /Explosion/i.test(last) ? 'boxBreak' : (/Spawn/i.test(last) ? 'boxSpawn' : 'boxIdle'),
+      },
+    };
+  }
+  if (/^Strawberry_Drop_XP(_|$)/i.test(last)) {
+    return {
+      category: 'map',
+      gameRefs: {
+        pickup: 'xp',
+        simEvent: /Pickup/i.test(last) ? 'pickup' : (/Missile/i.test(last) ? 'dropMissile' : 'dropIdle'),
+      },
+    };
+  }
+  if (/^Strawberry_(Rebuild_Drop_Health|Drop_Health_Heal)(_|$)/i.test(last)) {
+    return {
+      category: 'map',
+      gameRefs: {
+        pickup: 'heal',
+        simEvent: /_Heal$/i.test(last) ? 'pickup' : (/Missile/i.test(last) ? 'dropMissile' : 'dropIdle'),
+      },
+    };
+  }
+  if (/^Strawberry_(AnimaSquad_Card|Drop_Card_Pickup)$/i.test(last)) {
+    return {
+      category: 'map',
+      gameRefs: {
+        pickup: 'card',
+        inGame: !/AnimaSquad_Card/i.test(last), // footage needed to confirm purpose
+        simEvent: /Pickup/i.test(last) ? 'pickup' : 'dropIdle',
+      },
+    };
+  }
+  if (/^Strawberry_Rebuild_Drop_Gold(_|$)/i.test(last)) {
+    return {
+      category: 'map',
+      gameRefs: {
+        pickup: 'gold',
+        inGame: false, // current game sim has no gold pickup event
+        simEvent: /Pickup/i.test(last) ? 'pickup' : (/Missile/i.test(last) ? 'dropMissile' : 'dropIdle'),
+      },
+    };
+  }
+  if (/^Strawberry_Player_Hit$/i.test(last)) {
+    return { category: 'map', gameRefs: { player: 'hurt', simEvent: 'playerHurt' } };
+  }
+  if (/^Strawberry_AugmentSelection_InWorld_Ceremony$/i.test(last)) {
+    return { category: 'map', gameRefs: { player: 'levelUp', simEvent: 'levelUp' } };
+  }
+  if (/^Strawberry_Rebuild_TargeterOrientation(_Manual)?$/i.test(last)) {
+    return { category: 'map', gameRefs: { player: 'aim', simEvent: 'aimRing' } };
+  }
+  // QC-19: include verified 14.14 definitions without claiming runtime binding.
+  if (/^Strawberry_MiniBoss_HealthBar$/i.test(last)) return { category: 'enemy', gameRefs: { enemy: true, elite: true, role: 'healthbar', binding: 'name', inGame: false } };
+  if (/^Strawberry_MapBoss_(Healthbar|Enraged)$/i.test(last)) return { category: 'reksai', gameRefs: { boss: 'reksai', role: /Enraged/i.test(last) ? 'enraged' : 'healthbar', binding: 'name', inGame: false } };
+  if (/^Strawberry_Spawner_SpawnVFX(_Eye)?$/i.test(last)) return { category: 'enemy', gameRefs: { enemy: true, role: /_Eye$/i.test(last) ? 'spawnEye' : 'spawn', inGame: false } };
   return null;
 }
 
@@ -64,7 +133,6 @@ function curve(v) {
   if (v.__type.startsWith('Flex')) out.flex = true;
   let base = v;
   if (v.__type.startsWith('Integrated') || v.__type.startsWith('Flex')) {
-    // Integrated / Flex 包一层：实际曲线在同名字段或 dynamics 里
     const inner = Object.values(v).find((x) => isValueObj(x));
     if (inner) base = inner;
   }
@@ -100,7 +168,6 @@ const PRIM = {
   VfxPrimitivePlanarProjection: 'planarProjection',
 };
 
-/** 运行器第一版暂不支持、必须在验收清单里说明的字段 */
 const UNSUPPORTED_KEYS = new Set([
   'distortionDefinition', 'reflectionDefinition', 'fieldCollectionDefinition', 'FlexShapeDefinition',
   'FlexInstanceScale', 'flexBirthUVOffset', 'flexScaleBirthScale', 'flexParticleLifetime',
@@ -110,7 +177,6 @@ const UNSUPPORTED_KEYS = new Set([
   'uvParallaxScale', 'falloffTexture', 'Filtering', 'childParticleSetDefinition', 'doesCastShadow',
 ]);
 
-/** 本脚本显式映射的 emitter 字段 → 读取方式 */
 function mapEmitter(em, index, kind) {
   const used = new Set(['__type', 'emitterName']);
   const take = (k) => { used.add(k); return em[k]; };
@@ -214,15 +280,26 @@ function mapEmitter(em, index, kind) {
     if (UNSUPPORTED_KEYS.has(k)) L.unsupported.push(k);
     if (!used.has(k)) L.extra[k] = v;
   }
-  // 删除 undefined，JSON 更小
-  const prune = (o) => { for (const k of Object.keys(o)) { if (o[k] === undefined) delete o[k]; else if (o[k] && typeof o[k] === 'object' && !Array.isArray(o[k]) && k !== 'extra' && k !== 'primitiveRaw' && k !== 'spawnShape' && k !== 'children' && k !== 'fields' && k !== 'palette' && k !== 'alphaErosion' && k !== 'softParticle' && k !== 'params') prune(o[k]); } };
+  const prune = (o) => {
+    for (const k of Object.keys(o)) {
+      if (o[k] === undefined) delete o[k];
+      else if (
+        o[k] && typeof o[k] === 'object' && !Array.isArray(o[k]) &&
+        k !== 'extra' && k !== 'primitiveRaw' && k !== 'spawnShape' &&
+        k !== 'children' && k !== 'fields' && k !== 'palette' &&
+        k !== 'alphaErosion' && k !== 'softParticle' && k !== 'params'
+      ) prune(o[k]);
+    }
+  };
   prune(L);
   return L;
 }
 
-const SYS_KEYS = new Set(['__type', 'particleName', 'particlePath', 'complexEmitterDefinitionData', 'simpleEmitterDefinitionData',
+const SYS_KEYS = new Set([
+  '__type', 'particleName', 'particlePath', 'complexEmitterDefinitionData', 'simpleEmitterDefinitionData',
   'flags', 'visibilityRadius', 'transform', 'soundOnCreateDefault', 'soundPersistentDefault', 'buildUpTime',
-  'scaleDynamicallyWithAttachedBone', 'overrideScaleCap', 'drawingLayer']);
+  'scaleDynamicallyWithAttachedBone', 'overrideScaleCap', 'drawingLayer',
+]);
 
 function convertSystem(key, sys, file, cls, sha256) {
   const layers = [];
@@ -253,12 +330,19 @@ function convertSystem(key, sys, file, cls, sha256) {
   return def;
 }
 
-/** 收集 SpellObject 里引用到的系统名（字符串值等于系统 id 或 particleName） */
 function collectSpellRefs(bin, idSet) {
   const refs = new Map();
+  // QC-19: SpellObject effect keys may be hashed ResourceResolver entries.
+  const resolved = new Map();
+  for (const value of Object.values(bin)) {
+    if (!value || value.__type !== 'ResourceResolver' || !value.resourceMap) continue;
+    for (const [key, path] of Object.entries(value.resourceMap)) {
+      if (typeof path === 'string') resolved.set(key, path.split('/').pop());
+    }
+  }
   const walk = (o, path, spell) => {
     if (typeof o === 'string') {
-      const id = o.split('/').pop();
+      const id = resolved.get(o) || o.split('/').pop();
       if (idSet.has(id)) {
         if (!refs.has(id)) refs.set(id, []);
         refs.get(id).push({ spell, field: path });
@@ -275,11 +359,8 @@ function collectSpellRefs(bin, idSet) {
   return refs;
 }
 
-/**
- * @param {{map33: object, jinx?: object, reksai?: object, files: {map33:string, jinx?:string, reksai?:string}, sha256: (s:string)=>string}} input
- */
 function convertAll(input) {
-  const out = { fountain: [], weapons: [], jinx: [], enemy: [], reksai: [] };
+  const out = { fountain: [], weapons: [], jinx: [], enemy: [], reksai: [], map: [] };
   const push = (def) => {
     const bucket = def.category === 'weapon' ? 'weapons' : def.category;
     (out[bucket] = out[bucket] || []).push(def);
@@ -299,7 +380,6 @@ function convertAll(input) {
     if (!isSys(v)) continue;
     push(convertSystem(k, v, input.files.reksai, { category: 'reksai', gameRefs: { boss: 'reksai' } }, input.sha256(JSON.stringify(v))));
   }
-  // SpellObject 引用（只在 map33 里找，角色 bin 的技能引用由角色动画图驱动）
   const ids = new Set();
   for (const list of Object.values(out)) for (const d of list) ids.add(d.id);
   const refs = collectSpellRefs(input.map33, ids);
@@ -307,7 +387,7 @@ function convertAll(input) {
   for (const list of Object.values(out)) list.sort((a, b) => a.id.localeCompare(b.id));
   const index = {
     schema: SCHEMA_VERSION,
-    generatedBy: 'tools/bab/extract_vfx_14_14.cjs (Quick AI BAB-Q01)',
+    generatedBy: 'tools/bab/extract_vfx_14_14.cjs (Quick AI BAB-Q01 + Gemini GM-02/03 + GPT QC-19 follow-up)',
     patch: '14.14',
     files: input.files,
     counts: Object.fromEntries(Object.entries(out).map(([k, v]) => [k, { systems: v.length, layers: v.reduce((s, d) => s + d.layers.length, 0) }])),
@@ -315,7 +395,6 @@ function convertAll(input) {
   return { out, index };
 }
 
-// ───────────── CLI ─────────────
 function main(argv) {
   const fs = require('fs');
   const path = require('path');
@@ -339,6 +418,6 @@ function main(argv) {
   console.log(JSON.stringify(index.counts));
 }
 
-if (typeof module !== 'undefined' && module.exports) module.exports = { convertAll, convertSystem, classifyMap33, curve, SCHEMA_VERSION, WEAPONS };
+if (typeof module !== 'undefined' && module.exports) module.exports = { convertAll, convertSystem, classifyMap33, collectSpellRefs, curve, SCHEMA_VERSION, WEAPONS };
 if (typeof globalThis !== 'undefined') globalThis.__babExtract = { convertAll, convertSystem, classifyMap33, curve, SCHEMA_VERSION, WEAPONS };
 if (typeof require !== 'undefined' && typeof module !== 'undefined' && require.main === module) main(process.argv.slice(2));
