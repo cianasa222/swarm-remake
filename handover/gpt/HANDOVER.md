@@ -22,6 +22,7 @@
 | GPT-13 | 2026-11-23 | `git log --grep GPT-13` | [BAB_Q01_ACCEPTANCE_GPT13.md](BAB_Q01_ACCEPTANCE_GPT13.md)、BABYLON_MIGRATION.md、入口、COLLAB 看板、本文件 | BAB-Q01 14/14 首验哈希、6/6 转换复现；登记实际遗漏、资产映射、运行器/HUD/构建门禁及 B0–B7 缺口 | 数据完整性 PASS；完整集成/实机待验，正式合并验收不通过 | 不涉及部署 | 见 `SYNC_STATE.gpt13_bab_q01_review` |
 | GPT-14 | 2026-11-23 | `[GPT GPT-14]`（本次） | `handover/quick/HANDOVER.md`、`handover/gemini/HANDOVER.md`、`handover/README.md`、`COLLAB.md`、本文件 | 将 Quick Q-30 / Gemini GM-01～03 KV 独有交接原文代同步至 GitHub；入口按行合并、任务看板补 Q-30 与 GM-02/03；临时代码仍仅 KV 待代上传 | 文档结构和 KV 来源对照；未做代码构建/实机验收 | 未部署 | 见 `SYNC_STATE.gpt14_doc_sync`，主线镜像快照与 Quick/Gemini 独有 KV 条目隔离 |
 | GPT-15 | 2026-11-23 | `[GPT GPT-15]` | Quick 最新交接、`QC19_GM02_REVIEW.md`、README、COLLAB 看板、本文件 | 先读取再同步：补齐 QC-19 审查和用户决策，保留 Gemini 为主数据、Q02 仅参考；将 GPT-14/15 的主线交接版本快照写 KV，防止覆盖 Quick/Gemini 独有信息 | 来源对照、SHA 校验；未编译/未实机测试 | 未部署 | 见 `SYNC_STATE.gpt15_doc_sync`（全局主线镜像仍可能部分滞后） |
+| GPT-16 | 2026-11-23 | [PR #10](https://github.com/cianasa222/swarm-remake/pull/10) `f2ae2a21`；[PR #11](https://github.com/cianasa222/swarm-remake/pull/11) `a7a86755` | Quick BAB-Q01 / Gemini GM-02/03 数据整合及 QC-19 修复，Q30 StarStrike 与原版 14 张贴图导入；详见 PR 内验收报告 | PR #10 build + 6 项单测 PASS；PR #11 build + 数值 + 14/14 贴图 PASS；原版视频/iPhone/GPU 实机待验 | 两 PR 草稿，未合并，未部署 | `SYNC_STATE.gpt16_code_review` + KV 分支镜像哈希核验，原始 pending 保留 |
 
 ## 2. 接手基线
 
