@@ -103,12 +103,31 @@
 
 ---
 
+10. **KV 独有临时代码与代上传（GPT-12 · 用户确认 2026-11-23）**：Quick 或其他 AI 无 GitHub 权限时可以将源码/补丁、交接、基线 commit、任务编号、变更路径、SHA-256 和未验收项写入独立 `pending/<任务>/`，登记 `SYNC_STATE.json.kv_only_pending`、`pending_branches` 与 `FILE_INDEX.json`，标记「仅 KV，待上传」。不得伪造 GitHub commit。
+   - 每次开工及同步前读取上述字段；未上传的文件不可覆盖；共享文档必须对照最新 GitHub 和 KV 逐节合并，保留双方其他改动。
+   - 任何具备 GitHub 权限的 AI 可以代上传，不必等待 Quick。先检查是否已有相同提交/PR、最新审查更正和依赖，逐项核对 SHA-256、基线与改动边界；按原作者任务独立建分支、开 PR（提交标题保留原任务编号，注明代上传 AI），不能直接将未经验证代码并入 main。上传后按 2.3 将实际 GitHub commit 快照同步 KV，更新原任务记录、PR 链接、待验收项并回写自己的交接。原 KV 临时文件保留至满足 2.4 清理门槛。
+   - Quick 历史 Q22–Q28 已有 PR #8/MU-01 部署记录，不得重复套用旧补丁；QC-15 更正及不同任务的 pending 均不得误删。新 BAB-01 的数据准备须独立分支、独立核对。
+
 ### 2.3 每次提交双端交接（GPT-11 · 用户指示 2026-11-23，优先于旧规则中「只同步 main」的表述）
 
 1. 每次 GitHub 提交（包括未合并 PR、文档提交、后续修复）在同一轮完成 KV 同步，而非等待合并。未合并时以实际 GitHub commit 为准，不得修改主线源码 key。分支快照：`pending/github/<ai>/<任务>/<完整commit SHA>/<仓库相对路径>`，按提交不可变、存在则核对原值，不覆盖旧快照。只镜像本次变更文本/代码/配置/文档；删除项在清单中记录，二进制/超限资产登记 GitHub 路径、blob SHA/哈希及大小，不重复上传 KV 或删除备用资产。
-2. 同前缀写 `MANIFEST.json`（分支、commit、父提交/基线、PR 链接、作者、提交号、文件清单与 SHA-256、验收/合并/部署状态、待办）。在 `SYNC_STATE.json.pending_github_commits` 按 `<ai>/<任务>` 增量更新最新 commit、manifest key 和同步状态，指向快照；同步 `FILE_INDEX.json`，所有新 key 读回核验。旧快照及旧 `pending/` 不删除；Quick 原有 `kv_only_pending`、`pending_branches`、其他 AI 记录完整保留。
-3. 主线提交/PR 合并按合并后的实际 commit 同步变更文件；保护 key 不覆盖未解决内容，先合并或隔离保存实际主线版本，并记录原因、对应 SHA 和待协调项。全局 `SYNC_STATE.commit` 仅在所有主线镜像均一致时推进；分支记录不能推进。合并后标记分支已合并和实际 merge SHA，保留历史；部署单独记录 Worker 版本，未获授权不部署。
+2. 同前缀写 `MANIFEST.json`（分支、commit、父提交/基线、PR 链接、作者、提交号、文件清单与 SHA-256、验收/合并/部署状态、待办）。在 `SYNC_STATE.json.pending_github_commits` 按 `<ai>/<任务>` 增量更新最新 commit、manifest key 和同步状态，指向快照；同步 `FILE_INDEX.json`，所有新 key 读回核验。未满足 2.4 清理门槛的旧快照及 `pending/` 原件不得删除；Quick 原有 `kv_only_pending`、`pending_branches`、其他 AI 记录完整保留。
+3. 主线提交/PR 合并按合并后的实际 commit 同步变更文件；保护 key 不覆盖未解决内容，先合并或隔离保存实际主线版本，并记录原因、对应 SHA 和待协调项。全局 `SYNC_STATE.commit` 仅在所有主线镜像均一致时推进；分支记录不能推进。合并后标记分支已合并和实际 merge SHA，保留历史；部署单独记录 Worker 版本，未获授权不部署。临时代码待部署/验收后才可按 2.4 清理。
 4. 并行同步前重读索引及保护列表，增量合并，写后验证未丢其他条目；若冲突停下协调。没有 GitHub 或 KV 权限时立即标记待同步、记录阻塞及可读取的实际位置，不能声称双端已同步。所有 AI 开工前读主线交接 AND `pending_github_commits`，检查相关未合并提交避免重复开发；不得把未验收分支当正式游戏基线。
+
+### 2.4 KV 临时代码生命周期与清理门禁（GPT-12 · 用户确认 2026-11-23）
+
+| 阶段 | KV 临时代码 |
+| --- | --- |
+| 仅 KV、待上传 GitHub | 保留 |
+| 已提交 GitHub、未验收/未合并 | 保留 |
+| 已合并、未部署 | 保留 |
+| 已部署、未完成线上/实机验收 | 保留 |
+| 已部署、线上及实机验收通过，且可从 GitHub 固定 commit 恢复 | 可精确清理重复临时代码 |
+
+清理必须逐任务满足：①实际 GitHub commit/PR 与 merge SHA 可查、原始版本可恢复、没有未处理差异（被驳回/修订的原件若未可靠归档仍保留）；②该改动已在实际 Worker 部署版本中，具备回退版本；③实际线上功能/相关实机验收通过，记录证据；④主线 KV 已增量同步并读回核验；⑤读取最新索引、确认待清理 key 的所有权与 SHA-256，不涉及其他任务的 pending 或依赖。任何一条缺失则不清理，不以「已上传」「已合并」代替上线验收。
+
+满足门禁后，清理方先登记逐 key 清单、GitHub 固定 commit/PR、部署版本、验收结果、时间、操作者和可恢复位置；仅删除明确已冗余的临时源码/补丁副本，禁止整前缀盲删、禁止删除 GitHub 历史/分支或备用资产。随后核验 key 状态，增量更新 `FILE_INDEX.json`、`SYNC_STATE.json` 对应记录（标记「已清理可恢复」并保留原 SHA、manifest/回执、其余待处理任务；不整份删除 `kv_only_pending`）。交接文档、审查报告、原版参考/备用资产、清单和部署/回滚记录长期保留。发现冲突立即停止。此节优先于旧规则中「上传后即删除」或「永久不清理临时代码」的表述。
 
 ## 3. 任务流程：发布 → 领取 → 执行 → 交付 → 验收
 
@@ -170,6 +189,7 @@
 | BAB-01 / GPT-09 | 全面迁移 Three.js → Babylon.js；WebGPU + WebGL2，一套渲染代码；[执行手册 B0–B7](handover/gpt/BABYLON_MIGRATION.md) | 任意能开发、编译、实机验证的 AI（领取留痕） | 🟡 用户已批准路线；文档完成，迁移尚未开始；保留 MU-01 线上，完成验收后用户确认发布 |
 | GPT-10 | React + HeroUI v3 UI 并行开发（[PR #9](https://github.com/cianasa222/swarm-remake/pull/9)），Quick 并行准备 BAB-01 数据/资产，勿争用 UI 文件 | GPT（UI） | 🔄 独立分支 `gpt/gpt10-heroui`；构建/数值回归通过，浏览器待验，未合并/部署；按 2.3 分支独立同步 |
 | GPT-11 | 每次代码提交立即双端交接、分支镜像隔离 | GPT（用户授权修改规范） | ✅ 规范更新；GPT-10 分支快照状态见 KV `pending_github_commits` |
+| GPT-12 | KV-only 代上传与临时代码生命周期 | GPT（用户确认） | ✅ 规则补齐；上线并验收通过后方可精确清理重复临时代码，本次不删任何 key |
 | — | 补给箱经验/升级节奏核查 | GPT（后续单独处理） | ⏳ 用户要求暂缓；本轮不改战斗数值 |
 | — | 自动部署 `wrangler.jsonc` + `preview` 分支 | 开发 AI + 用户 | ⏳ |
 | — | 其余小项（清理 `lan.ts`/`buildWorld`、`compress_assets.mjs` 绝对路径） | 开发 AI | ⏳ 见 `QUICK_AI_HANDOVER.md` 第 2 节 |

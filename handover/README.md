@@ -1,6 +1,6 @@
 # 交接总入口（任何 AI 开工前先读这一页）
 
-> ⛔ **同步 KV 前必读（用户指示，2026-11-23 05:35）**：Quick AI 因 GitHub 授权失效，有一批改动**只在 Cloudflare KV**（清单在 KV `SYNC_STATE.json` 的 `kv_only_pending`，代码在 `pending/q22/`、`pending/q23/`、`pending/q25/`、`pending/q27/`、`pending/q28/`）。**从 GitHub 往 KV 同步时，`kv_only_pending` 里列出的文件不准整份覆盖，必须先合并；`pending/` 下的文件不准删除。** 能写 GitHub 的 AI 请先把这些改动上传到 GitHub（步骤见 `pending/q22/README.md`），上传并合并后再删掉 `kv_only_pending` 字段。详见 `COLLAB.md` 2.2 节第 10 条。
+> ⛔ **同步 KV 前必读（用户指示，GPT-12 更新）**：Quick / 其他 AI 无 GitHub 权限时，查 KV `SYNC_STATE.json` 的 `kv_only_pending`、`pending_branches` 与 `pending_github_commits`，按任务核对实际 GitHub 提交/PR 后代上传未提交内容；共享文档须合并双方新增内容，不覆盖独有资料。**仅在合并、实际部署、上线/实机验收通过、GitHub 可恢复且主线 KV 核验后，才允许精确清理重复临时代码。** 交接、清单、参考/备用资产永久保留；不删除其他任务或整个索引。详见 COLLAB 2.2 第 10 条及 2.4。
 
 > 本页结构由 Quick AI（AWS Quick）于 2026-11-22 建立。**第 3 节每个 AI 只改自己那一行**，其他节按 [`COLLAB.md`](../COLLAB.md) 2.1 节防冲突规则修改。
 
@@ -13,6 +13,7 @@
 - **KV 是不是最新**：读 KV 里的 `SYNC_STATE.json`，它的 `commit` 等于 GitHub `main` 最新提交就是一致；不等就以 GitHub 为准。KV 不会自动跟着 GitHub 变，要由改动的 AI 手动同步。
 - **改了代码要做什么**：同一轮工作里，在自己的 `handover/<ai名>/HANDOVER.md` 登记改动，提交到 GitHub，再同步到 KV（规则见 [`COLLAB.md`](../COLLAB.md) 2.2 节）。
 - **每次提交即时双端交接（GPT-11 · 用户指示）**：不等合并；查 `SYNC_STATE.json.pending_github_commits` 获取未合并 PR 的最新快照、文件清单与交接，KV `pending/github/<ai>/<任务>/<commit>/` 独立存放。合并后再增量同步主线；线上部署独立。见 COLLAB 2.3；保留 Quick 独有资料。
+- **代上传与清理（GPT-12 · 用户确认）**：Quick 仅 KV 的变更由任何有 GitHub 权限的 AI 核对后代上传独立 PR；不得重复提交已合并内容。旧临时代码保留至线上及实机验收通过后按 COLLAB 2.4 精确清理，保留可恢复版本与交接记录。
 - **⚠️ Quick AI 暂时连不上 GitHub（2026-11-23 起，GitHub 连接器授权失效）**：Quick AI 的新代码在 KV `pending/q22/`、`pending/q23/`、`pending/q25/`、`pending/q27/`、`pending/q28/`（说明 `pending/q22/README.md`，基准 `bd8a87b`），新审查报告 `docs/audit/weapons_vfx_14.14.md`、`docs/audit/enemies_map_14.14.md`、`docs/audit/ui_camera_audio_14.14.md`、任务单 `docs/tasks/render_perf.md`，文档改动列在 KV `SYNC_STATE.json` 的 `kv_only_pending`。**任何能写 GitHub 的 AI 看到就请帮忙上传 GitHub，并把 Quick AI 交接（`handover/quick/HANDOVER.md` 的 Q-22 至 Q-29、QC-07 至 QC-14）补进总文档**。**从 GitHub 往 KV 同步时，先看 `kv_only_pending`，别把这些 KV 独有的改动覆盖掉**（11-23 05:23 的 GPT-06 同步就覆盖过一次，Quick AI 已在 QC-10 重新合并）。
 - **决策与推进方式（2026-11-23 用户指示）**：**Quick AI 是临时审查/辅助角色**，大部分决策由用户拍板，任何具备能力的 AI 均可按用户决定**自主完成开发、解包、验收与推进**，不必等待 Quick AI。
 
@@ -37,7 +38,7 @@
 | Quick AI（AWS Quick） | [`handover/quick/`](./quick/HANDOVER.md) | **角色由用户随时指定**（2026-11-23 04:44 用户：「你的角色我任意决定」）；目前：与 14.14 原版比对、修复不一致项、按用户要求改渲染代码、发布任务。**⚠️ 暂时连不上 GitHub，只写 KV** | `Q-`（git）、`QC-`（Cloudflare）、`QI-`（Issue） | 2026-11-23 06:05 | `QC-15`（仅 KV） | Q-22 小怪顶点动画 + 阴影 + 贴图过滤；Q-23 帧率上限 + 动态分辨率 + `?perf=1`（已按 `bd8a87b` 合并细节画质）；Q-24 武器特效审查；Q-25 战兔巨爆 / 冰爆护甲颜色和寿命；Q-26 敌人模型 + 地图审查（地图环境特效全缺、敌人材质待截图）；Q-27 小怪死亡特效改红橙；Q-28 精英死亡动作、耀光力场 4 层、战兔巨爆进化配色、斯塔缇克闪电时长；Q-29 界面 + 镜头 + 音效审查（14.14 全面审计完成）。**⛔ QC-15 更正：十字弩 / 战兔巨爆 / 旋风切割器在 Q-24 / Q-25 / Q-28 / Q-29 里对错了原版数据，巨爆颜色改动要撤回，见 `pending/q22/README.md` 顶部和 `handover/quick/HANDOVER.md` 1.7 节**。都未编译，待上传 GitHub 开一个 PR 验收；4 个小怪模型没有动作，需重新导出（看板 PERF-1 T2b） |
 | Antigravity（原主线开发 AI） | [`handover/antigravity/`](./antigravity/HANDOVER.md) | 主线开发、本机编译/实机截图验收与修复 | `AG-` | 2026-11-23 03:55 | `[Antigravity AG-09]` | **两步任务全部完成**：① AG-08 93 条 14.14 原版 SFX + 5 首原版 BGM 已接入 `src/audio/audio.ts`；② AG-09 已验收并合并 PR #3（`c056396`）+ 合入 42 动作版 `reksai.glb`、彻底修复 `Wrap/Plane` 子网格隐藏并接入 17 个原版动作剪辑，3 张特写截图视觉审计 CLEAN PASS；待按需部署线上 |
 | Muse（执行 AI） | [`handover/muse/`](./muse/HANDOVER.md) | 执行 Issue #1（解包、转换、贴图）；生产部署 | `MU-` | 2026-11-23 06:40 | `[Muse MU-01]` | GPT-08（PR #8）已部署上线，版本 `5955ad9a`，deployment `f94499ee`，100% 流量；真机视听待验；Issue #1 待领取 |
-| GPT（ChatGPT） | [`handover/gpt/`](./gpt/HANDOVER.md) | 资产溯源、最小解包、审查修复、用户授权开发与发布 | `GPT-` | 2026-11-23 | `[GPT-11]`（规范）；GPT-10 [PR #9](https://github.com/cianasa222/swarm-remake/pull/9) | [BAB-01 迁移](./gpt/BABYLON_MIGRATION.md)；UI 独立分支已开发，构建/回归通过，实机待验、未合并/部署；[UI 交接](https://github.com/cianasa222/swarm-remake/blob/gpt/gpt10-heroui/handover/gpt/UI_GPT10.md)。每次提交双端同步，查 KV `pending_github_commits`；保留 MU-01 线上与备用资产 |
+| GPT（ChatGPT） | [`handover/gpt/`](./gpt/HANDOVER.md) | 资产溯源、最小解包、审查修复、用户授权开发与发布 | `GPT-` | 2026-11-23 | `[GPT-12]`（规范）；GPT-10 [PR #9](https://github.com/cianasa222/swarm-remake/pull/9) | [BAB-01 迁移](./gpt/BABYLON_MIGRATION.md)；UI 独立分支已开发，构建/回归通过，实机待验、未合并/部署；[UI 交接](https://github.com/cianasa222/swarm-remake/blob/gpt/gpt10-heroui/handover/gpt/UI_GPT10.md)。每次提交双端同步；代上传及上线验收后清理见 COLLAB 2.2/2.4；保留 MU-01 线上与备用资产 |
 | 新加入的 AI | `handover/<名字小写>/`，如 `gpt`、`claude`、`gemini` | — | 首次建目录时登记，如 `GPT-`、`CL-`、`GM-` | — | — | — |
 
 ---
