@@ -26,13 +26,14 @@ export class Renderer {
   closeupAngle: number | null = null;
   camTargetOverride: { x: number; y?: number; z: number } | null = null;
   camDistScale = 1;
+  cameraHeight = 1;
   private envTex: THREE.Texture;
   private camX = -9.45;
   private camZ = 5.6;
   private w = 1;
   private h = 1;
 
-  constructor(canvas: HTMLCanvasElement, private quality: QualityManager) {
+  constructor(canvas: HTMLCanvasElement, private quality: QualityManager, private mobile = false) {
     this.gl = new THREE.WebGLRenderer({
       canvas,
       antialias: quality.spec.tier !== 'low',
@@ -145,7 +146,12 @@ export class Renderer {
     this.camX += (tx - this.camX) * k;
     this.camZ += (tz - this.camZ) * k;
     const aspect = this.w / this.h;
-    const pScale = (aspect < 1 ? Math.min(1.42, 1 / Math.sqrt(aspect)) : 1) * this.camDistScale;
+    let framing = aspect < 1 ? Math.min(1.42, 1 / Math.sqrt(aspect)) : 1;
+    if (this.mobile && aspect > 1 && !this.camTargetOverride) {
+      // Restore readable player framing on very wide phones without changing sim/FOV.
+      framing = Math.max(0.66, Math.min(1, 1.95 / aspect));
+    }
+    const pScale = framing * this.camDistScale * (this.camTargetOverride ? 1 : this.cameraHeight);
     const shk = this.vfx.shake;
     const sx = shk > 0 ? (Math.random() - 0.5) * shk * 1.4 : 0;
     const sz = shk > 0 ? (Math.random() - 0.5) * shk * 1.4 : 0;

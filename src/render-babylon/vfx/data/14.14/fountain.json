@@ -1,0 +1,7950 @@
+[
+ {
+  "schema": 1,
+  "id": "Strawberry_MapA_Fountain_Glow",
+  "category": "fountain",
+  "source": {
+   "file": "ref/14.14/data/maps/shipping/map33/map33.bin.json",
+   "key": "Maps/Shipping/Map33/Particles/Environment/Strawberry_MapA_Fountain_Glow",
+   "particleName": "Strawberry_MapA_Fountain_Glow",
+   "particlePath": "Maps/Shipping/Map33/Particles/Environment/Strawberry_MapA_Fountain_Glow",
+   "sha256": "f05de3901bbc01facef34d292858c3d6e79216b0f2ffdfe76ed1af3dac453c45",
+   "patch": "14.14"
+  },
+  "gameRefs": {
+   "fountain": true
+  },
+  "flags": 213,
+  "visibilityRadius": 25000,
+  "transform": null,
+  "soundOnCreate": "Play_sfx_Strawberry_Fountain_respawn_buffactivate",
+  "soundPersistent": "Play_sfx_Strawberry_Fountain_idle_loop",
+  "layers": [
+   {
+    "name": "healspark",
+    "index": 0,
+    "emitterKind": "complex",
+    "primitive": "billboard",
+    "primitiveRaw": null,
+    "mesh": null,
+    "rate": {
+     "c": 15
+    },
+    "particleLifetime": {
+     "c": 2,
+     "t": [
+      0
+     ],
+     "v": [
+      2
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.5,
+        1
+       ]
+      }
+     ]
+    },
+    "particleLinger": 1,
+    "emitterPosition": {
+     "c": [
+      0,
+      90,
+      0
+     ]
+    },
+    "spawnShape": {
+     "radius": 300,
+     "__type": "VfxShapeCylinder"
+    },
+    "birthVelocity": {
+     "c": [
+      0,
+      500,
+      0
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       0,
+       500,
+       0
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.5,
+        1
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "birthDrag": {
+     "c": [
+      0,
+      1,
+      0
+     ]
+    },
+    "birthScale": {
+     "c": [
+      20,
+      1,
+      1
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       20,
+       1,
+       1
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.20000000298023224,
+        1
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      0.06728971749544144,
+      0.30000001192092896,
+      0.6654205918312073,
+      1
+     ],
+     "v": [
+      [
+       0,
+       0,
+       0
+      ],
+      [
+       0.7944444417953491,
+       0.15000000596046448,
+       0.8833333253860474
+      ],
+      [
+       1,
+       1,
+       1
+      ],
+      [
+       0.6166666746139526,
+       0.15000000596046448,
+       0.7611111402511597
+      ],
+      [
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "isUniformScale": true,
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1
+    },
+    "color": {
+     "c": [
+      0.20000000298023224,
+      1,
+      0.5215686559677124,
+      1
+     ],
+     "t": [
+      0,
+      0.10000000149011612,
+      0.800000011920929,
+      1
+     ],
+     "v": [
+      [
+       0.04000000283122063,
+       1,
+       0.47282207012176514,
+       1
+      ],
+      [
+       0.04000000283122063,
+       1,
+       0.3662799298763275,
+       1
+      ],
+      [
+       0.03999999910593033,
+       1,
+       0.24061319231987,
+       1
+      ],
+      [
+       0.03999999910593033,
+       1,
+       0.190545454621315,
+       1
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Particles_Hex_Plus.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/particles_hex_plus.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/hex_plus.webp"
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 10,
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": {
+      "typeY": 3
+     },
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "texDiv": [
+      2,
+      2
+     ],
+     "numFrames": 4,
+     "isRandomStartFrame": 1
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "colorLookUpTypeY"
+    ],
+    "extra": {}
+   },
+   {
+    "name": "Edge10",
+    "index": 1,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_BaseEdge.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_BaseEdge.StrawberryRebuild.scb",
+    "rate": {
+     "c": 0.6499999761581421
+    },
+    "particleLifetime": {
+     "c": 4
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      10,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      3.200000047683716,
+      1,
+      1
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotationalVelocity": {
+     "c": [
+      0,
+      3,
+      0
+     ]
+    },
+    "birthColor": {
+     "c": [
+      0,
+      1,
+      0.41933318972587585,
+      1
+     ]
+    },
+    "color": {
+     "t": [
+      0,
+      0.5,
+      1
+     ],
+     "v": [
+      [
+       1,
+       1,
+       1,
+       0
+      ],
+      [
+       1,
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       1,
+       1,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Augment_HollowRadiance_Decal.StrawberryRebuild.tex",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_augment_hollowradiance_decal.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/hollow_decal.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Scan_Lines.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_scan_lines.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/healingstation_scan_lines.webp"
+      },
+      "params": {
+       "uvScaleMult": {
+        "constantValue": [
+         1,
+         0.10000000149011612
+        ],
+        "__type": "ValueVector2"
+       },
+       "birthUvScrollRateMult": {
+        "constantValue": [
+         0,
+         -0.05000000074505806
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 3,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "uvScale": {
+      "c": [
+       9,
+       1
+      ]
+     }
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "outer_graphic",
+    "index": 2,
+    "emitterKind": "complex",
+    "primitive": "quad",
+    "primitiveRaw": {
+     "__type": "VfxPrimitiveArbitraryQuad"
+    },
+    "mesh": null,
+    "emitterLifetime": 1,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "emitterLinger": 10,
+    "emitterPosition": {
+     "c": [
+      0,
+      10,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      1400,
+      460,
+      460
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      90,
+      0,
+      -90
+     ]
+    },
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1
+    },
+    "importance": 2,
+    "birthColor": {
+     "c": [
+      0,
+      1,
+      0.3700007498264313,
+      0.10000763088464737
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/GlowRing.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/glowring.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/glowring_outer.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Dots.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_dots.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/dots.webp"
+      },
+      "params": {
+       "uvScaleMult": {
+        "constantValue": [
+         150,
+         150
+        ],
+        "__type": "ValueVector2"
+       },
+       "ParticleIntegratedUvRotateMult": {
+        "constantValue": -1,
+        "dynamics": {
+         "times": [
+          0
+         ],
+         "values": [
+          -1
+         ],
+         "__type": "VfxAnimatedFloatVariableData"
+        },
+        "__type": "IntegratedValueFloat"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 1,
+     "colorTexture": null,
+     "colorLookUp": {
+      "typeY": 2,
+      "scales": [
+       1,
+       0.10000000149011612
+      ],
+      "offsets": [
+       0,
+       0.8999999761581421
+      ]
+     },
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "colorLookUpTypeY",
+     "colorLookUpScales",
+     "colorLookUpOffsets"
+    ],
+    "extra": {}
+   },
+   {
+    "name": "Shockwave_blend",
+    "index": 3,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/HealingStation_Wave01.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/HealingStation_Wave01.StrawberryRebuild.scb",
+    "rate": {
+     "c": 0.5
+    },
+    "particleLifetime": {
+     "c": 2
+    },
+    "particleLinger": 2,
+    "emitterLinger": 0.5,
+    "emitterPosition": {
+     "c": [
+      0,
+      10,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      25,
+      8,
+      25
+     ]
+    },
+    "birthRotation": {
+     "c": [
+      0,
+      1,
+      0
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       0,
+       1,
+       0
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0,
+        360
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "birthColor": {
+     "c": [
+      0,
+      1,
+      0.4095063805580139,
+      1
+     ]
+    },
+    "color": {
+     "t": [
+      0,
+      0.30000001192092896,
+      0.6000000238418579,
+      1
+     ],
+     "v": [
+      [
+       1,
+       1,
+       1,
+       0
+      ],
+      [
+       1,
+       1,
+       1,
+       0.5000076293945312
+      ],
+      [
+       1,
+       1,
+       1,
+       0.5000076293945312
+      ],
+      [
+       1,
+       1,
+       1,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Healing_Shockwave.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healing_shockwave.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/shockwave.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Dots.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_dots.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/dots.webp"
+      },
+      "params": {
+       "uvScaleMult": {
+        "constantValue": [
+         250,
+         50
+        ],
+        "dynamics": {
+         "times": [
+          0,
+          1
+         ],
+         "values": [
+          [
+           150,
+           30
+          ],
+          [
+           250,
+           50
+          ]
+         ],
+         "__type": "VfxAnimatedVector2fVariableData"
+        },
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "pass": 2,
+     "texAddressModeBase": 2,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "texDiv": [
+      1,
+      0.6000000238418579
+     ],
+     "birthUvOffset": {
+      "c": [
+       1,
+       -0.800000011920929
+      ]
+     },
+     "particleUvScrollRate": {
+      "integrated": true,
+      "c": [
+       0,
+       0.5
+      ],
+      "t": [
+       0
+      ],
+      "v": [
+       [
+        0,
+        0.5
+       ]
+      ]
+     },
+     "uvScrollClamp": 1
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Crecents1",
+    "index": 4,
+    "emitterKind": "complex",
+    "primitive": "quad",
+    "primitiveRaw": {
+     "__type": "VfxPrimitiveArbitraryQuad"
+    },
+    "mesh": null,
+    "rate": {
+     "c": 2
+    },
+    "particleLifetime": {
+     "c": 1
+    },
+    "particleLinger": 1,
+    "emitterPosition": {
+     "c": [
+      0,
+      90,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      380,
+      1,
+      1
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      1
+     ],
+     "v": [
+      [
+       1.5,
+       0,
+       0
+      ],
+      [
+       0.5,
+       0,
+       0
+      ]
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      90,
+      0,
+      0
+     ]
+    },
+    "isLocalOrientation": 0,
+    "color": {
+     "t": [
+      0,
+      0.4000000059604645,
+      1
+     ],
+     "v": [
+      [
+       0.0079041738063097,
+       1,
+       0.8472114205360413,
+       0
+      ],
+      [
+       0.1752803772687912,
+       0.99981689453125,
+       0.4607003927230835,
+       1
+      ],
+      [
+       0.006515602581202984,
+       0.9946593642234802,
+       0.14567787945270538,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Timer_Outline.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_timer_outline.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/timer_outline.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Base_Glow.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_base_glow.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/base_glow.webp"
+      },
+      "params": {
+       "uvScaleMult": {
+        "constantValue": [
+         0.800000011920929,
+         0.800000011920929
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 10,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Crecents2",
+    "index": 5,
+    "emitterKind": "complex",
+    "primitive": "quad",
+    "primitiveRaw": {
+     "__type": "VfxPrimitiveArbitraryQuad"
+    },
+    "mesh": null,
+    "rate": {
+     "c": 2
+    },
+    "particleLifetime": {
+     "c": 1
+    },
+    "particleLinger": 1,
+    "emitterPosition": {
+     "c": [
+      0,
+      90,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      500,
+      1,
+      1
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      0.800000011920929,
+      1
+     ],
+     "v": [
+      [
+       0.699999988079071,
+       0,
+       0
+      ],
+      [
+       1.2000000476837158,
+       1,
+       1
+      ],
+      [
+       1.2999999523162842,
+       0,
+       0
+      ]
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      90,
+      90,
+      0
+     ]
+    },
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1,
+     "t": [
+      0,
+      0.5,
+      0.800000011920929,
+      1
+     ],
+     "v": [
+      1,
+      1,
+      0,
+      0
+     ]
+    },
+    "birthColor": {
+     "c": [
+      0.009994659572839737,
+      1,
+      0.4256351590156555,
+      0.800000011920929
+     ]
+    },
+    "color": {
+     "t": [
+      0,
+      0.30000001192092896,
+      1
+     ],
+     "v": [
+      [
+       1,
+       1,
+       1,
+       0
+      ],
+      [
+       1,
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       1,
+       1,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Glow_Ring.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_glow_ring.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/glow_ring.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Glow_HardEdge.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_glow_hardedge.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/healingstation_glow_hardedge.webp"
+      },
+      "params": {
+       "texAddressModeMult": 2,
+       "uvScaleMult": {
+        "constantValue": [
+         1.5,
+         1.5
+        ],
+        "dynamics": {
+         "times": [
+          0,
+          1
+         ],
+         "values": [
+          [
+           1.5,
+           1.5
+          ],
+          [
+           0,
+           0
+          ]
+         ],
+         "__type": "VfxAnimatedVector2fVariableData"
+        },
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 5,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "outer_graphic1",
+    "index": 6,
+    "emitterKind": "complex",
+    "primitive": "quad",
+    "primitiveRaw": {
+     "__type": "VfxPrimitiveArbitraryQuad"
+    },
+    "mesh": null,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 2
+    },
+    "emitterLinger": 10,
+    "emitterPosition": {
+     "c": [
+      0,
+      90,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      500,
+      460,
+      460
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      1
+     ],
+     "v": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      90,
+      0,
+      0
+     ]
+    },
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1
+    },
+    "importance": 2,
+    "color": {
+     "t": [
+      0,
+      0.4000000059604645,
+      1
+     ],
+     "v": [
+      [
+       0.0158083476126194,
+       0.6554055213928223,
+       0.9836728572845459,
+       0
+      ],
+      [
+       0.01744106225669384,
+       0.9987030029296875,
+       0.5193560719490051,
+       1
+      ],
+      [
+       0.01438925787806511,
+       1,
+       0.18129244446754456,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Glow_Ring.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_glow_ring.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/glow_ring.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Dots.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_dots.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/dots.webp"
+      },
+      "params": {
+       "uvScaleMult": {
+        "constantValue": [
+         40,
+         40
+        ],
+        "dynamics": {
+         "times": [
+          0,
+          1
+         ],
+         "values": [
+          [
+           48,
+           48
+          ],
+          [
+           20,
+           20
+          ]
+         ],
+         "__type": "VfxAnimatedVector2fVariableData"
+        },
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 10,
+     "colorTexture": null,
+     "colorLookUp": {
+      "typeY": 2,
+      "scales": [
+       1,
+       0.10000000149011612
+      ],
+      "offsets": [
+       0,
+       0.8999999761581421
+      ]
+     },
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "colorLookUpTypeY",
+     "colorLookUpScales",
+     "colorLookUpOffsets"
+    ],
+    "extra": {}
+   },
+   {
+    "name": "Edge12",
+    "index": 7,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "AlignPitchToCamera": true,
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+    "emitterLifetime": 1,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      350,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      0.9800000190734863,
+      1,
+      1
+     ]
+    },
+    "isUniformScale": true,
+    "birthColor": {
+     "c": [
+      0,
+      0.009994659572839737,
+      0.009994659572839737,
+      0.7000076174736023
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_White.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_white.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_HexTile.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_hextile.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/hextile.webp"
+      },
+      "params": {
+       "uvScaleMult": {
+        "constantValue": [
+         3.5,
+         1.75
+        ],
+        "__type": "ValueVector2"
+       },
+       "ParticleIntegratedUvScrollMult": {
+        "constantValue": [
+         0,
+         0.05000000074505806
+        ],
+        "dynamics": {
+         "times": [
+          0
+         ],
+         "values": [
+          [
+           0,
+           0.05000000074505806
+          ]
+         ],
+         "__type": "VfxAnimatedVector2fVariableData"
+        },
+        "__type": "IntegratedValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 39,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "reflectionDefinition"
+    ],
+    "extra": {
+     "reflectionDefinition": {
+      "reflectionFresnelColor": [
+       0.993850588798523,
+       1,
+       0.9993896484375,
+       1
+      ],
+      "fresnel": 0.30000001192092896,
+      "fresnelColor": [
+       0.13000686466693878,
+       1,
+       0.6000000238418579,
+       1
+      ],
+      "__type": "VfxReflectionDefinitionData"
+     }
+    }
+   },
+   {
+    "name": "Edge13",
+    "index": 8,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "AlignPitchToCamera": true,
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+    "emitterLifetime": 1,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      350,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "isUniformScale": true,
+    "birthColor": {
+     "c": [
+      0,
+      0,
+      0,
+      1
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_White.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_white.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_HexTile_Inverted.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_hextile_inverted.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/hextile_inv.webp"
+      },
+      "params": {
+       "uvScaleMult": {
+        "constantValue": [
+         3.5,
+         1.75
+        ],
+        "__type": "ValueVector2"
+       },
+       "ParticleIntegratedUvScrollMult": {
+        "constantValue": [
+         0,
+         0.05000000074505806
+        ],
+        "dynamics": {
+         "times": [
+          0
+         ],
+         "values": [
+          [
+           0,
+           0.05000000074505806
+          ]
+         ],
+         "__type": "VfxAnimatedVector2fVariableData"
+        },
+        "__type": "IntegratedValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 40,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "reflectionDefinition"
+    ],
+    "extra": {
+     "reflectionDefinition": {
+      "reflectionFresnelColor": [
+       0.993850588798523,
+       1,
+       0.9993896484375,
+       1
+      ],
+      "fresnel": 0.30000001192092896,
+      "fresnelColor": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "__type": "VfxReflectionDefinitionData"
+     }
+    }
+   },
+   {
+    "name": "Edge14",
+    "index": 9,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+    "emitterLifetime": 1,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      350,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "isUniformScale": true,
+    "birthColor": {
+     "c": [
+      0,
+      0.2399939000606537,
+      0.13000686466693878,
+      0.7000076174736023
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_White.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_white.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": null,
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "alphaRef": 0,
+     "pass": 37,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Edge15",
+    "index": 10,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+    "emitterLifetime": 1,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      350,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "isUniformScale": true,
+    "birthColor": {
+     "c": [
+      0,
+      0,
+      0,
+      0.6500037908554077
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_White.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_white.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 41,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "reflectionDefinition"
+    ],
+    "extra": {
+     "reflectionDefinition": {
+      "reflectionFresnelColor": [
+       0.5906614661216736,
+       0.8569619059562683,
+       0.8302891850471497,
+       1
+      ],
+      "fresnel": 0.75,
+      "fresnelColor": [
+       0,
+       1,
+       0.4424963891506195,
+       0
+      ],
+      "__type": "VfxReflectionDefinitionData"
+     }
+    }
+   },
+   {
+    "name": "Basic4",
+    "index": 11,
+    "emitterKind": "complex",
+    "primitive": "billboard",
+    "primitiveRaw": null,
+    "mesh": null,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      350,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      330,
+      1,
+      1
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      90,
+      0,
+      0
+     ]
+    },
+    "birthColor": {
+     "c": [
+      0.10000763088464737,
+      0.8699931502342224,
+      0.5806058049201965,
+      0.4000000059604645
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Glow_Ring.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_glow_ring.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/glow_ring.webp"
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 42,
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Edge16",
+    "index": 12,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+    "emitterLifetime": 1,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      350,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "isUniformScale": true,
+    "birthColor": {
+     "c": [
+      0.009994659572839737,
+      1,
+      0.5400015115737915,
+      0.3000076413154602
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_trail_Dark.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_trail_dark.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/trail_dark.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/3026_Items_Noise_02.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/3026_items_noise_02.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/noise_02.webp"
+      },
+      "params": {
+       "uvScaleMult": {
+        "constantValue": [
+         3,
+         1
+        ],
+        "__type": "ValueVector2"
+       },
+       "birthUvScrollRateMult": {
+        "constantValue": [
+         0.10000000149011612,
+         0.30000001192092896
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 40,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Edge17",
+    "index": 13,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+    "emitterLifetime": 1,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      350,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "isUniformScale": true,
+    "birthColor": {
+     "c": [
+      0.11764705926179886,
+      0.21960784494876862,
+      0.41960784792900085,
+      0.9215686321258545
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_White.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_white.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": null,
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "alphaRef": 0,
+     "pass": 30,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Basic5",
+    "index": 14,
+    "emitterKind": "complex",
+    "primitive": "quad",
+    "primitiveRaw": {
+     "__type": "VfxPrimitiveArbitraryQuad"
+    },
+    "mesh": null,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "particleLinger": 11,
+    "emitterPosition": {
+     "c": [
+      0,
+      72,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      430,
+      1,
+      1
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      90,
+      0,
+      0
+     ]
+    },
+    "birthColor": {
+     "c": [
+      0.27450981736183167,
+      0.5882353186607361,
+      1,
+      1
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingFountain_SharpCircle.StrawberryRebuild.tex",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_map1_healingfountain_sharpcircle.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/sharp_circle.webp"
+     },
+     "textureMult": null,
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "alphaRef": 0,
+     "pass": -1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   }
+  ],
+  "extra": {}
+ },
+ {
+  "schema": 1,
+  "id": "Strawberry_MapA_Fountain_Nova",
+  "category": "fountain",
+  "source": {
+   "file": "ref/14.14/data/maps/shipping/map33/map33.bin.json",
+   "key": "Maps/Shipping/Map33/Particles/Environment/Strawberry_MapA_Fountain_Nova",
+   "particleName": "Strawberry_MapA_Fountain_Nova",
+   "particlePath": "Maps/Shipping/Map33/Particles/Environment/Strawberry_MapA_Fountain_Nova",
+   "sha256": "55b2a08c86721cdaf6c839aaea75a200b232a3d5e617b9a6e59c904d85feedee",
+   "patch": "14.14"
+  },
+  "gameRefs": {
+   "fountain": true
+  },
+  "flags": 199,
+  "visibilityRadius": 25000,
+  "transform": [
+   [
+    1.7499998807907104,
+    0,
+    0,
+    0
+   ],
+   [
+    0,
+    1.7499998807907104,
+    0,
+    0
+   ],
+   [
+    0,
+    0,
+    1.749999761581421,
+    0
+   ],
+   [
+    0,
+    0,
+    0,
+    1
+   ]
+  ],
+  "soundOnCreate": "Play_sfx_Strawberry_Fountain_success_buffactivate",
+  "soundPersistent": null,
+  "layers": [
+   {
+    "name": "brighShockwave",
+    "index": 0,
+    "emitterKind": "complex",
+    "primitive": "billboard",
+    "primitiveRaw": null,
+    "mesh": null,
+    "emitterLifetime": 1,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 0.30000001192092896
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      100,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      800,
+      300,
+      300
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      0.6000000238418579,
+      1
+     ],
+     "v": [
+      [
+       2,
+       2,
+       2
+      ],
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      90,
+      0,
+      0
+     ]
+    },
+    "birthColor": {
+     "c": [
+      0.17999541759490967,
+      1,
+      0.6299992203712463,
+      0.6000000238418579
+     ]
+    },
+    "color": {
+     "t": [
+      0,
+      0.30000001192092896,
+      0.6344936490058899,
+      1
+     ],
+     "v": [
+      [
+       1,
+       0.800000011920929,
+       0.29411765933036804,
+       1
+      ],
+      [
+       1,
+       0.800000011920929,
+       0.29411765933036804,
+       1
+      ],
+      [
+       1,
+       0.800000011920929,
+       0.29411765933036804,
+       0.6313725709915161
+      ],
+      [
+       0.9529411792755127,
+       0.6000000238418579,
+       0.1882352977991104,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Base_Glow.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_base_glow.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/base_glow.webp"
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 9997,
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Gold",
+    "index": 1,
+    "emitterKind": "complex",
+    "primitive": "billboard",
+    "primitiveRaw": null,
+    "mesh": null,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 100,
+     "t": [
+      0
+     ],
+     "v": [
+      100
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.5,
+        1
+       ]
+      }
+     ]
+    },
+    "particleLifetime": {
+     "c": 2,
+     "t": [
+      0
+     ],
+     "v": [
+      2
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        0.5,
+        1
+       ],
+       "v": [
+        0.20000000298023224,
+        0.5,
+        1.5
+       ]
+      }
+     ]
+    },
+    "particleLinger": 0.30000001192092896,
+    "emitterPosition": {
+     "c": [
+      0,
+      100,
+      0
+     ]
+    },
+    "spawnShape": {
+     "emitOffset": {
+      "constantValue": [
+       100,
+       0,
+       0
+      ],
+      "dynamics": {
+       "probabilityTables": [
+        {
+         "keyTimes": [
+          0,
+          1
+         ],
+         "keyValues": [
+          0.5,
+          1
+         ],
+         "__type": "VfxProbabilityTableData"
+        },
+        {
+         "__type": "VfxProbabilityTableData"
+        },
+        {
+         "__type": "VfxProbabilityTableData"
+        }
+       ],
+       "times": [
+        0
+       ],
+       "values": [
+        [
+         100,
+         0,
+         0
+        ]
+       ],
+       "__type": "VfxAnimatedVector3fVariableData"
+      },
+      "__type": "ValueVector3"
+     },
+     "emitRotationAngles": [
+      {
+       "constantValue": 1,
+       "dynamics": {
+        "probabilityTables": [
+         {
+          "keyTimes": [
+           0,
+           1
+          ],
+          "keyValues": [
+           0,
+           360
+          ],
+          "__type": "VfxProbabilityTableData"
+         }
+        ],
+        "times": [
+         0
+        ],
+        "values": [
+         1
+        ],
+        "__type": "VfxAnimatedFloatVariableData"
+       },
+       "__type": "ValueFloat"
+      },
+      {
+       "constantValue": 1,
+       "dynamics": {
+        "probabilityTables": [
+         {
+          "keyTimes": [
+           0,
+           1
+          ],
+          "keyValues": [
+           0,
+           360
+          ],
+          "__type": "VfxProbabilityTableData"
+         }
+        ],
+        "times": [
+         0
+        ],
+        "values": [
+         1
+        ],
+        "__type": "VfxAnimatedFloatVariableData"
+       },
+       "__type": "ValueFloat"
+      }
+     ],
+     "emitRotationAxes": [
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ]
+     ],
+     "__type": "VfxShapeLegacy"
+    },
+    "birthVelocity": {
+     "c": [
+      3000,
+      1000,
+      3000
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       3000,
+       1000,
+       3000
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.20000000298023224,
+        1
+       ]
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.10000000149011612,
+        1
+       ]
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.20000000298023224,
+        1
+       ]
+      }
+     ]
+    },
+    "worldAcceleration": {
+     "integrated": true,
+     "c": [
+      0,
+      10,
+      0
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       0,
+       10,
+       0
+      ]
+     ]
+    },
+    "birthDrag": {
+     "c": [
+      5,
+      3,
+      5
+     ]
+    },
+    "birthScale": {
+     "c": [
+      10,
+      20,
+      10
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       10,
+       20,
+       10
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.4000000059604645,
+        1
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      0.10000000149011612,
+      0.20000000298023224,
+      0.30000001192092896,
+      1
+     ],
+     "v": [
+      [
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       0
+      ],
+      [
+       2,
+       2,
+       2
+      ],
+      [
+       2,
+       1,
+       1
+      ],
+      [
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      90,
+      0,
+      90
+     ]
+    },
+    "birthRotationalVelocity": {
+     "c": [
+      400,
+      0,
+      0
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       400,
+       0,
+       0
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        -1,
+        1
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "isDirectionOriented": 1,
+    "color": {
+     "c": [
+      0.20000000298023224,
+      1,
+      0.5215686559677124,
+      1
+     ],
+     "t": [
+      0,
+      0.10000000149011612,
+      0.30000001192092896,
+      0.5,
+      1
+     ],
+     "v": [
+      [
+       0.04078439995646477,
+       0.20392200350761414,
+       0.1063593178987503,
+       1
+      ],
+      [
+       0.20000000298023224,
+       1,
+       0.5215686559677124,
+       1
+      ],
+      [
+       0.20000000298023224,
+       1,
+       0.5215686559677124,
+       1
+      ],
+      [
+       0.20000000298023224,
+       1,
+       0.5215686559677124,
+       1
+      ],
+      [
+       0,
+       0.01960800029337406,
+       0.0777241587638855,
+       1
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Particles_Hex_Plus.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/particles_hex_plus.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/hex_plus.webp"
+     },
+     "textureMult": null,
+     "blend": "default",
+     "blendModeRiot": null,
+     "pass": 100,
+     "colorTexture": null,
+     "colorLookUp": {
+      "typeY": 3
+     },
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "texDiv": [
+      2,
+      2
+     ],
+     "numFrames": 4,
+     "isRandomStartFrame": 1
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "colorLookUpTypeY"
+    ],
+    "extra": {}
+   },
+   {
+    "name": "InhaleFire",
+    "index": 2,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/FlameMesh.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/FlameMesh.StrawberryRebuild.scb",
+    "emitterLifetime": 1,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 5
+    },
+    "emitterPosition": {
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       0,
+       0,
+       0
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "spawnShape": {
+     "emitOffset": [
+      0,
+      -30,
+      0
+     ],
+     "__type": "{ee39916f}"
+    },
+    "birthScale": {
+     "c": [
+      10,
+      30,
+      10
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      1
+     ],
+     "v": [
+      [
+       1,
+       2,
+       1
+      ],
+      [
+       40,
+       1,
+       40
+      ]
+     ]
+    },
+    "birthRotation": {
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       0,
+       0,
+       0
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        -1,
+        1
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "isGroundLayer": 1,
+    "birthColor": {
+     "c": [
+      0.02999923750758171,
+      0.2899976968765259,
+      0.1900053471326828,
+      0.7000076174736023
+     ]
+    },
+    "color": {
+     "t": [
+      0,
+      0.10000000149011612,
+      0.20000000298023224,
+      0.36000001430511475
+     ],
+     "v": [
+      [
+       1,
+       1,
+       1,
+       0
+      ],
+      [
+       1,
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       1,
+       1,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_MeshMult.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_meshmult.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/healingstation_meshmult.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Shockwave_Trail.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_shockwave_trail.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/healingstation_shockwave_trail.webp"
+      },
+      "params": {
+       "birthUvScrollRateMult": {
+        "constantValue": [
+         -0.20000000298023224,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "disableBackfaceCull": true,
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "texDiv": [
+      0.5,
+      1
+     ],
+     "birthUvScrollRate": {
+      "c": [
+       1,
+       0
+      ]
+     }
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "InhaleFire2",
+    "index": 3,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/Brand_Base_Ring.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/Brand_Base_Ring.StrawberryRebuild.scb",
+    "emitterLifetime": 1,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 2
+    },
+    "emitterPosition": {
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       0,
+       0,
+       0
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      20,
+      30,
+      20
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      1
+     ],
+     "v": [
+      [
+       1.5,
+       3,
+       1.5
+      ],
+      [
+       50,
+       1,
+       50
+      ]
+     ]
+    },
+    "birthRotation": {
+     "c": [
+      0,
+      360,
+      0
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       0,
+       360,
+       0
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        -1,
+        1
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "birthRotationalVelocity": {
+     "c": [
+      0,
+      -50,
+      0
+     ]
+    },
+    "isLocalOrientation": 0,
+    "isGroundLayer": 1,
+    "birthColor": {
+     "c": [
+      0.17000076174736023,
+      1,
+      0.7000076174736023,
+      0.10000763088464737
+     ]
+    },
+    "color": {
+     "t": [
+      0,
+      0.10000000149011612,
+      0.20000000298023224,
+      0.3199999928474426
+     ],
+     "v": [
+      [
+       1,
+       1,
+       1,
+       0
+      ],
+      [
+       1,
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       1,
+       1,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_MeshMult.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_meshmult.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/healingstation_meshmult.webp"
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "pass": 1,
+     "disableBackfaceCull": true,
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "uvScale": {
+      "c": [
+       2,
+       1
+      ]
+     },
+     "birthUvScrollRate": {
+      "c": [
+       0.5,
+       0
+      ]
+     }
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "InhaleFire3",
+    "index": 4,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/Brand_Base_Ring.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/Brand_Base_Ring.StrawberryRebuild.scb",
+    "emitterLifetime": 1,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 2
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      3,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      20,
+      30,
+      20
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      1
+     ],
+     "v": [
+      [
+       1.5,
+       3,
+       1.5
+      ],
+      [
+       50,
+       1,
+       50
+      ]
+     ]
+    },
+    "birthRotation": {
+     "c": [
+      0,
+      360,
+      0
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       0,
+       360,
+       0
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        -1,
+        1
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "birthRotationalVelocity": {
+     "c": [
+      0,
+      -50,
+      0
+     ]
+    },
+    "isLocalOrientation": 0,
+    "birthColor": {
+     "c": [
+      0.17000076174736023,
+      1,
+      0.39000535011291504,
+      0.5000076293945312
+     ]
+    },
+    "color": {
+     "t": [
+      0,
+      0.10000000149011612,
+      0.20000000298023224,
+      0.3400000035762787
+     ],
+     "v": [
+      [
+       1,
+       1,
+       1,
+       0
+      ],
+      [
+       1,
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       1,
+       1,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Trail_Silk_01.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_trail_silk_01.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/healingstation_trail_silk_01.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Trail_Silk_01.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_trail_silk_01.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/healingstation_trail_silk_01.webp"
+      },
+      "params": {
+       "birthUvScrollRateMult": {
+        "constantValue": [
+         -0.30000001192092896,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "pass": 51,
+     "disableBackfaceCull": true,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "texDiv": [
+      0.5,
+      1
+     ],
+     "uvScale": {
+      "c": [
+       2,
+       2
+      ]
+     },
+     "birthUvScrollRate": {
+      "c": [
+       0.5,
+       0
+      ]
+     }
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Gold1",
+    "index": 5,
+    "emitterKind": "complex",
+    "primitive": "billboard",
+    "primitiveRaw": null,
+    "mesh": null,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 50
+    },
+    "particleLifetime": {
+     "c": 2,
+     "t": [
+      0
+     ],
+     "v": [
+      2
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        0.5,
+        1
+       ],
+       "v": [
+        0.20000000298023224,
+        0.5,
+        1.5
+       ]
+      }
+     ]
+    },
+    "particleLinger": 0.30000001192092896,
+    "emitterPosition": {
+     "c": [
+      0,
+      100,
+      0
+     ]
+    },
+    "spawnShape": {
+     "emitOffset": {
+      "constantValue": [
+       100,
+       0,
+       0
+      ],
+      "dynamics": {
+       "probabilityTables": [
+        {
+         "keyTimes": [
+          0,
+          1
+         ],
+         "keyValues": [
+          0.5,
+          1
+         ],
+         "__type": "VfxProbabilityTableData"
+        },
+        {
+         "__type": "VfxProbabilityTableData"
+        },
+        {
+         "__type": "VfxProbabilityTableData"
+        }
+       ],
+       "times": [
+        0
+       ],
+       "values": [
+        [
+         100,
+         0,
+         0
+        ]
+       ],
+       "__type": "VfxAnimatedVector3fVariableData"
+      },
+      "__type": "ValueVector3"
+     },
+     "emitRotationAngles": [
+      {
+       "constantValue": 1,
+       "dynamics": {
+        "probabilityTables": [
+         {
+          "keyTimes": [
+           0,
+           1
+          ],
+          "keyValues": [
+           0,
+           360
+          ],
+          "__type": "VfxProbabilityTableData"
+         }
+        ],
+        "times": [
+         0
+        ],
+        "values": [
+         1
+        ],
+        "__type": "VfxAnimatedFloatVariableData"
+       },
+       "__type": "ValueFloat"
+      },
+      {
+       "constantValue": 1,
+       "dynamics": {
+        "probabilityTables": [
+         {
+          "keyTimes": [
+           0,
+           1
+          ],
+          "keyValues": [
+           0,
+           360
+          ],
+          "__type": "VfxProbabilityTableData"
+         }
+        ],
+        "times": [
+         0
+        ],
+        "values": [
+         1
+        ],
+        "__type": "VfxAnimatedFloatVariableData"
+       },
+       "__type": "ValueFloat"
+      }
+     ],
+     "emitRotationAxes": [
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ]
+     ],
+     "__type": "VfxShapeLegacy"
+    },
+    "birthVelocity": {
+     "c": [
+      3000,
+      1000,
+      3000
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       3000,
+       1000,
+       3000
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.20000000298023224,
+        1
+       ]
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.10000000149011612,
+        1
+       ]
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.20000000298023224,
+        1
+       ]
+      }
+     ]
+    },
+    "worldAcceleration": {
+     "integrated": true,
+     "c": [
+      0,
+      10,
+      0
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       0,
+       10,
+       0
+      ]
+     ]
+    },
+    "birthDrag": {
+     "c": [
+      5,
+      3,
+      5
+     ]
+    },
+    "birthScale": {
+     "c": [
+      20,
+      20,
+      10
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       20,
+       20,
+       10
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        1,
+        1
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      0.10000000149011612,
+      0.20000000298023224,
+      0.30000001192092896,
+      1
+     ],
+     "v": [
+      [
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       0
+      ],
+      [
+       2,
+       2,
+       2
+      ],
+      [
+       2,
+       1,
+       1
+      ],
+      [
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      90,
+      0,
+      90
+     ]
+    },
+    "birthRotationalVelocity": {
+     "c": [
+      400,
+      0,
+      0
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       400,
+       0,
+       0
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        -1,
+        1
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "isDirectionOriented": 1,
+    "color": {
+     "c": [
+      1,
+      0.7138780951499939,
+      0.2549019753932953,
+      1
+     ],
+     "t": [
+      0,
+      0.5,
+      1
+     ],
+     "v": [
+      [
+       0.9411764740943909,
+       0.6858828663825989,
+       0.2549019753932953,
+       0
+      ],
+      [
+       1,
+       0.7138780951499939,
+       0.2549019753932953,
+       1
+      ],
+      [
+       1,
+       0.7138780951499939,
+       0.2549019753932953,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_lilStar_4x2.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_lilstar_4x2.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/lilstar.webp"
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "pass": 50,
+     "depthBiasFactors": [
+      -1,
+      -6
+     ],
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "texDiv": [
+      4,
+      2
+     ],
+     "numFrames": 8,
+     "startFrame": 5,
+     "isRandomStartFrame": 1
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Shockwave_blend",
+    "index": 6,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/HealingStation_Wave01.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/HealingStation_Wave01.StrawberryRebuild.scb",
+    "emitterLifetime": 1,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 0.699999988079071
+    },
+    "particleLinger": 1,
+    "emitterLinger": 0.5,
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      80,
+      10,
+      80
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      1
+     ],
+     "v": [
+      [
+       0,
+       0.5,
+       0
+      ],
+      [
+       1,
+       1,
+       1
+      ]
+     ]
+    },
+    "isGroundLayer": 1,
+    "birthColor": {
+     "c": [
+      0.03317311406135559,
+      0.9965819716453552,
+      0.38593119382858276,
+      1
+     ]
+    },
+    "color": {
+     "t": [
+      0.10000000149011612,
+      0.16532033681869507,
+      0.35186493396759033,
+      0.693019449710846,
+      0.8999999761581421
+     ],
+     "v": [
+      [
+       1,
+       1,
+       1,
+       0
+      ],
+      [
+       1,
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       1,
+       1,
+       0.8392156958580017
+      ],
+      [
+       1,
+       1,
+       1,
+       0.4117647111415863
+      ],
+      [
+       1,
+       1,
+       1,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Healing_Shockwave.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healing_shockwave.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/shockwave.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Dots.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_dots.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/dots.webp"
+      },
+      "params": {
+       "uvScaleMult": {
+        "constantValue": [
+         200,
+         60
+        ],
+        "dynamics": {
+         "times": [
+          0,
+          1
+         ],
+         "values": [
+          [
+           120.00000762939453,
+           36
+          ],
+          [
+           200,
+           60
+          ]
+         ],
+         "__type": "VfxAnimatedVector2fVariableData"
+        },
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "pass": 2,
+     "miscRenderFlags": 1,
+     "texAddressModeBase": 2,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "texDiv": [
+      1,
+      0.6000000238418579
+     ],
+     "uvScale": {
+      "c": [
+       1,
+       0.699999988079071
+      ]
+     },
+     "birthUvOffset": {
+      "c": [
+       0,
+       -0.800000011920929
+      ]
+     },
+     "particleUvScrollRate": {
+      "integrated": true,
+      "c": [
+       0,
+       3
+      ],
+      "t": [
+       0,
+       0.06566604226827621,
+       0.09193246066570282,
+       0.27676549553871155,
+       0.44128113985061646,
+       0.689523458480835,
+       1
+      ],
+      "v": [
+       [
+        0,
+        3
+       ],
+       [
+        0,
+        3
+       ],
+       [
+        0,
+        3
+       ],
+       [
+        0,
+        1.561678171157837
+       ],
+       [
+        0,
+        0.638484001159668
+       ],
+       [
+        0,
+        0.18223023414611816
+       ],
+       [
+        0,
+        0
+       ]
+      ]
+     },
+     "uvScrollClamp": 1
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "useNavmeshMask"
+    ],
+    "extra": {
+     "useNavmeshMask": 1
+    }
+   },
+   {
+    "name": "Ground_Light_mesh",
+    "index": 7,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/Healing_Station_LightCylinder.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/Healing_Station_LightCylinder.StrawberryRebuild.scb",
+    "emitterLifetime": 2,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 0.4000000059604645
+    },
+    "particleLinger": 2,
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      1.2000000476837158,
+      1,
+      1.2000000476837158
+     ]
+    },
+    "scale": {
+     "t": [
+      0.019801979884505272,
+      0.6460000276565552
+     ],
+     "v": [
+      [
+       1,
+       0,
+       1
+      ],
+      [
+       1,
+       1,
+       1
+      ]
+     ]
+    },
+    "birthRotation": {
+     "c": [
+      0,
+      109,
+      0
+     ]
+    },
+    "particleIsLocalOrientation": 1,
+    "birthColor": {
+     "c": [
+      0.14999619126319885,
+      1,
+      0.7300068736076355,
+      0.4000000059604645
+     ]
+    },
+    "color": {
+     "t": [
+      0.011257035657763481,
+      0.05176278576254845,
+      0.4258347153663635,
+      0.6539960503578186,
+      1
+     ],
+     "v": [
+      [
+       1,
+       1,
+       1,
+       0
+      ],
+      [
+       1,
+       1,
+       1,
+       0.9803921580314636
+      ],
+      [
+       1,
+       1,
+       1,
+       0.4941176474094391
+      ],
+      [
+       1,
+       1,
+       1,
+       0.3686274588108063
+      ],
+      [
+       1,
+       1,
+       1,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_DecalLight01.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_decallight01.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/decal_light_01.webp"
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 500,
+     "disableBackfaceCull": true,
+     "texAddressModeBase": 2,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": {
+      "deltaIn": 20,
+      "__type": "VfxSoftParticleDefinitionData"
+     }
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "Filtering",
+     "softParticleParams"
+    ],
+    "extra": {
+     "Filtering": {
+      "spectatorPolicy": 1,
+      "__type": "VfxEmitterFiltering"
+     }
+    }
+   },
+   {
+    "name": "Ground_Light_mesh1",
+    "index": 8,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/Healing_Station_LightCylinder.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/Healing_Station_LightCylinder.StrawberryRebuild.scb",
+    "emitterLifetime": 2,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 0.4000000059604645
+    },
+    "particleLinger": 2,
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      1.2000000476837158,
+      1.5,
+      1.2000000476837158
+     ]
+    },
+    "scale": {
+     "t": [
+      0.019801979884505272,
+      0.6460000276565552
+     ],
+     "v": [
+      [
+       1,
+       0,
+       1
+      ],
+      [
+       1,
+       0.9800000190734863,
+       1
+      ]
+     ]
+    },
+    "birthRotation": {
+     "c": [
+      0,
+      109,
+      0
+     ]
+    },
+    "particleIsLocalOrientation": 1,
+    "color": {
+     "t": [
+      0,
+      0.2006421834230423,
+      0.34333959221839905,
+      0.6408283710479736,
+      1
+     ],
+     "v": [
+      [
+       1,
+       0.8480506539344788,
+       0.33792629837989807,
+       1
+      ],
+      [
+       0.999053955078125,
+       0.7868924736976624,
+       0.16757458448410034,
+       1
+      ],
+      [
+       0.1759517788887024,
+       1,
+       0.1259937435388565,
+       0.7450980544090271
+      ],
+      [
+       0.00938429869711399,
+       1,
+       0.16672007739543915,
+       0.21176470816135406
+      ],
+      [
+       0,
+       1,
+       0.5604943633079529,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_DecalLight01.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_decallight01.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/decal_light_01.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Scan_Lines.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_scan_lines.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/healingstation_scan_lines.webp"
+      },
+      "params": {
+       "ParticleIntegratedUvScrollMult": {
+        "constantValue": [
+         0,
+         1
+        ],
+        "dynamics": {
+         "times": [
+          0,
+          0.14821763336658478,
+          0.5534709095954895,
+          1
+         ],
+         "values": [
+          [
+           0,
+           1
+          ],
+          [
+           0,
+           0.5314741134643555
+          ],
+          [
+           0,
+           0.6000000238418579
+          ],
+          [
+           0,
+           0.800000011920929
+          ]
+         ],
+         "__type": "VfxAnimatedVector2fVariableData"
+        },
+        "__type": "IntegratedValueVector2"
+       },
+       "birthUVOffsetMult": {
+        "constantValue": [
+         0.8999999761581421,
+         0.8999999761581421
+        ],
+        "dynamics": {
+         "probabilityTables": [
+          {
+           "__type": "VfxProbabilityTableData"
+          },
+          {
+           "keyTimes": [
+            0,
+            1
+           ],
+           "keyValues": [
+            -1,
+            1
+           ],
+           "__type": "VfxProbabilityTableData"
+          }
+         ],
+         "times": [
+          0
+         ],
+         "values": [
+          [
+           0.8999999761581421,
+           0.8999999761581421
+          ]
+         ],
+         "__type": "VfxAnimatedVector2fVariableData"
+        },
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 510,
+     "disableBackfaceCull": true,
+     "texAddressModeBase": 2,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": {
+      "deltaIn": 20,
+      "__type": "VfxSoftParticleDefinitionData"
+     }
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "Filtering",
+     "softParticleParams"
+    ],
+    "extra": {
+     "Filtering": {
+      "spectatorPolicy": 1,
+      "__type": "VfxEmitterFiltering"
+     }
+    }
+   },
+   {
+    "name": "Shockwave_blend1",
+    "index": 9,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/HealingStation_Wave01.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/HealingStation_Wave01.StrawberryRebuild.scb",
+    "emitterLifetime": 1,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 2
+    },
+    "particleLinger": 1,
+    "emitterLinger": 0.5,
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      40,
+      10,
+      40
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      1
+     ],
+     "v": [
+      [
+       0.15000000596046448,
+       0.5,
+       0.15000000596046448
+      ],
+      [
+       1,
+       1,
+       1
+      ]
+     ]
+    },
+    "isGroundLayer": 1,
+    "birthColor": {
+     "c": [
+      0.03317311406135559,
+      0.9965819716453552,
+      0.38593119382858276,
+      1
+     ]
+    },
+    "color": {
+     "t": [
+      0.10000000149011612,
+      0.16532033681869507,
+      0.35186493396759033,
+      0.693019449710846,
+      0.8999999761581421
+     ],
+     "v": [
+      [
+       1,
+       1,
+       1,
+       0
+      ],
+      [
+       1,
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       1,
+       1,
+       0.8392156958580017
+      ],
+      [
+       1,
+       1,
+       1,
+       0.4117647111415863
+      ],
+      [
+       1,
+       1,
+       1,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Healing_Shockwave.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healing_shockwave.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/shockwave.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Dots.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_dots.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/dots.webp"
+      },
+      "params": {
+       "uvScaleMult": {
+        "constantValue": [
+         250,
+         60
+        ],
+        "dynamics": {
+         "times": [
+          0,
+          1
+         ],
+         "values": [
+          [
+           150,
+           36
+          ],
+          [
+           250,
+           60
+          ]
+         ],
+         "__type": "VfxAnimatedVector2fVariableData"
+        },
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "pass": 2,
+     "miscRenderFlags": 1,
+     "texAddressModeBase": 2,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "texDiv": [
+      1,
+      0.6000000238418579
+     ],
+     "uvScale": {
+      "c": [
+       1,
+       0.699999988079071
+      ]
+     },
+     "birthUvOffset": {
+      "c": [
+       0,
+       -0.800000011920929
+      ]
+     },
+     "particleUvScrollRate": {
+      "integrated": true,
+      "c": [
+       0,
+       1
+      ],
+      "t": [
+       0,
+       0.06566604226827621,
+       0.09193246066570282,
+       0.27676549553871155,
+       0.44128113985061646,
+       0.689523458480835,
+       1
+      ],
+      "v": [
+       [
+        0,
+        1
+       ],
+       [
+        0,
+        1
+       ],
+       [
+        0,
+        1
+       ],
+       [
+        0,
+        0.5205593705177307
+       ],
+       [
+        0,
+        0.21282799541950226
+       ],
+       [
+        0,
+        0.060743413865566254
+       ],
+       [
+        0,
+        0
+       ]
+      ]
+     },
+     "uvScrollClamp": 1
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "useNavmeshMask"
+    ],
+    "extra": {
+     "useNavmeshMask": 1
+    }
+   },
+   {
+    "name": "Beamdown",
+    "index": 10,
+    "emitterKind": "complex",
+    "primitive": "ray",
+    "primitiveRaw": {
+     "__type": "VfxPrimitiveRay"
+    },
+    "mesh": null,
+    "emitterLifetime": 0.5,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 0.20000000298023224
+    },
+    "particleLinger": 0.5,
+    "emitterPosition": {
+     "c": [
+      0,
+      -100,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthVelocity": {
+     "c": [
+      0,
+      -400,
+      0
+     ]
+    },
+    "birthScale": {
+     "c": [
+      500,
+      700,
+      500
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      0.10000000149011612,
+      1
+     ],
+     "v": [
+      [
+       0.30000001192092896,
+       1,
+       2
+      ],
+      [
+       1.5,
+       2,
+       1
+      ],
+      [
+       1.7000000476837158,
+       0.5,
+       1
+      ]
+     ]
+    },
+    "birthRotation": {
+     "c": [
+      -90,
+      0,
+      0
+     ]
+    },
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      1,
+      1,
+      1,
+      0.5000076293945312
+     ]
+    },
+    "color": {
+     "c": [
+      0.13914701342582703,
+      1,
+      0.610177755355835,
+      1
+     ],
+     "t": [
+      0,
+      0.10000000149011612,
+      0.699999988079071,
+      0.949999988079071
+     ],
+     "v": [
+      [
+       0.13914701342582703,
+       1,
+       0.610177755355835,
+       0
+      ],
+      [
+       0.13914701342582703,
+       1,
+       0.610177755355835,
+       1
+      ],
+      [
+       0.13914701342582703,
+       1,
+       0.610177755355835,
+       0.39000535011291504
+      ],
+      [
+       0.13914701342582703,
+       0.7490196228027344,
+       0.3230352997779846,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Base_GlowStar_02.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_base_glowstar_02.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/healingstation_base_glowstar_02.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Dots.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_dots.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/dots.webp"
+      },
+      "params": {
+       "uvScaleMult": {
+        "constantValue": [
+         15,
+         30
+        ],
+        "__type": "ValueVector2"
+       },
+       "ParticleIntegratedUvRotateMult": {
+        "dynamics": {
+         "times": [
+          0
+         ],
+         "values": [
+          0
+         ],
+         "__type": "VfxAnimatedFloatVariableData"
+        },
+        "__type": "IntegratedValueFloat"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "pass": 50,
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": {
+      "erosionDriveCurve": {
+       "constantValue": 0,
+       "dynamics": {
+        "times": [
+         0,
+         1
+        ],
+        "values": [
+         0,
+         0
+        ],
+        "__type": "VfxAnimatedFloatVariableData"
+       },
+       "__type": "ValueFloat"
+      },
+      "erosionMapName": "ASSETS/Maps/Particles/Strawberry/Seraphine_Skin43_P_Reveal.StrawberryRebuild.dds",
+      "erosionMapChannelMixer": {
+       "constantValue": [
+        1,
+        0,
+        0,
+        0
+       ],
+       "__type": "ValueColor"
+      },
+      "__type": "VfxAlphaErosionDefinitionData"
+     },
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "alphaErosionDefinition"
+    ],
+    "extra": {}
+   },
+   {
+    "name": "Beamdown1",
+    "index": 11,
+    "emitterKind": "complex",
+    "primitive": "ray",
+    "primitiveRaw": {
+     "__type": "VfxPrimitiveRay"
+    },
+    "mesh": null,
+    "emitterLifetime": 0.5,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 0.20000000298023224
+    },
+    "particleLinger": 0.5,
+    "emitterPosition": {
+     "c": [
+      0,
+      -100,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthVelocity": {
+     "c": [
+      0,
+      -400,
+      0
+     ]
+    },
+    "birthScale": {
+     "c": [
+      500,
+      700,
+      500
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      0.10000000149011612,
+      1
+     ],
+     "v": [
+      [
+       0.30000001192092896,
+       1,
+       2
+      ],
+      [
+       1.5,
+       2,
+       1
+      ],
+      [
+       1.7000000476837158,
+       0.5,
+       1
+      ]
+     ]
+    },
+    "birthRotation": {
+     "c": [
+      -90,
+      0,
+      0
+     ]
+    },
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1
+    },
+    "color": {
+     "c": [
+      0.11000228673219681,
+      0.6500037908554077,
+      0.31000229716300964,
+      0.6000000238418579
+     ],
+     "t": [
+      0,
+      0.10000000149011612,
+      0.699999988079071,
+      0.949999988079071
+     ],
+     "v": [
+      [
+       0.11000228673219681,
+       0.6500037908554077,
+       0.31000229716300964,
+       0
+      ],
+      [
+       0.11000228673219681,
+       0.6500037908554077,
+       0.31000229716300964,
+       0.6000000238418579
+      ],
+      [
+       0.11000228673219681,
+       0.6500037908554077,
+       0.31000229716300964,
+       0.2340032160282135
+      ],
+      [
+       0.11000228673219681,
+       0.4868656098842621,
+       0.16411887109279633,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Base_GlowStar_02.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_base_glowstar_02.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/healingstation_base_glowstar_02.webp"
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "pass": 50,
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Ring",
+    "index": 12,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/HealingStation_Swirl.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/HealingStation_Swirl.StrawberryRebuild.scb",
+    "emitterLifetime": 1,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 6
+    },
+    "particleLifetime": {
+     "c": 0.6000000238418579,
+     "t": [
+      0
+     ],
+     "v": [
+      0.6000000238418579
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.10000000149011612,
+        1
+       ]
+      }
+     ]
+    },
+    "particleLinger": 10.199999809265137,
+    "spawnShape": {
+     "emitOffset": [
+      0,
+      5,
+      0
+     ],
+     "__type": "{ee39916f}"
+    },
+    "birthVelocity": {
+     "c": [
+      0,
+      1500,
+      0
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       0,
+       1500,
+       0
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.5,
+        1.5
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "birthDrag": {
+     "c": [
+      0,
+      4,
+      0
+     ]
+    },
+    "birthScale": {
+     "c": [
+      1.7999999523162842,
+      1,
+      1.7999999523162842
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      1
+     ],
+     "v": [
+      [
+       1,
+       2,
+       1
+      ],
+      [
+       1.25,
+       1.25,
+       1.25
+      ]
+     ]
+    },
+    "birthRotation": {
+     "c": [
+      180,
+      0,
+      0
+     ]
+    },
+    "bindWeight": {
+     "c": 1
+    },
+    "color": {
+     "c": [
+      1,
+      1,
+      1,
+      0.7000076174736023
+     ],
+     "t": [
+      0.20000000298023224,
+      0.5,
+      0.75,
+      1
+     ],
+     "v": [
+      [
+       1,
+       0.7284046411514282,
+       0.26230257749557495,
+       0.7000076174736023
+      ],
+      [
+       0.9852902889251709,
+       0.9392538070678711,
+       0.21162737905979156,
+       0.7000076174736023
+      ],
+      [
+       0.18475623428821564,
+       1,
+       0.11000228673219681,
+       0.32941535115242004
+      ],
+      [
+       0.024414435029029846,
+       1,
+       0.660654604434967,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Circle_Mis.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_circle_mis.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/healingstation_circle_mis.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_trail_Dark.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_trail_dark.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/trail_dark.webp"
+      },
+      "params": {
+       "uvScaleMult": {
+        "constantValue": [
+         1,
+         4
+        ],
+        "__type": "ValueVector2"
+       },
+       "birthUvScrollRateMult": {
+        "constantValue": [
+         0,
+         -5
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "pass": 50,
+     "disableBackfaceCull": true,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "birthUvScrollRate": {
+      "c": [
+       -0.3499999940395355,
+       0
+      ]
+     }
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "FlexShapeDefinition"
+    ],
+    "extra": {
+     "FlexShapeDefinition": {
+      "scaleEmitOffsetByBoundObjectSize": 0.004999999888241291,
+      "__type": "VfxFlexShapeDefinitionData"
+     }
+    }
+   },
+   {
+    "name": "ShapeAround",
+    "index": 13,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/HealingStation_Shape_Music.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/HealingStation_Shape_Music.StrawberryRebuild.scb",
+    "emitterLifetime": 0.5,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 0.5
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      60,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      6,
+      10,
+      6
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      0.15000000596046448,
+      0.30000001192092896,
+      0.6000000238418579,
+      1
+     ],
+     "v": [
+      [
+       1,
+       0.5,
+       1
+      ],
+      [
+       1,
+       1.5,
+       1
+      ],
+      [
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       0.30000001192092896,
+       1
+      ],
+      [
+       1,
+       0,
+       1
+      ]
+     ]
+    },
+    "birthRotation": {
+     "c": [
+      0,
+      1,
+      0
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       0,
+       1,
+       0
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0,
+        360
+       ]
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0,
+        360
+       ]
+      }
+     ]
+    },
+    "rotation": {
+     "integrated": true,
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "birthRotationalVelocity": {
+     "c": [
+      0,
+      20,
+      0
+     ],
+     "t": [
+      0,
+      0.5
+     ],
+     "v": [
+      [
+       0,
+       20,
+       0
+      ],
+      [
+       0,
+       6,
+       0
+      ]
+     ]
+    },
+    "isRotationEnabled": 1,
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      0,
+      0.9900053143501282,
+      0.8495917916297913,
+      0.800000011920929
+     ]
+    },
+    "color": {
+     "t": [
+      0,
+      0.15000000596046448,
+      1
+     ],
+     "v": [
+      [
+       1,
+       0.9135423898696899,
+       0.5843137502670288,
+       0
+      ],
+      [
+       0.33904021978378296,
+       0.9510948061943054,
+       1,
+       1
+      ],
+      [
+       0,
+       1,
+       0.8354924917221069,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Music_aura.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/music_aura.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/music_aura.webp"
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "pass": 5,
+     "disableBackfaceCull": true,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": {
+      "deltaIn": 50,
+      "__type": "VfxSoftParticleDefinitionData"
+     }
+    },
+    "uv": {
+     "texDiv": [
+      4,
+      4
+     ],
+     "numFrames": 16,
+     "startFrame": 1,
+     "isRandomStartFrame": 1,
+     "uvScale": {
+      "c": [
+       2,
+       1
+      ]
+     }
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "softParticleParams"
+    ],
+    "extra": {}
+   },
+   {
+    "name": "flashBlend",
+    "index": 14,
+    "emitterKind": "complex",
+    "primitive": "billboard",
+    "primitiveRaw": null,
+    "mesh": null,
+    "emitterLifetime": 1,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 0.15000000596046448
+    },
+    "particleLinger": 1,
+    "emitterPosition": {
+     "c": [
+      0,
+      200,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      600,
+      250,
+      250
+     ]
+    },
+    "scale": {
+     "c": [
+      0.699999988079071,
+      1,
+      1
+     ],
+     "t": [
+      0,
+      0.5,
+      1
+     ],
+     "v": [
+      [
+       2.0999999046325684,
+       3,
+       3
+      ],
+      [
+       0.699999988079071,
+       1,
+       1
+      ],
+      [
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "isUniformScale": true,
+    "particleIsLocalOrientation": 1,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      1,
+      0.27843138575553894,
+      0.5921568870544434,
+      0.501960813999176
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_PointStarAdd.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_pointstaradd.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/healingstation_pointstaradd.webp"
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "pass": 180,
+     "depthBiasFactors": [
+      0,
+      -80
+     ],
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "STAR",
+    "index": 15,
+    "emitterKind": "complex",
+    "primitive": "billboard",
+    "primitiveRaw": null,
+    "mesh": null,
+    "emitterLifetime": 2,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 0.1599999964237213
+    },
+    "particleLinger": 0.1599999964237213,
+    "emitterPosition": {
+     "c": [
+      0,
+      200,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      400,
+      1,
+      0
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      0.30000001192092896,
+      1
+     ],
+     "v": [
+      [
+       1.5,
+       1.5,
+       1.5
+      ],
+      [
+       0.800000011920929,
+       0.800000011920929,
+       0.800000011920929
+      ],
+      [
+       0.20000000298023224,
+       0.20000000298023224,
+       0.20000000298023224
+      ]
+     ]
+    },
+    "isUniformScale": true,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      1,
+      0.8200045824050903,
+      0.3499961793422699,
+      0.800000011920929
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Star_1.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_star_1.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/star1.webp"
+     },
+     "textureMult": null,
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "pass": 150,
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "teamring_circle1",
+    "index": 16,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/HealingStation_Indicator.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/HealingStation_Indicator.StrawberryRebuild.scb",
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 5
+    },
+    "emitterPosition": {
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       0,
+       0,
+       0
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        1,
+        1
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      2,
+      0.10000000149011612,
+      2
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      1
+     ],
+     "v": [
+      [
+       1,
+       1,
+       1
+      ],
+      [
+       70,
+       1,
+       70
+      ]
+     ]
+    },
+    "birthRotation": {
+     "c": [
+      0,
+      0,
+      360
+     ]
+    },
+    "rotation": {
+     "integrated": true,
+     "c": [
+      0,
+      1,
+      0
+     ],
+     "t": [
+      0,
+      0.20000000298023224,
+      1
+     ],
+     "v": [
+      [
+       0,
+       5,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0.5,
+       0
+      ]
+     ]
+    },
+    "isRotationEnabled": 1,
+    "isLocalOrientation": 0,
+    "importance": 2,
+    "birthColor": {
+     "c": [
+      0,
+      0.880003035068512,
+      0.4000000059604645,
+      0.4000000059604645
+     ]
+    },
+    "color": {
+     "t": [
+      0,
+      0.10000000149011612,
+      0.25,
+      0.3499999940395355
+     ],
+     "v": [
+      [
+       1,
+       1,
+       1,
+       0
+      ],
+      [
+       1,
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       1,
+       1,
+       1
+      ],
+      [
+       0.09315633028745651,
+       0.24417486786842346,
+       0.14779888093471527,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation__Infernal_Smoke_Trail.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation__infernal_smoke_trail.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/healingstation__infernal_smoke_trail.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation__Infernal_Smoke_Trail.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation__infernal_smoke_trail.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/healingstation__infernal_smoke_trail.webp"
+      },
+      "params": {
+       "birthUvScrollRateMult": {
+        "constantValue": [
+         1,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "pass": 52,
+     "disableBackfaceCull": true,
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": {
+      "erosionDriveCurve": {
+       "dynamics": {
+        "times": [
+         0.5,
+         1
+        ],
+        "values": [
+         0,
+         1
+        ],
+        "__type": "VfxAnimatedFloatVariableData"
+       },
+       "__type": "ValueFloat"
+      },
+      "erosionMapName": "ASSETS/Maps/Particles/Strawberry/HealingStation_Trail_Mult.StrawberryRebuild.dds",
+      "erosionMapChannelMixer": {
+       "constantValue": [
+        1,
+        0,
+        0,
+        1
+       ],
+       "__type": "ValueColor"
+      },
+      "__type": "VfxAlphaErosionDefinitionData"
+     },
+     "softParticle": null
+    },
+    "uv": {
+     "uvScale": {
+      "c": [
+       3,
+       1
+      ]
+     },
+     "birthUvScrollRate": {
+      "c": [
+       -0.20000000298023224,
+       0
+      ]
+     }
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "alphaErosionDefinition",
+     "useNavmeshMask"
+    ],
+    "extra": {
+     "useNavmeshMask": 1
+    }
+   }
+  ],
+  "extra": {}
+ },
+ {
+  "schema": 1,
+  "id": "Strawberry_MapA_Fountain_Timer_Charge",
+  "category": "fountain",
+  "source": {
+   "file": "ref/14.14/data/maps/shipping/map33/map33.bin.json",
+   "key": "Maps/Shipping/Map33/Particles/Environment/Strawberry_MapA_Fountain_Timer_Charge",
+   "particleName": "Strawberry_MapA_Fountain_Timer_Charge",
+   "particlePath": "Maps/Shipping/Map33/Particles/Environment/Strawberry_MapA_Fountain_Timer_Charge",
+   "sha256": "187500865ba0526b7de6687508896c9a2dad37213369b4e531139c26c8412a9a",
+   "patch": "14.14"
+  },
+  "gameRefs": {
+   "fountain": true
+  },
+  "flags": 212,
+  "transform": null,
+  "soundOnCreate": null,
+  "soundPersistent": "Play_sfx_Strawberry_Fountain_timer_buffactivate",
+  "overrideScaleCap": 350,
+  "layers": [
+   {
+    "name": "sparklies1",
+    "index": 0,
+    "emitterKind": "complex",
+    "primitive": "billboard",
+    "primitiveRaw": null,
+    "mesh": null,
+    "emitterLifetime": 10,
+    "rate": {
+     "c": 40
+    },
+    "particleLifetime": {
+     "c": 2,
+     "t": [
+      0
+     ],
+     "v": [
+      2
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        0.8999999761581421,
+        1
+       ],
+       "v": [
+        0.5,
+        1,
+        1.5
+       ]
+      }
+     ]
+    },
+    "particleLinger": 1,
+    "emitterPosition": {
+     "c": [
+      0,
+      60,
+      0
+     ]
+    },
+    "spawnShape": {
+     "emitOffset": {
+      "constantValue": [
+       0,
+       0,
+       -850
+      ],
+      "dynamics": {
+       "probabilityTables": [
+        {
+         "__type": "VfxProbabilityTableData"
+        },
+        {
+         "__type": "VfxProbabilityTableData"
+        },
+        {
+         "keyTimes": [
+          0,
+          1
+         ],
+         "keyValues": [
+          0.8500000238418579,
+          1.100000023841858
+         ],
+         "__type": "VfxProbabilityTableData"
+        }
+       ],
+       "times": [
+        0
+       ],
+       "values": [
+        [
+         0,
+         0,
+         -850
+        ]
+       ],
+       "__type": "VfxAnimatedVector3fVariableData"
+      },
+      "__type": "ValueVector3"
+     },
+     "emitRotationAngles": [
+      {
+       "constantValue": -360,
+       "dynamics": {
+        "times": [
+         0,
+         1
+        ],
+        "values": [
+         0,
+         -360
+        ],
+        "__type": "VfxAnimatedFloatVariableData"
+       },
+       "__type": "ValueFloat"
+      }
+     ],
+     "emitRotationAxes": [
+      [
+       0,
+       1,
+       0
+      ]
+     ],
+     "__type": "VfxShapeLegacy"
+    },
+    "birthVelocity": {
+     "c": [
+      -5,
+      100,
+      0
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       -5,
+       100,
+       0
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0,
+        1
+       ]
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.20000000298023224,
+        1
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "birthScale": {
+     "c": [
+      50,
+      1,
+      1
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       50,
+       1,
+       1
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.699999988079071,
+        1
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      0.5,
+      1
+     ],
+     "v": [
+      [
+       0.699999988079071,
+       0,
+       0
+      ],
+      [
+       0.699999988079071,
+       1,
+       1
+      ],
+      [
+       0.699999988079071,
+       0,
+       0
+      ]
+     ]
+    },
+    "isUniformScale": true,
+    "isLocalOrientation": 0,
+    "particleIsLocalOrientation": 1,
+    "isGroundLayer": 1,
+    "color": {
+     "c": [
+      0.2549019753932953,
+      1,
+      0.5320820808410645,
+      1
+     ],
+     "t": [
+      0,
+      0.5,
+      1
+     ],
+     "v": [
+      [
+       0.23990772664546967,
+       0.9607843160629272,
+       0.5320820808410645,
+       0
+      ],
+      [
+       0.2549019753932953,
+       1,
+       0.5320820808410645,
+       1
+      ],
+      [
+       0.2549019753932953,
+       1,
+       0.5320820808410645,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_lilStar_4x2.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_lilstar_4x2.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/lilstar.webp"
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "pass": 50,
+     "depthBiasFactors": [
+      -1,
+      -6
+     ],
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "texDiv": [
+      4,
+      2
+     ],
+     "numFrames": 8,
+     "startFrame": 5,
+     "isRandomStartFrame": 1
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "background3",
+    "index": 1,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_02.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_02.StrawberryRebuild.scb",
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 11
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      5,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      92,
+      0.20000000298023224,
+      0.20000000298023224
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      0,
+      180,
+      0
+     ]
+    },
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      0,
+      0.41933318972587585,
+      0.21309223771095276,
+      0.800000011920929
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_White.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_white.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_06.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_06.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/base_timer_mult_06.webp"
+      },
+      "params": {
+       "texAddressModeMult": 2,
+       "uvScrollClampMult": 1,
+       "birthUvScrollRateMult": {
+        "constantValue": [
+         0.10400000214576721,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "birthUVOffsetMult": {
+        "constantValue": [
+         -1,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "alphaRef": 0,
+     "pass": 9,
+     "meshRenderFlags": 0,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "uvScale": {
+      "c": [
+       4,
+       1
+      ]
+     },
+     "uvScrollClamp": 1
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Noise_Mult",
+    "index": 2,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_02.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_02.StrawberryRebuild.scb",
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 11
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      5,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      92,
+      0.20000000298023224,
+      0.20000000298023224
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      0,
+      180,
+      0
+     ]
+    },
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      0.43999388813972473,
+      1,
+      0.8699931502342224,
+      0.20000000298023224
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/3026_Items_Noise_02.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/3026_items_noise_02.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/noise_02.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_06.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_06.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/base_timer_mult_06.webp"
+      },
+      "params": {
+       "texAddressModeMult": 2,
+       "uvScrollClampMult": 1,
+       "birthUvScrollRateMult": {
+        "constantValue": [
+         0.10400000214576721,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "birthUVOffsetMult": {
+        "constantValue": [
+         -1,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 25,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "uvScale": {
+      "c": [
+       8,
+       1
+      ]
+     },
+     "birthUvScrollRate": {
+      "c": [
+       0.20000000298023224,
+       0.10000000149011612
+      ]
+     }
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Decal",
+    "index": 3,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_02.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_02.StrawberryRebuild.scb",
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 11
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      5,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      92,
+      0.20000000298023224,
+      0.20000000298023224
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      0,
+      180,
+      0
+     ]
+    },
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      0.5300068855285645,
+      0.9900053143501282,
+      1,
+      0.3000076413154602
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Healing_Edge_08.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healing_edge_08.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/edge_08.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_06.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_06.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/base_timer_mult_06.webp"
+      },
+      "params": {
+       "texAddressModeMult": 2,
+       "uvScrollClampMult": 1,
+       "birthUvScrollRateMult": {
+        "constantValue": [
+         0.10400000214576721,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "birthUVOffsetMult": {
+        "constantValue": [
+         -1,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 20,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "uvScale": {
+      "c": [
+       14,
+       1
+      ]
+     },
+     "birthUvScrollRate": {
+      "c": [
+       0.07000000029802322,
+       0
+      ]
+     }
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Arrow_Start",
+    "index": 4,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_02.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_02.StrawberryRebuild.scb",
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 11
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      5,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      92,
+      0.20000000298023224,
+      0.20000000298023224
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      0,
+      180,
+      0
+     ]
+    },
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      0.22000457346439362,
+      0.9900053143501282,
+      0.6599984765052795,
+      0.6000000238418579
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_White.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_white.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_07.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_07.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/base_timer_mult_07.webp"
+      },
+      "params": {
+       "texAddressModeMult": 2,
+       "uvScrollClampMult": 1,
+       "birthUvScrollRateMult": {
+        "constantValue": [
+         0.10400000214576721,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "birthUVOffsetMult": {
+        "constantValue": [
+         -1,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 26,
+     "meshRenderFlags": 0,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "uvScrollClamp": 1
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Decal_Highlight",
+    "index": 5,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_02.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_02.StrawberryRebuild.scb",
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 11
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      5,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      92,
+      0.20000000298023224,
+      0.20000000298023224
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      0,
+      180,
+      0
+     ]
+    },
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      0.5300068855285645,
+      0.9900053143501282,
+      1,
+      0.20000000298023224
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Healing_Edge_06.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healing_edge_06.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/edge_06.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_08.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_08.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/base_timer_mult_08.webp"
+      },
+      "params": {
+       "texAddressModeMult": 2,
+       "uvScrollClampMult": 1,
+       "birthUvScrollRateMult": {
+        "constantValue": [
+         0.10400000214576721,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "birthUVOffsetMult": {
+        "constantValue": [
+         -1,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 21,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "uvScale": {
+      "c": [
+       16,
+       1
+      ]
+     },
+     "birthUvOffset": {
+      "c": [
+       0.5,
+       0
+      ]
+     },
+     "birthUvScrollRate": {
+      "c": [
+       0.09000000357627869,
+       0
+      ]
+     }
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Circle_Pattern",
+    "index": 6,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_02.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_02.StrawberryRebuild.scb",
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 11
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      5,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      92,
+      0.20000000298023224,
+      0.20000000298023224
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      0,
+      180,
+      0
+     ]
+    },
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      0.43999388813972473,
+      1,
+      0.8699931502342224,
+      0.3000076413154602
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Dots.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_dots.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/dots.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_09.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_09.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/base_timer_mult_09.webp"
+      },
+      "params": {
+       "texAddressModeMult": 2,
+       "uvScrollClampMult": 1,
+       "birthUvScrollRateMult": {
+        "constantValue": [
+         0.10400000214576721,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "birthUVOffsetMult": {
+        "constantValue": [
+         -1,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "alphaRef": 0,
+     "pass": 24,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "uvScale": {
+      "c": [
+       400,
+       9
+      ]
+     },
+     "uvScrollClamp": 1
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Decal2",
+    "index": 7,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_02.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_02.StrawberryRebuild.scb",
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 11
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      5,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      92,
+      0.20000000298023224,
+      0.20000000298023224
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      0,
+      180,
+      0
+     ]
+    },
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      0.5300068855285645,
+      1,
+      0.919996976852417,
+      0.4000000059604645
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Healing_Edge_09.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healing_edge_09.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/edge_09.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_06.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_06.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/base_timer_mult_06.webp"
+      },
+      "params": {
+       "texAddressModeMult": 2,
+       "uvScrollClampMult": 1,
+       "birthUvScrollRateMult": {
+        "constantValue": [
+         0.10400000214576721,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "birthUVOffsetMult": {
+        "constantValue": [
+         -1,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 20,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "uvScale": {
+      "c": [
+       4,
+       1
+      ]
+     }
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Decal3",
+    "index": 8,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_02.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_02.StrawberryRebuild.scb",
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 11
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      5,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      92,
+      0.20000000298023224,
+      0.20000000298023224
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      0,
+      180,
+      0
+     ]
+    },
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      0.5300068855285645,
+      0.9900053143501282,
+      1,
+      0.3000076413154602
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Healing_Edge_06.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healing_edge_06.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/edge_06.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_06.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_06.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/base_timer_mult_06.webp"
+      },
+      "params": {
+       "texAddressModeMult": 2,
+       "uvScrollClampMult": 1,
+       "birthUvScrollRateMult": {
+        "constantValue": [
+         0.10400000214576721,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "birthUVOffsetMult": {
+        "constantValue": [
+         -1,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 20,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "uvScale": {
+      "c": [
+       16,
+       1
+      ]
+     },
+     "birthUvOffset": {
+      "c": [
+       0.5,
+       0
+      ]
+     },
+     "birthUvScrollRate": {
+      "c": [
+       0.09000000357627869,
+       0
+      ]
+     }
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Decal_Start1",
+    "index": 9,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_Start_01.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_Start_01.StrawberryRebuild.scb",
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 11
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      5,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      92,
+      0.20000000298023224,
+      0.20000000298023224
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      0,
+      178.8000030517578,
+      0
+     ]
+    },
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      0.5300068855285645,
+      0.9900053143501282,
+      1,
+      0.6000000238418579
+     ]
+    },
+    "color": {
+     "t": [
+      0.8999999761581421,
+      0.9300000071525574
+     ],
+     "v": [
+      [
+       1,
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       1,
+       1,
+       1
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Healing_Edge_Start_01.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healing_edge_start_01.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/edge_start_01.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_05.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_05.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/base_timer_mult_05.webp"
+      },
+      "params": {
+       "texAddressModeMult": 2,
+       "uvScrollClampMult": 1,
+       "birthUvScrollRateMult": {
+        "constantValue": [
+         2,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "birthUVOffsetMult": {
+        "constantValue": [
+         -1,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 31,
+     "textureFlipU": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Decal_Start2",
+    "index": 10,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_Start_01.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/HealingStation_Mesh_Timer_Start_01.StrawberryRebuild.scb",
+    "isSingleParticle": true,
+    "rate": {
+     "c": 2
+    },
+    "particleLifetime": {
+     "c": 11
+    },
+    "emitterPosition": {
+     "c": [
+      0,
+      5,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      92,
+      0.20000000298023224,
+      0.20000000298023224
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      0,
+      178.8000030517578,
+      0
+     ]
+    },
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1
+    },
+    "birthColor": {
+     "c": [
+      0,
+      0.42000457644462585,
+      0.20999465882778168,
+      1
+     ]
+    },
+    "color": {
+     "t": [
+      0.8999999761581421,
+      0.9300000071525574
+     ],
+     "v": [
+      [
+       1,
+       1,
+       1,
+       1
+      ],
+      [
+       1,
+       1,
+       1,
+       1
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Healing_Edge_Start_01.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healing_edge_start_01.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/edge_start_01.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/Base_Timer_Mult_05.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/base_timer_mult_05.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/base_timer_mult_05.webp"
+      },
+      "params": {
+       "texAddressModeMult": 2,
+       "uvScrollClampMult": 1,
+       "birthUvScrollRateMult": {
+        "constantValue": [
+         2,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "birthUVOffsetMult": {
+        "constantValue": [
+         -1,
+         0
+        ],
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "alphaRef": 0,
+     "pass": 30,
+     "textureFlipU": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   }
+  ],
+  "extra": {}
+ },
+ {
+  "schema": 1,
+  "id": "Strawberry_MapA_Foutain_Idle_OnCD",
+  "category": "fountain",
+  "source": {
+   "file": "ref/14.14/data/maps/shipping/map33/map33.bin.json",
+   "key": "Maps/Shipping/Map33/Particles/Environment/Strawberry_MapA_Foutain_Idle_OnCD",
+   "particleName": "Strawberry_MapA_Foutain_Idle_OnCD",
+   "particlePath": "Maps/Shipping/Map33/Particles/Environment/Strawberry_MapA_Foutain_Idle_OnCD",
+   "sha256": "bafe2390f0f241a6eb8821af677342587bd091a328e74e8b608b4b0efa3fb5b6",
+   "patch": "14.14"
+  },
+  "gameRefs": {
+   "fountain": true
+  },
+  "flags": 197,
+  "visibilityRadius": 25000,
+  "transform": null,
+  "soundOnCreate": null,
+  "soundPersistent": null,
+  "layers": [
+   {
+    "name": "Basic",
+    "index": 0,
+    "emitterKind": "complex",
+    "primitive": "quad",
+    "primitiveRaw": {
+     "__type": "VfxPrimitiveArbitraryQuad"
+    },
+    "mesh": null,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "particleLinger": 11,
+    "emitterPosition": {
+     "c": [
+      0,
+      72,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      430,
+      1,
+      1
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      90,
+      0,
+      0
+     ]
+    },
+    "birthColor": {
+     "c": [
+      0.062745101749897,
+      0.16078431904315948,
+      0.24705882370471954,
+      1
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingFountain_SharpCircle.StrawberryRebuild.tex",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/strawberry_map1_healingfountain_sharpcircle.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/sharp_circle.webp"
+     },
+     "textureMult": null,
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "alphaRef": 0,
+     "pass": -1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Edge3",
+    "index": 1,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "AlignPitchToCamera": true,
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+    "emitterLifetime": 1,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "particleLinger": 11,
+    "emitterPosition": {
+     "c": [
+      0,
+      350,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      0.9800000190734863,
+      1,
+      1
+     ]
+    },
+    "isUniformScale": true,
+    "birthColor": {
+     "c": [
+      0.0470588244497776,
+      0.13725490868091583,
+      0.16470588743686676,
+      1
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_White.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_white.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_HexTile.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_hextile.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/hextile.webp"
+      },
+      "params": {
+       "uvScaleMult": {
+        "constantValue": [
+         3.5,
+         1.75
+        ],
+        "__type": "ValueVector2"
+       },
+       "ParticleIntegratedUvScrollMult": {
+        "dynamics": {
+         "times": [
+          0
+         ],
+         "values": [
+          [
+           0,
+           0
+          ]
+         ],
+         "__type": "VfxAnimatedVector2fVariableData"
+        },
+        "__type": "IntegratedValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "alphaRef": 0,
+     "pass": 39,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Edge4",
+    "index": 2,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "AlignPitchToCamera": true,
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+    "emitterLifetime": 1,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "particleLinger": 11,
+    "emitterPosition": {
+     "c": [
+      0,
+      350,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "isUniformScale": true,
+    "birthColor": {
+     "c": [
+      0.18039216101169586,
+      0.30588236451148987,
+      0.42352941632270813,
+      1
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_White.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_white.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_HexTile_Inverted.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_hextile_inverted.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/hextile_inv.webp"
+      },
+      "params": {
+       "uvScaleMult": {
+        "constantValue": [
+         3.5,
+         1.75
+        ],
+        "__type": "ValueVector2"
+       },
+       "ParticleIntegratedUvScrollMult": {
+        "dynamics": {
+         "times": [
+          0
+         ],
+         "values": [
+          [
+           0,
+           0
+          ]
+         ],
+         "__type": "VfxAnimatedVector2fVariableData"
+        },
+        "__type": "IntegratedValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 40,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Edge5",
+    "index": 3,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+    "emitterLifetime": 1,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "particleLinger": 11,
+    "emitterPosition": {
+     "c": [
+      0,
+      350,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "isUniformScale": true,
+    "birthColor": {
+     "c": [
+      0.0235294122248888,
+      0.2078431397676468,
+      0.24705882370471954,
+      1
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_White.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_white.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": null,
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "alphaRef": 0,
+     "pass": 37,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Edge6",
+    "index": 4,
+    "emitterKind": "complex",
+    "primitive": "mesh",
+    "primitiveRaw": {
+     "mMesh": {
+      "mSimpleMeshName": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+      "__type": "VfxMeshDefinitionData"
+     },
+     "__type": "VfxPrimitiveMesh"
+    },
+    "mesh": "ASSETS/Maps/Particles/Strawberry/Strawberry_Map1_HealingWell_CenterSphere.StrawberryRebuild.scb",
+    "emitterLifetime": 1,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "particleLinger": 11,
+    "emitterPosition": {
+     "c": [
+      0,
+      350,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "isUniformScale": true,
+    "birthColor": {
+     "c": [
+      0,
+      0,
+      0,
+      0.6000000238418579
+     ]
+    },
+    "color": {
+     "c": [
+      0,
+      1,
+      0.9293354749679565,
+      1
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_White.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_white.strawberryrebuild.png",
+      "project": null
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 41,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "reflectionDefinition"
+    ],
+    "extra": {
+     "reflectionDefinition": {
+      "reflectionFresnelColor": [
+       0.5906614661216736,
+       0.8569619059562683,
+       0.8302891850471497,
+       1
+      ],
+      "fresnel": 0.20000000298023224,
+      "fresnelColor": [
+       0,
+       0.764171838760376,
+       1,
+       0
+      ],
+      "__type": "VfxReflectionDefinitionData"
+     }
+    }
+   },
+   {
+    "name": "Basic2",
+    "index": 5,
+    "emitterKind": "complex",
+    "primitive": "billboard",
+    "primitiveRaw": null,
+    "mesh": null,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "particleLinger": 11,
+    "emitterPosition": {
+     "c": [
+      0,
+      350,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      310,
+      1,
+      1
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      90,
+      0,
+      0
+     ]
+    },
+    "birthColor": {
+     "c": [
+      0.06666667014360428,
+      0.42352941632270813,
+      0.5333333611488342,
+      0.7019608020782471
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Glow_Ring.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_glow_ring.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/glow_ring.webp"
+     },
+     "textureMult": null,
+     "blend": "alpha",
+     "blendModeRiot": 1,
+     "alphaRef": 0,
+     "pass": 41,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "Basic3",
+    "index": 6,
+    "emitterKind": "complex",
+    "primitive": "billboard",
+    "primitiveRaw": null,
+    "mesh": null,
+    "isSingleParticle": true,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": -1
+    },
+    "particleLinger": 11,
+    "emitterPosition": {
+     "c": [
+      0,
+      380,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      300,
+      1,
+      1
+     ]
+    },
+    "scale": {
+     "c": [
+      0.8999999761581421,
+      1,
+      1
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      90,
+      0,
+      0
+     ]
+    },
+    "birthColor": {
+     "c": [
+      0.239215686917305,
+      0.4588235318660736,
+      0.8117647171020508,
+      1
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Base_Glow.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_base_glow.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/base_glow.webp"
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 38,
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": null,
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [],
+    "extra": {}
+   },
+   {
+    "name": "outer_graphic",
+    "index": 7,
+    "emitterKind": "complex",
+    "primitive": "quad",
+    "primitiveRaw": {
+     "__type": "VfxPrimitiveArbitraryQuad"
+    },
+    "mesh": null,
+    "rate": {
+     "c": 1
+    },
+    "particleLifetime": {
+     "c": 2
+    },
+    "emitterLinger": 10,
+    "emitterPosition": {
+     "c": [
+      0,
+      90,
+      0
+     ]
+    },
+    "spawnShape": null,
+    "birthScale": {
+     "c": [
+      500,
+      460,
+      460
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      1
+     ],
+     "v": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "isUniformScale": true,
+    "birthRotation": {
+     "c": [
+      90,
+      0,
+      0
+     ]
+    },
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1
+    },
+    "importance": 2,
+    "color": {
+     "t": [
+      0,
+      0.4000000059604645,
+      1
+     ],
+     "v": [
+      [
+       0.0158083476126194,
+       0.6554055213928223,
+       0.9836728572845459,
+       0
+      ],
+      [
+       0.01744106225669384,
+       0.9987030029296875,
+       0.5193560719490051,
+       1
+      ],
+      [
+       0.01438925787806511,
+       1,
+       0.18129244446754456,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Glow_Ring.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_glow_ring.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/glow_ring.webp"
+     },
+     "textureMult": {
+      "texture": {
+       "path": "ASSETS/Maps/Particles/Strawberry/HealingStation_Dots.StrawberryRebuild.dds",
+       "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/healingstation_dots.strawberryrebuild.png",
+       "project": "public/assets/map1/vfx/dots.webp"
+      },
+      "params": {
+       "uvScaleMult": {
+        "constantValue": [
+         40,
+         40
+        ],
+        "dynamics": {
+         "times": [
+          0,
+          1
+         ],
+         "values": [
+          [
+           48,
+           48
+          ],
+          [
+           20,
+           20
+          ]
+         ],
+         "__type": "VfxAnimatedVector2fVariableData"
+        },
+        "__type": "ValueVector2"
+       },
+       "__type": "VfxTextureMultDefinitionData"
+      }
+     },
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 10,
+     "colorTexture": null,
+     "colorLookUp": {
+      "typeY": 2,
+      "scales": [
+       1,
+       0.10000000149011612
+      ],
+      "offsets": [
+       0,
+       0.8999999761581421
+      ]
+     },
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {},
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "colorLookUpTypeY",
+     "colorLookUpScales",
+     "colorLookUpOffsets"
+    ],
+    "extra": {}
+   },
+   {
+    "name": "healspark",
+    "index": 8,
+    "emitterKind": "complex",
+    "primitive": "billboard",
+    "primitiveRaw": null,
+    "mesh": null,
+    "rate": {
+     "c": 10
+    },
+    "particleLifetime": {
+     "c": 2,
+     "t": [
+      0
+     ],
+     "v": [
+      2
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.5,
+        1
+       ]
+      }
+     ]
+    },
+    "particleLinger": 1,
+    "emitterPosition": {
+     "c": [
+      0,
+      100,
+      0
+     ]
+    },
+    "spawnShape": {
+     "radius": 270,
+     "__type": "VfxShapeCylinder"
+    },
+    "birthVelocity": {
+     "c": [
+      0,
+      400,
+      0
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       0,
+       400,
+       0
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.5,
+        1
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "birthDrag": {
+     "c": [
+      0,
+      1.5,
+      0
+     ]
+    },
+    "birthScale": {
+     "c": [
+      20,
+      1,
+      1
+     ],
+     "t": [
+      0
+     ],
+     "v": [
+      [
+       20,
+       1,
+       1
+      ]
+     ],
+     "rnd": [
+      {
+       "t": [
+        0,
+        1
+       ],
+       "v": [
+        0.20000000298023224,
+        1
+       ]
+      },
+      {
+       "t": [],
+       "v": []
+      },
+      {
+       "t": [],
+       "v": []
+      }
+     ]
+    },
+    "scale": {
+     "t": [
+      0,
+      0.06728971749544144,
+      0.30000001192092896,
+      0.6654205918312073,
+      1
+     ],
+     "v": [
+      [
+       0,
+       0,
+       0
+      ],
+      [
+       0.7944444417953491,
+       0.15000000596046448,
+       0.8833333253860474
+      ],
+      [
+       1,
+       1,
+       1
+      ],
+      [
+       0.6166666746139526,
+       0.15000000596046448,
+       0.7611111402511597
+      ],
+      [
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "isUniformScale": true,
+    "isLocalOrientation": 0,
+    "bindWeight": {
+     "c": 1
+    },
+    "color": {
+     "t": [
+      0,
+      0.20000000298023224,
+      0.5,
+      1
+     ],
+     "v": [
+      [
+       0.0017547875177115202,
+       0.5116807818412781,
+       0.9986724853515625,
+       0
+      ],
+      [
+       0,
+       1,
+       0.8283360004425049,
+       1
+      ],
+      [
+       0.00238040741533041,
+       0.9945067763328552,
+       0.5082017183303833,
+       1
+      ],
+      [
+       0,
+       0.9859006404876709,
+       0.14903487265110016,
+       0
+      ]
+     ]
+    },
+    "material": {
+     "texture": {
+      "path": "ASSETS/Maps/Particles/Strawberry/Particles_Hex_Plus.StrawberryRebuild.dds",
+      "cdragonPng": "https://raw.communitydragon.org/14.14/game/assets/maps/particles/strawberry/particles_hex_plus.strawberryrebuild.png",
+      "project": "public/assets/map1/vfx/hex_plus.webp"
+     },
+     "textureMult": null,
+     "blend": "additive",
+     "blendModeRiot": 4,
+     "alphaRef": 0,
+     "pass": 10,
+     "miscRenderFlags": 1,
+     "colorTexture": null,
+     "colorLookUp": {
+      "typeY": 3
+     },
+     "palette": null,
+     "alphaErosion": null,
+     "softParticle": null
+    },
+    "uv": {
+     "texDiv": [
+      2,
+      2
+     ],
+     "numFrames": 4,
+     "isRandomStartFrame": 1
+    },
+    "children": null,
+    "fields": null,
+    "unsupported": [
+     "colorLookUpTypeY"
+    ],
+    "extra": {}
+   }
+  ],
+  "extra": {}
+ }
+]

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import type { Game } from '../sim/game';
 import { getTexture, loadScbGeo, type TextureOpts } from './assets';
+import { StarStrikeVfx } from './starstrike_vfx';
 
 function mkCrossedPlaneGeo(w: number, l: number): THREE.BufferGeometry {
   // 两片均沿 Z 轴延展且贴图前端朝 +Z 飞行方向（一片水平 XZ，一片竖直 YZ）
@@ -48,13 +49,6 @@ function mkInst(root: THREE.Group, geo: THREE.BufferGeometry, mat: THREE.Materia
 const D = new THREE.Object3D();
 const WHITE = new THREE.Color(1, 1, 1);
 
-interface SkyBeam {
-  group: THREE.Group;
-  age: number;
-  life: number;
-  active: boolean;
-}
-
 interface BurstItem {
   mesh: THREE.Mesh;
   age: number;
@@ -72,7 +66,7 @@ interface BurstItem {
  * - UwU / 十字弩 / 回旋刃 / 旋风切割器（官方武器贴图）
  * - 耀光力场（3D hr_outline.json + hr_fire.json + 滚动 hr_noise.png）
  * - 斯塔缇克闪电链（0.72m 宽幅官方闪电光带）
- * - 战兔巨爆（star_target 准星 + 13m 垂直激光柱 + star_burst 3D 爆裂 + star_crack 地裂）
+ * - 战兔巨爆（Q-30：原版 StarStrike 落点 4 层 + 爆炸 9 层，见 starstrike_vfx.ts）
  * - 冰爆护甲（3D frost_ring.json + frost_crack 地裂 + frost_shield 进化冰盾）
  */
 export class WeaponVfxRenderer {
@@ -110,18 +104,14 @@ export class WeaponVfxRenderer {
   private boltPool: THREE.Mesh[] = [];
   private boltGeo: THREE.BufferGeometry;
 
-  // 战兔巨爆地面准星池 & 雷暴电圈池
-  private starTargets: THREE.InstancedMesh;
+  // 雷暴电圈池；战兔巨爆（Q-30）改由 StarStrikeVfx 绘制
   private stormRings: THREE.InstancedMesh;
-  private skyBeams: SkyBeam[] = [];
+  private starStrike: StarStrikeVfx;
   private vfxBursts: BurstItem[] = [];
 
-  private geoStarBurst: THREE.BufferGeometry | null = null;
   private geoFrostRing: THREE.BufferGeometry | null = null;
   private unitFlatGeo: THREE.BufferGeometry;
-  private texStarCrack: THREE.Texture;
   private texFrostCrack: THREE.Texture;
-  private texStarInner: THREE.Texture;
   private texFrostTile: THREE.Texture;
 
   constructor(parent: THREE.Group) {
@@ -241,57 +231,25 @@ export class WeaponVfxRenderer {
       this.boltPool.push(m);
     }
 
-    // 6. 战兔巨爆地面准星（star_target.webp）& 电刀雷暴圆形电环（circle_mis.webp）
-    const starTargetTex = loadTex('./assets/weapons/vfx/star_target.webp');
-    // QC-15: 战兔巨爆 = StarStrike，非 Nuke；保留原有视觉基线，待独立逐层重建。
-    this.starTargets = mkInst(this.root, mkFlatGeo(2.0, 2.0), mkAdd(starTargetTex, 0x72f8ff, 0.9), 24, 6);
-
+    // 6. 雷暴圆形电环（circle_mis.webp）；战兔巨爆（Q-30）：原版 StarStrike 落点 4 层 + 爆炸 9 层
     const stormTex = loadTex('./assets/heroes/jinx/vfx/circle_mis.webp');
     this.stormRings = mkInst(this.root, mkFlatGeo(1.0, 1.0), mkAdd(stormTex, 0x45f2ff, 0.58), 24, 6);
-
-    // 7. 战兔巨爆 13m 垂直通天激光柱池（12 个）
-    const beamCoreTex = loadTex('./assets/weapons/vfx/star_beam_core.webp');
-    const beamCenterTex = loadTex('./assets/weapons/vfx/star_beam_center.webp');
-    const bPlane = new THREE.PlaneGeometry(1.8, 14.0);
-    bPlane.translate(0, 7.0, 0);
-    const bMat1 = mkAdd(beamCoreTex, 0x8ef9ff, 0.95);
-    const bMat2 = mkAdd(beamCenterTex, 0xffe485, 0.9);
-    for (let i = 0; i < 12; i++) {
-      const g = new THREE.Group();
-      const pA = new THREE.Mesh(bPlane, bMat1);
-      const pB = new THREE.Mesh(bPlane, bMat1);
-      pB.rotation.y = Math.PI / 2;
-      const pC = new THREE.Mesh(bPlane, bMat2);
-      pC.scale.set(0.65, 1, 1);
-      const pD = new THREE.Mesh(bPlane, bMat2);
-      pD.rotation.y = Math.PI / 2;
-      pD.scale.set(0.65, 1, 1);
-      g.add(pA, pB, pC, pD);
-      g.visible = false;
-      g.renderOrder = 16;
-      this.root.add(g);
-      this.skyBeams.push({ group: g, age: 0, life: 0.42, active: false });
-    }
+    this.starStrike = new StarStrikeVfx(this.root);
 
     // 8. 通用炸裂贴花 / 3D SCB 池（星爆裂纹、冰爆环等）
     this.unitFlatGeo = mkFlatGeo(2.0, 2.0);
-    this.texStarCrack = loadTex('./assets/weapons/vfx/star_crack.webp');
     this.texFrostCrack = loadTex('./assets/weapons/vfx/frost_crack.webp');
-    this.texStarInner = loadTex('./assets/heroes/jinx/vfx/e_erosion.webp');
     this.texFrostTile = loadTex('./assets/weapons/vfx/frost_tile.webp');
 
     const dummy = new THREE.BufferGeometry();
     for (let i = 0; i < 24; i++) {
-      const m = new THREE.Mesh(dummy, mkAdd(this.texStarCrack, 0xffffff, 0.9));
+      const m = new THREE.Mesh(dummy, mkAdd(this.texFrostCrack, 0xffffff, 0.9));
       m.visible = false;
       m.renderOrder = 11;
       this.root.add(m);
       this.vfxBursts.push({ mesh: m, age: 0, life: 0.5, s0: 1, s1: 2, maxOp: 0.9, active: false });
     }
 
-    loadScbGeo('./assets/weapons/vfx/star_burst.json').then((geo) => {
-      this.geoStarBurst = geo;
-    }).catch(() => {});
     loadScbGeo('./assets/weapons/vfx/frost_ring.json').then((geo) => {
       this.geoFrostRing = geo;
     }).catch(() => {});
@@ -324,18 +282,9 @@ export class WeaponVfxRenderer {
     mat.needsUpdate = true;
   }
 
+  /** 战兔巨爆爆炸（Q-30：原版 StarStrike_Karthus_Explosion 9 层，普通 / 进化共用） */
   spawnOrbitalBeam(x: number, z: number, radius: number) {
-    const b = this.skyBeams.find((v) => !v.active);
-    if (b) {
-      b.active = true;
-      b.age = 0;
-      b.life = 0.42;
-      b.group.visible = true;
-      b.group.position.set(x, 0, z);
-      b.group.scale.set(radius * 0.68, 1, radius * 0.68);
-    }
-    this.allocBurst(this.geoStarBurst, x, 0.1, z, this.texStarInner, 0x8ef9ff, radius * 0.004, radius / 104.7, 0.36, 0.9, true, 12);
-    this.allocBurst(this.unitFlatGeo, x, 0.03, z, this.texStarCrack, 0xb8f8ff, radius * 0.72, radius * 1.0, 0.75, 0.34, false, 3);
+    this.starStrike.spawnExplosion(x, z, radius);
   }
 
   spawnIceBlast(x: number, z: number, radius: number) {
@@ -478,16 +427,10 @@ export class WeaponVfxRenderer {
       (m.material as THREE.MeshBasicMaterial).opacity = Math.max(0, 1 - a.age / a.life);
     }
 
-    // 6. 战兔巨爆准星 & 雷暴电圈（彻底与地雷橙环分离）
-    let stIdx = 0, srIdx = 0;
+    // 6. 雷暴电圈；战兔巨爆落点 + 爆炸（Q-30）
+    let srIdx = 0;
     for (const z of g.weaponZones) {
-      if (z.kind === 'orbital_strike' && !z.resolved && stIdx < this.starTargets.instanceMatrix.count) {
-        D.position.set(z.x, 0.06, z.z);
-        D.rotation.set(0, t * 2.5, 0);
-        D.scale.setScalar(z.r * 0.95);
-        D.updateMatrix();
-        this.starTargets.setMatrixAt(stIdx++, D.matrix);
-      } else if (z.kind === 'storm' && srIdx < this.stormRings.instanceMatrix.count) {
+      if (z.kind === 'storm' && srIdx < this.stormRings.instanceMatrix.count) {
         D.position.set(z.x, 0.06, z.z);
         D.rotation.set(0, -t * 3.0, 0);
         D.scale.setScalar(z.r);
@@ -495,21 +438,10 @@ export class WeaponVfxRenderer {
         this.stormRings.setMatrixAt(srIdx++, D.matrix);
       }
     }
-    this.starTargets.count = stIdx; this.starTargets.instanceMatrix.needsUpdate = true;
     this.stormRings.count = srIdx; this.stormRings.instanceMatrix.needsUpdate = true;
+    this.starStrike.update(g, dt);
 
-    // 7. 激光柱 & 炸裂寿命更新
-    for (const b of this.skyBeams) {
-      if (!b.active) continue;
-      b.age += dt;
-      if (b.age >= b.life) { b.active = false; b.group.visible = false; continue; }
-      const k = b.age / b.life;
-      const shrink = 1 - k * 0.65;
-      b.group.scale.x = shrink * 1.4;
-      b.group.scale.z = shrink * 1.4;
-      b.group.rotation.y += dt * 4;
-    }
-
+    // 7. 炸裂寿命更新（冰爆）
     for (const b of this.vfxBursts) {
       if (!b.active) continue;
       b.age += dt;

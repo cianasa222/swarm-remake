@@ -154,9 +154,9 @@ export class VfxRenderer {
           this.spawnParticles(ev.x, 0.6, ev.z, count(28), 9, 0.5, 0xa8fcff);
           this.addShake(0.2);
         } else if (ev.kind === 'orbital') {
+          // Q-30：原版 StarStrike 爆炸 9 层（含青色碎片 StarS_Bits）全部由 StarStrikeVfx 绘制；
+          // 去掉旧的通用青色冲击环和黄色粒子（原版没有这两层）。镜头震动保持原样。
           this.weaponVfx?.spawnOrbitalBeam(ev.x, ev.z, ev.r);
-          this.spawnRing(ev.x, ev.z, ev.r, 0.32, 0x8ef9ff);
-          this.spawnParticles(ev.x, 0.7, ev.z, count(20), 8, 0.36, 0xffe46b);
           this.addShake(0.18);
         } else if (ev.kind === 'radiant') {
           this.spawnRing(ev.x, ev.z, ev.r, 0.26, 0xff5a22);
