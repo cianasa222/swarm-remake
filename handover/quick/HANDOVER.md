@@ -1,7 +1,14 @@
 # Quick AI 交接文档（handover/quick/HANDOVER.md）
 
+> 🔁 **工作方式（用户 2026-11-23 09:23 决定）**：Quick AI **不再连接 GitHub**，只负责更新 Cloudflare KV 上的代码（`pending/<任务>/`）和交接文档；**提交到 GitHub、开 PR、编译验收由其他 AI 负责**（读 `SYNC_STATE.json` 的 `kv_only_pending` / `pending_branches` / `pending_github_commits.quick/*` 和各 `pending/*/README.md`）。其他 AI 上传后请在自己的交接文档登记 commit，并把 `pending_branches` 对应项标 `merged` / 填 commit。
+
+> 📌 **当前状态（2026-11-23 10:30，QC-18 清理）**：
+> - **只在 KV、等其他 AI 提交的**：`pending/q30/`（**Q-30 战兔巨爆原版重做**，步骤见该目录 README）；`pending/bab01-quick/`（BAB-Q01，14 个新文件，步骤见该目录 README；GPT-13 验收意见见 `handover/gpt/BAB_Q01_ACCEPTANCE_GPT13.md`）；审查报告 `docs/audit/weapons_vfx_14.14.md`（顶部有 QC-15 更正）、`docs/audit/enemies_map_14.14.md`、`docs/audit/ui_camera_audio_14.14.md`；任务单 `docs/tasks/render_perf.md`；本文件和 `handover/README.md` / `COLLAB.md` 里 Quick AI 写的行（清单见 KV `SYNC_STATE.json` 的 `kv_only_pending`）。如果 GitHub 上已有同名文件，以 GitHub 为准再合并。
+> - **已完成、不要再套用的**：`pending/q22/`、`q23/`、`q25/`、`q27/`、`q28/` 已由 GPT-07 审查、GPT-08 PR #8 合入（`797ef1d`，剔除了 QC-15 指出的战兔巨爆错误改色），并随 `5955ad9a` 上线；原件按 COLLAB 2.4 保留作历史，真机验收通过前不清理。
+> - 同步 KV 时按 `COLLAB.md` 2.2 第 10 条、2.3、2.4：`kv_only_pending` 里的文件先合并，不整份覆盖；`pending/` 不删除。
+
 > **本文档由 Quick AI（AWS Quick）编写和维护。**
-> 最后更新：2026-11-23 01:00 CST（Q-13 金克丝按 14.14 原版修复，代码在 PR #2 待验收；角色补充：审查发现的不一致项由 Quick AI 修复、代码走 PR）· 改动编号已排到 **Q-13 / QC-06**，见第 1.0 节
+> 最后更新：2026-11-23 11:20 CST（**Q-30 战兔巨爆按原版 StarStrike 逐层重做**，代码在 KV `pending/q30/`，待其他 AI 上传验收）· 改动编号已排到 **Q-30 / QC-18 / BAB-Q01**
 > 原路径 `QUICK_AI_HANDOVER.md` 只保留跳转说明，不再更新。交接总入口：[`handover/README.md`](../README.md)
 > 仓库：`https://github.com/cianasa222/swarm-remake` · Cloudflare KV 镜像：`tideline-handover`（`7bbc331619b04fc8b5b5323abba5eef0`）
 > 配套阅读：[`COLLAB.md`](../../COLLAB.md)（分工、流程、防冲突）→ [`AGENTS.md`](../../AGENTS.md) → [`AI_HANDOVER.md`](../../AI_HANDOVER.md) → [`PROGRESS.md`](../../PROGRESS.md)
@@ -9,6 +16,8 @@
 ---
 
 ## 0. 角色变更（2026-11-22 起生效）
+
+> 历史记录。**当前工作方式见文件顶部 🔁**：角色由用户随时指定；Quick AI 只写 KV，GitHub 提交由其他 AI 负责。
 
 用户指定：**Quick AI 今后只做「审查 + 与原版比对 + 优化建议」，不再做功能开发。**
 
@@ -24,6 +33,9 @@
 - 代码一律提交到分支 `quick/q<编号>-<主题>` 并开 PR，**不直接推 `main`**；PR 由开发 AI（Antigravity）构建、playtest、截图验收后合并（或由用户合并）。
 - 改动登记、文档、审查报告仍直接提交到 `main` 并同步 KV；分支上的代码**合并进 `main` 后**再同步 KV。
 - 2026-11-22 的 Q-04、Q-05 当时是直接提交到 `main` 的，已由 Antigravity AG-01 验收并上线；从 Q-13 起改为走 PR。
+
+
+**2026-11-23 04:44 再次调整（用户原话：「你的角色我任意决定」）**：Quick AI 的角色**由用户随时指定**，上面的「只审查」不再是硬限制；用户让做什么就做什么（包括发布任务、写代码、改文档），仍遵守 `COLLAB.md` 2.1 / 2.2 的防冲突和登记规则。同日用户指示：**GitHub 暂时不用管，改动先写 Cloudflare KV 并做好交接**。
 
 **怎么请 Quick AI 审查**：开 PR（或直接提交到 `main` 后）告诉用户，由用户在 AWS Quick 对话里说「审查 PR #N」或「审查提交 <SHA>」。Quick AI 会读 diff、拉原版数据比对，然后在 PR 评论里给结论。
 
@@ -65,7 +77,17 @@
 | Q-18 | 11-23 01:55 | 提交说明 `[Quick AI Q-18] …`（`git log --grep "Q-18"`） | `docs/tasks/missing_assets_14.14.md`（新增）、`docs/audit/boss_reksai_14.14.md`（新增第 0 节）、`COLLAB.md`（2.2 节第 9 条 + 看板）、`handover/quick/HANDOVER.md`；[Issue #4](https://github.com/cianasa222/swarm-remake/issues/4) | **用户决定**：做不了的事必须交给能做的 AI（新增 2.2 节第 9 条）；原版有的参数一律照抄，只有原版确实没有的才推断。把金克丝缺的 35 个贴图 / 网格、雷克塞缺的 34 段动作、子网格核对和 308 个特效资源整理成清单（带下载地址），开 Issue #4 交给 Antigravity，并要求下载和补做一起完成。首领报告补充：雷克塞角色记录没有技能列表，招式由服务器脚本驱动，除等离子飞弹外的数值原版文件里没有。**补充**：清单新增 C 节音效（线上全部是合成音，原版音频 0 个，要从本机 wad 解 `.bnk`/`.wpk` 转 `.ogg`）、D 节首领出场动画（候选动作 + 原版出场特效链）；B2 子网格顺序按原版 `.obj` 大小推断为 0 Body / 1 Fin / 2 Scale / 3 Wrap / 4 Plane（待截图确认）。**补充 2**：清单新增 E 节「不在 CommunityDragon 上的文件怎么拿」——用户提供的 3 个来源（riot-manifests、ManifestDownloader、CommunityDragon）已核对；指出 `lol-standalone-client-content` 是客户端界面清单、游戏文件要用 `lol-game-client`（14.14.6034237 欧服 = 北美服 = `17A8CACF07883D41.manifest`）；写好下载 / 过滤 / 解包 / 转换命令。（原计划的首领修复编号顺延为 Q-19 至 Q-22） | 文档 | — | 已同步 |
 | Q-19 | 11-23 02:00 | 提交说明 `[Quick AI Q-19] …` | `COLLAB.md`（看板） | 按 2.2 节第 8 条订正看板：AG-05 已部署 `701860ff`，但看板未改。部署行改为已上线；PR #2、喷泉第二批改为已上线；Issue #4 改为进行中（A 节金克丝缺层 AG-05 已补齐；B / C / D 未开始）。核对 KV：AG-05 的文件与 GitHub 一致。（首领修复编号顺延为 Q-20 至 Q-23） | 文档 | — | 已同步 |
 | Q-20 | 11-23 02:10 | 提交说明 `[Quick AI Q-20] …` | `COLLAB.md`（2.2 节第 9 条改写 + 看板）、`docs/tasks/missing_assets_14.14.md`（新增 F 节）、`handover/quick/HANDOVER.md`；Issue #4 | **用户决定**：做不了的事**不指定**给某个 AI，任何能做的 AI 读到就直接做，在 Issue 评论领取、做完登记留痕即可。Issue #4、看板、清单里的「Antigravity」全部改为「任意能做的 AI」。核对直链：动作 `.anm` 和音效在 CommunityDragon 上都没有（任何角色都不导出），Wiki 只有 2 个背景音乐；只能按清单 E 节下载 wad 解包。（首领修复编号顺延为 Q-21 至 Q-24） | 文档 | — | 已同步 |
-| Q-21 | 11-23 03:45 | 提交说明 `[Quick AI Q-21] …` | `docs/tasks/missing_assets_14.14.md`（顶部状态说明）、`handover/README.md`（只改自己那行 + 第 5 节）、`COLLAB.md`（自己那行看板）、`handover/quick/HANDOVER.md` | 读交接文档后订正自己过时的说法：音效、雷克塞 42 段动作、子网格顺序、55 个特效网格、16 个补充小怪模型已由 Antigravity 从本机客户端解出（AG-06 资产分支 `4b1b5f7`），93 条原版音效 + BGM 已接入 `main`（AG-08）。清单里「原版音频 0 个 / 只能靠别人下 wad」的结论作废；子网格顺序与 Q-18 推断一致。KV 补同步 AG-08 的文本文件。（首领修复编号顺延为 Q-22 起） | 文档 | — | 已同步 |
+| Q-21 | 11-23 03:45 | 提交说明 `[Quick AI Q-21] …` | `docs/tasks/missing_assets_14.14.md`（顶部状态说明）、`handover/README.md`（只改自己那行 + 第 5 节）、`COLLAB.md`（自己那行看板）、`handover/quick/HANDOVER.md` | 读交接文档后订正自己过时的说法：音效、雷克塞 42 段动作、子网格顺序、55 个特效网格、16 个补充小怪模型已由 Antigravity 从本机客户端解出（AG-06 资产分支 `4b1b5f7`），93 条原版音效 + BGM 已接入 `main`（AG-08）。清单里「原版音频 0 个 / 只能靠别人下 wad」的结论作废；子网格顺序与 Q-18 推断一致。KV 补同步 AG-08 的文本文件。（首领修复编号顺延：Q-22 至 Q-28 已用于渲染、武器特效、敌人与地图，首领修复从 Q-30 起） | 文档 | — | 已同步 |
+| Q-22 | 11-23 05:18 | ⚠️ **未进 GitHub**：代码在 KV `pending/q22/`（补丁 `pending/q22/q22.patch`，`94dc89f` 与 `bd8a87b` 都能直接套），待能写 GitHub 的 AI 建分支 `quick/q22-render-quality` 开 PR | `src/render/enemy_models.ts`（+415 / −19）、`src/render/entities.ts`（+53 / −14）、`src/render/hero_jinx.ts`（+1 / −1）、`src/render/boss_reksai.ts`（+1 / −1） | **用户要求按画质方案一、二类改代码**。① 小怪顶点动画（VAT）：加载时把原版动作烘进 HalfFloat 贴图，单 DrawCall 播跑 / 攻击；模型没有动作时自动退回静止姿态（**现在 4 个小怪模型都没有动作，见 QC-08，合并后画面暂时不变，需重新导出**）。③ 小怪不再投实时阴影（已有圆形软影；VAT 没有深度材质，投影会是静止姿态）。④ 角色 / 小怪 / 首领贴图 `anisotropy: 4`（地图本来就是最大值）。**没改的及原因**：② 色调——map33.bin 里没有任何色调 / 曝光 / 后处理参数，现有 `NeutralToneMapping` 是 M1 对照原版截图校准并通过美术审查的，保持不变；⑤ 光照探针——原版角色光照是太阳 + 天光（`MapSunProperties`），项目已按原版参数对齐，加探针会偏离原版，不做；⑥ 泛光——项目本来就没有后处理泛光，特效都是原版贴图叠加，已符合；⑦ 3D 降分辨率 + 锐化——界面本来就是原生分辨率的网页元素；锐化需要多一层 HDR 中间缓冲，在 iPhone 上可能抵消省下的像素，改到第三类和动态分辨率一起实测再定；⑧ KTX2——要先转换二进制贴图（Quick AI 环境做不了），且现有 `getTexture()` 同步返回普通 `Texture`，接 KTX2 要改加载结构，交给 PERF-1 T1。**未编译、未实测** | ✅ PR #8 合并 `797ef1d`（GPT-07 审查后的安全子集，build + playtest 4/4 + 回归测试 PASS）；随 `5955ad9a` 上线（MU-01 11-23 06:40）；真机视听待验；4 个普通小怪模型仍无动作（PERF-1 T2b），VAT 暂时退回静止姿态 | ✅ `5955ad9a` | 原件保留（历史），主线已同步 |
+| Q-23 | 11-23 05:22 | ⚠️ **未进 GitHub**：代码在 KV `pending/q23/`（**05:31 已按 `bd8a87b` 重做**，合并了 GPT-05 细节画质；补丁 `pending/q23/q23.patch`），与 Q-22 放同一分支 `quick/q22-render-quality`、同一个 PR | `src/render/quality.ts`（+115 / −10）、`src/render/renderer.ts`（+1 / −1）、`src/main.ts`（+35 / −0） | **用户要求继续做第三类（省性能）**。① 帧率上限：手机默认 60、桌面不限，`?fps=` 可改；② 档内动态分辨率 0.75–1.0，先降分辨率再降档，阈值以帧率上限为基准，降档后 60 秒不升回；③ `?perf=1` 性能面板（帧率 / 档位 / 渲染比例 / DrawCall / 三角形），供 iPhone 实测。**没做**：阴影视锥缩小（会切掉屏幕边缘阴影、改变已验收画面）；抗锯齿换 FXAA（先用性能面板实测 MSAA 代价）；特效粒子合批（改动面大，无编译环境，交 PERF-1 T7）。**未编译、未实测** | ✅ PR #8 合并 `797ef1d`（GPT-07 审查后的安全子集，build + playtest 4/4 + 回归测试 PASS）；随 `5955ad9a` 上线（MU-01 11-23 06:40）；真机视听待验 | ✅ `5955ad9a` | 原件保留（历史），主线已同步 |
+| Q-24 | 11-23 05:31 | ⚠️ **未进 GitHub**：KV `docs/audit/weapons_vfx_14.14.md`，待提交到 `main` | `docs/audit/weapons_vfx_14.14.md`（新增） | **审查**：第一关 9 把武器特效 vs 14.14（`map33.bin.json` 111 个武器粒子系统）。结论：战兔巨爆颜色全错（原版粉红 / 品红，项目青 + 黄）、寿命偏短；冰爆护甲颜色 / 寿命不对；地雷用的是手搭几何体而不是原版 `Ziggs_Satchel` 模型，爆炸 13 层只做了通用环；耀光力场缺暗橙底和橙色噪声层；斯塔缇克缺命中特效；UwU / 回旋刃 / 旋风切割器缺拖尾和光晕；旋风切割器视觉约原版 2 倍（换算规则待定）；**十字弩原版按撞墙次数换 4 种颜色并有撞墙特效，模拟层没有反弹**（需核对 SpellData） | 审查报告 | — | 仅 KV |
+| Q-25 | 11-23 05:31 | ⚠️ **未进 GitHub**：代码在 KV `pending/q25/`，与 Q-22 / Q-23 同一分支、同一个 PR | `src/render/weapon_vfx.ts`（+19 / −10） | **修复** Q-24 里只需改常量的项：战兔巨爆准星 / 光柱 / 爆炸 / 裂纹的颜色和寿命，冰爆护甲冰环 / 裂纹的颜色、透明度、寿命，进化冰盾颜色，全部照抄原版发射器参数。需要新资源或改模拟层的留给任意能做的 AI（报告第 2 节，看板 WVFX 行）。**未编译** | ✅ PR #8 合并 `797ef1d`（GPT-07 审查后的安全子集，build + playtest 4/4 + 回归测试 PASS）；随 `5955ad9a` 上线（MU-01 11-23 06:40）；真机视听待验；**战兔巨爆改色已剔除**（QC-15），冰爆护甲改动保留 | ✅ `5955ad9a` | 原件保留（历史），主线已同步 |
+| Q-26 | 11-23 05:45 | ⚠️ **未进 GitHub**：KV `docs/audit/enemies_map_14.14.md`，待提交到 `main` | `docs/audit/enemies_map_14.14.md`（新增） | **审查**：敌人模型 + 地图 vs 14.14（敌人数值和刷怪已在 Q-14 审过，不重复）。结论：4 种小怪没有动作；死亡特效颜色不对（原版红橙）；敌人材质原版 `selfIllumination 2.5` + unlit，项目用 PBR 受光照，推断偏暗（待截图）；精英缩放按项目自己的规则应为 0.017、代码 0.0068（待截图）；地图太阳 / 天光颜色和方向与原版一致，但原版地图表面不吃实时光和实时阴影（推断），项目加了 35% 直射光、实时阴影和冷蓝暗部（M1 已校准，不改）；地图材质 104 / 107（缺的 3 个是 TFT / 灰盒原型）；原版第一关的海浪、海沫、海岸线、焦散、水池、池塘、海鸥、鱼、通风口烟雾**全部没做**。任务列在看板 EMAP-1 至 EMAP-5 | 审查报告 | — | 仅 KV |
+| Q-27 | 11-23 05:45 | ⚠️ **未进 GitHub**：代码在 KV `pending/q27/`，与 Q-22 / Q-23 / Q-25 同一分支、同一个 PR | `src/render/vfx.ts`（+3 / −1） | **修复**：小怪死亡粒子颜色暗青 → 红橙 `0xff4639`、寿命 0.35 → 0.5 s，照抄原版 `Strawberry_Enemy_Death`。**未编译** | ✅ PR #8 合并 `797ef1d`（GPT-07 审查后的安全子集，build + playtest 4/4 + 回归测试 PASS）；随 `5955ad9a` 上线（MU-01 11-23 06:40）；真机视听待验 | ✅ `5955ad9a` | 原件保留（历史），主线已同步 |
+| Q-28 | 11-23 05:55 | ⚠️ **未进 GitHub**：代码在 KV `pending/q28/`，与 Q-22 / Q-23 / Q-25 / Q-27 同一分支、同一个 PR，**最后提交**（叠在 Q-22 / Q-25 / Q-27 上） | `src/render/enemy_models.ts`（+80 / −4）、`src/render/weapon_vfx.ts`（+55 / −16）、`src/render/vfx.ts`（+7 / −3）、`src/sim/game.ts`（+4 / −3） | **用户要求把审查找出的问题修掉**。这批是不需要新资源、不改玩法的项：① 精英死亡动作（绑定原版 death，按 id 固定槽位，渲染侧原地播放）；② 耀光力场按原版 4 层（补橙色火焰普通混合层、外圈普通混合层），普通 / 进化颜色照抄；③ 战兔巨爆进化版橙金光柱 / 橙色爆炸环，`explode` 事件加可选 `evolved`；④ 附带的通用环 / 粒子改原版色；⑤ 斯塔缇克闪电显示时长 0.4 s / 进化 0.2 s。**仍需新资源或改玩法、没修的**：地雷原版模型和 13 层爆炸、十字弩撞墙反弹、斯塔缇克命中特效、冰爆护甲环绕冰晶 / 冰刺、拖尾光晕类、统一尺寸换算、小怪带动作模型、地图环境特效、敌人材质 / 精英缩放（待截图）——都在看板 PERF-1 / WVFX / EMAP 行。**未编译** | ✅ PR #8 合并 `797ef1d`（GPT-07 审查后的安全子集，build + playtest 4/4 + 回归测试 PASS）；随 `5955ad9a` 上线（MU-01 11-23 06:40）；真机视听待验；**战兔巨爆进化配色已剔除**（QC-15），精英死亡 / 耀光 4 层 / 斯塔缇克闪电保留 | ✅ `5955ad9a` | 原件保留（历史），主线已同步 |
+| Q-29 | 11-23 06:00 | ⚠️ **未进 GitHub**：KV `docs/audit/ui_camera_audio_14.14.md`，待提交到 `main` | `docs/audit/ui_camera_audio_14.14.md`（新增） | **审查**：界面 + 镜头 + 音效 vs 14.14（`map33.bin.json` 音效库 `BankUnit`、30 条公告定义）。结论：9 把副武器原版各有专属音效（31 个事件），项目全无（命中、爆炸借用金克丝的声音）；敌人死亡原版按怪种分 22 个，项目共用 3 个；补给箱破碎借用拾取声；背景音乐缺中期 / 后期两段；横幅文字自编、含原版没有的「狂暴二阶段」；原版有 21 种关内目标（打箱子、精英包围等），项目没有这个系统；镜头参数不在 bin、界面布局不在 KV，无法按数据核对。**未改代码**：音效文件名是 Wwise 哈希，对照表在 `.bnk`，KV 里没有，Quick AI 环境也读不了资产分支。任务列在看板 UIA-1 至 UIA-6 | 审查报告 | — | 仅 KV |
+| Q-30 | 11-23 11:20 | ⚠️ **未进 GitHub**：KV `pending/q30/`（说明见该目录 README），待上传到分支 `quick/q30-starstrike` 开独立 PR | `src/render/starstrike_14_14.ts`、`starstrike_vfx.ts`（新增）；`weapon_vfx.ts`、`vfx.ts`、`assets.ts`（修改）；`tools/q30/fetch_starstrike_14_14.mjs`、`tools/q30-starstrike.test.ts`（新增） | **战兔巨爆按 14.14 原版 StarStrike 4 个系统 21 层重做**（QC-15 遗留）：普通落点 / 进化落点 / 进化红橙大落点各 4 层（底图、描边、X 准星、竖直激光），爆炸 9 层（碎片、金色中心光柱、主光柱、地面光圈、地裂、地面耀光、旋涡网格、内光网格、下落竖条）。数据由 BAB-Q01 提取结果脚本转写，未手改；固定 13 次绘制、粒子不存状态。去掉旧 1 层准星 + 4 片交叉光柱 + 原版没有的青色冲击环和黄色粒子。**只改画面，`src/sim/` 零改动**。14 张原版贴图由脚本从 CommunityDragon 下载；`Light_Inside.scb` 网格缺失时用圆柱占位。尺寸系数 0.02 未经截图校准（GPT-13 Q01-07） | ⏳ 未编译 / 未实机；数据与时间轴已脚本复核 | — | 仅 KV（`pending/q30/`） |
+| BAB-Q01 | 11-23 09:40 | ⚠️ **未进 GitHub**：KV `pending/bab01-quick/`（14 个新文件 + MANIFEST），待能写 GitHub 的 AI 建分支 `quick/bab01-b0-b4-data` 开 PR（步骤见该目录 README） | **全部新文件，不改现有文件**：`src/render-babylon/render_port.ts`、`src/render-babylon/vfx/effect_def.ts`、`tools/bab/extract_vfx_14_14.cjs`、`src/render-babylon/vfx/data/14.14/{fountain,weapons,jinx,enemy,reksai,index}.json`、`docs/bab01/quick_B0_render_inventory.md`、`docs/bab01/quick_B4_vfx_14.14.md`、`docs/bab01/quick_B4_vfx_tables_14.14.md`、`docs/bab01/quick_hud_assets_14.14.md` | **用户 08:54 指派领取 BAB-01 B0 + B4 数据准备**。① B0：15 个渲染模块清单、Three → Babylon 对应、main.ts 全部调用 → `RenderPort` 接口、KV 镜像哈希基线（回归 / 性能 NOT RUN）。② B4：引擎无关 `EffectDef` 数据结构；转换脚本把 14.14 原版 122 个特效系统 742 层（喷泉 4/52、九武器 38/144〔按 QC-15 正确对应〕、金克丝 28/94、敌人弹幕 11/101、雷克塞 41/351）全部转成数据并记录原版路径 + SHA-256；逐层参数表与代码对照；原版贴图 496 张全部可从 CommunityDragon 直接下载，123 个 `.scb/.sco` 网格需从资产分支或解包取。③ HUD：从原版 UI bin 整理血条 / 经验条 / 等级 / 头像框 / 升级按钮与动效 / 首领血条 / 升级卡的坐标、贴图、UV、帧动画，48 张贴图全部可下载；升级卡 9 个界面特效定义、敌人头顶血条样式映射未找到，列入缺失清单。**未改 UI / 登录 / 设置 / 升级弹窗 / 账号（GPT 负责）、未改数值、未删资产、未部署** | TS 未编译（待验证）；转换脚本已实际运行 | — | 仅 KV（`pending/bab01-quick/`） |
 
 **验收 Q-13（PR #2）时重点看**：
 - `npm.cmd run build`：`PlayerState` 新增 `eCastT` / `rCastT` / `excitedCount`；`JINX_E` / `JINX_R` / `JINX_PASSIVE` 字段改名（`baseDamage` → `level1Damage`，删除 `msBonus` / `asBonus`）；`allocPlane` / `allocMesh` 末尾新增可选参数；新方法 `ultAimDir` / `startUlt` / `setPassiveRing`。
@@ -86,16 +108,51 @@
 | QC-04 | 11-22 21:08 | KV `FILE_INDEX.json` | 发现被整份覆盖成 5 条，按 KV 实际 key 重建为 47 条。**根因（22:35 查明）**：线上 Worker `tideline-swarm` 第 4、5 版（11-22 20:33 / 20:36 用 wrangler 部署）带有公开接口 `/__sync_kv`，任何人访问一次就用网站上的旧文件整份覆盖 KV 文档和 `FILE_INDEX.json` | 已修复；接口已在 QC-05 停用 |
 | QC-05 | 11-22 22:35–22:36 | Worker `tideline-swarm` | **用户要求下线网站上的交接文档**。上传第 6 版 Worker 代码（保留全部静态资源和 `_headers`，去掉 KV 绑定）；再用 PATCH 生成第 7 版，`run_worker_first` 只拦 `/AI_HANDOVER.md`、`/PROGRESS.md`、`/AGENTS.md`、`/FULL_SOURCE_BUNDLE.md` 四个路径，Worker 对它们和 `/__sync_kv` 返回 **410**，其余请求照旧走静态资源。**回滚**：部署回第 5 版 `a3c67b1e-d464-42ed-a4a7-bf66e29446d6` | 第 7 版 `fd0b8ae2-54ef-433a-81e7-a1b2c4f73afb` 已 100% 部署；验证见 QC-06 |
 | QC-06 | 11-22 22:36 | Worker `tideline-ref-fetcher` | 临时改为一次性探测：从 Cloudflare 内部请求线上站点 8 个路径，结果写入 KV `_probe/site_check.json`；读取后删除该 key、清空定时任务 | ✅ 22:44 验证通过：`/` 200（HTML）；4 份交接文档和 `/__sync_kv` 均 410；`/assets/map1/minimap.webp`、`/assets/enemies/enemy_pix.glb` 200，均带 `Access-Control-Allow-Origin: *`。探测 key 已删除，定时任务已清空 |
+| QC-07 | 11-23 04:55 | KV `tideline-handover` | **只写 KV，未进 GitHub**（GitHub 连接器 OAuth 失效，用户指示先只写 KV）。新增 `docs/tasks/render_perf.md`（外包任务 PERF-1：渲染性能与画质，T1–T6）；`COLLAB.md` 看板加 PERF-1 行、订正部署行（Cloudflare 查到 04:07 新部署 `7d862759`）；`handover/README.md` 自己一行 + 第 5 节；本文件；`FILE_INDEX.json` 加 1 条；`SYNC_STATE.json` 新增 `kv_only_pending` 字段、订正 `open_prs` / `live_deployment`。**`commit` 字段仍是 `94dc89f`**，KV 这几个文件比 GitHub 新。核查结论：普通小怪（pix/ghoul/hunter/dasher）是静止姿态烘焙 + 正弦起伏，没有骨骼动作；精英、首领有。 | ⚠️ **待提交 GitHub**：下一个能写 GitHub 的 AI，请把 `kv_only_pending` 列出的 4 个文件从 KV 原样提交到 `main`（注意 `COLLAB.md` / `README.md` 若 GitHub 上已有更新要手动合并，不要整份覆盖），提交后删掉 `kv_only_pending` 并把 `commit` 改成新提交号。**从 GitHub 往 KV 同步的 AI：先合并这些 KV 改动，别直接覆盖** |
+| QC-08 | 11-23 05:12–05:18 | Worker `tideline-ref-fetcher` + KV | ① 临时把 `tideline-ref-fetcher` 改为一次性探测：从 Cloudflare 内部读线上 `/assets/enemies/*.glb` 的 glTF 头，写入 `_probe/enemy_glb.json`；读取后**已删除该 key、已清空定时任务**（Worker 代码保留为探测版，与 QC-06 后一样处于停用状态）。结论：`enemy_pix / ghoul / hunter / dasher` 有骨骼（26 / 33 / 41 / 23 根）但 **0 段动作**；`miniboss_bruiser` 有 4 段。② 写入 `pending/q22/` 下 4 个源码文件、`q22.patch`、`README.md`；更新本文件、`handover/README.md`、`COLLAB.md`（看板）、`docs/tasks/render_perf.md`、`FILE_INDEX.json`、`SYNC_STATE.json`（`kv_only_pending` 追加）。写前核对 KV 未被他人改动，写后逐个回读核对 SHA-256 | ✅ 已完成；⚠️ 文档改动待提交 GitHub（同 QC-07） |
+| QC-09 | 11-23 05:22 | KV `tideline-handover` | 写入 `pending/q23/` 下 3 个源码文件和 `q23.patch`；`pending/q22/README.md` 新增第 4 节（Q-23）；更新本文件、`handover/README.md`、`COLLAB.md`（看板）、`docs/tasks/render_perf.md`、`FILE_INDEX.json`、`SYNC_STATE.json`。写前核对 KV 未被他人改动，写后逐个回读核对 SHA-256 | ✅ 已完成；⚠️ 待提交 GitHub（同 QC-07） |
+| QC-10 | 11-23 05:31 | KV `tideline-handover` | 写入 `docs/audit/weapons_vfx_14.14.md`、`pending/q25/`。**写前核对发现冲突**：GPT-06 在 05:23 把 GitHub `main@bd8a87b`（PR #7：登录首页、细节画质）同步进 KV，`handover/README.md`、`COLLAB.md` 被 GitHub 版覆盖，Quick AI 在 KV 里加的「连不上 GitHub」说明和看板行丢失；PR #7 还改了 Q-23 改的 3 个文件。处理：没有覆盖对方的内容，以 KV 当前（= GitHub）版本为底，**只把 Quick AI 自己的行和说明重新加上**；Q-23 按 `bd8a87b` 重做（合并细节画质）；`SYNC_STATE.json` 保留 GPT-06 的 `commit` / `changed_files`，只更新 `kv_only_pending`、`pending_branches` 和 Quick AI 文件的哈希。另：之前登记的 Q-22 / Q-23 / QC-08 / QC-09 时间写成了 05:40 / 06:05，实际是 05:18 / 05:22，已订正 | ✅ 已完成；⚠️ 待提交 GitHub |
+| QC-11 | 11-23 05:38 | KV `tideline-handover` | **用户要求**：注明其他 AI 不能覆盖 Quick AI 只在 KV 的改动。`COLLAB.md` 顶部加提示、2.2 节新增第 10 条「同步 KV 前先查 KV 独有的改动，不准覆盖」；`handover/README.md`、`AGENTS.md`、本文件顶部加同样的提示；`SYNC_STATE.json` 的 `rule` 补充同步前必读 `kv_only_pending`，新增 `READ_FIRST` 字段。写前核对 KV 与 QC-10 写入一致，写后回读 SHA-256 | ✅ 已完成；⚠️ 待提交 GitHub（`AGENTS.md` 也加入 `kv_only_pending`） |
+| QC-12 | 11-23 05:45 | KV `tideline-handover` | 写入 `docs/audit/enemies_map_14.14.md`、`pending/q27/`；更新 `pending/q22/README.md` 第 6 节、本文件、`handover/README.md`、`COLLAB.md`（看板）、`FILE_INDEX.json`、`SYNC_STATE.json`。写前核对（KV 与 QC-11 写入一致），写后回读 SHA-256 | ✅ 已完成；⚠️ 待提交 GitHub |
+| QC-13 | 11-23 05:55 | KV `tideline-handover` | 05:50 再试 GitHub 连接器仍是 OAuth 401，按用户指示只写 KV。写入 `pending/q28/`（4 个完整文件 + 补丁）；更新 `pending/q22/README.md` 第 7 节、两份审查报告的修复状态、本文件、`handover/README.md`、`COLLAB.md`（看板）、`FILE_INDEX.json`、`SYNC_STATE.json`。写前核对、写后回读 SHA-256 | ✅ 已完成；⚠️ 待提交 GitHub |
+| QC-14 | 11-23 06:00 | KV `tideline-handover` | 写入 `docs/audit/ui_camera_audio_14.14.md`；更新本文件、`handover/README.md`、`COLLAB.md`（看板，全面审计行改为完成）、`FILE_INDEX.json`、`SYNC_STATE.json`。写前核对、写后回读 SHA-256 | ✅ 已完成；⚠️ 待提交 GitHub |
+| QC-15 | 11-23 06:05 | KV `tideline-handover` | **用户 06:01 要求停下**，把遇到的问题和已写好的代码同步到 KV。新增本文件第 1.7 节（遇到的问题 + 武器对应错误更正）；在 `docs/audit/weapons_vfx_14.14.md`、`docs/audit/ui_camera_audio_14.14.md`、`pending/q22/README.md` 顶部加更正说明；看板加「Q-30 战兔巨爆按 StarStrike 重做」行。**没有新代码**（06:00 之后只在查十字弩数据，未写代码）。写前核对、写后回读 SHA-256 | ✅ 已完成；⚠️ 待提交 GitHub |
+| QC-16 | 11-23 09:40 | KV `tideline-handover` | BAB-Q01 写入 `pending/bab01-quick/`（14 个文件，每个写前确认 key 不存在、写后回读 SHA-256 一致）+ `MANIFEST.json`；更新本文件、`handover/README.md`（自己一行）、`COLLAB.md`（看板加 BAB-01 B0+B4 行）、`FILE_INDEX.json`、`SYNC_STATE.json`（`kv_only_pending` 追加、`pending_branches` 追加、`pending_github_commits.quick/bab01` 标记未提交）。读取原版数据：KV `ref/14.14/` 的 map33 / 金克丝 / 雷克塞 bin.json；CommunityDragon 14.14 UI bin 与目录（只读） | ✅ 已完成；⚠️ 待提交 GitHub |
+| QC-17 | 11-23 09:25 | KV `tideline-handover` | **用户决定**：Quick AI 不再连接 GitHub，只更新 Cloudflare KV 的代码与交接文档，由其他 AI 提交到 GitHub。更新本文件顶部、`handover/README.md`（提示 + 自己一行）、`COLLAB.md`（2.2 节第 10 条补一句）、`SYNC_STATE.json`（`quick_workflow` 字段）。写前核对、写后回读 | ✅ 已完成 |
+| QC-18 | 11-23 10:30 | KV `tideline-handover` | **用户要求清理 Quick AI 写的过时内容**（只改 Quick AI 自己写的部分）：本文件——两条旧横幅合并为一条当前状态，Q-22 / 23 / 25 / 27 / 28 状态改为 PR #8 合并并上线，1.1 / 1.4 / 1.7 / 第 0 节 / 第 2 节加历史标注或改为最新；`handover/README.md`——第 1 节旧「连不上 GitHub」说明、第 5 节状态速览、自己那一行；`COLLAB.md` 看板——部署行、Q-22–Q-28 行、PERF-1 / T6、Q-30、UIA、首领修复编号、PR #3、其余小项的文件指向；`pending/q22/README.md` 顶部加「已完成勿重复套用」；`docs/tasks/render_perf.md` T2/T4/T5 改为已上线；`pending/bab01-quick/README.md` 与 `MANIFEST.json` 的 GitHub 状态改为按用户决定只写 KV；`SYNC_STATE.json` 只改 Quick AI 字段（`READ_FIRST` 里关于 Quick 的一句、`kv_only_pending.reason` / `by` / `at_cst` / 文件哈希、`pending_branches` 与 `pending_github_commits` 的 BAB-Q01 状态），其他 AI 的字段未动。写前核对、写后回读 SHA-256 | ✅ 已完成 |
 | QI-01 | 11-22 09:35 | [Issue #1](https://github.com/cianasa222/swarm-remake/issues/1) | 新建外包任务 | 待领取 |
 | QI-02 | 11-22 09:42 / 09:48 / 20:41 / 21:30 | Issue #1 评论 | 范围更新 / 流程说明 / 网格与贴图订正 / 改用 Windows 清单 | 以最新评论为准 |
 
-### 1.1 代码改动详情（都在 `main` 上，**都还没有在本机编译和实测**）
+### 1.7 2026-11-23 遇到的问题（QC-15 汇总，给接手的 AI）
+
+| # | 问题 | 影响 | 现状 / 怎么处理 |
+| :--- | :--- | :--- | :--- |
+| 1 | **GitHub 连接器 OAuth 失效**（HTTP 401「Invalid response format received from the OAuth Server」），04:4x 起每次都失败，05:50、05:57 再试仍失败 | Quick AI 无法读写 GitHub、开 Issue / PR | **已结案**：09:23 用户决定 Quick AI 不再连接 GitHub，只写 KV，由其他 AI 提交（QC-17）。q22–q28 已由 PR #8 合入上线 |
+| 2 | **没有编译环境**（沙盒里没有 TypeScript / esbuild / Node 构建） | Q-22 至 Q-28 当时未编译 | **已解决**：GPT-07 在 PR #8 跑过 `build`、`playtest` 4/4、`render-quality` 21 组、`q28-regression` 全部 PASS；**真机视听仍待验**。BAB-Q01 的两个 TS 文件同样未编译，由上传方检查 |
+| 3 | **KV 被覆盖过一次**：05:23 GPT-06 从 GitHub 同步 `bd8a87b` 时整份覆盖了 `handover/README.md`、`COLLAB.md`，Quick AI 的说明和看板行丢失；PR #7 还改了 Q-23 动过的 3 个文件 | 交接说明丢失、Q-23 基准过期 | QC-10 已以 GitHub 版为底重新合并；Q-23 按 `bd8a87b` 重做；QC-11 新增 `COLLAB.md` 2.2 节第 10 条「同步前先查 `kv_only_pending`，不准覆盖」 |
+| 4 | **4 个小怪 `.glb` 有骨骼但 0 段动作**（QC-08 实测） | Q-22 的顶点动画合并后画面暂时不变 | 看板 PERF-1 T2b：重新导出带原版动作的模型 |
+| 5 | **读不到资产分支和 `.bnk`**：原版音效文件名是 Wwise 哈希，对照表在 `.bnk`，KV 里没有；沙盒访问 `raw.githubusercontent.com` 也失败 | 武器 / 敌人死亡音效没法自己接 | 看板 UIA-1 / UIA-2 |
+| 6 | **线上 `.glb` 只能从 Cloudflare 内部读**（外部请求 403） | — | QC-08 用临时 Worker 探测，已清理 |
+| 7 | ⛔ **Quick AI 自己的错误：3 把武器对错了原版数据** | Q-24 武器审查、Q-25、Q-28、Q-29 音效审查里这 3 把的结论和改动有误 | 见下 |
+
+**第 7 项详细说明**（战兔巨爆的画面已在 Q-30 按 StarStrike 重做，待上传验收）：Q-14 审计（`live_vs_14.14.md` 第 0 节）早就写明了对应关系：UwU = RapidShot、旋风切割器 = **HolyBauble**、耀光 = HollowRadiance、斯塔缇克 = StatikkShiv、十字弩 = **PierceShot**、回旋刃 = Boomerang、巨爆 = **StarStrike**、地雷 = Mine_Wrapper、冰爆 = FrostNova。Q-24 写武器特效审查时没对照这张表，把十字弩当成 ScatterArrows、巨爆当成 Nuke、旋风切割器当成 CircleShot（名字相近的另几把武器）。06:00 查十字弩技能数据时发现：`PierceShot` 的伤害 / 数量 / 暴击（90–170、3–25 支、+10–30%）和项目 `crossbow` 完全一致，`StarStrike` 的数量 / 伤害 / 选目标 8 m / 爆炸 1.8 m 和项目 `bunnymega` 完全一致。
+
+| 项 | 错误结论 | 正确情况 |
+| :--- | :--- | :--- |
+| 十字弩 | 原版按撞墙次数换 4 色、有撞墙反弹 | 原版 `Strawberry_PierceShot_Mis`：紫色网格箭头 (0.88, 0.71, 0.98)、蓝色光晕 (0.04, 0.54, 1)、青色拖尾 (0.06, 0.94, 0.93) 0.5 s；飞弹宽 0.6 m、速度 20 m/s、射程 17 m（项目 24 m/s、9 m，射程 9 m 是 castRange 选目标距离，Q-15 已对齐）。**没有撞墙反弹** |
+| 战兔巨爆 | 原版粉红 / 品红，Q-25 / Q-28 改了颜色 | 原版 `StarStrike_Karthus_Explosion`：光柱中心金 (1, 0.88, 0.58) 0.3 s、光柱核心白 0.5 s、地面内圈青 (0.09, 0.92, 0.95)、地裂白、准星 `XTarget` 青 (0.14, 0.86, 0.77) 1.1 s。**项目原来的青 + 黄更接近原版**，Q-25 / Q-28 的巨爆颜色改动要撤回（见 `pending/q22/README.md` 顶部） |
+| 旋风切割器 | 视觉约原版 2 倍 | 原版 `HolyBauble_Evolve_Blades_Glow` bS 85 → 1.7 m，`OrbVisualAoEMultiplier` 1.5 / 进化 2；项目 1.6 / 2.05 m 基本一致。进化版原版有橙色猫脸层（`HolyBauble_Evolve_CatFace` ×3），项目没有 |
+| 音效 | 十字弩 / 旋风 / 巨爆事件名 | 正确事件见 `ui_camera_audio_14.14.md` 顶部更正 |
+
+**下一步**（Q-30，看板已加行）：按 StarStrike 原版参数重做战兔巨爆特效，出一版去掉 Q-25 / Q-28 错误部分的 `weapon_vfx.ts` / `vfx.ts`；重写武器审查里这 3 把的章节。
+
+### 1.1 代码改动详情（历史，2026-11-22；下面三项均已由 AG-01 验收、AG-02 上线，现随 `5955ad9a` 在线）
 
 | 提交 | 文件 | 内容 | 状态 |
 | :--- | :--- | :--- | :--- |
-| `05a1ef1` | `public/_headers` | 静态资源统一加 `Access-Control-Allow-Origin: *`，替代 `worker.js` 里加 CORS（`run_worker_first` 应为 `false`，否则 `_headers` 不生效） | 待部署 |
-| `c63e871` | `src/render/map_warehouse.ts` | 喷泉精修第一批 9 项（详见 `PROGRESS.md` 2.5 节）：Nova ×1.75、各层原版寿命、补 Nova 两层冲击波和 Gold/Gold1 粒子、补 Timer `Decal_Start2`、healspark 和 sparklies1 改为原版发射式、Basic4/Edge12/Edge17/波浪峰值修正、去掉计时圈暖黄。新增通用粒子设施 `makeFxPool` | 🧪 待验收 |
-| `46362d7` | `src/render/enemy_models.ts` | **修复小怪只剩影子**：M4 量化后小怪 GLB 的 `POSITION` 是 Int16 归一化，反量化缩放写在骨骼 `inverseBindMatrices` 里；`InstancedEnemyModel` 原来丢掉蒙皮属性，模型只剩 1–2 cm。新增 `bakeStaticGeometry()`，按静止姿态 `applyBoneTransform` 烘焙后再合批 | 🧪 待验收 |
+| `05a1ef1` | `public/_headers` | 静态资源统一加 `Access-Control-Allow-Origin: *`，替代 `worker.js` 里加 CORS（`run_worker_first` 应为 `false`，否则 `_headers` 不生效） | ✅ 已上线 |
+| `c63e871` | `src/render/map_warehouse.ts` | 喷泉精修第一批 9 项（详见 `PROGRESS.md` 2.5 节）：Nova ×1.75、各层原版寿命、补 Nova 两层冲击波和 Gold/Gold1 粒子、补 Timer `Decal_Start2`、healspark 和 sparklies1 改为原版发射式、Basic4/Edge12/Edge17/波浪峰值修正、去掉计时圈暖黄。新增通用粒子设施 `makeFxPool` | ✅ AG-01 验收（修正 3 处）、AG-02 上线 |
+| `46362d7` | `src/render/enemy_models.ts` | **修复小怪只剩影子**：M4 量化后小怪 GLB 的 `POSITION` 是 Int16 归一化，反量化缩放写在骨骼 `inverseBindMatrices` 里；`InstancedEnemyModel` 原来丢掉蒙皮属性，模型只剩 1–2 cm。新增 `bakeStaticGeometry()`，按静止姿态 `applyBoneTransform` 烘焙后再合批 | ✅ AG-01 验收、AG-02 上线 |
 
 **验收清单（交给开发 AI / 用户）**：
 1. `npm.cmd run build`、`npm.cmd run playtest -- 2 0.85` 退出码均为 0。
@@ -124,7 +181,7 @@
 | :--- | :--- | :--- |
 | KV `tideline-handover` | 使用中 | 源码和文档镜像（47 条，见 `FILE_INDEX.json`）+ `SYNC_STATE.json`（最后同步的提交号和每个文件的 SHA-256）+ `ref/14.14/` 原版参考数据 |
 | Worker `tideline-ref-fetcher` | **已停用**（定时任务已清空，公开网址已关闭；最后一次用于 QC-06 站点探测） | 从 CommunityDragon 抓取原版文件写入 KV 的临时工具，代码见第 3.3 节；需要时重新设定时任务即可复用 |
-| Worker `tideline-swarm` | Antigravity AG-02 部署（`54a77c68`，11-22 23:52） | 包含 Q-04 / AG-01 / Q-05；保留 QC-05 的 410 文档拦截和 `/__sync_kv` 停用 |
+| Worker `tideline-swarm` | **当前 `5955ad9a`**（deployment `f94499ee`，Muse MU-01 11-23 06:40，含 PR #8）；上一版 `7d862759` 保留可回退。历史：AG-02 `54a77c68`（11-22 23:52） | 交接文档路径仍返回 410（MU-01 验收）；`/__sync_kv` 已停用（QC-05） |
 
 ### 1.5 排查过、已有结论的问题
 
@@ -146,6 +203,8 @@
 ---
 
 ## 2. 剩余工作（交给开发 AI / 执行 AI，Quick AI 负责审查）
+
+> ⚠️ 本表是 2026-11-22 的旧清单，**最新任务以 `COLLAB.md` 第 5 节看板为准**。已完成：两项 P0（AG-01 验收、之后多次部署，当前 `5955ad9a`）、喷泉第二批（AG-03）；自动部署已有 `wrangler.jsonc`（GPT-06 / MU-01 使用）。
 
 | 优先级 | 事项 | 建议负责方 |
 | :---: | :--- | :--- |

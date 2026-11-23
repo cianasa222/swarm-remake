@@ -192,6 +192,8 @@
 | GPT-11 | 每次代码提交立即双端交接、分支镜像隔离 | GPT（用户授权修改规范） | ✅ 规范更新；GPT-10 分支快照状态见 KV `pending_github_commits` |
 | GPT-12 | KV-only 代上传与临时代码生命周期 | GPT（用户确认） | ✅ 规则补齐；上线并验收通过后方可精确清理重复临时代码，本次不删任何 key |
 | GPT-13 / BAB-Q01-REVIEW | [BAB-Q01 验收、缺陷及缺项](handover/gpt/BAB_Q01_ACCEPTANCE_GPT13.md)：Q01-01～10；先修回旋刃进化、补给/拾取/精英覆盖、贴图/网格映射、默认 tsc，再完成 B1/B4 实际运行器；HUD 与原版实机核对 | 任意能做的 AI（领取留痕；Quick 仅 KV；UI 与 GPT-10 协调） | 🟡 首验 14/14、转换复现 6/6 PASS；正式集成/构建/视觉/性能验收未通过，未提交 BAB-Q01 代码、未部署 |
+| Q-30 | **战兔巨爆按原版 StarStrike 逐层重做**（4 个系统 21 层：普通 / 进化 / 进化红橙大落点各 4 层 + 爆炸 9 层）。撤回 Q-25 / Q-28 错误改色已由 GPT-07 在 PR #8 完成；十字弩（PierceShot）、旋风切割器（HolyBauble）的更正见 `handover/quick/HANDOVER.md` 1.7 节 | Quick AI 写（仅 KV）→ 任意能写 GitHub 的 AI 上传、编译、截图验收 | 🟡 代码已交付 KV `pending/q30/`（README 有上传步骤和 5 条待验近似），**待上传到分支 `quick/q30-starstrike` 开独立 PR**；未编译、未实机；只改画面 |
+| GM-02 / GM-03（Q01-01～03 修复） | 修复 BAB-Q01 的 **Q01-01**（回旋刃进化 +3）、**Q01-02**（精英光环 +2、补给箱/拾取/玩家反馈 +25，合计 152/883）与 **Q01-03**（555 贴图实测 100% 真 PNG + 回填 95 张主线路径、133 网格逐路径表含主线 29/备用 62/缺口 42、21 层 `attachedMesh` 绑定） | Gemini（仅 KV）→ 任意有权 AI 代上传 | ⏳ 已交付到 KV `pending/bab01-gemini/`（14 文件，单测 4/4 + CDN 555/555 PASS），待代上传分支 `gemini/bab01-q01-01-02-fix` 开 PR 与构建验收 |
 | — | 补给箱经验/升级节奏核查 | GPT（后续单独处理） | ⏳ 用户要求暂缓；本轮不改战斗数值 |
 | — | 自动部署 `wrangler.jsonc` + `preview` 分支 | 开发 AI + 用户 | ⏳ |
 | — | 其余小项（清理 `lan.ts`/`buildWorld`、`compress_assets.mjs` 绝对路径） | 开发 AI | ⏳ 见 `QUICK_AI_HANDOVER.md` 第 2 节 |
