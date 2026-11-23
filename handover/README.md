@@ -66,7 +66,7 @@
 | :--- | :--- |
 | GitHub 主线 | 文档提交前 `fce330fc`，旧 Three.js 游戏未替换为 Babylon |
 | Cloudflare Worker | `tideline-swarm` 仍是部署 `f94499ee`、版本 `5955ad9a`（100%），无新部署 |
-| Quick BAB-Q01 + Gemini GM-02/03 | [PR #10](https://github.com/cianasa222/swarm-remake/pull/10)，最新 `52444495`，集成 **157 套/903 层**，新版 CI **2/2 success**；草稿、未合并/部署 |
+| Quick BAB-Q01 + Gemini GM-02/03 | [PR #10](https://github.com/cianasa222/swarm-remake/pull/10)，最新 `77c25a35`，集成 **157 套/903 层**，GPT-18 已将附着网格绑定补至 26 条，新版 CI **2/2 success**；草稿、未合并/部署 |
 | Quick Q-30 StarStrike | [PR #11](https://github.com/cianasa222/swarm-remake/pull/11)，最新 `bc44bc1d`，4 系统/21 层，14 张 WebP + SHA256SUMS 已入库，CI **2/2 success**；草稿、未合并/部署 |
 | 重复旧版 | [PR #12](https://github.com/cianasa222/swarm-remake/pull/12) 关闭且未合并；不可用旧 122/742 数据覆盖 157/903 |
 | GPT-10 UI | [PR #9](https://github.com/cianasa222/swarm-remake/pull/9) 草稿未合并/部署，真实登录、HUD、iPhone 验收待做 |

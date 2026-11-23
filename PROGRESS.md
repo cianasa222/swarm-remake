@@ -1,6 +1,6 @@
 # 项目进度与跨会话交接清单（PROGRESS）
 
-> **GPT-17 当前状态（2026-11-23）**：现有 M0～M4 是 Three.js 已完成的旧版里程碑；Babylon B1/B4 引擎与运行器仍未实现。Quick + Gemini 已完成代码代传与 QC-19 修复：[PR #10](https://github.com/cianasa222/swarm-remake/pull/10)（157 套/903 层），Quick Q-30 为 [PR #11](https://github.com/cianasa222/swarm-remake/pull/11)（4 系统/21 层、14 WebP）；两个 PR 当前 CI 均 2/2 PASS，仍为草稿、未合并/部署；重复 PR #12 已关闭。Cloudflare Worker 最新部署仍为 `f94499ee`、版本 `5955ad9a`。剩余网格/录像/iPhone GPU/WebGPU 等需验收。详见 [GPT-17 回执](handover/gpt/STATUS_GPT17.md)，下文旧进度按历史快照理解。
+> **GPT-17 当前状态（2026-11-23）**：现有 M0～M4 是 Three.js 已完成的旧版里程碑；Babylon B1/B4 引擎与运行器仍未实现。Quick + Gemini 已完成代码代传与 QC-19 修复：[PR #10](https://github.com/cianasa222/swarm-remake/pull/10)（157 套/903 层，GPT-18 附着网格绑定 26 条），Quick Q-30 为 [PR #11](https://github.com/cianasa222/swarm-remake/pull/11)（4 系统/21 层、14 WebP）；两个 PR 当前 CI 均 2/2 PASS，仍为草稿、未合并/部署；重复 PR #12 已关闭。Cloudflare Worker 最新部署仍为 `f94499ee`、版本 `5955ad9a`。剩余网格/录像/iPhone GPU/WebGPU 等需验收。详见 [GPT-17 回执](handover/gpt/STATUS_GPT17.md)，下文旧进度按历史快照理解。
 
 > 最后更新：2026-11-22 21:40（Quick AI：角色变更、小怪修复、交接文档）  
 > 仓库定位：托管源码、配置、文档与 **M4 压缩后的全部运行时资产**（`public/assets/` 共 273 个文件、38.5 MB，可直接构建部署）；只有未压缩原始资产、解包目录和解包工具留在本机（见第 4 节）。

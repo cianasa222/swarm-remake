@@ -12,10 +12,15 @@
 
 | 提交 | 范围 | 结果 | 正式状态 |
 | --- | --- | --- | --- |
-| [PR #10](https://github.com/cianasa222/swarm-remake/pull/10)，`5244449532dc4ac449f0f1ea7f403b15f08b66c0` | Quick BAB-Q01 B0/EffectDef/HUD + Gemini GM-02/03 数据 + GPT-16 QC-19 修复：**157 套 VFX / 903 个图层**；5 套新增禁用自动绑定 | 两个最新 Actions test 均 **success**（npm ci/build + VFX 单测） | 草稿，未合并/未部署，运行器/原版视觉待验 |
+| [PR #10](https://github.com/cianasa222/swarm-remake/pull/10)，`77c25a3583056f01cbf078beb6b84d8eb48135b2` | Quick BAB-Q01 B0/EffectDef/HUD + Gemini GM-02/03 数据 + GPT-16 QC-19 修复：**157 套 VFX / 903 个图层**；5 套新增禁用自动绑定 | 两个最新 Actions test 均 **success**（npm ci/build + VFX 单测） | 草稿，未合并/未部署，运行器/原版视觉待验 |
 | [PR #11](https://github.com/cianasa222/swarm-remake/pull/11)，`bc44bc1d53a2f727da70e58e571992aaa555d501` | Quick Q-30 StarStrike **4 套/21 层**，原版 **14 张 WebP** 及 `SHA256SUMS.txt` | 两个最新 Actions test 均 **success**（npm ci/build + StarStrike 测试 + 14 贴图验收） | 草稿，未合并/未部署，网格/真机待验 |
 | [PR #12](https://github.com/cianasa222/swarm-remake/pull/12)，`196a9d5c` | 原始 Quick 122/742 历史重复包 | 已关闭，不能再覆盖 PR #10 最新数据 | 未合并 |
 | [PR #9](https://github.com/cianasa222/swarm-remake/pull/9)，`012f85a5` | GPT-10 React/HeroUI 登录、设置、升级 UI | 既有构建回归通过，真实登录/HUD/iPhone 待验 | 草稿，未合并/未部署 |
+
+## GPT-18 增量补充（2026-11-23）
+
+- [PR #10](https://github.com/cianasa222/swarm-remake/pull/10) 再次增加 `attachedMesh` 绑定与回归检查：GM-03 原有 21 条现扩展为 **26 条**，新提交 `77c25a35` 在 CI 2/2 success；仍属于数据映射，不代表 Babylon 已运行。
+- 本次外部变更在 GPT-17 交接文档提交之后产生，按独立 PR delta 追加，之前固定版本历史不覆盖。
 
 ## 本次修复及注意
 

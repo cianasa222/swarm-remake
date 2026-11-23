@@ -282,3 +282,7 @@
 - **Q-30 以 PR #11 为准**，14/14 StarStrike WebP + SHA256SUMS 已到仓库；CI 2/2 PASS。PR #10/#11 均已统一 `tsconfig.json` 与 `review-checks.yml`，条件执行 VFX 数据、StarStrike 数值、贴图门禁，防止后续合并丢检查。
 - **重要区别**：自动化通过 ≠ Babylon 迁移完成 ≠ 原版视觉通过；B1/B4、网格/纹理、原版视频、iPhone GPU 与账号/UI 真机验收仍待执行。PR #9/#10/#11 都不自动合并或部署。
 - **保护**：Quick/Gemini `pending/`、14.14 BIN/WAD 和备用资产不清理；已合入旧 Q22～Q28 不再套用。双端保存固定 commit manifest，KV 根目录已知独有内容须合并保留；全局 `SYNC_STATE.commit` 未全量核验前不得推进。详见 [GPT-17 最新回执](handover/gpt/STATUS_GPT17.md)。
+
+### 8.4 GPT-18 · 后续增量（代传审查）
+
+- PR #10 在 GPT-17 审查后新增 5 条 `attachedMesh` 绑定及独立回归门禁，合计 **26 条**（先前 21 条），最新提交 `77c25a35`、GitHub Actions 2/2 success；仍是草稿，未合并/部署。
