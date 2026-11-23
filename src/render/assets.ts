@@ -29,7 +29,8 @@ export interface AssetStats {
   warmupMs: number;
 }
 
-const rawBase = (import.meta.env.VITE_ASSET_BASE_URL as string | undefined)?.trim() || '.';
+// Vite injects import.meta.env in the browser; raw Node regression tests do not.
+const rawBase = (import.meta.env?.VITE_ASSET_BASE_URL as string | undefined)?.trim() || '.';
 const ASSET_BASE = rawBase.replace(/\/+$/, '');
 
 export function hasCustomAssetBase(): boolean {

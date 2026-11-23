@@ -28,3 +28,7 @@
 - 同步操作**未改**全局 `SYNC_STATE.commit`（该字段代表旧主线镜像，仍为 `bd8a87b6`），没有把未合并分支当正式主线。
 - Cloudflare Worker 部署只读核查：`tideline-swarm` 仍部署 `f94499ee`，版本 `5955ad9a` 流量 100%。本次只使用 KV 数据存储，不上传/部署 Worker。
 - 本次另在整合分支增强 GitHub Actions 游戏数值/认证/帧率/精英音频回归门禁；以最新提交 GitHub Actions 结果作为最终 CI 判断，不能沿用上一提交的 PASS 证明新提交。
+
+## CI 修复：Node 导入资源加载器的 Vite 环境兼容
+
+在强化回归门禁后，`tools/q28-regression.test.ts` 引入 `src/render/assets.ts`，直接访问 `import.meta.env.VITE_ASSET_BASE_URL` 在非 Vite Node/tsx 环境中抛出 `TypeError`。该错误是测试模块初始化的兼容性缺陷，不是游戏数值/性能回归。修复为 `import.meta.env?.VITE_ASSET_BASE_URL`：Vite 生产资源路径维持原语义；Node 未注入时回退 `.`。原失败 CI 已记录，不伪称通过；修复后须重跑全部检查并记录新的提交号。
