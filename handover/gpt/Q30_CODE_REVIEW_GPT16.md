@@ -9,9 +9,9 @@
 - `starstrike_14_14.ts` 及 `starstrike_vfx.ts`：数值数据和渲染在 Three.js 层，保留旧 Babylon 迁移边界；13 个实例化图层为代码目标，GPU DrawCall 尚未实机验证。
 - 下载工具检查**完整 8 字节 PNG 魔数**，已有 .webp 复用前先经 sharp 解码验证，不再只检查两字节 PNG 特征。
 - TypeScript 产品编译只编译 `src`；工具脚本由 `tsx` 单测执行，避免主线已知的 Node 类型 TS2591 错误。
-- 单独增加 14 张 WebP 的资源验收脚本 `tools/q30/verify_assets.mjs`。**当前这些图像文件尚未进入分支**，所以资产门禁预计失败；必须运行转换下载工具，再提交实际 14 张贴图并核对版权/版本后方可过门禁。
+- 单独增加 14 张 WebP 的资源验收脚本 `tools/q30/verify_assets.mjs`。**历史状态（首次草稿）**：当时图像尚未进入分支；现已由本报告后文记录的资源导入提交补齐 14/14 WebP，并经 GitHub Actions 门禁通过。未来改动仍须重新验哈希和原版版本。
 - 需要核查 `Strawberry_StarStrike_Light_Inside.scb`（当前圆柱占位）与 `star_burst.json` 原版网格对应关系，纹理/Riot 14.14 原版录像对比、真实 iPhone GPU 性能均待验。
-- `assets.ts` 中引用新增贴图，但尚未存在时浏览器只会报告资源加载失败并导致新特效不可见，**不可合并/部署**。
+- `assets.ts` 引用的 14 张贴图目前已入分支并通过资产门禁。仍需核查 SCB 网格、原版录像效果和 iPhone 性能，**不可据此直接合并/部署**。
 
 ## 交付边界
 
@@ -22,3 +22,10 @@ PR 先作为草稿代码备份。原件 KV `pending/q30/`、备份资产分支�
 - GitHub Actions `Q30 one-time original texture import` 运行 [45159196452](https://github.com/cianasa222/swarm-remake/actions/runs/45159196452) **success**；Patch 14.14 CommunityDragon 原版纹理 14/14 经 PNG 文件签名、Sharp 解码及 WebP 转换验证。
 - 纹理 commit `20f4e0fbb26980ee68f1bde172c39571da061611` 已写入本 PR 分支，包括 14 个 `public/assets/weapons/vfx/starstrike/*.webp` 与 `SHA256SUMS.txt`。GitHub tree 实见 14 个图像、且有非零大小。既有“贴图尚未入仓”的提示仅指**修复之前的初始 PR**。
 - 仍需验证：`Light_Inside.scb` 的真实网格及 `star_burst.json` 对应关系、原版录像同步截图、iPhone GPU/WebGL2 帧率与视觉。数值/构建通过亦不代表真机验收完成；**仍保持草稿，不合并或部署**。
+
+## GPT-17 · 双分支 CI 和构建配置协调（2026-11-23）
+
+- PR #10 与 PR #11 最初各自增加相同路径 `.github/workflows/review-checks.yml` 和 `tsconfig.json`，内容不一致，若按先后合并可能遗失另一组检查。
+- 已统一工作流：存在 `tools/bab/extract_vfx_14_14.test.cjs` 时运行 VFX 数据测试；存在 `tools/q30-starstrike.test.ts` 时运行 StarStrike 数值测试；存在 `tools/q30/verify_assets.mjs` 时执行纹理完整性门禁。
+- PR #11 的 `tsconfig.json` 使用与 PR #10 完全相同的版本（仅 `src` 纳入浏览器构建类型检查）；Node/工具由独立脚本及 Actions 检查。
+- 构建/CI 成功仅证明自动化检查通过，不替代原版录像或真机验收。旧版线上不变。
