@@ -104,6 +104,7 @@
 ---
 
 10. **KV 独有临时代码与代上传（GPT-12 · 用户确认 2026-11-23）**：Quick 或其他 AI 无 GitHub 权限时可以将源码/补丁、交接、基线 commit、任务编号、变更路径、SHA-256 和未验收项写入独立 `pending/<任务>/`，登记 `SYNC_STATE.json.kv_only_pending`、`pending_branches` 与 `FILE_INDEX.json`，标记「仅 KV，待上传」。不得伪造 GitHub commit。
+   - **Quick 固定工作方式（Quick KV 交接记录：用户 2026-11-23 09:23 决定）**：Quick 只写 KV 代码和交接；其他有权限 AI 负责 GitHub 提交、PR、编译验收与回执；不要求 Quick 重连 GitHub。待提交索引查 `pending_branches`、`pending_github_commits.quick/*`，不得擅自清理。
    - 每次开工及同步前读取上述字段；未上传的文件不可覆盖；共享文档必须对照最新 GitHub 和 KV 逐节合并，保留双方其他改动。
    - 任何具备 GitHub 权限的 AI 可以代上传，不必等待 Quick。先检查是否已有相同提交/PR、最新审查更正和依赖，逐项核对 SHA-256、基线与改动边界；按原作者任务独立建分支、开 PR（提交标题保留原任务编号，注明代上传 AI），不能直接将未经验证代码并入 main。上传后按 2.3 将实际 GitHub commit 快照同步 KV，更新原任务记录、PR 链接、待验收项并回写自己的交接。原 KV 临时文件保留至满足 2.4 清理门槛。
    - Quick 历史 Q22–Q28 已有 PR #8/MU-01 部署记录，不得重复套用旧补丁；QC-15 更正及不同任务的 pending 均不得误删。新 BAB-01 的数据准备须独立分支、独立核对。

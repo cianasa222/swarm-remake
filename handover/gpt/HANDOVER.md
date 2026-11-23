@@ -18,6 +18,7 @@
 | GPT-10 | 2026-11-23 | [PR #9](https://github.com/cianasa222/swarm-remake/pull/9) `012f85a`（未合并） | [UI_GPT10.md](https://github.com/cianasa222/swarm-remake/blob/gpt/gpt10-heroui/handover/gpt/UI_GPT10.md)、src/ui、入口、设置与升级、验证脚本 | React + HeroUI v3，登录/准备/暂停/升级 UI；Quick 并行迁移准备 | build、playtest 4/4、网关 4/4、画质/Q28 回归通过；浏览器待验 | 未部署 | 分支独立快照，见 `SYNC_STATE.pending_github_commits` |
 | GPT-11 | 2026-11-23 | `git log --grep GPT-11` | COLLAB 2.3、AGENTS、入口、本文件 | 用户批准每次提交立即同步 GitHub+KV，无需等合并；分支快照与主线隔离，保留 Quick 资料 | 文档与 KV 清单/读回核验 | 不涉及部署 | 见 `SYNC_STATE.gpt11_sync_policy` |
 | GPT-12 | 2026-11-23 | `git log --grep GPT-12` | COLLAB 2.2 第 10 条/2.4、AGENTS、入口、本文件 | 补齐 KV-only 代上传规则与临时代码生命周期；用户确认上线/实机验收后可清理冗余副本，保留 GitHub 历史、原版资产和记录 | 文档与 KV 读回核验；本次无删除 | 不涉及部署 | 见 `SYNC_STATE.gpt12_pending_lifecycle` |
+| GPT-12a | 2026-11-23 | `git log --grep GPT-12a` | COLLAB 2.2、AGENTS、入口、本文件 | 同步期间发现 Quick KV 最新用户决定（09:23）：Quick 固定仅写 KV，其他 AI 代上传 GitHub、开 PR、验收；补入主线规范 | 文档核对；保留 Quick 并行记录 | 不涉及部署 | 见 `SYNC_STATE.gpt12_pending_lifecycle` |
 
 ## 2. 接手基线
 

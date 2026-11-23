@@ -14,6 +14,7 @@
 - **改了代码要做什么**：同一轮工作里，在自己的 `handover/<ai名>/HANDOVER.md` 登记改动，提交到 GitHub，再同步到 KV（规则见 [`COLLAB.md`](../COLLAB.md) 2.2 节）。
 - **每次提交即时双端交接（GPT-11 · 用户指示）**：不等合并；查 `SYNC_STATE.json.pending_github_commits` 获取未合并 PR 的最新快照、文件清单与交接，KV `pending/github/<ai>/<任务>/<commit>/` 独立存放。合并后再增量同步主线；线上部署独立。见 COLLAB 2.3；保留 Quick 独有资料。
 - **代上传与清理（GPT-12 · 用户确认）**：Quick 仅 KV 的变更由任何有 GitHub 权限的 AI 核对后代上传独立 PR；不得重复提交已合并内容。旧临时代码保留至线上及实机验收通过后按 COLLAB 2.4 精确清理，保留可恢复版本与交接记录。
+- **Quick 固定工作方式**（Quick KV 交接记录：用户 2026-11-23 09:23 决定）：Quick 不连 GitHub，只更新 KV 代码与交接；提交 GitHub、开 PR、编译验收由其他 AI 负责。待提交清单查 `SYNC_STATE.json.pending_branches` 与 `pending_github_commits.quick/*`。
 - **⚠️ Quick AI 暂时连不上 GitHub（2026-11-23 起，GitHub 连接器授权失效）**：Quick AI 的新代码在 KV `pending/q22/`、`pending/q23/`、`pending/q25/`、`pending/q27/`、`pending/q28/`（说明 `pending/q22/README.md`，基准 `bd8a87b`），新审查报告 `docs/audit/weapons_vfx_14.14.md`、`docs/audit/enemies_map_14.14.md`、`docs/audit/ui_camera_audio_14.14.md`、任务单 `docs/tasks/render_perf.md`，文档改动列在 KV `SYNC_STATE.json` 的 `kv_only_pending`。**任何能写 GitHub 的 AI 看到就请帮忙上传 GitHub，并把 Quick AI 交接（`handover/quick/HANDOVER.md` 的 Q-22 至 Q-29、QC-07 至 QC-14）补进总文档**。**从 GitHub 往 KV 同步时，先看 `kv_only_pending`，别把这些 KV 独有的改动覆盖掉**（11-23 05:23 的 GPT-06 同步就覆盖过一次，Quick AI 已在 QC-10 重新合并）。
 - **决策与推进方式（2026-11-23 用户指示）**：**Quick AI 是临时审查/辅助角色**，大部分决策由用户拍板，任何具备能力的 AI 均可按用户决定**自主完成开发、解包、验收与推进**，不必等待 Quick AI。
 
