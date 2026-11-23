@@ -8,14 +8,7 @@
   <title>无尽狂潮 · 仓库区</title>
 </head>
 <body>
-  <section id="login-home" aria-label="无尽狂潮登录主页">
-    <div class="home-art" aria-hidden="true"><div class="home-moon"></div><div class="home-beam"></div><div class="home-tower"></div><div class="home-sea"></div><div class="home-sea sea-back"></div></div>
-    <header class="home-header"><span class="home-brand">◈ TIDELINE / ANIMA SQUAD</span><span class="home-version">14.14 · 私人复刻</span></header>
-    <main class="home-content">
-      <div class="home-copy"><div class="home-kicker">第一战区 / 仓库区</div><h1>无尽<br>狂潮<span>。</span></h1><p>守住最后一道防线。<br>在潮汐吞没城市之前，逆流而上。</p></div>
-      <div class="home-glass"><div class="home-kicker">MISSION ACCESS</div><h2>准备出击</h2><p>选择你的进入方式。</p><button id="home-guest" class="home-primary">游客进入 <span>→</span></button><button id="home-email" class="home-secondary">邮箱账号登录 <span>→</span></button><div id="home-account" hidden><button id="home-continue" class="home-primary">继续游戏 <span>→</span></button><button id="home-logout" class="home-secondary">退出账号</button></div><form id="home-login-form" method="post" action="/api/swarm/auth/login" hidden><label for="login-email">邮箱</label><input id="login-email" type="email" name="email" autocomplete="username" required maxlength="254" placeholder="name@example.com"><label for="login-password">密码</label><input id="login-password" type="password" name="password" autocomplete="current-password" required maxlength="256" placeholder="输入账号密码"><button id="home-submit" class="home-primary" type="submit">登录并进入 <span>→</span></button><a class="home-register" href="https://game.cianasa888.cfd/" target="_blank" rel="noopener noreferrer">注册账号 / 管理原账号 ↗</a></form><small>共用垃圾处理器账号，不读取原游戏存档。</small><p id="home-status" role="status" aria-live="polite"></p></div>
-    </main><footer class="home-footer">非官方 · 朋友间非商业娱乐项目</footer>
-  </section>
+  <section id="login-home" class="dark" aria-label="无尽狂潮登录主页"><div id="login-root"></div></section>
   <canvas id="gl"></canvas>
 
   <!-- 触控左半屏摇杆区 -->
@@ -171,26 +164,12 @@
   <!-- 开局封面 -->
   <div id="screen-start" class="modal hidden">
     <div class="panel start-panel">
-      <h1>无尽狂潮 <small>Patch 14.14 · 仓库区</small></h1>
-      <p class="subtitle">第一关：仓库区（180m × 180m）· 5 武器 + 6 被动进化 · 击败深海魔鲨雷克塞</p>
+      <div class="ui-eyebrow">MISSION 01 · WAREHOUSE DISTRICT</div>
+      <h1>任务准备 <small>Patch 14.14</small></h1>
+      <p class="subtitle">仓库区 · 击败深海魔鲨雷克塞</p>
       <div class="tips">
         <div><b>PC 操作：</b>WASD 移动、C/Q 切换自动瞄准、E 鱼骨头 9 连火箭、R 超究极死神飞弹、空格闪避、1/2/3 选卡</div>
         <div><b>移动触控：</b>左半屏拖动虚拟摇杆移动，右下角全彩技能键释放大招/火箭/闪避</div>
-      </div>
-      <div class="opt-row">
-        <span>画质：</span>
-        <div class="seg" id="start-quality">
-          <button data-q="auto">自动</button>
-          <button data-q="low">低</button>
-          <button data-q="medium">中</button>
-          <button data-q="high">高</button>
-        </div>
-        <span id="q-rec" class="muted"></span>
-      </div>
-      <div class="opt-row checks">
-        <label><input type="checkbox" id="opt-flash" /> 减弱闪光</label>
-        <label><input type="checkbox" id="opt-shake" /> 关闭震屏</label>
-        <label><input type="checkbox" id="opt-mute" /> 静音</label>
       </div>
       <div id="start-details"></div>
       <div id="preload-box" class="preload-box">
@@ -215,26 +194,13 @@
   <!-- 暂停菜单 -->
   <div id="screen-pause" class="modal hidden">
     <div class="panel pause-panel">
+      <div class="ui-eyebrow">TACTICAL PAUSE</div>
       <h2 id="pause-title">任务暂停</h2>
-      <div class="opt-row">
-        <span>画质：</span>
-        <div class="seg" id="pause-quality">
-          <button data-q="auto">自动</button>
-          <button data-q="low">低</button>
-          <button data-q="medium">中</button>
-          <button data-q="high">高</button>
-        </div>
-      </div>
-      <div class="opt-row checks">
-        <label><input type="checkbox" id="p-flash" /> 减弱闪光</label>
-        <label><input type="checkbox" id="p-shake" /> 关闭震屏</label>
-        <label><input type="checkbox" id="p-mute" /> 静音</label>
-      </div>
+      <div id="pause-details"></div>
       <div class="btn-row">
         <button id="btn-resume" class="primary-btn">继续战斗</button>
         <button id="btn-pause-restart" class="sec-btn">重新开始</button>
       </div>
-      <div id="pause-details"></div>
     </div>
   </div>
 

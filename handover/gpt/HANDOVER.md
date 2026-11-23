@@ -15,6 +15,7 @@
 | GPT-07 | 2026-11-23 | PR #8 `b688d0f` | 11 个 src 文件、17 个复用音频、2 个回归测试、Q28 审查文档 | Q22/Q23/Q25/Q27/Q28 审查，精英死亡与帧率修复，九种武器音效关键事件接入，纠正 StarStrike/PierceShot/HolyBauble 映射 | build、playtest 4/4、21 种帧率组合、18 组音效及精英复位测试通过，实机待验 | 已合并，未部署 | 见 SYNC_STATE.json |
 | GPT-08 | 2026-11-23 | PR #8 合并 `797ef1d` | `wrangler.jsonc`、本交接、Q28 审查、[部署交接](DEPLOYMENT_GPT08.md) | 用户明确要求先合并部署；核对 30 个 PR 变更文件与本机 Git blob 一致，准备完整 Worker 静态资产及 ACCOUNT_AUTH 绑定配置 | 网关 mock 4/4；构建产物 415 文件、约 51 MiB；实机待验 | 合并成功；线上发布受上传授权阻塞，旧版本保留 | 见 SYNC_STATE.json |
 | GPT-09 | 2026-11-23 | `git log --grep GPT-09` | [BABYLON_MIGRATION.md](BABYLON_MIGRATION.md)、本文件、AGENTS、COLLAB 看板、总入口 GPT 行 | 用户批准全面迁移 Babylon.js；B0–B7 操作、双后端、VFX、资产、性能、回滚 | 文档核对；尚未迁移/测试 | 线上的 MU-01 不变 | 以 SYNC_STATE.json 的 GPT-09 增量同步记录为准 |
+| GPT-10 | 2026-11-23 | `gpt/gpt10-heroui` 独立分支 | [UI_GPT10.md](UI_GPT10.md)、src/ui、入口、设置与升级、验证脚本 | React + HeroUI v3 登录/准备/暂停/升级 UI；与 Babylon 迁移并行且解耦 | build、playtest 4/4、网关 4/4、画质/Q28 回归；独立代码审查通过，浏览器待验 | 未合并、未部署 | 合并后增量同步 |
 
 ## 2. 接手基线
 
