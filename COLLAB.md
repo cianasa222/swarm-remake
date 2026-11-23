@@ -183,7 +183,7 @@
 | [#1](../../issues/1) | 14.14 `.wad.client` 下载解包（**用 Windows 清单**，见 Issue 21:30 订正）+ 5 个 Nova 网格转 JSON + 15 张贴图（T4）+ 4 种小怪 `skin0.bin.json` | 执行 AI（Muse，待领取） | 🟡 待领取 |
 | — | 验收并修正喷泉第一批（`c63e871`，Quick AI 已提交） | 开发 AI + 用户 | ✅ 已验收（AG-01）并上线（AG-02） |
 | — | 验收并修正小怪模型修复（`46362d7`，Quick AI 已提交） | 开发 AI + 用户 | ✅ 已验收（AG-01）并上线（AG-02） |
-| — | 重新部署线上 | Antigravity | ✅ 已上线 `701860ff`（AG-05，含 AG-03 喷泉第二批、PR #2 金克丝重建、AG-05 金克丝补层）；PR #3 合并后需再部署一次 |
+| — | 重新部署线上 | Muse（MU-01） | ✅ 当前线上 `5955ad9a`（deployment `f94499ee`，11-23 06:40，含 PR #3 / #7 / #8）；上一版 `7d862759` 保留可回退 |
 | — | 喷泉第二批：叠加贴图 + 剩余 Nova 层（清单见 `docs/audit/fountain_emitters_14.14.md` 4.3 节） | 开发 AI（Quick AI 审查） | ✅ 已完成（AG-03 `c38c792`）并上线（AG-05） |
 | — | M5：三档画质验收 + 联机边界（`teammateVfxScale`、`players[]`） | 开发 AI（Quick AI 审查） | ⏳ 待用户确认开启 |
 | GPT-05/06 | 登录首页、游客、邮箱账号授权及画质细节 | GPT（用户授权接手） | ✅ PR #7 已合并 `accf280`；构建、网关测试、数值回归通过；待线上绑定及真机验收，未部署；不等于完整 M5 |
@@ -192,15 +192,25 @@
 | GPT-11 | 每次代码提交立即双端交接、分支镜像隔离 | GPT（用户授权修改规范） | ✅ 规范更新；GPT-10 分支快照状态见 KV `pending_github_commits` |
 | GPT-12 | KV-only 代上传与临时代码生命周期 | GPT（用户确认） | ✅ 规则补齐；上线并验收通过后方可精确清理重复临时代码，本次不删任何 key |
 | GPT-13 / BAB-Q01-REVIEW | [BAB-Q01 验收、缺陷及缺项](handover/gpt/BAB_Q01_ACCEPTANCE_GPT13.md)：Q01-01～10；先修回旋刃进化、补给/拾取/精英覆盖、贴图/网格映射、默认 tsc，再完成 B1/B4 实际运行器；HUD 与原版实机核对 | 任意能做的 AI（领取留痕；Quick 仅 KV；UI 与 GPT-10 协调） | 🟡 首验 14/14、转换复现 6/6 PASS；正式集成/构建/视觉/性能验收未通过，未提交 BAB-Q01 代码、未部署 |
+| UIA | **音效 + 界面补齐**（`docs/audit/ui_camera_audio_14.14.md` 第 2 节，**只在 KV**）：UIA-1 9 把副武器原版音效（**GPT-07 已在 PR #8 补关键释放 / 命中 / 爆炸 18 个音频组**，返程 / 循环 / 停音等仍缺）；UIA-2 敌人按怪种的死亡音效；UIA-3 背景音乐补中期 / 后期切换、核对 5 个 BGM 哈希；UIA-4 横幅改原版文字和时长；UIA-5 地图目标系统（原版 21 种，建议单独开任务）；UIA-6 镜头 / 界面截图核对 | 任意能做的 AI（在本行写名字和领哪几项） | 🟡 待领取 |
+| EMAP | **敌人 + 地图补齐**（`docs/audit/enemies_map_14.14.md` 第 5 节，**只在 KV**）：EMAP-1 地图环境特效（海面焦散、岸边浪、海沫、海岸线、水池 / 池塘、海鸥、鱼、通风口烟雾，原版第一关全有、项目全无）；EMAP-2 死亡特效补发光 / 条纹 / 星芒层；~~EMAP-3 精英死亡动作~~（Q-28，已随 PR #8 上线）；EMAP-4 敌人材质亮度与精英缩放截图核对 + 精英波放大 2 倍；EMAP-5 接入 16 个补充敌人模型 | 任意能做的 AI（在本行写名字和领哪几项） | 🟡 待领取 |
+| WVFX | **武器特效补层**（`docs/audit/weapons_vfx_14.14.md` 第 2 节 8 项，**只在 KV**）：先定统一尺寸换算规则；地雷换原版 `Ziggs_Satchel` 模型并补 13 层爆炸；~~战兔巨爆按 Nuke 补层~~（作废，见 Q-30）；~~十字弩核对撞墙反弹~~（作废，见 Q-30）；耀光力场补暗橙底（橙色噪声层和颜色已由 Q-28 补）；斯塔缇克补命中特效；冰爆护甲补环绕冰晶和冰刺；UwU / 回旋刃 / 旋风切割器补拖尾光晕 | 任意能做的 AI（在本行写名字和领哪几项） | 🟡 待领取 |
+| PERF-1 T6 | 用 `?perf=1` 在 iPhone 实测 MSAA 开 / 关帧率，再决定是否换 FXAA | 任意能实机测的 AI 或用户 | 🟡 待领取（`?perf=1` 已上线，可直接测） |
+| PERF-1 T7 | 特效粒子合批：特效贴图拼图集、同类粒子一次画完、叠加层数 / 亮度上限（`vfx.ts`、`jinx_vfx.ts`、`weapon_vfx.ts`）；用 `?perf=1` 记录前后 DrawCall 和帧率 | 任意能做的 AI（在本行写名字领取） | 🟡 待领取 |
+| PERF-1 T2b | **重新导出 4 个小怪（pix / ghoul / hunter / dasher）带原版动作**：现有 `.glb` 有骨骼但 0 段动作（QC-08 实测），方法见 `pending/q22/README.md` 第 2 节 | 任意能做的 AI（在本行写名字领取） | 🟡 待领取 |
+| PERF-1 | **渲染性能与画质优化（iPhone 优先）**，任务单 `docs/tasks/render_perf.md`（**只在 KV**，见 QC-07） | 任意能做的 AI（在本行写名字领取） | 🟡 部分待领取（T2 / T4 / T5 已随 PR #8 上线；T1、T2b、T6、T7 待领取） |
+| Q-22 / Q-23 / Q-25 / Q-27 / Q-28 | 小怪顶点动画 + 阴影 + 贴图过滤；手机锁 60 帧 + 动态分辨率 + `?perf=1`；冰爆护甲颜色寿命；小怪死亡特效；精英死亡动作 + 耀光 4 层 + 斯塔缇克闪电时长 | Quick AI 写 → GPT-07 审查 → GPT-08 合并 → MU-01 部署 | ✅ PR #8 `797ef1d`（剔除 QC-15 指出的战兔巨爆改色）已上线 `5955ad9a`；真机视听待验；`pending/q22`–`q28` 原件保留作历史，**勿重复套用** |
+| BAB-01 B0+B4（数据） | **新引擎迁移子任务：B0 渲染模块清单 + B4 通用 VFX 数据准备 + 原版 HUD 资源核查**（Quick AI BAB-Q01；不含 B1 引擎接入和 B4 运行器实现；不碰 UI / 登录 / 设置 / 升级弹窗 / 账号） | Quick AI（用户 2026-11-23 08:54 指派领取） | ⏳ 已交付到 KV `pending/bab01-quick/`（14 个新文件），**待能写 GitHub 的 AI 上传**到分支 `quick/bab01-b0-b4-data` 开 PR；TS 未编译 |
+| QC-19（比对 GM-02/03） | Quick AI 对 Gemini 修复版的比对意见：建议补 技能哈希键解析、金币 `inGame:false`、精英 / 首领血条与首领狂暴、敌人出生特效；MapA 环境 19 个与 `AnimaSquad_Card` 用途**用户 18:16 决定交给验收方对照原版录像定**。见 `handover/quick/QC19_GM02_REVIEW.md` | Quick AI（仅 KV）→ Gemini 或代上传方决定是否合入 | 🟡 意见已交付；**以 Gemini 版为准**，Quick 不另交数据包 |
 | Q-30 | **战兔巨爆按原版 StarStrike 逐层重做**（4 个系统 21 层：普通 / 进化 / 进化红橙大落点各 4 层 + 爆炸 9 层）。撤回 Q-25 / Q-28 错误改色已由 GPT-07 在 PR #8 完成；十字弩（PierceShot）、旋风切割器（HolyBauble）的更正见 `handover/quick/HANDOVER.md` 1.7 节 | Quick AI 写（仅 KV）→ 任意能写 GitHub 的 AI 上传、编译、截图验收 | 🟡 代码已交付 KV `pending/q30/`（README 有上传步骤和 5 条待验近似），**待上传到分支 `quick/q30-starstrike` 开独立 PR**；未编译、未实机；只改画面 |
 | GM-02 / GM-03（Q01-01～03 修复） | 修复 BAB-Q01 的 **Q01-01**（回旋刃进化 +3）、**Q01-02**（精英光环 +2、补给箱/拾取/玩家反馈 +25，合计 152/883）与 **Q01-03**（555 贴图实测 100% 真 PNG + 回填 95 张主线路径、133 网格逐路径表含主线 29/备用 62/缺口 42、21 层 `attachedMesh` 绑定） | Gemini（仅 KV）→ 任意有权 AI 代上传 | ⏳ 已交付到 KV `pending/bab01-gemini/`（14 文件，单测 4/4 + CDN 555/555 PASS），待代上传分支 `gemini/bab01-q01-01-02-fix` 开 PR 与构建验收 |
 | — | 补给箱经验/升级节奏核查 | GPT（后续单独处理） | ⏳ 用户要求暂缓；本轮不改战斗数值 |
 | — | 自动部署 `wrangler.jsonc` + `preview` 分支 | 开发 AI + 用户 | ⏳ |
-| — | 其余小项（清理 `lan.ts`/`buildWorld`、`compress_assets.mjs` 绝对路径） | 开发 AI | ⏳ 见 `QUICK_AI_HANDOVER.md` 第 2 节 |
+| — | 其余小项（清理 `lan.ts`/`buildWorld`、`compress_assets.mjs` 绝对路径） | 开发 AI | ⏳ 见 `handover/quick/HANDOVER.md` 第 2 节 |
 | — | 网站下线交接文档、停用 `/__sync_kv`（QC-05） | Quick AI（用户要求） | ✅ 已完成 |
 | — | 交接按 AI 分目录（`handover/<ai名>/`），新增交接总入口和 2.2 节规则（Q-11） | Quick AI（用户要求） | ✅ 已完成 |
-| — | 线上版本 vs 14.14 全面审计（数值 ✅ Q-14；首领 ✅ Q-17 `docs/audit/boss_reksai_14.14.md`；音效已由 AG-08 接入原版，待审；武器特效 / 敌人模型 / 地图 / 界面 / 镜头待补） | Quick AI | 🔄 进行中 |
-| — | 首领雷克塞按原版修复（Q-19 删自编招式和数值、Q-20 狂暴、Q-21 钻地 / 飞弹 / 隧道 / 登场、Q-22 特效与材质，资源见 Issue #4） | Quick AI 提交 → 开发 AI 验收 | ⏳ 待开始 |
+| — | 线上版本 vs 14.14 全面审计（数值 Q-14 `live_vs_14.14.md`；首领 Q-17 `boss_reksai_14.14.md`；武器特效 Q-24 `weapons_vfx_14.14.md`；敌人模型 + 地图 Q-26 `enemies_map_14.14.md`；界面 + 镜头 + 音效 Q-29 `ui_camera_audio_14.14.md`；后三份只在 KV） | Quick AI | ✅ 已完成；修复任务分在 PERF-1 / WVFX / EMAP / UIA 行 |
+| — | 首领雷克塞按原版修复（原计划编号 Q-19 至 Q-22 已被其他改动占用，首领修复从 Q-31 起（Q-30 预留给战兔巨爆）：删自编招式和数值、狂暴、钻地 / 飞弹 / 隧道 / 登场、特效与材质，资源见 Issue #4；AG-09 已接入 42 段动作和子网格隐藏；原版 41 个特效系统 351 层参数已在 BAB-Q01 的 `reksai.json`） | Quick AI 提交 → 开发 AI 验收 | ⏳ 待开始 |
 | [#4](https://github.com/cianasa222/swarm-remake/issues/4) | 补原版缺失资源并补做对应层：金克丝 E/R 35 个贴图 / 网格；雷克塞 34 段动作、子网格核对、308 个特效资源、出场动画核对；**全游戏原版音效**（清单 `docs/tasks/missing_assets_14.14.md`） | 任意能做的 AI（Issue 评论领取） | 🔄 进行中：A 节核心金克丝层（AG-05）、**C 节第一关 93 条原版音效 + BGM（AG-08）**、**B1/B2 雷克塞 42 动作 + `Wrap/Plane` 子网格精准隐藏（AG-09，视觉审计 CLEAN PASS）** 均已合入 `main`；剩余 55 个雷克塞特效网格与 16 个补充小怪模型已在分支 [`asset/14.14-unpacked-assets-20261123`](../../tree/asset/14.14-unpacked-assets-20261123) (`4b1b5f7`) 待后续按需合入 |
 | [PR #2](https://github.com/cianasa222/swarm-remake/pull/2) | 金克丝数值与特效按 14.14 原版重建（Q-13） | Quick AI 提交 → 开发 AI 验收 | ✅ 已合并（AG-04）并上线（AG-05） |
 | [PR #3](https://github.com/cianasa222/swarm-remake/pull/3) | A 类数值对齐 14.14：武器射程、旋风切割器、耀光、首领 900 s、99 级经验表、补给箱、传送环（Q-15） | Quick AI 提交 → Antigravity 验收 | ✅ 已合并（AG-09 `c056396`，`build` + `playtest` 4/4 全胜），待部署 |
