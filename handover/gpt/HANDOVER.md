@@ -30,6 +30,8 @@
 
 | GPT-22 | 2026-11-23 | 本次文档提交（见 GitHub main 文件历史） | [B0–B7 最新差距](BABYLON_GAP_REVIEW_GPT22.md)、COLLAB 2.5/2.6、Gemini GM-05/06/10/12 交接同步、README、迁移手册与 PROGRESS | 同步用户“先跑通代码、暂缓实机”决定，区分已提交草稿 PR 与仅 KV 的 GM-10/11；明确 B1 真场景与 B4 真运行器未完成、GM-12 44 网格优先级 | 文档审查；本次无新引擎构建/真机测试 | 不部署 | 提交后按 COLLAB 2.3 更新 KV 分支/主线增量快照并保护独有 KV |
 
+| GPT-24 | 2026-11-24 | 本次文档提交（GitHub main） | COLLAB 角色/Issue/验收、任务单、总入口和本文件 | 用户确认 Quick 退出，后续任务改由 Gemini（KV-only）和 GPT（GitHub/运行器/CI）分担；保留所有旧 PR 和 KV | 文档修改，未新建 Babylon 可运行场景 | 不部署 | GitHub 固定 SHA 后 KV 文档增量与不可变快照，历史 Quick 条目不得删除 |
+
 ## 2. 接手基线
 
 已读交接入口、COLLAB、Quick / Antigravity 交接、AGENTS、AI_HANDOVER、PROGRESS、Issue #1 / #4 及评论、雷克塞审计及缺失资产清单。基线 main `85714eadad3b8f3a0fb62653835ded9582be005f`（Q-20）。KV 对上述交接正文逐一比对一致；KV 状态所记 commit 同基线。M0–M4 已完成阶段验收，不等于完全 1:1；M5 等用户确认。AG-05 已上线 Worker 版本 701860ff；PR #3 尚待验收，不能按已合并处理。Issue #1 Muse 已领取 T1/T2/T4（评论可见）；AG-03 已交付喷泉 5 个 Nova 网格及 15 张贴图，先查剩余小怪配置，不重复下载。Issue #4 A 金克丝已补，B 雷克塞动作/子网格/VFX、C 原版音效、D 出场仍待执行。未领取这些执行任务，本轮无代码/资产改动。

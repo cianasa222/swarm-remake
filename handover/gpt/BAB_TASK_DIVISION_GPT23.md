@@ -1,10 +1,12 @@
 # GPT-23 · Babylon 全量迁移分工、资产缺口和 KV→GitHub 代传任务单
 日期：2026-11-23（CST）· 状态：**可领取/可继续执行的任务清单**，不是其它 AI 已被远程启动的承诺。
 
+> **GPT-24 · 现行人员调整（2026-11-24）**：用户明确 Quick 已退出。从此不再委派 Quick 任务、等待其意见或由它审核 PR。Quick 过去已经交付的数据/代码/审查报告和 KV 原件一律保留，避免重复上传。原 Quick 的 B4 真运行器与 B5 性能任务改由 Gemini（纯 TS 核心/映射/规格）+ GPT（实际 Babylon 接入/CI/上传）承接。Muse/Antigravity 仅在确认当前可用后参与。本文件是任务分配说明，**不代表这些 AI 自动开始运行**。
+
 ## 权限与责任
-- **Quick（KV-only）**：原版 14.14 VFX 数据、粒子/材质/网格运行器实现与静态测试；仅写 `pending/` 和自己的交接，不能访问 GitHub、执行仓库本地构建或部署。
-- **Gemini（KV-only）**：B1/B2/B3 配置、状态机、GLB/动画与音频事件映射、缺失资产来源和降级逻辑；仅写 `pending/` 和自己的交接，不能在 GitHub 合并、不能替有权 AI 做真实设备/本地 Windows 解包。
-- **GPT（当前 GitHub + Cloudflare 已连接）**：检查/修复 KV 提交的源码，按源 Manifest SHA-256 核验并上传 GitHub 独立草稿 PR，打通工程接口、CI、追踪 GitHub blob/文件清单与 Cloudflare KV 快照；不合并生产主线、不部署。
+- **Quick（已退出，历史角色）**：不再领取、审核或编写新任务。原有 Q/BAB-Q/QC 任务、PR #8/#10/#11 及 KV 历史代码永久保留供参考；不要误认为仍在线。
+- **Gemini（KV-only，现承担 Quick 新任务中的可独立部分）**：B1/B2/B3 配置、状态机、GLB/动画与音频映射；B4 VFX 独立 TS 逻辑、材质/粒子规格、原版字段核验；B5 性能预算；缺失资产路径和降级逻辑。新文件仅写 Gemini 自己的 `pending/`，不修改历史 Quick 前缀，不直接 GitHub 合并/部署。
+- **GPT（GitHub + Cloudflare）**：接管原 Quick 新任务中需要真实仓库执行的 B4 Babylon VFX 运行器、B5 性能优化和实际场景接线；审核 Gemini 的 KV 代码，按 Manifest 哈希验源后开草稿 PR、执行 CI、维护双端镜像；未获用户进一步授权不合并生产主线、不部署。
 - **Antigravity（原主线 AI）**：适合 Babylon 实体/动作/材质/角色与原有 `src/sim/` 边界适配，须确认它在当前会话确实有本机/GitHub 权限后才能代传或执行；未自动通知。
 - **Muse（曾执行解包和 Worker 发布）**：适合在有本机工具/授权情况下按 GM-12 清单定向解包/转换 SCB/SCO/SKN 和纹理；后续由 GPT 核对哈希并提交正式仓库。不得把原始 WAD/未经审查的受保护参考包直接推公开仓库。
 
@@ -25,12 +27,12 @@
 | --- | --- | --- | --- |
 | **GM-13 B1 真实 Babylon 适配器** | Gemini | `pending/bab01-b1-runtime-gemini/` | 基于 #18 `engine_boot.ts` 实现可接 `@babylonjs/core` `WebGPUEngine`/WebGL2 `Engine` 的生命周期适配、初始化失败回退、Canvas 占用、context loss、最小场景工厂与单元测试；不得声称实机已测 |
 | **GM-14 B2/B3 地图与人物适配** | Gemini | `pending/bab01-b2-b3-gemini/` | 输出 GLB 地图/镜头/光照、金克丝12态/雷克塞17动作、敌群动画的可执行模块、材质/动画清单、测试。仅从 PR #15 / #18 的固定版本读契约，不复制旧 `src/main.ts` |
-| **BAB-Q02 B4 绘制运行器** | Quick | `pending/bab01-b4-runtime-quick/` | 对接 #10 `effect_def.ts`、#17 `curve_eval/sim_to_vfx.ts`；输出 Particle/Mesh/Material/UV/child emitter 运行器、生命周期、特效分层/预算、敌方预警安全降级与单测，记录无法模拟的原版字段；不得改 `src/sim/`、UI、账号 |
+| **GM-16 / GPT-24 B4 绘制运行器** | Gemini（TS 逻辑/规格）→ GPT（Babylon 实际绘制/CI） | `pending/bab01-b4-runtime-gemini/`（新的目录，保留旧 Quick 前缀） | 对接 #10 `effect_def.ts`、#17 `curve_eval/sim_to_vfx.ts`；输出 Particle/Mesh/Material/UV/child emitter 运行器、生命周期、特效分层/预算、敌方预警安全降级与单测，记录无法模拟的原版字段；不得改 `src/sim/`、UI、账号 |
 | **GM-15 资源定位与降级表** | Gemini | `pending/bab01-assets-gemini/` + `handover/gemini/` | 按 GM-12 44 个路径 P0=15/P1=8/P2=10/P3=11 与已有资产分支对照，逐项记录来源/哈希/可否定向提取/所属系统/占位是否安全；确定需要通过 `inbox/` 向授权 AI 请求哪些 manifest、路径索引，不复制 WAD |
 | **音频事件接线** | Gemini（映射/测试）→ GPT（合并） | `pending/audio-uia-wiring-gemini/` | 在 GM-07/#16 与 GM-10/#19 之上接入武器/敌人死亡/补给箱事件；清楚区分 23 Ogg 已入草稿与 110 iOS M4A 尚缺，保持 React/UI |
-| **B5 预算与性能** | Quick（策略）→ GPT/Antigravity（运行接入） | `pending/bab01-perf-quick/` | WebGL2/WebGPU 画质梯度、实例/DrawCalls、阴影/粒子、队友特效削减；不得剔除敌方关键提示；先做自动化测试，真机后置 |
+| **GM-17 / GPT-24 B5 预算与性能** | Gemini（策略/预算）→ GPT（接入/CI）；Antigravity 仅确认可用后参与 | `pending/bab01-perf-gemini/`（新目录） | WebGL2/WebGPU 画质梯度、实例/DrawCalls、阴影/粒子、队友特效削减；不得剔除敌方关键提示；先做自动化测试，真机后置 |
 
-以上为**任务建议和共享交接信息**，不是已向 Quick/Gemini 触发异步执行；它们读取本文件后应在各自 KV 交接登记领取状态、文件清单及完成标准。各 AI 避免改对方命名空间。
+以上为**任务建议和共享交接信息**，不是已自动启动 Gemini、Muse、Antigravity 的开发。Quick 已退出，不能再向其发任务或等待回复；Gemini 读取本文件后需在自己的 KV 交接登记领取，GPT 负责可执行的集成与上传，避免覆盖其他 AI 历史代码。
 
 ## 按需补齐的资产（核对现有 GitHub 分支后）
 1. **已经代传**：GM-10 最小 23 个原版 Ogg **全部存在**于资产分支，已按原 Git blob（共 399,148 字节）安全加入草稿 PR #19，不需要再转存二进制到 KV。GM-07 仍缺 **110 条 iOS M4A**，代码优先阶段不阻塞；正式 iOS 音频验收前须合规转码和测试。

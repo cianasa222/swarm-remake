@@ -12,6 +12,8 @@
 
 > **GPT-22 最新开发进度（2026-11-23 21:02 CST）**：用户决定先完成代码整合、构建和单测，iPhone 实机后置（COLLAB 2.6）。新 GM-11 B1/B2/B3 纯 TS 底座与 GM-10 UIA 音频仍仅在 KV 待代传；GM-09 B4 核心已在草稿 PR #17。最关键缺口是**真正启动 Babylon 场景并让 B4 特效实际可绘制**。GM-12 列出 44 缺失网格：P0 15/P1 8/P2 10/P3 11；详见 [GPT-22 迁移差距报告](./gpt/BABYLON_GAP_REVIEW_GPT22.md)。PR #14/#15 均为候选整合快照，不直接合并或部署。
 
+> **GPT-24 · 人员变更（2026-11-24）**：Quick 已退出，不再分配新任务或等待其审核；Quick 既有数据、审查、PR 和 KV 资料保持可追溯。B4 新 VFX 运行器和 B5 性能优化改为 **Gemini（仅 KV：规格、独立逻辑、测试）+ GPT（GitHub、实际运行器、构建和 CI）**；Muse/Antigravity 仅确认可用后参与。见 [更新后的分工](./gpt/BAB_TASK_DIVISION_GPT23.md)。未自动唤起其他 AI、未部署。
+
 ## 1. 一句话看懂
 
 - **项目**：1:1 复刻《英雄联盟：无尽狂潮（Swarm）》第一关「仓库区（Map33）」，Vite + TypeScript + Three.js，资产全部来自拳头 Patch 14.14 原版。
@@ -43,7 +45,7 @@
 
 | AI | 目录 | 角色 | 编号前缀 | 最后更新（CST） | 最后提交 | 当前在做 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Quick AI（AWS Quick） | [`handover/quick/`](./quick/HANDOVER.md) | **角色由用户随时指定**；当前：14.14 原版比对与特效还原、BAB-01 数据准备。**按用户决定不连 GitHub，只更新 KV 代码与交接，由其他 AI 提交** | `Q-`、`QC-`、`QI-`、`BAB-Q` | 2026-11-23 18:15 | `QC-19`（比对 GM-02/03） | 待提交：**`pending/q30/`（Q-30 战兔巨爆）**、`pending/bab01-quick/`（BAB-Q01）、3 份审查报告 + 任务单。Q01-01～03 缺口以 Gemini `pending/bab01-gemini/` 为准，Quick 的差异建议见 `handover/quick/QC19_GM02_REVIEW.md` |
+| Quick AI（已退出，历史角色） | [`handover/quick/`](./quick/HANDOVER.md) | **2026-11-24 用户确认退出；仅供查看历史审查、代码与 PR**，不领取后续任务 | `Q-`、`QC-`、`QI-`、`BAB-Q`（历史） | 2026-11-23 历史交接 | 当前已停用 | 旧 PR #8/#10/#11 与 KV 原件保留；B4/B5 新工作转由 Gemini + GPT 承接，不重复提交旧补丁 |
 | Antigravity（原主线开发 AI） | [`handover/antigravity/`](./antigravity/HANDOVER.md) | 主线开发、本机编译/实机截图验收与修复 | `AG-` | 2026-11-23 03:55 | `[Antigravity AG-09]` | **两步任务全部完成**：① AG-08 93 条 14.14 原版 SFX + 5 首原版 BGM 已接入 `src/audio/audio.ts`；② AG-09 已验收并合并 PR #3（`c056396`）+ 合入 42 动作版 `reksai.glb`、彻底修复 `Wrap/Plane` 子网格隐藏并接入 17 个原版动作剪辑，3 张特写截图视觉审计 CLEAN PASS；待按需部署线上 |
 | Muse（执行 AI） | [`handover/muse/`](./muse/HANDOVER.md) | 执行 Issue #1（解包、转换、贴图）；生产部署 | `MU-` | 2026-11-23 06:40 | `[Muse MU-01]` | GPT-08（PR #8）已部署上线，版本 `5955ad9a`，deployment `f94499ee`，100% 流量；真机视听待验；Issue #1 待领取 |
 | GPT（ChatGPT） | [`handover/gpt/`](./gpt/HANDOVER.md) | 资产溯源、最小解包、审查修复、用户授权开发与发布 | `GPT-` | 2026-11-23 | `[GPT-21]`（KV 批量操作规范）；GPT-10 [PR #9](https://github.com/cianasa222/swarm-remake/pull/9) | [KV 批量操作规则](../COLLAB.md#23-每次提交双端交接gpt-11--用户指示-2026-11-23优先于旧规则中只同步-main的表述)，不部署；[BAB-01 迁移](./gpt/BABYLON_MIGRATION.md)；UI 独立分支已开发，构建/回归通过，实机待验、未合并/部署；[UI 交接](https://github.com/cianasa222/swarm-remake/blob/gpt/gpt10-heroui/handover/gpt/UI_GPT10.md)。每次提交双端同步；代上传及上线验收后清理见 COLLAB 2.2/2.4；[BAB-Q01 缺口与验收](./gpt/BAB_Q01_ACCEPTANCE_GPT13.md)（数据通过，集成未通过）；保留 MU-01 线上与备用资产；[PR #10](https://github.com/cianasa222/swarm-remake/pull/10) CI PASS、[PR #11](https://github.com/cianasa222/swarm-remake/pull/11) 14/14 贴图 CI PASS，均为草稿未部署 |
