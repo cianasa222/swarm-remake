@@ -1,5 +1,7 @@
 # 协作与任务交接规范（COLLAB）
 
+> ⛔ **同步 KV 前必读（用户指示，GPT-12 更新）**：Quick / 其他 AI 无 GitHub 权限时，查 KV `SYNC_STATE.json` 的 `kv_only_pending`、`pending_branches` 与 `pending_github_commits`，按任务核对实际 GitHub 提交/PR 后代上传未提交内容；共享文档须合并双方新增内容，不覆盖独有资料。**仅在合并、实际部署、上线/实机验收通过、GitHub 可恢复且主线 KV 核验后，才允许精确清理重复临时代码。** 交接、清单、参考/备用资产永久保留；不删除其他任务或整个索引。详见 COLLAB 2.2 第 10 条及 2.4。
+
 > 最后更新：2026-11-22 22:45（新增 2.2 节交接文档更新规则；交接按 AI 分目录；线上站点不再提供交接文档）· 第 0、1、2.2、5 节维护者：Quick AI（AWS Quick）
 > 新加入的 AI / 开发者：**先读交接总入口 [`handover/README.md`](./handover/README.md)**，再按下面第 0 节的顺序读。
 
@@ -53,6 +55,8 @@
 2. 每次提交和每次合并后，**由改动的 AI 自己**按 2.1、2.2 节把变更文件镜像到 KV（没有 Cloudflare 权限的见 2.2 节第 3 条）。镜像时更新 `SYNC_STATE.json` 相应条目；分支独立记录，主线全量一致才可推进全局 `commit`。**GitHub `main` 仍是唯一正式主线，部署另行授权。**
 3. 不要直接改 KV 里的源码 key，否则下次同步会被覆盖。
 4. `.github/workflows/` 只能由用户在 GitHub 网页上手动维护，AWS Quick 的连接器没有 workflow 权限。
+
+   - 历史背景（Quick QC-10）：2026-11-23 05:23 的同步曾覆盖 KV 独有文件，已由 Quick 手动合并恢复；严格执行保护规则。
 
 ### 2.1 防冲突规则（多个 AI 共用同一批文档时必须遵守）
 
@@ -191,7 +195,7 @@
 | GPT-10 | React + HeroUI v3 UI 并行开发（[PR #9](https://github.com/cianasa222/swarm-remake/pull/9)），Quick 并行准备 BAB-01 数据/资产，勿争用 UI 文件 | GPT（UI） | 🔄 独立分支 `gpt/gpt10-heroui`；构建/数值回归通过，浏览器待验，未合并/部署；按 2.3 分支独立同步 |
 | GPT-11 | 每次代码提交立即双端交接、分支镜像隔离 | GPT（用户授权修改规范） | ✅ 规范更新；GPT-10 分支快照状态见 KV `pending_github_commits` |
 | GPT-12 | KV-only 代上传与临时代码生命周期 | GPT（用户确认） | ✅ 规则补齐；上线并验收通过后方可精确清理重复临时代码，本次不删任何 key |
-| GPT-13 / BAB-Q01-REVIEW | [BAB-Q01 验收、缺陷及缺项](handover/gpt/BAB_Q01_ACCEPTANCE_GPT13.md)：Q01-01～10；先修回旋刃进化、补给/拾取/精英覆盖、贴图/网格映射、默认 tsc，再完成 B1/B4 实际运行器；HUD 与原版实机核对 | 任意能做的 AI（领取留痕；Quick 仅 KV；UI 与 GPT-10 协调） | 🟡 首验 14/14、转换复现 6/6 PASS；正式集成/构建/视觉/性能验收未通过，未提交 BAB-Q01 代码、未部署 |
+| GPT-13 / BAB-Q01-REVIEW | [BAB-Q01 验收、缺陷及缺项](handover/gpt/BAB_Q01_ACCEPTANCE_GPT13.md)：Q01-01～10；先修回旋刃进化、补给/拾取/精英覆盖、贴图/网格映射、默认 tsc，再完成 B1/B4 实际运行器；HUD 与原版实机核对 | 任意能做的 AI（领取留痕；Quick 仅 KV；UI 与 GPT-10 协调） | 🔄 首验 122/742 的历史回执；更新为 PR #10 157/903 和 2/2 CI PASS，但 B1/B4 集成、原版资源与实机验收仍未完成 |
 | GPT-16 / BAB-Q01-CODE | Quick+Gemini 14.14 VFX 数据 **157 系统/903 层**；[PR #10](https://github.com/cianasa222/swarm-remake/pull/10)；新增 9 个纹理、2 个网格引用待实测 | GPT 代上传、验收 | ✅ npm build + Node 6/6；❗ B1/B4 运行器、实机/视频待验；草稿，未合并/部署 |
 | GPT-16 / Q-30-RELAY | Quick StarStrike 4 系统/21 层；[PR #11](https://github.com/cianasa222/swarm-remake/pull/11)；14 张 Patch 14.14 贴图 CI 导入及 SHA256 留档 | Quick 原创 → GPT 审核代传 | ✅ build/数值测试/14 张贴图完整性；❗网格来源/视频/iPhone 待验；草稿，未合并/部署 |
 | UIA | **音效 + 界面补齐**（`docs/audit/ui_camera_audio_14.14.md` 第 2 节，**只在 KV**）：UIA-1 9 把副武器原版音效（**GPT-07 已在 PR #8 补关键释放 / 命中 / 爆炸 18 个音频组**，返程 / 循环 / 停音等仍缺）；UIA-2 敌人按怪种的死亡音效；UIA-3 背景音乐补中期 / 后期切换、核对 5 个 BGM 哈希；UIA-4 横幅改原版文字和时长；UIA-5 地图目标系统（原版 21 种，建议单独开任务）；UIA-6 镜头 / 界面截图核对 | 任意能做的 AI（在本行写名字和领哪几项） | 🟡 待领取 |
@@ -202,10 +206,10 @@
 | PERF-1 T2b | **重新导出 4 个小怪（pix / ghoul / hunter / dasher）带原版动作**：现有 `.glb` 有骨骼但 0 段动作（QC-08 实测），方法见 `pending/q22/README.md` 第 2 节 | 任意能做的 AI（在本行写名字领取） | 🟡 待领取 |
 | PERF-1 | **渲染性能与画质优化（iPhone 优先）**，任务单 `docs/tasks/render_perf.md`（**只在 KV**，见 QC-07） | 任意能做的 AI（在本行写名字领取） | 🟡 部分待领取（T2 / T4 / T5 已随 PR #8 上线；T1、T2b、T6、T7 待领取） |
 | Q-22 / Q-23 / Q-25 / Q-27 / Q-28 | 小怪顶点动画 + 阴影 + 贴图过滤；手机锁 60 帧 + 动态分辨率 + `?perf=1`；冰爆护甲颜色寿命；小怪死亡特效；精英死亡动作 + 耀光 4 层 + 斯塔缇克闪电时长 | Quick AI 写 → GPT-07 审查 → GPT-08 合并 → MU-01 部署 | ✅ PR #8 `797ef1d`（剔除 QC-15 指出的战兔巨爆改色）已上线 `5955ad9a`；真机视听待验；`pending/q22`–`q28` 原件保留作历史，**勿重复套用** |
-| BAB-01 B0+B4（数据） | **新引擎迁移子任务：B0 渲染模块清单 + B4 通用 VFX 数据准备 + 原版 HUD 资源核查**（Quick AI BAB-Q01；不含 B1 引擎接入和 B4 运行器实现；不碰 UI / 登录 / 设置 / 升级弹窗 / 账号） | Quick AI（用户 2026-11-23 08:54 指派领取） | ⏳ 已交付到 KV `pending/bab01-quick/`（14 个新文件），**待能写 GitHub 的 AI 上传**到分支 `quick/bab01-b0-b4-data` 开 PR；TS 未编译 |
-| QC-19（比对 GM-02/03） | Quick AI 对 Gemini 修复版的比对意见：建议补 技能哈希键解析、金币 `inGame:false`、精英 / 首领血条与首领狂暴、敌人出生特效；MapA 环境 19 个与 `AnimaSquad_Card` 用途**用户 18:16 决定交给验收方对照原版录像定**。见 `handover/quick/QC19_GM02_REVIEW.md` | Quick AI（仅 KV）→ Gemini 或代上传方决定是否合入 | 🟡 意见已交付；**以 Gemini 版为准**，Quick 不另交数据包 |
-| Q-30 | **战兔巨爆按原版 StarStrike 逐层重做**（4 个系统 21 层：普通 / 进化 / 进化红橙大落点各 4 层 + 爆炸 9 层）。撤回 Q-25 / Q-28 错误改色已由 GPT-07 在 PR #8 完成；十字弩（PierceShot）、旋风切割器（HolyBauble）的更正见 `handover/quick/HANDOVER.md` 1.7 节 | Quick AI 写（仅 KV）→ 任意能写 GitHub 的 AI 上传、编译、截图验收 | 🟡 代码已交付 KV `pending/q30/`（README 有上传步骤和 5 条待验近似），**待上传到分支 `quick/q30-starstrike` 开独立 PR**；未编译、未实机；只改画面 |
-| GM-02 / GM-03（Q01-01～03 修复） | 修复 BAB-Q01 的 **Q01-01**（回旋刃进化 +3）、**Q01-02**（精英光环 +2、补给箱/拾取/玩家反馈 +25，合计 152/883）与 **Q01-03**（555 贴图实测 100% 真 PNG + 回填 95 张主线路径、133 网格逐路径表含主线 29/备用 62/缺口 42、21 层 `attachedMesh` 绑定） | Gemini（仅 KV）→ 任意有权 AI 代上传 | ⏳ 已交付到 KV `pending/bab01-gemini/`（14 文件，单测 4/4 + CDN 555/555 PASS），待代上传分支 `gemini/bab01-q01-01-02-fix` 开 PR 与构建验收 |
+| BAB-01 B0+B4（数据） | **新引擎迁移子任务：B0 渲染模块清单 + B4 通用 VFX 数据准备 + 原版 HUD 资源核查**（Quick AI BAB-Q01；不含 B1 引擎接入和 B4 运行器实现；不碰 UI / 登录 / 设置 / 升级弹窗 / 账号） | Quick AI（用户 2026-11-23 08:54 指派领取） | ✅ 已代传并整合到 [PR #10](https://github.com/cianasa222/swarm-remake/pull/10)（157 系统/903 层）；CI 2/2 PASS，仍是草稿未合并/部署，B1/B4 运行器未开发；原 122/742 仅历史 |
+| QC-19（比对 GM-02/03） | Quick AI 对 Gemini 修复版的比对意见：建议补 技能哈希键解析、金币 `inGame:false`、精英 / 首领血条与首领狂暴、敌人出生特效；MapA 环境 19 个与 `AnimaSquad_Card` 用途**用户 18:16 决定交给验收方对照原版录像定**。见 `handover/quick/QC19_GM02_REVIEW.md` | Quick AI（仅 KV）→ Gemini 或代上传方决定是否合入 | ✅ 哈希关联、金币/卡片非实装、首领/精英血条和出生 VFX 5 套补录已由 GPT-16 在草稿 PR #10 修正；MapA 19 项与卡片用途仍由原版录像验收方确定 |
+| Q-30 | **战兔巨爆按原版 StarStrike 逐层重做**（4 个系统 21 层：普通 / 进化 / 进化红橙大落点各 4 层 + 爆炸 9 层）。撤回 Q-25 / Q-28 错误改色已由 GPT-07 在 PR #8 完成；十字弩（PierceShot）、旋风切割器（HolyBauble）的更正见 `handover/quick/HANDOVER.md` 1.7 节 | Quick AI 写（仅 KV）→ 任意能写 GitHub 的 AI 上传、编译、截图验收 | ✅ 已代传 [PR #11](https://github.com/cianasa222/swarm-remake/pull/11)，14 张贴图与 SHA256SUMS 已入库，CI 2/2 PASS；SCB 网格/原版录像/iPhone GPU 未验，草稿未合并/部署 |
+| GM-02 / GM-03（Q01-01～03 修复） | 修复 BAB-Q01 的 **Q01-01**（回旋刃进化 +3）、**Q01-02**（精英光环 +2、补给箱/拾取/玩家反馈 +25，合计 152/883）与 **Q01-03**（555 贴图实测 100% 真 PNG + 回填 95 张主线路径、133 网格逐路径表含主线 29/备用 62/缺口 42、21 层 `attachedMesh` 绑定） | Gemini（仅 KV）→ 任意有权 AI 代上传 | ✅ Gemini 原 152/883 已由 GPT-16 合入草稿 PR #10 修复为 157/903，最新 CI 2/2 PASS，独有原件留 KV；资源/原版录像/实机待验 |
 | — | 补给箱经验/升级节奏核查 | GPT（后续单独处理） | ⏳ 用户要求暂缓；本轮不改战斗数值 |
 | — | 自动部署 `wrangler.jsonc` + `preview` 分支 | 开发 AI + 用户 | ⏳ |
 | — | 其余小项（清理 `lan.ts`/`buildWorld`、`compress_assets.mjs` 绝对路径） | 开发 AI | ⏳ 见 `handover/quick/HANDOVER.md` 第 2 节 |
@@ -267,6 +271,14 @@
 
 - [14.14 备用资产库动画清单](handover/gpt/ASSET_LIBRARY_14.14.md)：AG-06 备用分支禁止删除、覆盖、强推或按线上资源清单清理。未接入不等于无用。按需复用，缺失才定向解包。
 - 同步前检查 `kv_only_pending`、`pending_branches`；即使 commit 一致也须核对独有更新。保留所有协作者的改动及 pending 原件，不整份覆盖。公开版本只同步必要技术内容，内部操作历史保留原处。
-- Q-22/Q-23/Q-25/Q-27 优化已审查并上传 [PR #8](https://github.com/cianasa222/swarm-remake/pull/8)，build、playtest 4/4、21 组限帧测试通过；真机/GPU 待验收，未合并、未部署。见 [GPT-07 审查与待办](handover/gpt/QUICK_RENDER_REVIEW.md)。
+- Q-22/Q-23/Q-25/Q-27 优化已审查并上传 [PR #8](https://github.com/cianasa222/swarm-remake/pull/8)，build、playtest 4/4、21 组限帧测试通过；真机/GPU 待验收；PR #8 后续已合并并随 MU-01 发布。见 [GPT-07 审查与待办](handover/gpt/QUICK_RENDER_REVIEW.md)。
 - PERF-1 T2b：四个当前普通小怪零动作，先查备用库、已有解包，缺失动作再补导。16 个补充模型有 14 个带动画，避免重复提取。
 - Q-24/Q-26：武器、敌人、地图环境缺层与待核验项见 [渲染待办](docs/tasks/render_perf.md)。
+
+
+### 8.3 GPT-17 · 同步后的实际进度与待验收门禁
+
+- **最新唯一 BAB 数据整合入口为 PR #10**（Quick + Gemini + GPT-16 QC-19），157/903、当前 2/2 CI PASS；重复旧数据 PR #12 已关闭，不能重复合并或覆盖。
+- **Q-30 以 PR #11 为准**，14/14 StarStrike WebP + SHA256SUMS 已到仓库；CI 2/2 PASS。PR #10/#11 均已统一 `tsconfig.json` 与 `review-checks.yml`，条件执行 VFX 数据、StarStrike 数值、贴图门禁，防止后续合并丢检查。
+- **重要区别**：自动化通过 ≠ Babylon 迁移完成 ≠ 原版视觉通过；B1/B4、网格/纹理、原版视频、iPhone GPU 与账号/UI 真机验收仍待执行。PR #9/#10/#11 都不自动合并或部署。
+- **保护**：Quick/Gemini `pending/`、14.14 BIN/WAD 和备用资产不清理；已合入旧 Q22～Q28 不再套用。双端保存固定 commit manifest，KV 根目录已知独有内容须合并保留；全局 `SYNC_STATE.commit` 未全量核验前不得推进。详见 [GPT-17 最新回执](handover/gpt/STATUS_GPT17.md)。
