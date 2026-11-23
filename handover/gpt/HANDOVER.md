@@ -14,6 +14,7 @@
 
 | GPT-07 | 2026-11-23 | PR #8 `b688d0f` | 11 个 src 文件、17 个复用音频、2 个回归测试、Q28 审查文档 | Q22/Q23/Q25/Q27/Q28 审查，精英死亡与帧率修复，九种武器音效关键事件接入，纠正 StarStrike/PierceShot/HolyBauble 映射 | build、playtest 4/4、21 种帧率组合、18 组音效及精英复位测试通过，实机待验 | 已合并，未部署 | 见 SYNC_STATE.json |
 | GPT-08 | 2026-11-23 | PR #8 合并 `797ef1d` | `wrangler.jsonc`、本交接、Q28 审查、[部署交接](DEPLOYMENT_GPT08.md) | 用户明确要求先合并部署；核对 30 个 PR 变更文件与本机 Git blob 一致，准备完整 Worker 静态资产及 ACCOUNT_AUTH 绑定配置 | 网关 mock 4/4；构建产物 415 文件、约 51 MiB；实机待验 | 合并成功；线上发布受上传授权阻塞，旧版本保留 | 见 SYNC_STATE.json |
+| GPT-09 | 2026-11-23 | `git log --grep GPT-09` | [BABYLON_MIGRATION.md](BABYLON_MIGRATION.md)、本文件、AGENTS、COLLAB 看板、总入口 GPT 行 | 用户批准全面迁移 Babylon.js；B0–B7 操作、双后端、VFX、资产、性能、回滚 | 文档核对；尚未迁移/测试 | 线上的 MU-01 不变 | 以 SYNC_STATE.json 的 GPT-09 增量同步记录为准 |
 
 ## 2. 接手基线
 
@@ -81,3 +82,9 @@
 ## 10. GPT-06 用户确认账号接入与合并
 
 原账号 Worker 未改动；新增 Swarm Worker 同源认证网关，以服务绑定接入原有邮箱密码验证和会话，限制 login/session/logout。Swarm Cookie 名与原站隔离，令牌仍由原服务签发；没有宣称云存档或权限范围独立令牌已经完成。无新增账号数据库、无复制密钥、无读取原存档、无修改战斗 sim。登录限正式域名，游客不受账号服务故障影响。绑定、路由与发布验收见 `worker/README.md`。用户明确同意合并；发布前仍需完成真实服务绑定、客户端 IP 限流、完整浏览器流程验收。原有安全约束不放宽。
+
+## 11. GPT-09 · 用户决定全面迁移 Babylon.js
+
+- 最新决策：从 Three.js 全面迁移 Babylon.js；WebGL2 保底，WebGPU 为经验证设备的优先选项，二者共用一套游戏代码。保持现有 sim、输入、HUD、登录/邮箱/游客、音频与资源路径；重构渲染及通用 VFX，逐层还原原版，不另写一套玩法。
+- [BAB-01 全面迁移操作手册](BABYLON_MIGRATION.md) 是执行依据：B0 冻结基线、B1 核心、B2 地图与资产、B3 角色动画、B4 VFX、B5 性能、B6 验收、B7 切换；独立分支、PR、实机和用户最终验收。旧 AGENTS/AI_HANDOVER 的 Three.js 路线仅作为已完成旧版基线。
+- main `62b8591`、Muse MU-01 已上线 `5955ad9a`/`f94499ee`；本次只提交方案，不改代码、不发布、不删除 Three.js 或备用资产。Quick 的 KV 特有文件、pending 原件和资产分支继续保留；禁止重新套用已经合并/审查更正的旧补丁。

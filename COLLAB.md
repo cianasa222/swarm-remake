@@ -159,6 +159,7 @@
 | — | 喷泉第二批：叠加贴图 + 剩余 Nova 层（清单见 `docs/audit/fountain_emitters_14.14.md` 4.3 节） | 开发 AI（Quick AI 审查） | ✅ 已完成（AG-03 `c38c792`）并上线（AG-05） |
 | — | M5：三档画质验收 + 联机边界（`teammateVfxScale`、`players[]`） | 开发 AI（Quick AI 审查） | ⏳ 待用户确认开启 |
 | GPT-05/06 | 登录首页、游客、邮箱账号授权及画质细节 | GPT（用户授权接手） | ✅ PR #7 已合并 `accf280`；构建、网关测试、数值回归通过；待线上绑定及真机验收，未部署；不等于完整 M5 |
+| BAB-01 / GPT-09 | 全面迁移 Three.js → Babylon.js；WebGPU + WebGL2，一套渲染代码；[执行手册 B0–B7](handover/gpt/BABYLON_MIGRATION.md) | 任意能开发、编译、实机验证的 AI（领取留痕） | 🟡 用户已批准路线；文档完成，迁移尚未开始；保留 MU-01 线上，完成验收后用户确认发布 |
 | — | 补给箱经验/升级节奏核查 | GPT（后续单独处理） | ⏳ 用户要求暂缓；本轮不改战斗数值 |
 | — | 自动部署 `wrangler.jsonc` + `preview` 分支 | 开发 AI + 用户 | ⏳ |
 | — | 其余小项（清理 `lan.ts`/`buildWorld`、`compress_assets.mjs` 绝对路径） | 开发 AI | ⏳ 见 `QUICK_AI_HANDOVER.md` 第 2 节 |
