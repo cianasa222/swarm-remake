@@ -19,3 +19,12 @@
 - PR #15 为草稿，**不得合并和部署**，待原版/实机验收；PR #5/#6/#9/#10/#11 原始分支均保留以便比对。
 - Cloudflare KV 快照按 COLLAB 2.3 使用 `pending/github/gpt/gpt19-code-integration/<SHA>/`，文本源码完整备份，二进制资源沿用 GitHub blob + SHA/路径清单；历史 Quick/Gemini 独有 KV 不覆盖。同步以 KV manifest 读回及 `SYNC_STATE.json.pending_github_commits` 为准。
 - Cloudflare Worker **无部署动作**，既有版本维持 `5955ad9a`（部署 `f94499ee`，记录的已上线基线，非本次新验证）。
+
+## Cloudflare 完整文本快照与代码资产恢复清单（2026-11-23）
+
+- 完整文本/源码/配置/交接：**147 文件、6,558,211 字节**，写入 Cloudflare KV `tideline-handover` 的 `pending/github/gpt/gpt19-code-integration/037a152fcce6bd9bc5e0e1766401998feee18686/`。逐一 `GET` 读回，并对每项校验 Git blob SHA-1 与 SHA-256，147/147 **PASS**。
+- 其他**392 个二进制资源、49,944,910 字节**：保持 GitHub 原仓库和版本固定 blob，KV MANIFEST 记录路径/大小/Git SHA；未复制二进制至 KV（遵守 COLLAB 2.3）。不把其称为 KV 内的实物。
+- `MANIFEST.json` 列出仓库全部 **539 个 Git 文件**及如何恢复；Cloudflare `FILE_INDEX.json` 新增 148 条（含 manifest），读回后共 418 条；`SYNC_STATE.json.pending_github_commits['gpt/gpt19-code-integration']` 已登记，保留原有 8 组条目及 `kv_only_pending`、`pending_branches`。
+- 同步操作**未改**全局 `SYNC_STATE.commit`（该字段代表旧主线镜像，仍为 `bd8a87b6`），没有把未合并分支当正式主线。
+- Cloudflare Worker 部署只读核查：`tideline-swarm` 仍部署 `f94499ee`，版本 `5955ad9a` 流量 100%。本次只使用 KV 数据存储，不上传/部署 Worker。
+- 本次另在整合分支增强 GitHub Actions 游戏数值/认证/帧率/精英音频回归门禁；以最新提交 GitHub Actions 结果作为最终 CI 判断，不能沿用上一提交的 PASS 证明新提交。

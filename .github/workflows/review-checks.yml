@@ -15,6 +15,14 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - name: Gameplay numerical regression (4 complete matches)
+        run: npm run playtest -- 2 0.85
+      - name: Auth gateway security tests
+        run: node --test tools/auth-gateway.test.mjs
+      - name: Frame cap and adaptive quality tests
+        run: npx tsx tools/render-quality.test.ts
+      - name: Elite death and 14.14 audio cues
+        run: npx tsx tools/q28-regression.test.ts
       - name: VFX data tests
         run: |
           if [ -f tools/bab/extract_vfx_14_14.test.cjs ]; then node --test tools/bab/extract_vfx_14_14.test.cjs; fi
