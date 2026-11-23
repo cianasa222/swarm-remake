@@ -25,6 +25,10 @@ jobs:
         run: npx tsx tools/q28-regression.test.ts
       - name: GM-07 audio relay regression guards
         run: node --test tools/audio-gm07.test.mjs
+      - name: GM-10 audio event mapping regression
+        run: npx tsx --test tools/audio-uia.test.ts
+      - name: GM-10 Ogg assets source signature gate
+        run: node --test tools/audio-uia-assets.test.mjs
       - name: VFX data tests
         run: |
           if [ -f tools/bab/extract_vfx_14_14.test.cjs ]; then node --test tools/bab/extract_vfx_14_14.test.cjs; fi
