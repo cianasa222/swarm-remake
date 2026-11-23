@@ -219,7 +219,7 @@
 | — | 首领雷克塞按原版修复（原计划编号 Q-19 至 Q-22 已被其他改动占用，首领修复从 Q-31 起（Q-30 预留给战兔巨爆）：删自编招式和数值、狂暴、钻地 / 飞弹 / 隧道 / 登场、特效与材质，资源见 Issue #4；AG-09 已接入 42 段动作和子网格隐藏；原版 41 个特效系统 351 层参数已在 BAB-Q01 的 `reksai.json`） | Quick AI 提交 → 开发 AI 验收 | ⏳ 待开始 |
 | [#4](https://github.com/cianasa222/swarm-remake/issues/4) | 补原版缺失资源并补做对应层：金克丝 E/R 35 个贴图 / 网格；雷克塞 34 段动作、子网格核对、308 个特效资源、出场动画核对；**全游戏原版音效**（清单 `docs/tasks/missing_assets_14.14.md`） | 任意能做的 AI（Issue 评论领取） | 🔄 进行中：A 节核心金克丝层（AG-05）、**C 节第一关 93 条原版音效 + BGM（AG-08）**、**B1/B2 雷克塞 42 动作 + `Wrap/Plane` 子网格精准隐藏（AG-09，视觉审计 CLEAN PASS）** 均已合入 `main`；剩余 55 个雷克塞特效网格与 16 个补充小怪模型已在分支 [`asset/14.14-unpacked-assets-20261123`](../../tree/asset/14.14-unpacked-assets-20261123) (`4b1b5f7`) 待后续按需合入 |
 | [PR #2](https://github.com/cianasa222/swarm-remake/pull/2) | 金克丝数值与特效按 14.14 原版重建（Q-13） | Quick AI 提交 → 开发 AI 验收 | ✅ 已合并（AG-04）并上线（AG-05） |
-| [PR #3](https://github.com/cianasa222/swarm-remake/pull/3) | A 类数值对齐 14.14：武器射程、旋风切割器、耀光、首领 900 s、99 级经验表、补给箱、传送环（Q-15） | Quick AI 提交 → Antigravity 验收 | ✅ 已合并（AG-09 `c056396`，`build` + `playtest` 4/4 全胜），待部署 |
+| [PR #3](https://github.com/cianasa222/swarm-remake/pull/3) | A 类数值对齐 14.14：武器射程、旋风切割器、耀光、首领 900 s、99 级经验表、补给箱、传送环（Q-15） | Quick AI 提交 → Antigravity 验收 | ✅ 已合并（AG-09 `c056396`，`build` + `playtest` 4/4 全胜），已上线于 Worker `5955ad9a`（本轮 Cloudflare 部署列表核验；视频/实机另验） |
 
 ---
 
