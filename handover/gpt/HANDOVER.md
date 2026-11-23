@@ -19,6 +19,7 @@
 | GPT-11 | 2026-11-23 | `git log --grep GPT-11` | COLLAB 2.3、AGENTS、入口、本文件 | 用户批准每次提交立即同步 GitHub+KV，无需等合并；分支快照与主线隔离，保留 Quick 资料 | 文档与 KV 清单/读回核验 | 不涉及部署 | 见 `SYNC_STATE.gpt11_sync_policy` |
 | GPT-12 | 2026-11-23 | `git log --grep GPT-12` | COLLAB 2.2 第 10 条/2.4、AGENTS、入口、本文件 | 补齐 KV-only 代上传规则与临时代码生命周期；用户确认上线/实机验收后可清理冗余副本，保留 GitHub 历史、原版资产和记录 | 文档与 KV 读回核验；本次无删除 | 不涉及部署 | 见 `SYNC_STATE.gpt12_pending_lifecycle` |
 | GPT-12a | 2026-11-23 | `git log --grep GPT-12a` | COLLAB 2.2、AGENTS、入口、本文件 | 同步期间发现 Quick KV 最新用户决定（09:23）：Quick 固定仅写 KV，其他 AI 代上传 GitHub、开 PR、验收；补入主线规范 | 文档核对；保留 Quick 并行记录 | 不涉及部署 | 见 `SYNC_STATE.gpt12_pending_lifecycle` |
+| GPT-13 | 2026-11-23 | `git log --grep GPT-13` | [BAB_Q01_ACCEPTANCE_GPT13.md](BAB_Q01_ACCEPTANCE_GPT13.md)、BABYLON_MIGRATION.md、入口、COLLAB 看板、本文件 | BAB-Q01 14/14 首验哈希、6/6 转换复现；登记实际遗漏、资产映射、运行器/HUD/构建门禁及 B0–B7 缺口 | 数据完整性 PASS；完整集成/实机待验，正式合并验收不通过 | 不涉及部署 | 见 `SYNC_STATE.gpt13_bab_q01_review` |
 
 ## 2. 接手基线
 

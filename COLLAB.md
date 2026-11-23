@@ -191,6 +191,7 @@
 | GPT-10 | React + HeroUI v3 UI 并行开发（[PR #9](https://github.com/cianasa222/swarm-remake/pull/9)），Quick 并行准备 BAB-01 数据/资产，勿争用 UI 文件 | GPT（UI） | 🔄 独立分支 `gpt/gpt10-heroui`；构建/数值回归通过，浏览器待验，未合并/部署；按 2.3 分支独立同步 |
 | GPT-11 | 每次代码提交立即双端交接、分支镜像隔离 | GPT（用户授权修改规范） | ✅ 规范更新；GPT-10 分支快照状态见 KV `pending_github_commits` |
 | GPT-12 | KV-only 代上传与临时代码生命周期 | GPT（用户确认） | ✅ 规则补齐；上线并验收通过后方可精确清理重复临时代码，本次不删任何 key |
+| GPT-13 / BAB-Q01-REVIEW | [BAB-Q01 验收、缺陷及缺项](handover/gpt/BAB_Q01_ACCEPTANCE_GPT13.md)：Q01-01～10；先修回旋刃进化、补给/拾取/精英覆盖、贴图/网格映射、默认 tsc，再完成 B1/B4 实际运行器；HUD 与原版实机核对 | 任意能做的 AI（领取留痕；Quick 仅 KV；UI 与 GPT-10 协调） | 🟡 首验 14/14、转换复现 6/6 PASS；正式集成/构建/视觉/性能验收未通过，未提交 BAB-Q01 代码、未部署 |
 | — | 补给箱经验/升级节奏核查 | GPT（后续单独处理） | ⏳ 用户要求暂缓；本轮不改战斗数值 |
 | — | 自动部署 `wrangler.jsonc` + `preview` 分支 | 开发 AI + 用户 | ⏳ |
 | — | 其余小项（清理 `lan.ts`/`buildWorld`、`compress_assets.mjs` 绝对路径） | 开发 AI | ⏳ 见 `QUICK_AI_HANDOVER.md` 第 2 节 |
