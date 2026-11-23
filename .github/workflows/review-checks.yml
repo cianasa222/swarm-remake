@@ -1,0 +1,27 @@
+name: Integration review (no deployment)
+on:
+  push:
+    branches: [gpt/gpt19-integration-snapshot]
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Four-match simulation
+        run: npm run playtest -- 2 0.85
+      - name: Account authentication gateway tests
+        run: node --test tools/auth-gateway.test.mjs
+      - name: Babylon source data regression
+        run: node --test tools/bab/extract_vfx_14_14.test.cjs
+      - name: StarStrike numerical regression
+        run: npx tsx tools/q30-starstrike.test.ts
+      - name: Verify 14 StarStrike WebP files
+        run: node tools/q30/verify_assets.mjs

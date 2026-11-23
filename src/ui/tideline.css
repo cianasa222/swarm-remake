@@ -1,0 +1,107 @@
+/* TIDELINE visual theme — only shell/modal UI, never the combat canvas/HUD. */
+#login-root,.tideline-login { display:flex; flex-direction:column; flex:1; min-height:0; }
+html:has(#login-home:not([hidden])),body:has(#login-home:not([hidden])),html:has(.modal:not(.hidden)),body:has(.modal:not(.hidden)) { touch-action:pan-y; }
+#login-home { --ui-accent:#73bcff; --ui-surface:#17212e; color:#e9f2fb; background:#0c1522; }
+#login-home .home-art { background:radial-gradient(ellipse at 65% 18%,#345c80 0,transparent 46%),linear-gradient(155deg,#101b2a 15%,#183449 62%,#08121f); }
+#login-home .home-moon { background:radial-gradient(circle at 38% 34%,#e0edff,#98bddf 52%,#4e789a 70%); box-shadow:0 0 90px #8bc8ee44; }
+#login-home .home-beam { background:linear-gradient(90deg,#c6eaffb0,transparent); }
+#login-home .home-kicker { color:#85c8ff; }
+#login-home .home-copy h1 span { color:#87c6ff; }
+#login-home .home-glass { background:linear-gradient(145deg,#283d53bc,#101b29ed); border:1px solid #92b9df30; border-radius:30px; box-shadow:0 28px 90px #020b1480,inset 0 1px #ffffff16; }
+.ui-pill { display:inline-flex; align-items:center; gap:7px; border-radius:999px; background:#9ed2ff0b; border:1px solid #a3c8ea2e; padding:7px 12px; color:#d0e5f9; }
+.ui-pill i { width:6px; height:6px; background:#75bdff; border-radius:50%; box-shadow:0 0 8px #73bcff; }
+.brand-mark { color:#8cc9ff; font-size:19px; vertical-align:-1px; }
+.brand-divider { color:#7190ab; margin:0 4px; }
+.login-heading { display:flex; justify-content:space-between; align-items:center; }
+.login-emblem { display:grid; place-items:center; width:42px; height:42px; border-radius:15px; background:#8bc5ff16; color:#9ed2fe; border:1px solid #8bc5ff39; font-size:24px; }
+.home-meta { display:flex; flex-wrap:wrap; gap:8px; margin-top:23px; font-size:11px; color:#bcd4ea; }
+.home-meta span { border:1px solid #a1c9ef35; background:#142c4388; border-radius:999px; padding:6px 10px; }
+#login-home .home-primary { background:linear-gradient(120deg,#9ed7ff,#62adf3); color:#09223a; box-shadow:0 8px 30px #559ffc28; }
+#login-home .home-secondary { background:#c9e4ff09; color:#e8f2ff; border-color:#8fc4ff34; }
+#login-home .ui-button { min-height:46px; height:auto; padding:14px 16px; border-radius:16px; letter-spacing:.02em; white-space:normal; }
+#login-home .ui-button[data-pressed=true],.ui-segment-button[data-pressed=true],.upgrade-choice[data-pressed=true] { transform:scale(.97); }
+#login-home .ui-button[data-focus-visible=true],.ui-segment-button[data-focus-visible=true],.upgrade-choice[data-focus-visible=true] { outline:2px solid #9fd0ff; outline-offset:3px; }
+#login-home .login-note { font-size:11px; color:#9db4ca; margin-top:19px; line-height:1.6; }
+#login-home .home-glass #home-status { margin:8px 0 0; font-size:12px; color:#bcd7f3; min-height:1em; }
+#login-home #home-login-form { animation:ui-rise .23s ease-out both; }
+#login-home #home-login-form input { min-height:43px; background:#0a1725; border-color:#8fc4ff34; }
+#login-home .home-register { color:#9ed2ff; }
+
+/* Reduced translucent surfaces inside combat: no full-viewport backdrop blur. */
+#screen-start,#screen-pause,#screen-levelup,#screen-end { background:#06101bd6; backdrop-filter:none; padding:max(14px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left)); }
+#screen-start .panel,#screen-pause .panel,#screen-end .panel { background:#101a27; color:#e9f2fb; width:min(780px,100%); border:1px solid #34475d; border-radius:24px; box-shadow:0 18px 55px #0007; padding:22px; }
+#screen-start .panel,#screen-pause .panel,#screen-end .panel,#screen-levelup .panel { max-height:100%; overflow-y:auto; overscroll-behavior:contain; touch-action:pan-y; animation:ui-rise .22s cubic-bezier(.22,.8,.25,1) both; }
+.ui-eyebrow { color:#7aaee0; font-size:10px; letter-spacing:.18em; font-weight:800; margin-bottom:7px; }
+#screen-start .panel h1,#screen-pause .panel h2,#screen-end .panel h2 { font-size:26px; color:#f2f8ff; letter-spacing:-.02em; }
+#screen-start .panel h1 small { color:#80b9e8; font-size:12px; }
+#screen-start .subtitle { color:#a8bed2; margin-bottom:12px; }
+#screen-start .tips { background:#182536; color:#b6cada; border:1px solid #2c4055; padding:9px 12px; border-radius:13px; }
+.tideline-settings { color:#e6f0fa; margin:12px 0; }
+.settings-heading { display:flex; justify-content:space-between; gap:8px; align-items:center; margin-bottom:10px; font-size:15px; font-weight:700; }
+.settings-heading small { font-size:11px; color:#9cb2c7; font-weight:500; }
+.settings-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.settings-card { min-width:0; border:1px solid #2d3e52; border-radius:17px; background:#172331; padding:7px 12px; }
+.settings-row { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 0; min-height:43px; font-size:12px; }
+.settings-row + .settings-row,.settings-row + .ui-switch,.ui-switch + .ui-switch { border-top:1px solid #a5c8ea13; }
+.settings-row > span { flex-shrink:0; }
+.ui-segment { display:flex; flex-shrink:0; border-radius:999px; padding:3px; background:#0b1622; align-items:center; border:1px solid #304459; }
+.ui-segment .ui-segment-button { min-width:30px; height:27px; border-radius:999px; padding:0 8px; font-weight:600; font-size:11px; color:#9db6cd; border:0; background:transparent; transition:background .16s,color .16s,transform .14s; }
+.ui-segment .ui-segment-button.selected { background:#77bcf7; color:#0d2740; box-shadow:0 2px 8px #050e1760; }
+.ui-switch { display:flex; width:100%; justify-content:space-between; gap:8px; min-height:40px; align-items:center; padding:7px 0; font-size:12px; cursor:pointer; }
+.ui-switch .switch__content { display:flex; width:100%; align-items:center; justify-content:space-between; gap:8px; color:#e6f0fa; }
+.ui-switch-label { display:flex; flex-direction:column; gap:2px; text-align:left; }
+.ui-switch small { color:#8da8bf; font-size:10px; }
+.ui-switch .switch__control { flex-shrink:0; }
+.ui-switch[data-selected=true] .switch__control,.ui-switch .switch__control[data-selected=true] { background:#77bcf7; }
+.settings-foot { color:#819db7; font-size:10px; margin:9px 2px 0; }
+#screen-start .preload-box { background:#162433; border-color:#304459; border-radius:13px; }
+#screen-start .preload-meta { color:#a9c5dc; font-size:11px; gap:8px; }
+#screen-start .preload-track { background:#2b3e52; }
+#screen-start #preload-fill { background:#78bdff; }
+#screen-start .primary-btn,#screen-pause .primary-btn,#screen-end .primary-btn { background:#78bcf7; color:#0b253b; border-radius:15px; min-height:43px; transition:transform .13s,filter .15s; }
+#screen-pause .sec-btn { background:#172638; border:1px solid #3a5068; border-radius:15px; color:#cce0f2; }
+#screen-start .primary-btn:active,#screen-pause button:active,#screen-end button:active { transform:scale(.98); }
+#screen-end .stat-box,#screen-end .build-pill { background:#1a2a3c; color:#c8e4fc; }
+#screen-end .stat-box b { color:#e6f3ff; }
+#screen-end .stat-box span,#screen-end .muted { color:#9eb5cb; }
+
+/* Preserve original weapon icons & evo tiers. Reduce card footprint on landscape. */
+#screen-levelup .swarm-modal { width:min(790px,100%); border-radius:20px; padding:18px; border-color:#486c8d; }
+#screen-levelup .swarm-modal h2 { color:#b8e6ff; font-size:19px; }
+#screen-levelup .upgrade-choice { white-space:normal; min-width:0; width:100%; height:auto; min-height:145px; align-items:stretch; justify-content:flex-start; border-radius:16px; padding:12px; gap:8px; text-align:left; transition:transform .16s,border-color .16s,background .16s; }
+#screen-levelup .upgrade-choice:not(.evo-card) { background:#172b40; }
+#screen-levelup .upgrade-choice .card-footer { width:100%; }
+#screen-levelup .upgrade-choice .card-name,#screen-levelup .upgrade-choice .card-sub { display:block; }
+#screen-levelup .upgrade-choice .card-desc { text-align:left; }
+@keyframes ui-rise { from { opacity:0; transform:translateY(9px) scale(.98); } to { opacity:1; transform:none; } }
+@media (max-width:620px) and (orientation:portrait) {
+  .settings-grid { grid-template-columns:1fr; }
+  #screen-start .panel,#screen-pause .panel,#screen-end .panel { padding:16px; border-radius:19px; }
+  #screen-levelup .upgrade-choice { min-height:0; padding:10px; }
+  #screen-levelup .card-icon { width:45px; height:45px; }
+}
+@media (max-height:530px) and (orientation:landscape) {
+  #screen-start .panel,#screen-pause .panel,#screen-end .panel { padding:12px 16px; border-radius:17px; }
+  #screen-start .panel h1,#screen-pause .panel h2 { font-size:20px; margin-bottom:6px; }
+  #screen-start .tips { display:none; }
+  .settings-grid { gap:8px; }
+  .settings-row,.ui-switch { min-height:31px; padding:4px 0; }
+  .settings-card { padding:4px 8px; }
+  .settings-heading { margin-bottom:5px; }
+  .tideline-settings { margin:6px 0; }
+  .settings-foot { margin-top:5px; }
+  #screen-start .subtitle { margin-bottom:5px; }
+  #screen-start .preload-box { margin-bottom:6px; padding:5px 9px; }
+  #screen-levelup .cards { grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+  #screen-levelup .swarm-modal { padding:12px; }
+  #screen-levelup .upgrade-choice { min-height:120px; padding:8px; gap:6px; }
+  #screen-levelup .card-icon { width:38px; height:38px; }
+  #screen-levelup .card-desc { font-size:11px; }
+}
+@media (prefers-reduced-motion:reduce) { #screen-start .panel,#screen-pause .panel,#screen-levelup .panel,#screen-end .panel,#login-home #home-login-form { animation:none; } .ui-segment-button,.upgrade-choice { transition:none!important; } }
+
+/* GPT-19: camera setting is available in both preparation and pause dialogs. */
+@media (max-height:530px) and (orientation:landscape) {
+  .settings-grid .ui-segment { flex-wrap:wrap; }
+  .settings-grid .ui-segment-button { min-width:0; }
+}

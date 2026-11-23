@@ -193,6 +193,7 @@
 | GPT-05/06 | 登录首页、游客、邮箱账号授权及画质细节 | GPT（用户授权接手） | ✅ PR #7 已合并 `accf280`；构建、网关测试、数值回归通过；待线上绑定及真机验收，未部署；不等于完整 M5 |
 | BAB-01 / GPT-09 | 全面迁移 Three.js → Babylon.js；WebGPU + WebGL2，一套渲染代码；[执行手册 B0–B7](handover/gpt/BABYLON_MIGRATION.md) | 任意能开发、编译、实机验证的 AI（领取留痕） | 🟡 用户已批准路线；文档完成，迁移尚未开始；保留 MU-01 线上，完成验收后用户确认发布 |
 | GPT-10 | React + HeroUI v3 UI 并行开发（[PR #9](https://github.com/cianasa222/swarm-remake/pull/9)），Quick 并行准备 BAB-01 数据/资产，勿争用 UI 文件 | GPT（UI） | 🔄 独立分支 `gpt/gpt10-heroui`；构建/数值回归通过，浏览器待验，未合并/部署；按 2.3 分支独立同步 |
+| GPT-19 | PR #5/#6 与 React UI 冲突消解；将 PR #9/#10/#11 代码汇总、审查、保存到 GitHub / KV，不部署 | GPT（审查集成） | 🔄 独立候选 `gpt/gpt19-integration-snapshot`；CI/实机待验；原 PR、历史与线上不变 |
 | GPT-11 | 每次代码提交立即双端交接、分支镜像隔离 | GPT（用户授权修改规范） | ✅ 规范更新；GPT-10 分支快照状态见 KV `pending_github_commits` |
 | GPT-12 | KV-only 代上传与临时代码生命周期 | GPT（用户确认） | ✅ 规则补齐；上线并验收通过后方可精确清理重复临时代码，本次不删任何 key |
 | GPT-13 / BAB-Q01-REVIEW | [BAB-Q01 验收、缺陷及缺项](handover/gpt/BAB_Q01_ACCEPTANCE_GPT13.md)：Q01-01～10；先修回旋刃进化、补给/拾取/精英覆盖、贴图/网格映射、默认 tsc，再完成 B1/B4 实际运行器；HUD 与原版实机核对 | 任意能做的 AI（领取留痕；Quick 仅 KV；UI 与 GPT-10 协调） | 🔄 首验 122/742 的历史回执；更新为 PR #10 157/903 和 2/2 CI PASS，但 B1/B4 集成、原版资源与实机验收仍未完成 |

@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 
-export default defineConfig({
+export default defineConfig(async () => ({
+  plugins: [(await import('@tailwindcss/vite')).default()],
   base: './',
   build: {
     outDir: 'dist',
@@ -9,4 +10,4 @@ export default defineConfig({
   },
   server: { host: true, port: 5173 },
   preview: { host: true, port: 4173 },
-});
+}));
