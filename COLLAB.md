@@ -120,7 +120,15 @@
 3. 主线提交/PR 合并按合并后的实际 commit 同步变更文件；保护 key 不覆盖未解决内容，先合并或隔离保存实际主线版本，并记录原因、对应 SHA 和待协调项。全局 `SYNC_STATE.commit` 仅在所有主线镜像均一致时推进；分支记录不能推进。合并后标记分支已合并和实际 merge SHA，保留历史；部署单独记录 Worker 版本，未获授权不部署。临时代码待部署/验收后才可按 2.4 清理。
 4. 并行同步前重读索引及保护列表，增量合并，写后验证未丢其他条目；若冲突停下协调。没有 GitHub 或 KV 权限时立即标记待同步、记录阻塞及可读取的实际位置，不能声称双端已同步。所有 AI 开工前读主线交接 AND `pending_github_commits`，检查相关未合并提交避免重复开发；不得把未验收分支当正式游戏基线。
 
-### 2.4 KV 临时代码生命周期与清理门禁（GPT-12 · 用户确认 2026-11-23）
+#5. **KV 批量读写与节约操作额度（GPT-21 · 用户 2026-11-23 批准，所有 AI 强制）**：
+   - 同一轮 GitHub/KV 双端交接中，把本次实际需要写入的文件和 `MANIFEST.json` 尽量归并到一次 Cloudflare KV REST API `PUT /bulk`；读多个已知 Key 优先 `POST /bulk/get`，不要为同一批文件反复逐个 `GET/PUT`。遵守 API 限额和响应尺寸，必要时分批。
+   - **批量请求减少 HTTP 往返，但不减少按 Key 计数的免费额度**：Cloudflare 官方按每条 Key 分别计算读/写，批量写入 N 个 Key 仍是 N 次 KV 写操作。节约真正额度应先凭 Git blob SHA / `FILE_INDEX.json` 中 SHA-256 和路径识别未变化内容；不再写相同 Key，尽可能复用已验证的不可变历史快照及来源引用；仅当内容确有变化时新增变更文件与增量清单。不能为省额度省略新数据的可恢复来源。
+   - `SYNC_STATE.json`、`FILE_INDEX.json` 先各读取一次，保留其他 AI 全部字段与 Key，按本批新增项在内存增量合并，**每批最多各写一次**；`pending/`、`pending/github/`、`inbox/` 严格隔离，永久保护原版参考/历史快照，不覆盖共享文件的独有更新。
+   - API `/bulk` 返回 `unsuccessful_keys` 或成功数量不足时，只重试失败的 Key；随后使用 `/bulk/get` 集中读回本批重要结果，校验文件 SHA-256、Manifest、提交号与索引条目。不可在未校验成功时宣称「双端已同步」；分支不能推进全局 `SYNC_STATE.commit`。
+   - **多 AI 写入安全**：KV 不提供对共享 JSON 索引的原子比较交换（CAS）。同一时段对 `SYNC_STATE.json`/`FILE_INDEX.json` 的修改应协调由一个同步者归并；若发现并发改动或读回缺项，重新读取最新索引、合并独有字段后修复，不得用缓存旧全文覆盖其他 AI 的修改。严禁为了节约请求跳过冲突检查或 2.4 清理门禁。
+   - Cloudflare 官方口径与可核对的接口说明：https://developers.cloudflare.com/kv/platform/pricing/ 与 https://developers.cloudflare.com/api/resources/kv/subresources/namespaces/methods/bulk_update/ 。
+
+## 2.4 KV 临时代码生命周期与清理门禁（GPT-12 · 用户确认 2026-11-23）
 
 | 阶段 | KV 临时代码 |
 | --- | --- |

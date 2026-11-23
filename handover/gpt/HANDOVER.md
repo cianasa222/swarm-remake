@@ -26,6 +26,8 @@
 | GPT-17 | 2026-11-23 | `[GPT GPT-17]` | [STATUS_GPT17.md](STATUS_GPT17.md)、README/COLLAB/PROGRESS、PR #10/#11 配置与审查报告 | 重新验收两个草稿 PR，统一两分支 TS 和 CI 工作流，修正 Q30 贴图已入库的过期报告；补齐当前 157/903、14 WebP、两次 CI PASS、线上 Worker 版本与剩余风险并同步 KV | 两 PR 最新各 2/2 CI success；实机/视觉/引擎集成未验 | 未合并/部署 | KV `SYNC_STATE.gpt17_progress_sync`；保护原始 pending |
 | GPT-16 | 2026-11-23 | [PR #10](https://github.com/cianasa222/swarm-remake/pull/10) `f2ae2a21`；[PR #11](https://github.com/cianasa222/swarm-remake/pull/11) `a7a86755` | Quick BAB-Q01 / Gemini GM-02/03 数据整合及 QC-19 修复，Q30 StarStrike 与原版 14 张贴图导入；详见 PR 内验收报告 | PR #10 build + 6 项单测 PASS；PR #11 build + 数值 + 14/14 贴图 PASS；原版视频/iPhone/GPU 实机待验 | 两 PR 草稿，未合并，未部署 | `SYNC_STATE.gpt16_code_review` + KV 分支镜像哈希核验，原始 pending 保留 |
 
+| GPT-21 | 2026-11-23 | 本次文档提交（见 GitHub git log / 当前文件历史） | COLLAB 2.3 第 5 条、总入口 GPT 行、本文件 | 用户批准第 3 条：KV 同批批量读写、跳过不变哈希、索引每批只写一次、失败键单独重试、集中读回验 SHA；明确 bulk **不减少按 Key 计费/免费额度** | 文档与 Cloudflare 官方计费说明核对；未改游戏代码/测试 | 不部署 | GitHub 提交后增量写入 KV 并回读核验，不得伪造全局主线一致 |
+
 ## 2. 接手基线
 
 已读交接入口、COLLAB、Quick / Antigravity 交接、AGENTS、AI_HANDOVER、PROGRESS、Issue #1 / #4 及评论、雷克塞审计及缺失资产清单。基线 main `85714eadad3b8f3a0fb62653835ded9582be005f`（Q-20）。KV 对上述交接正文逐一比对一致；KV 状态所记 commit 同基线。M0–M4 已完成阶段验收，不等于完全 1:1；M5 等用户确认。AG-05 已上线 Worker 版本 701860ff；PR #3 尚待验收，不能按已合并处理。Issue #1 Muse 已领取 T1/T2/T4（评论可见）；AG-03 已交付喷泉 5 个 Nova 网格及 15 张贴图，先查剩余小怪配置，不重复下载。Issue #4 A 金克丝已补，B 雷克塞动作/子网格/VFX、C 原版音效、D 出场仍待执行。未领取这些执行任务，本轮无代码/资产改动。
